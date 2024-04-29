@@ -5,9 +5,9 @@ import 'package:sudia_events/presentation/screens/Auth/login.dart';
 import 'package:sudia_events/presentation/screens/Auth/register.dart';
 import 'package:sudia_events/presentation/screens/Auth/verify.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
-import 'package:sudia_events/presentation/screens/client/my_account.dart';
-import 'package:sudia_events/presentation/screens/client/my_services.dart';
-import 'package:sudia_events/presentation/screens/client/settings.dart';
+import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
+import 'package:sudia_events/presentation/screens/client/settings/my_services.dart';
+import 'package:sudia_events/presentation/screens/client/settings/settings.dart';
 import 'package:sudia_events/presentation/screens/splash.dart';
 
 class AppRouter {

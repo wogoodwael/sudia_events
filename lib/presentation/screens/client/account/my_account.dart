@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
-import 'package:sudia_events/presentation/screens/client/account_list.dart';
+import 'package:sudia_events/presentation/screens/client/account/account_list.dart';
 
 class MyAccountScreen extends StatefulWidget {
   const MyAccountScreen({super.key});

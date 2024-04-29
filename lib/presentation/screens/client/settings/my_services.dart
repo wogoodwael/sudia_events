@@ -1,35 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
+import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
+import 'package:sudia_events/presentation/screens/client/settings/widgets/buttons_services.dart';
+import 'package:sudia_events/presentation/screens/client/settings/widgets/edit_body.dart';
+import 'package:sudia_events/presentation/screens/client/settings/widgets/header_services.dart';
+import 'package:sudia_events/presentation/screens/client/settings/widgets/prevoius_body.dart';
 
-class ButtomBarScreen extends StatefulWidget {
-  const ButtomBarScreen({Key? key}) : super(key: key);
+class MyServices extends StatefulWidget {
+  const MyServices({super.key});
 
   @override
-  State<ButtomBarScreen> createState() => _ButtomBarScreenState();
+  State<MyServices> createState() => _MyServicesState();
 }
 
-class _ButtomBarScreenState extends State<ButtomBarScreen>
-    with SingleTickerProviderStateMixin {
+class _MyServicesState extends State<MyServices> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    MyAccountScreen(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
 
+  AccountListModel? accountListModel;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -37,12 +28,17 @@ class _ButtomBarScreenState extends State<ButtomBarScreen>
   }
 
   @override
+  void initState() {
+    super.initState();
+    previous = true;
+  }
+
+  bool previous = false;
+  bool edit = false;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -107,6 +103,41 @@ class _ButtomBarScreenState extends State<ButtomBarScreen>
         showSelectedLabels: true, // Show labels for selected items
         showUnselectedLabels: true,
         onTap: _onItemTapped,
+      ),
+      body: Column(
+        children: [
+          const HeaderOfServices(),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        previous = false;
+                        edit = true;
+                      });
+                    },
+                    child: CustomButton(edit: edit)),
+                const SizedBox(width: 10),
+                GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        previous = true;
+                        edit = false;
+                      });
+                    },
+                    child: CustomButton(
+                      edit: previous,
+                    )),
+              ],
+            ),
+          ),
+          !edit ? EditBody() : PrevoiusBody()
+        ],
       ),
     );
   }

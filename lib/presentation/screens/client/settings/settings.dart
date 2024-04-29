@@ -3,8 +3,8 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/data/model/settings_model.dart';
-import 'package:sudia_events/presentation/screens/client/account_list.dart';
-import 'package:sudia_events/presentation/screens/client/settings_list.dart';
+import 'package:sudia_events/presentation/screens/client/account/account_list.dart';
+import 'package:sudia_events/presentation/screens/client/settings/settings_list.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
