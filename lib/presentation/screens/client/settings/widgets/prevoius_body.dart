@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/core/utils/stepper.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class PrevoiusBody extends StatelessWidget {
@@ -31,533 +32,316 @@ class PrevoiusBody extends StatelessWidget {
     return Expanded(
         flex: 4,
         child: Container(
-          margin: EdgeInsets.only(top: 10, left: 2, right: 15),
+          margin: EdgeInsets.only(top: 10, left: 2, right: 10),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.only(bottom: 90, right: 20, top: 50),
-                      decoration: BoxDecoration(
-                          color: primary,
-                          borderRadius: BorderRadius.circular(40)),
-                      child: Center(
-                        child: Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                            width: .74 * mediawidth(context),
-                            height: 50,
-                            decoration: BoxDecoration(
-                                color: primary,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "الاتنين",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                    Text(
-                                      reversedDate,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textDirection: TextDirection.ltr,
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    FittedBox(
-                                      child: Text(
-                                        "زواج علي سعيد محمد ",
-                                        textDirection: TextDirection.rtl,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
-                                      ),
-                                    ),
-                                    FittedBox(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            " جدة قاعة الشروق ",
-                                            textDirection: TextDirection.rtl,
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.grey[700],
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(
-                                            Icons.location_on,
-                                            color: Colors.white,
-                                            size: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 20,
-                                  child: Image.asset(
-                                    "assets/images/just_logo.png",
-                                    color: primary,
-                                    width: 100,
-                                  ),
-                                ),
-                              ],
-                            )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: .74 * mediawidth(context),
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                          width: .95 * mediawidth(context),
                           height: 70,
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              color: Color(0xfff3f3f3),
+                              border: Border.all(color: primary),
                               borderRadius: BorderRadius.circular(5)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Container(
-                                width: 60,
-                                height: 60,
-                                // decoration: BoxDecoration(
-                                //     border: Border.all(color: primary),
-                                //     borderRadius: BorderRadius.circular(5),
-                                //     color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.cancel,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "الاتنين",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15),
+                                  ),
+                                  Text(
+                                    reversedDate,
+                                    style: TextStyle(
                                       color: Colors.grey,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    FittedBox(
-                                        child: Text(
-                                      "حذف المناسبة",
-                                    ))
-                                  ],
-                                ),
+                                    textDirection: TextDirection.ltr,
+                                  ),
+                                ],
                               ),
-                              Container(
-                                width: 60,
-                                height: 60,
-                                // decoration: BoxDecoration(
-                                //     border: Border.all(color: primary),
-                                //     borderRadius: BorderRadius.circular(5),
-                                //     color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_month_sharp,
-                                      color: Colors.grey,
-                                    ),
-                                    FittedBox(
-                                        child: Text(
-                                      "تغير الموعد",
-                                    ))
-                                  ],
-                                ),
+                              VerticalDivider(
+                                indent: 5,
+                                endIndent: 5,
+                                color: Colors
+                                    .grey, // Optional: specify the color of the divider
+                                thickness:
+                                    1, // Optional: specify the thickness of the divider
                               ),
-                              Container(
-                                width: 60,
-                                height: 60,
-                                // decoration: BoxDecoration(
-                                //     border: Border.all(color: primary),
-                                //     borderRadius: BorderRadius.circular(5),
-                                //     color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.remove_circle,
-                                      color: Colors.grey,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  FittedBox(
+                                    child: Text(
+                                      "زواج علي سعيد محمد ",
+                                      textDirection: TextDirection.rtl,
+                                      style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    FittedBox(
-                                        child: Text(
-                                      "حذف خدمات",
-                                    ))
-                                  ],
-                                ),
+                                  ),
+                                  FittedBox(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          " جدة قاعة الشروق ",
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey[500],
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Icon(
+                                          Icons.location_on,
+                                          color: Colors.grey[700],
+                                          size: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Container(
-                                width: 60,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: primary),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.add_circle,
-                                      color: primary,
-                                    ),
-                                    FittedBox(
-                                        child: Text(
-                                      "اضافة خدمات ",
-                                    ))
-                                  ],
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 25,
+                                child: Image.asset(
+                                  "assets/images/just_logo.png",
+                                  color: primary,
+                                  width: 100,
                                 ),
                               ),
                             ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(
-                  height: 0,
-                  thickness: 3,
-                  endIndent: 5,
-                  indent: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.only(bottom: 40, right: 20, top: 30),
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(40)),
-                      child: Center(
-                        child: Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                        ),
+                          )),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                            width: .74 * mediawidth(context),
-                            height: 50,
-                            decoration: BoxDecoration(
-                                color: primary,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "الاتنين",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                    Text(
-                                      reversedDate,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textDirection: TextDirection.ltr,
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    FittedBox(
-                                      child: Text(
-                                        "زواج علي سعيد محمد ",
-                                        textDirection: TextDirection.rtl,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
-                                      ),
-                                    ),
-                                    FittedBox(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            " جدة قاعة الشروق ",
-                                            textDirection: TextDirection.rtl,
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.grey[700],
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(
-                                            Icons.location_on,
-                                            color: Colors.white,
-                                            size: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 20,
-                                  child: Image.asset(
-                                    "assets/images/just_logo.png",
-                                    color: primary,
-                                    width: 100,
-                                  ),
-                                ),
-                              ],
-                            )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(
-                  height: 0,
-                  thickness: 3,
-                  endIndent: 5,
-                  indent: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.only(bottom: 90, right: 20, top: 50),
-                      decoration: BoxDecoration(
-                          color: primary,
-                          borderRadius: BorderRadius.circular(40)),
-                      child: Center(
-                        child: Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                            width: .74 * mediawidth(context),
-                            height: 50,
-                            decoration: BoxDecoration(
-                                color: primary,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "الاتنين",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                    Text(
-                                      reversedDate,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textDirection: TextDirection.ltr,
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    FittedBox(
-                                      child: Text(
-                                        "زواج علي سعيد محمد ",
-                                        textDirection: TextDirection.rtl,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
-                                      ),
-                                    ),
-                                    FittedBox(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            " جدة قاعة الشروق ",
-                                            textDirection: TextDirection.rtl,
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.grey[700],
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(
-                                            Icons.location_on,
-                                            color: Colors.white,
-                                            size: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 20,
-                                  child: Image.asset(
-                                    "assets/images/just_logo.png",
-                                    color: primary,
-                                    width: 100,
-                                  ),
-                                ),
-                              ],
-                            )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: .74 * mediawidth(context),
+                    ],
+                  ),
+                ],
+              ),
+              StepperScreen(
+                  active: 2,
+                  lineColor: primary,
+                  stepperColor: primary,
+                  textColor: primary),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                          width: .95 * mediawidth(context),
                           height: 70,
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              color: Color(0xfff3f3f3),
+                              border: Border.all(color: primary),
                               borderRadius: BorderRadius.circular(5)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Container(
-                                width: 60,
-                                height: 60,
-                                // decoration: BoxDecoration(
-                                //     border: Border.all(color: primary),
-                                //     borderRadius: BorderRadius.circular(5),
-                                //     color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.cancel,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "الخميس",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15),
+                                  ),
+                                  Text(
+                                    reversedDate,
+                                    style: TextStyle(
                                       color: Colors.grey,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    FittedBox(
-                                        child: Text(
-                                      "حذف المناسبة",
-                                    ))
-                                  ],
-                                ),
+                                    textDirection: TextDirection.ltr,
+                                  ),
+                                ],
                               ),
-                              Container(
-                                width: 60,
-                                height: 60,
-                                // decoration: BoxDecoration(
-                                //     border: Border.all(color: primary),
-                                //     borderRadius: BorderRadius.circular(5),
-                                //     color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_month_sharp,
-                                      color: Colors.grey,
-                                    ),
-                                    FittedBox(
-                                        child: Text(
-                                      "تغير الموعد",
-                                    ))
-                                  ],
-                                ),
+                              VerticalDivider(
+                                indent: 5,
+                                endIndent: 5,
+                                color: Colors
+                                    .grey, // Optional: specify the color of the divider
+                                thickness:
+                                    1, // Optional: specify the thickness of the divider
                               ),
-                              Container(
-                                width: 60,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: primary),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.remove_circle,
-                                      color: Colors.grey,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  FittedBox(
+                                    child: Text(
+                                      "مناسبة خاصة",
+                                      textDirection: TextDirection.rtl,
+                                      style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    FittedBox(
-                                        child: Text(
-                                      "حذف خدمات",
-                                    ))
-                                  ],
-                                ),
+                                  ),
+                                  FittedBox(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          " جدة قاعة الشروق ",
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey[500],
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Icon(
+                                          Icons.location_on,
+                                          color: Colors.grey[700],
+                                          size: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Container(
-                                width: 60,
-                                height: 60,
-                                // decoration: BoxDecoration(
-                                //     border:
-                                //         Border.all(color: primary),
-                                //     borderRadius:
-                                //         BorderRadius.circular(5),
-                                //     color: Colors.grey[200]),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.add_circle,
-                                      color: primary,
-                                    ),
-                                    FittedBox(
-                                        child: Text(
-                                      "اضافة خدمات ",
-                                    ))
-                                  ],
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 25,
+                                child: Image.asset(
+                                  "assets/images/just_logo.png",
+                                  color: primary,
+                                  width: 100,
                                 ),
                               ),
                             ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                          )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              StepperScreen(
+                  active: 1,
+                  lineColor: primary,
+                  stepperColor: primary,
+                  textColor: primary),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                          width: .95 * mediawidth(context),
+                          height: 70,
+                          decoration: BoxDecoration(
+                              color: primary,
+                              border: Border.all(color: primary),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "الخميس",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                  Text(
+                                    reversedDate,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textDirection: TextDirection.ltr,
+                                  ),
+                                ],
+                              ),
+                              VerticalDivider(
+                                indent: 5,
+                                endIndent: 5,
+                                color: Colors
+                                    .white, // Optional: specify the color of the divider
+                                thickness:
+                                    1, // Optional: specify the thickness of the divider
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  FittedBox(
+                                    child: Text(
+                                      "مناسبة خاصة",
+                                      textDirection: TextDirection.rtl,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
+                                    ),
+                                  ),
+                                  FittedBox(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          " جدة قاعة الشروق ",
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Icon(
+                                          Icons.location_on,
+                                          color: Colors.white,
+                                          size: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 25,
+                                child: Image.asset(
+                                  "assets/images/just_logo.png",
+                                  color: primary,
+                                  width: 100,
+                                ),
+                              ),
+                            ],
+                          )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              StepperScreen(
+                  active: 0,
+                  lineColor: primary,
+                  stepperColor: primary,
+                  textColor: primary),
+            ]),
           ),
         ));
   }

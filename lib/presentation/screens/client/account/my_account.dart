@@ -28,13 +28,21 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
           title: 'البطاقات والحسابات ',
           subTitle: '258**********535645',
           ontap: () {},
+          trailing: Icons.credit_card_rounded,
+          leading: Icons.arrow_back_ios),
+      AccountListModel(
+          title: 'الفواتير',
+          subTitle: '',
+          ontap: () {
+            Navigator.pushNamed(context, pills);
+          },
           trailing: Icons.card_giftcard,
           leading: Icons.arrow_back_ios),
       AccountListModel(
-          title: 'نقاطي',
+          title: 'محفظتي',
           subTitle: '',
           ontap: () {},
-          trailing: Icons.gif_box,
+          trailing: Icons.card_giftcard,
           leading: Icons.arrow_back_ios),
       AccountListModel(
           title: 'قيم التطبيق ',
@@ -47,12 +55,6 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
           subTitle: '',
           ontap: () {},
           trailing: Icons.join_inner,
-          leading: Icons.arrow_back_ios),
-      AccountListModel(
-          title: 'اللغة ',
-          subTitle: '',
-          ontap: () {},
-          trailing: Icons.language,
           leading: Icons.arrow_back_ios),
       AccountListModel(
           title: 'الاعدادات  ',

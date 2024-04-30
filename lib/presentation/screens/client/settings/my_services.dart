@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/presentation/screens/client/settings/widgets/buttons_services.dart';
 import 'package:sudia_events/presentation/screens/client/settings/widgets/edit_body.dart';
@@ -106,37 +102,15 @@ class _MyServicesState extends State<MyServices> {
       ),
       body: Column(
         children: [
-          const HeaderOfServices(),
+          const Header(
+            text: 'حجوزاتي',
+            paddingButtom: 80.0,
+            paddingTop: 60,
+          ),
           const SizedBox(
             height: 20,
           ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        previous = false;
-                        edit = true;
-                      });
-                    },
-                    child: CustomButton(edit: edit)),
-                const SizedBox(width: 10),
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        previous = true;
-                        edit = false;
-                      });
-                    },
-                    child: CustomButton(
-                      edit: previous,
-                    )),
-              ],
-            ),
-          ),
-          !edit ? EditBody() : PrevoiusBody()
+          PrevoiusBody()
         ],
       ),
     );

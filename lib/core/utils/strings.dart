@@ -9,6 +9,8 @@ const String verify = '/verify.dart';
 const String done = '/done.dart';
 const String setting = '/settings.dart';
 const String myServices = '/my_services.dart';
+const String pills = '/pills.dart';
+const String pilldetails = '/piils_details.dart';
 
 double mediawidth(BuildContext context) {
   double reswidth = MediaQuery.sizeOf(context).width;

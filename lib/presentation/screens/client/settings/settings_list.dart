@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/data/model/settings_model.dart';
 
 class SettingsList extends StatelessWidget {

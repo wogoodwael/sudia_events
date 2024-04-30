@@ -3,7 +3,6 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/data/model/settings_model.dart';
-import 'package:sudia_events/presentation/screens/client/account/account_list.dart';
 import 'package:sudia_events/presentation/screens/client/settings/settings_list.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -24,8 +23,13 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List color = [Colors.grey, Colors.grey, Colors.red];
-    List<SettingsModel> accounts = [
+    List color = [
+      Colors.grey,
+      Colors.grey,
+      Colors.red,
+      Colors.grey,
+    ];
+    List<SettingsModel> settings = [
       SettingsModel(
           title: 'حجوزاتي',
           subTitle: '+965326326',
@@ -35,16 +39,22 @@ class _SettingScreenState extends State<SettingScreen> {
           trailing: Icons.person_remove_alt_1_outlined,
           leading: Icons.arrow_back_ios),
       SettingsModel(
-          title: 'حذف الحساب ',
+          title: 'اللغة',
           subTitle: '',
           ontap: () {},
-          trailing: Icons.person_remove_alt_1_outlined,
+          trailing: Icons.language,
           leading: Icons.arrow_back_ios),
       SettingsModel(
           title: 'تسجيل الخروج',
           subTitle: '',
           ontap: () {},
           trailing: Icons.logout,
+          leading: Icons.arrow_back_ios),
+      SettingsModel(
+          title: 'حذف الحساب ',
+          subTitle: '',
+          ontap: () {},
+          trailing: Icons.person_remove_alt_1_outlined,
           leading: Icons.arrow_back_ios),
     ];
 
@@ -184,12 +194,12 @@ class _SettingScreenState extends State<SettingScreen> {
             child: Container(
               color: Colors.white,
               child: ListView.builder(
-                  itemCount: accounts.length,
+                  itemCount: settings.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                        onTap: accounts[index].ontap,
+                        onTap: settings[index].ontap,
                         child: SettingsList(
-                          settingsModel: accounts[index],
+                          settingsModel: settings[index],
                           color: color[index],
                         ));
                   }),
