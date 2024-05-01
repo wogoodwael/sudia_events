@@ -8,7 +8,7 @@ import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
 import 'package:sudia_events/presentation/screens/client/pills/pills.dart';
 import 'package:sudia_events/presentation/screens/client/pills/pills_details.dart';
-import 'package:sudia_events/presentation/screens/client/settings/my_services.dart';
+import 'package:sudia_events/presentation/screens/client/settings/services/my_services.dart';
 import 'package:sudia_events/presentation/screens/client/settings/settings.dart';
 import 'package:sudia_events/presentation/screens/splash.dart';
 

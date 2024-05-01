@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/presentation/screens/client/settings/widgets/buttons_services.dart';
-import 'package:sudia_events/presentation/screens/client/settings/widgets/edit_body.dart';
+import 'package:sudia_events/presentation/screens/client/notification/custom_container.dart';
 import 'package:sudia_events/presentation/screens/client/settings/widgets/header_services.dart';
-import 'package:sudia_events/presentation/screens/client/settings/widgets/prevoius_body.dart';
+import 'package:sudia_events/presentation/screens/client/settings/services/prevoius_body.dart';
 
 class MyServices extends StatefulWidget {
   const MyServices({super.key});
