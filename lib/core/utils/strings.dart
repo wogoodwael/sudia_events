@@ -16,3 +16,7 @@ double mediawidth(BuildContext context) {
   double reswidth = MediaQuery.sizeOf(context).width;
   return reswidth;
 }
+double mediaheight(BuildContext context) {
+  double resheight = MediaQuery.sizeOf(context).height;
+  return resheight;
+}

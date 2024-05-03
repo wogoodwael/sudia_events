@@ -22,6 +22,13 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
   bool notification = false;
   bool help = false;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    account = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<AccountListModel> accounts = [
       AccountListModel(

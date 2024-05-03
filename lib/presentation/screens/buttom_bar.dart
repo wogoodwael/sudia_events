@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
+import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
 import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
 
 class ButtomBarScreen extends StatefulWidget {
@@ -16,18 +18,13 @@ class _ButtomBarScreenState extends State<ButtomBarScreen>
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     MyAccountScreen(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
+      Text(
       'Index 2: School',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+ReservationScreen(),
+  
+    AppointmentScreen()
   ];
 
   void _onItemTapped(int index) {
