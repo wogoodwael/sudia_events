@@ -25,10 +25,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const ButtomBarScreen());
       case myAccount:
         return MaterialPageRoute(builder: (_) => const MyAccountScreen());
-      case verify:
-        return MaterialPageRoute(builder: (_) => VerifyScreen());
-      case done:
-        return MaterialPageRoute(builder: (_) => const DoneScreen());
+      // case verify:
+      //   return MaterialPageRoute(builder: (_) => VerifyScreen());
+      // case done:
+      //   return MaterialPageRoute(builder: (_) => const DoneScreen());
       case setting:
         return MaterialPageRoute(builder: (_) => const SettingScreen());
       case myServices:

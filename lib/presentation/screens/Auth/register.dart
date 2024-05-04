@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/services/api.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -12,6 +13,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool visable = false;
   bool value = false;
+  Api api = Api();
+  TextEditingController phone = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController email = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -82,6 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, right: 10),
                     child: TextField(
+                      controller: phone,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: '513245458',
@@ -118,6 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, right: 10),
                     child: TextField(
+                      controller: password,
                       obscureText: !visable,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -176,39 +183,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, right: 10),
                     child: TextField(
-                      obscureText: !visable,
+                      controller: email,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'اختياري - لتلقي العروض والتخفيضات',
                         hintStyle: TextStyle(color: Colors.grey[300]),
                         hintTextDirection: TextDirection.rtl,
-                        prefixIcon: Padding(
-                            padding: const EdgeInsets.only(left: 8, bottom: 4),
-                            child: !visable
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        visable = !visable;
-                                      });
-                                    },
-                                    child: const Icon(
-                                      Icons.visibility_off,
-                                      size: 20,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        visable = !visable;
-                                      });
-                                    },
-                                    child: const Icon(
-                                      Icons.visibility,
-                                      size: 20,
-                                      color: Colors.grey,
-                                    ),
-                                  )),
                       ),
                     ),
                   ),
@@ -245,7 +225,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(10)),
                   color: primary,
                   minWidth: 300,
-                  onPressed: () {},
+                  onPressed: () async {
+                    await api.verifyPhoneNumber(context, phone, password.text,email.text);
+                  },
                   child: const Text(
                     "تسجيل",
                     style: TextStyle(

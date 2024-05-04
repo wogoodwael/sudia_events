@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/services/api.dart';
 
 class DoneScreen extends StatefulWidget {
-  const DoneScreen({super.key});
-
+  DoneScreen({super.key, required this.email, required this.password});
+  final String email;
+  final String password;
+  Api api = Api();
   @override
   State<DoneScreen> createState() => _DoneScreenState();
 }
 
 class _DoneScreenState extends State<DoneScreen> {
   bool value = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,8 +80,7 @@ class _DoneScreenState extends State<DoneScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       minWidth: .8 * mediawidth(context),
-                      onPressed: () {
-                        Navigator.pushNamed(context, buttomBar);
+                      onPressed: ()  {
                       },
                       child: Text(
                         "بدء الخدمة ",

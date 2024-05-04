@@ -1,13 +1,29 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/services/api.dart';
+import 'package:sudia_events/presentation/screens/Auth/done.dart';
 
 class VerifyScreen extends StatelessWidget {
-  VerifyScreen({super.key});
+  VerifyScreen({
+    super.key,
+    required this.verificationId,
+    required this.phone,
+    required this.email,
+    required this.password,
+  });
   final _otpPinFieldController = GlobalKey<OtpPinFieldState>();
+  final String verificationId;
+  final String phone;
+  final String email;
+  final String password;
+  Api api = Api();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +55,7 @@ class VerifyScreen extends StatelessWidget {
                   OtpPinField(
                       key: _otpPinFieldController,
                       autoFillEnable: false,
-                      fieldWidth: 60,
+                      fieldWidth: 50,
                       fieldHeight: 70,
 
                       ///for Ios it is not needed as the SMS autofill is provided by default, but not for Android, that's where this key is useful.
@@ -87,7 +103,7 @@ class VerifyScreen extends StatelessWidget {
                         /// border Color for filled field pin box
                         filledFieldBorderColor: primary,
                       ),
-                      maxLength: 4,
+                      maxLength: 6,
 
                       /// no of pin field
                       showCursor: true,
@@ -104,7 +120,7 @@ class VerifyScreen extends StatelessWidget {
                         ],
                       ),
                       showCustomKeyboard: false,
-                      showDefaultKeyboard: false,
+                      showDefaultKeyboard: true,
                       cursorWidth: 3,
                       mainAxisAlignment: MainAxisAlignment.center,
                       otpPinFieldDecoration:
@@ -150,8 +166,31 @@ class VerifyScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       minWidth: .7 * mediawidth(context),
-                      onPressed: () {
-                        Navigator.pushNamed(context, done);
+                      onPressed: () async {
+                        try {
+                          PhoneAuthCredential credential =
+                              await PhoneAuthProvider.credential(
+                                  verificationId: verificationId,
+                                  smsCode: _otpPinFieldController
+                                      .currentState!.text
+                                      .toString());
+                          FirebaseAuth.instance
+                              .signInWithCredential(credential)
+                              .then((value) async {
+                            String uid = value.user!.uid;
+
+                            // Save user data to Firestore
+                            await api.saveUserDataToFirestore(
+                                uid, email, password, phone);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => DoneScreen(
+                                        email: email, password: password)));
+                          });
+                        } catch (e) {
+                          log(e.toString());
+                        }
                       },
                       child: Text(
                         "تحقق",
