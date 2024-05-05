@@ -1,6 +1,7 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class StepperScreen extends StatefulWidget {
   StepperScreen({
     Key? key,

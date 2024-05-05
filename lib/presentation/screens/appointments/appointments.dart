@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/presentation/screens/Reservation/widgets/search_container.dart';
-import 'package:sudia_events/presentation/screens/client/notification/offers_container.dart';
-import 'package:sudia_events/presentation/screens/client/settings/services/services_container.dart';
+
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/date_symbol_data_local.dart' as data;
@@ -73,7 +73,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Stack(children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
@@ -86,7 +86,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 ),
               ),
               Positioned(
-                  top: 50,
+                  top: 40,
                   child: Center(
                     child: Image.asset(
                       "assets/images/logo.png",
@@ -102,15 +102,18 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             height: 10,
           ),
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Container(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     TableCalendar(
+                      rowHeight: 40,
                       headerVisible: true,
                       headerStyle: HeaderStyle(
-                          formatButtonVisible: false, titleCentered: true),
+                          headerPadding: EdgeInsets.symmetric(vertical: 5),
+                          formatButtonVisible: false,
+                          titleCentered: true),
                       eventLoader: _getEventsForDay,
                       locale: 'ar',
                       focusedDay: _focusedDay,
@@ -134,168 +137,180 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         _focusedDay = focusedDay;
                       },
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider(
+                      endIndent: 20,
+                      indent: 20,
+                      color: primary,
+                    ),
+                    Container(
+                      width: .9 * mediawidth(context),
+                      height: 200,
+                      child: FutureBuilder<List<Event>>(
+                        future: api.fetchReservationData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Event>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                                child: CircularProgressIndicator(
+                              color: primary,
+                            )); // Show a loading indicator while fetching data
+                          } else if (snapshot.hasError) {
+                            return Text(
+                                'Error: ${snapshot.error}'); // Show an error message if data fetching fails
+                          } else {
+                            return ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!
+                                  .length, // Use the length of the fetched data
+                              itemBuilder: (context, index) {
+                                Event event = snapshot.data![
+                                    index]; // Get the event at the current index
+                                return Stack(children: [
+                                  Container(
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      width: .9 * mediawidth(context),
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color:
+                                                isEventSelectedDay(event.date)
+                                                    ? Colors.white
+                                                    : primary),
+                                        color: isEventSelectedDay(event.date)
+                                            ? secondary
+                                            : const Color.fromARGB(
+                                                255, 239, 238, 238),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                "${_selectedDay != null ? intl.DateFormat('EEEE', 'ar').format(snapshot.data![index].date) : 'No date selected'}",
+                                                style: TextStyle(
+                                                    color: isEventSelectedDay(
+                                                            event.date)
+                                                        ? Colors.white
+                                                        : Colors.grey,
+                                                    fontSize: 15),
+                                              ),
+                                              Text(
+                                                "${_selectedDay != null ? intl.DateFormat('yyyy/MM/dd', 'ar').format(snapshot.data![index].date) : 'No day selected'}",
+                                                style: TextStyle(
+                                                  color: isEventSelectedDay(
+                                                          event.date)
+                                                      ? Colors.white
+                                                      : Colors.grey,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              FittedBox(
+                                                child: Text(
+                                                  "${snapshot.data![index].name}",
+                                                  textDirection:
+                                                      TextDirection.rtl,
+                                                  style: TextStyle(
+                                                      color: isEventSelectedDay(
+                                                              event.date)
+                                                          ? Colors.white
+                                                          : Colors.grey[600],
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 13),
+                                                ),
+                                              ),
+                                              FittedBox(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      " جدة قاعة الشروق ",
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color:
+                                                              isEventSelectedDay(
+                                                                      event
+                                                                          .date)
+                                                                  ? Colors.white
+                                                                  : Colors.grey[
+                                                                      500],
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Icon(
+                                                      Icons.location_on,
+                                                      color: isEventSelectedDay(
+                                                              event.date)
+                                                          ? Colors.white
+                                                          : Colors.grey[700],
+                                                      size: 10,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          CircleAvatar(
+                                            backgroundColor: primary,
+                                            radius: 25,
+                                            child: Center(
+                                              child: Image.asset(
+                                                "assets/images/just_logo.png",
+                                                color: Colors.white,
+                                                width: 40,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                  Positioned(
+                                      top: -1,
+                                      left: 20,
+                                      child: Icon(
+                                        Icons.bookmark,
+                                        size: 20,
+                                        color: isEventSelectedDay(event.date)
+                                            ? Colors.white
+                                            : primary,
+                                      ))
+                                ]);
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Divider(
-            endIndent: 20,
-            indent: 20,
-            color: primary,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              width: .9 * mediawidth(context),
-              height: 200,
-              child: FutureBuilder<List<Event>>(
-                future: api.fetchReservationData(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Event>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // Show a loading indicator while fetching data
-                  } else if (snapshot.hasError) {
-                    return Text(
-                        'Error: ${snapshot.error}'); // Show an error message if data fetching fails
-                  } else {
-                    return ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: snapshot
-                          .data!.length, // Use the length of the fetched data
-                      itemBuilder: (context, index) {
-                        Event event = snapshot
-                            .data![index]; // Get the event at the current index
-                        return Stack(children: [
-                          Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              width: .9 * mediawidth(context),
-                              height: 60,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: isEventSelectedDay(event.date)
-                                        ? Colors.white
-                                        : primary),
-                                color: isEventSelectedDay(event.date)
-                                    ? secondary
-                                    : const Color.fromARGB(255, 239, 238, 238),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "${_selectedDay != null ? intl.DateFormat('EEEE', 'ar').format(snapshot.data![index].date!) : 'No date selected'}",
-                                        style: TextStyle(
-                                            color:
-                                                isEventSelectedDay(event.date!)
-                                                    ? Colors.white
-                                                    : Colors.grey,
-                                            fontSize: 15),
-                                      ),
-                                      Text(
-                                        "${_selectedDay != null ? intl.DateFormat('yyyy/MM/dd', 'ar').format(snapshot.data![index].date) : 'No day selected'}",
-                                        style: TextStyle(
-                                          color: isEventSelectedDay(event.date!)
-                                              ? Colors.white
-                                              : Colors.grey,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textDirection: TextDirection.ltr,
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      FittedBox(
-                                        child: Text(
-                                          "${snapshot.data![index].name}",
-                                          textDirection: TextDirection.rtl,
-                                          style: TextStyle(
-                                              color: isEventSelectedDay(
-                                                      event.date!)
-                                                  ? Colors.white
-                                                  : Colors.grey[600],
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 13),
-                                        ),
-                                      ),
-                                      FittedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              " جدة قاعة الشروق ",
-                                              textDirection: TextDirection.rtl,
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: isEventSelectedDay(
-                                                          event.date!)
-                                                      ? Colors.white
-                                                      : Colors.grey[500],
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Icon(
-                                              Icons.location_on,
-                                              color: isEventSelectedDay(
-                                                      event.date!)
-                                                  ? Colors.white
-                                                  : Colors.grey[700],
-                                              size: 10,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  CircleAvatar(
-                                    backgroundColor: primary,
-                                    radius: 25,
-                                    child: Image.asset(
-                                      "assets/images/just_logo.png",
-                                      color: Colors.white,
-                                      width: 100,
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Positioned(
-                              top: -1,
-                              left: 20,
-                              child: Icon(
-                                Icons.bookmark,
-                                size: 20,
-                                color: isEventSelectedDay(event.date!)
-                                    ? Colors.white
-                                    : primary,
-                              ))
-                        ]);
-                      },
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          )
         ],
       ),
     );

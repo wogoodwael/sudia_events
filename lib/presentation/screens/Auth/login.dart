@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool value = false;
   bool register = false;
   bool login = false;
+  bool loading = false;
   TextEditingController phone = TextEditingController();
   @override
   void initState() {
@@ -64,9 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               width: mediawidth(context),
               height: 50,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/logo.png"))),
+              child: Image.asset(
+                "assets/images/logo.png",
+                color: primary,
+              ),
             ),
           ),
           Expanded(
@@ -321,15 +323,25 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: primary,
                               minWidth: 300,
                               onPressed: () async {
+                                setState(() {
+                                  loading = true;
+                                });
                                 await Api().login(context, phone);
                               },
-                              child: const Text(
-                                "دخول",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
+                              child: loading
+                                  ? Container(
+                                      width: 30,
+                                      height: 30,
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ))
+                                  : const Text(
+                                      "دخول",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
                             ),
                           ),
                         ],

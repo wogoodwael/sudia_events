@@ -53,11 +53,16 @@ class _PillDetailsState extends State<PillDetails> {
               Positioned(
                 right: 10,
                 top: 50,
-                child: Transform.scale(
-                  scale: 1.5,
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

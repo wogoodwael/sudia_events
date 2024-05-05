@@ -6,8 +6,6 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/presentation/screens/client/account/account_list.dart';
 import 'package:sudia_events/presentation/screens/client/notification/notification.dart';
-import 'package:sudia_events/presentation/screens/client/notification/offers_container.dart';
-import 'package:sudia_events/presentation/screens/client/notification/custom_container.dart';
 
 class MyAccountScreen extends StatefulWidget {
   const MyAccountScreen({super.key});

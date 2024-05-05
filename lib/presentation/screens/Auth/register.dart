@@ -17,6 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController phone = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController email = TextEditingController();
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -226,15 +227,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   color: primary,
                   minWidth: 300,
                   onPressed: () async {
-                    await api.verifyPhoneNumber(context, phone, password.text,email.text);
+                    setState(() {
+                      loading = true;
+                    });
+                    await api.verifyPhoneNumber(
+                        context, phone, password.text, email.text);
                   },
-                  child: const Text(
-                    "تسجيل",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                  ),
+                  child: loading
+                      ? Container(
+                          width: 30,
+                          height: 30,
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                          ))
+                      : const Text(
+                          "تسجيل",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
                 ),
               ),
             ],

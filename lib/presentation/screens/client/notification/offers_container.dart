@@ -28,6 +28,7 @@ class OffersContainer extends StatelessWidget {
     }
 
     String originalDate = '11/8/2020';
+    // ignore: unused_local_variable
     String reversedDate = reverseDate(originalDate);
     return Container(
       margin: const EdgeInsets.only(top: 2, left: 2, right: 10),

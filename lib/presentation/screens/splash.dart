@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,8 +24,13 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
-        mainAxisAlignment:  MainAxisAlignment.center,
-        children: [Image.asset("assets/images/logo.png")],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/images/logo.png",
+            color: primary,
+          )
+        ],
       ),
     );
   }

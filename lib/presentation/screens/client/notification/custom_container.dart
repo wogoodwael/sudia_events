@@ -104,7 +104,7 @@ class CustomContainer extends StatelessWidget {
                 child: Image.asset(
                   "assets/images/just_logo.png",
                   color: Colors.white,
-                  width: 70,
+                  width: 40,
                   height: 60,
                 ),
               ),

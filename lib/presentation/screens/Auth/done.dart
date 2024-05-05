@@ -6,6 +6,7 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
+// ignore: must_be_immutable
 class DoneScreen extends StatefulWidget {
   DoneScreen({
     super.key,
@@ -29,7 +30,7 @@ class _DoneScreenState extends State<DoneScreen> {
           Expanded(
               flex: 3,
               child: Container(
-                child: Image.asset("assets/images/logo.png"),
+                child: Image.asset("assets/images/logo.png", color: primary,),
               )),
           Expanded(
               flex: 3,

@@ -11,7 +11,8 @@ import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/done.dart';
 
-class VerifyScreen extends StatelessWidget {
+// ignore: must_be_immutable
+class VerifyScreen extends StatefulWidget {
   VerifyScreen({
     super.key,
     required this.verificationId,
@@ -20,13 +21,22 @@ class VerifyScreen extends StatelessWidget {
     this.password,
     this.register,
   });
-  final _otpPinFieldController = GlobalKey<OtpPinFieldState>();
   final String verificationId;
   final String phone;
   String? email;
   String? password;
-  Api api = Api();
   bool? register;
+
+  @override
+  State<VerifyScreen> createState() => _VerifyScreenState();
+}
+
+class _VerifyScreenState extends State<VerifyScreen> {
+  final _otpPinFieldController = GlobalKey<OtpPinFieldState>();
+
+  Api api = Api();
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -170,10 +180,13 @@ class VerifyScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10)),
                       minWidth: .7 * mediawidth(context),
                       onPressed: () async {
+                        setState(() {
+                          loading = true;
+                        });
                         try {
                           PhoneAuthCredential credential =
                               await PhoneAuthProvider.credential(
-                                  verificationId: verificationId,
+                                  verificationId: widget.verificationId,
                                   smsCode: _otpPinFieldController
                                       .currentState!.text
                                       .toString());
@@ -182,10 +195,12 @@ class VerifyScreen extends StatelessWidget {
                               .then((value) async {
                             String uid = value.user!.uid;
 
-                            // Save user data to Firestore
-                            register!
+                            widget.register!
                                 ? await api.saveUserDataToFirestore(
-                                    uid, email ?? '', password ?? '', phone)
+                                    uid,
+                                    widget.email ?? '',
+                                    widget.password ?? '',
+                                    widget.phone)
                                 : print('login UID $uid');
                             Navigator.push(
                                 context,
@@ -199,10 +214,18 @@ class VerifyScreen extends StatelessWidget {
                           log(e.toString());
                         }
                       },
-                      child: Text(
-                        "تحقق",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
+                      child: loading
+                          ? Container(
+                              width: 30,
+                              height: 30,
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                              ))
+                          : Text(
+                              "تحقق",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
                     ),
                   )
                 ],

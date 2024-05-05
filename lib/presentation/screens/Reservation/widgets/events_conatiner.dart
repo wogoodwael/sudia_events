@@ -3,15 +3,14 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class EventsContainer extends StatefulWidget {
-  const EventsContainer(
+  EventsContainer(
       {super.key,
       required this.name,
-      required this.gender,
-      required this.type,
-      required this.phone,required this.onPressed});
+      required this.phone,
+      required this.onPressed,
+      required this.widgetRow});
   final TextEditingController name;
-  final TextEditingController gender;
-  final TextEditingController type;
+  final Widget widgetRow;
   final TextEditingController phone;
   final void Function()? onPressed;
 
@@ -25,7 +24,7 @@ class _EventsContainerState extends State<EventsContainer> {
   Widget build(BuildContext context) {
     return Container(
       width: mediawidth(context),
-      height: .5 * mediaheight(context),
+      height: .6 * mediaheight(context),
       decoration: BoxDecoration(
           color: Colors.grey[270],
           borderRadius: BorderRadius.only(
@@ -57,12 +56,44 @@ class _EventsContainerState extends State<EventsContainer> {
                         border: InputBorder.none,
                         hintText: 'اسم المناسبه ',
                         hintTextDirection: TextDirection.rtl),
-                        
                   ),
                 )),
           ),
           SizedBox(
             height: 5,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "رقم الجوال ",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.grey[800]),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: .8 * mediawidth(context),
+              height: 40,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: primary)),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0, right: 5),
+                child: TextField(
+                  controller: widget.phone,
+                  textDirection: TextDirection.rtl,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '021548585',
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                      hintTextDirection: TextDirection.rtl),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -71,18 +102,8 @@ class _EventsContainerState extends State<EventsContainer> {
                 "نوع المناسبة",
                 style: TextStyle(color: Colors.grey[700]),
               ),
-              SizedBox(
-                width: 10,
-              ),
               Text(
                 "الجنس",
-                style: TextStyle(color: Colors.grey[700]),
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Text(
-                "رقم الجوال ",
                 style: TextStyle(color: Colors.grey[700]),
               ),
             ],
@@ -90,71 +111,7 @@ class _EventsContainerState extends State<EventsContainer> {
           SizedBox(
             height: 5,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 80,
-                height: 30,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: primary)),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, right: 5),
-                  child: TextField(
-                    controller: widget.type,
-                    textDirection: TextDirection.rtl,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'نوع المناسبة',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
-                        hintTextDirection: TextDirection.rtl),
-                  ),
-                ),
-              ),
-              Container(
-                width: 70,
-                height: 30,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: primary)),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, right: 5),
-                  child: TextField(
-                    controller: widget.gender,
-                    textDirection: TextDirection.rtl,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'ذكر/انثي',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
-                        hintTextDirection: TextDirection.rtl),
-                  ),
-                ),
-              ),
-              Container(
-                width: 150,
-                height: 30,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: primary)),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, right: 5),
-                  child: TextField(
-                    controller: widget.phone,
-                    textDirection: TextDirection.rtl,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: '021548585',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
-                        hintTextDirection: TextDirection.rtl),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          widget.widgetRow,
           SizedBox(
             height: 20,
           ),
@@ -163,22 +120,6 @@ class _EventsContainerState extends State<EventsContainer> {
               "assets/images/image.png",
               width: 350,
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 30.0),
-                child: Text(
-                  "موقع المناسبة ",
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                  textDirection: TextDirection.rtl,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-            ],
           ),
           Padding(
             padding: const EdgeInsets.only(right: 25.0),

@@ -25,7 +25,7 @@ class _ButtomBarScreenState extends State<ButtomBarScreen>
     _widgetOptions = <Widget>[
       MyAccountScreen(),
       Text(
-        'Index 2: School',
+        'الخدمات',
         style: optionStyle,
       ),
       ReservationScreen(
