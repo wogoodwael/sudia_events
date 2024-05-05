@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/presentation/screens/Auth/register.dart';
 
 // ignore: must_be_immutable
@@ -18,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool value = false;
   bool register = false;
   bool login = false;
+  TextEditingController phone = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -187,6 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 padding:
                                     const EdgeInsets.only(top: 8, right: 10),
                                 child: TextField(
+                                  controller: phone,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: '513245458',
@@ -317,8 +320,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   borderRadius: BorderRadius.circular(10)),
                               color: primary,
                               minWidth: 300,
-                              onPressed: () {
-                                Navigator.pushNamed(context, verify);
+                              onPressed: () async {
+                                await Api().login(context, phone);
                               },
                               child: const Text(
                                 "دخول",

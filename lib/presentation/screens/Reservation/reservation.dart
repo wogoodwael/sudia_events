@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:sudia_events/core/utils/constants.dart';
@@ -12,8 +14,8 @@ import 'package:intl/date_symbol_data_local.dart'
     as data; // Import for date formatting initialization
 
 class ReservationScreen extends StatefulWidget {
-  const ReservationScreen({super.key});
-
+  const ReservationScreen({super.key, required this.id});
+  final String id;
   @override
   State<ReservationScreen> createState() => _ReservationScreenState();
 }
@@ -30,6 +32,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   TextEditingController type = TextEditingController();
   TextEditingController gender = TextEditingController();
   late final ValueNotifier<List<Event>> _selectedEvents;
+
   @override
   void initState() {
     super.initState();
@@ -101,6 +104,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 child: Column(
                   children: [
                     TableCalendar(
+                      headerStyle: HeaderStyle(
+                          formatButtonVisible: false, titleCentered: true),
                       eventLoader: _getEventsForDay,
                       locale: 'ar',
                       focusedDay: _focusedDay,
@@ -212,6 +217,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                     _selectedEvents.value.isEmpty
                         ? Container(
+                            margin: EdgeInsets.only(bottom: 10),
                             width: .9 * mediawidth(context),
                             height: 80,
                             decoration: BoxDecoration(
@@ -332,7 +338,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                               ),
                                               FittedBox(
                                                   child: Text(
-                                                '${value[index].title}',
+                                                '${value[index].name}',
                                                 style: TextStyle(
                                                     fontSize: 10,
                                                     color: Colors.white),
@@ -372,16 +378,61 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       type: type,
                       phone: phone,
                       onPressed: () {
-                        events.addAll({
-                          _selectedDay!: [
-                            Event(name.text, phone.text, gender.text, type.text)
-                          ]
+                        FirebaseFirestore firebaseFirestore =
+                            FirebaseFirestore.instance;
+                        CollectionReference reservation =
+                            firebaseFirestore.collection('reservation');
+
+                        // Create a map representing the event data
+                        Map<String, dynamic> eventData = {
+                          'userID': widget.id,
+                          'name': name.text,
+                          'phone': phone.text,
+                          'gender': gender.text,
+                          'type': type.text,
+                          'date': _selectedDay!
+                              .toIso8601String(), // Convert DateTime to ISO 8601 string
+                        };
+
+                        // Add the event data to Firestore
+                        reservation.add(eventData).then((value) {
+                          print('Event added successfully!');
+                        }).catchError((error) {
+                          print('Failed to add event: $error');
                         });
-                        print(events);
+
+                        // Check if events already exist for the selected day
+                        if (events.containsKey(_selectedDay)) {
+                          // Append the new event to the existing list of events
+                          events[_selectedDay]!.add(
+                            Event(
+                              date: _selectedDay!,
+                              name: name.text,
+                              phone: phone.text,
+                              gender: gender.text,
+                              type: type.text,
+                            ),
+                          );
+                        } else {
+                          // Create a new list with the new event
+                          events[_selectedDay!] = [
+                            Event(
+                              date: _selectedDay!,
+                              name: name.text,
+                              phone: phone.text,
+                              gender: gender.text,
+                              type: type.text,
+                            ),
+                          ];
+                        }
+
+                        // Update the selected events
                         _selectedEvents.value = _getEventsForDay(_selectedDay!);
                         setState(() {
                           _selectedEvents;
                         });
+
+                        // Clear the text controllers
                         name.clear();
                         phone.clear();
                         gender.clear();

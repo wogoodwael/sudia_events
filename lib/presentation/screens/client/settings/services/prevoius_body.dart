@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/stepper.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/presentation/screens/client/settings/services/services_container.dart';
 
 class PrevoiusBody extends StatelessWidget {
   const PrevoiusBody({super.key});
@@ -40,91 +41,9 @@ class PrevoiusBody extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Container(
-                          width: .95 * mediawidth(context),
-                          height: 70,
-                          decoration: BoxDecoration(
-                              color: Color(0xfff3f3f3),
-                              border: Border.all(color: primary),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    "الاتنين",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                  ),
-                                  Text(
-                                    reversedDate,
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textDirection: TextDirection.ltr,
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(
-                                indent: 5,
-                                endIndent: 5,
-                                color: Colors
-                                    .grey, // Optional: specify the color of the divider
-                                thickness:
-                                    1, // Optional: specify the thickness of the divider
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  FittedBox(
-                                    child: Text(
-                                      "زواج علي سعيد محمد ",
-                                      textDirection: TextDirection.rtl,
-                                      style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13),
-                                    ),
-                                  ),
-                                  FittedBox(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          " جدة قاعة الشروق ",
-                                          textDirection: TextDirection.rtl,
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.grey[500],
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Icon(
-                                          Icons.location_on,
-                                          color: Colors.grey[700],
-                                          size: 10,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 25,
-                                child: Image.asset(
-                                  "assets/images/just_logo.png",
-                                  color: primary,
-                                  width: 100,
-                                ),
-                              ),
-                            ],
-                          )),
+                      ServicesContainer(
+                        selected: false,
+                      ),
                       SizedBox(
                         height: 10,
                       ),

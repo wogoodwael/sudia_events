@@ -4,11 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
+import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
 class DoneScreen extends StatefulWidget {
-  DoneScreen({super.key, required this.email, required this.password});
-  final String email;
-  final String password;
+  DoneScreen({
+    super.key,
+    required this.id,
+  });
+  final String id;
   Api api = Api();
   @override
   State<DoneScreen> createState() => _DoneScreenState();
@@ -80,7 +83,14 @@ class _DoneScreenState extends State<DoneScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       minWidth: .8 * mediawidth(context),
-                      onPressed: ()  {
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => ButtomBarScreen(
+                                      id: widget.id,
+                                    )));
+                        print("ooooooId${widget.id}");
                       },
                       child: Text(
                         "بدء الخدمة ",

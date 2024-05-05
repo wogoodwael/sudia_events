@@ -8,6 +8,7 @@ import 'package:otp_pin_field/otp_pin_field.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/done.dart';
 
 class VerifyScreen extends StatelessWidget {
@@ -15,15 +16,17 @@ class VerifyScreen extends StatelessWidget {
     super.key,
     required this.verificationId,
     required this.phone,
-    required this.email,
-    required this.password,
+    this.email,
+    this.password,
+    this.register,
   });
   final _otpPinFieldController = GlobalKey<OtpPinFieldState>();
   final String verificationId;
   final String phone;
-  final String email;
-  final String password;
+  String? email;
+  String? password;
   Api api = Api();
+  bool? register;
 
   @override
   Widget build(BuildContext context) {
@@ -180,13 +183,17 @@ class VerifyScreen extends StatelessWidget {
                             String uid = value.user!.uid;
 
                             // Save user data to Firestore
-                            await api.saveUserDataToFirestore(
-                                uid, email, password, phone);
+                            register!
+                                ? await api.saveUserDataToFirestore(
+                                    uid, email ?? '', password ?? '', phone)
+                                : print('login UID $uid');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => DoneScreen(
-                                        email: email, password: password)));
+                                          id: uid,
+                                        )));
+                            sharedpref.setString('token', uid);
                           });
                         } catch (e) {
                           log(e.toString());

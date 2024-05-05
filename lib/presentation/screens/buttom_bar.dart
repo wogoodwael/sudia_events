@@ -5,8 +5,8 @@ import 'package:sudia_events/presentation/screens/appointments/appointments.dart
 import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
 
 class ButtomBarScreen extends StatefulWidget {
-  const ButtomBarScreen({Key? key}) : super(key: key);
-
+  ButtomBarScreen({Key? key, required this.id}) : super(key: key);
+  final String id;
   @override
   State<ButtomBarScreen> createState() => _ButtomBarScreenState();
 }
@@ -14,18 +14,26 @@ class ButtomBarScreen extends StatefulWidget {
 class _ButtomBarScreenState extends State<ButtomBarScreen>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
+  List<Widget>? _widgetOptions;
+
+  static TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    MyAccountScreen(),
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = <Widget>[
+      MyAccountScreen(),
       Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-ReservationScreen(),
-  
-    AppointmentScreen()
-  ];
+        'Index 2: School',
+        style: optionStyle,
+      ),
+      ReservationScreen(
+        id: widget.id,
+      ),
+      AppointmentScreen()
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,7 +46,7 @@ ReservationScreen(),
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions!.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
