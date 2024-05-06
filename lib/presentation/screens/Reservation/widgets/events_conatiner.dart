@@ -8,12 +8,15 @@ class EventsContainer extends StatefulWidget {
       required this.name,
       required this.phone,
       required this.onPressed,
-      required this.widgetRow});
+      required this.widgetRow,
+      required this.family,
+      required this.tribe});
   final TextEditingController name;
   final Widget widgetRow;
   final TextEditingController phone;
   final void Function()? onPressed;
-
+  final TextEditingController family;
+  final TextEditingController tribe;
   @override
   State<EventsContainer> createState() => _EventsContainerState();
 }
@@ -42,22 +45,62 @@ class _EventsContainerState extends State<EventsContainer> {
             ),
           ),
           Center(
-            child: Container(
-                width: .8 * mediawidth(context),
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Colors.white, border: Border.all(color: primary)),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 5.0, right: 5),
-                  child: TextField(
-                    controller: widget.name,
-                    textDirection: TextDirection.rtl,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'اسم المناسبه ',
-                        hintTextDirection: TextDirection.rtl),
-                  ),
-                )),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                    width: .25 * mediawidth(context),
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: primary)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5.0, right: 5),
+                      child: TextField(
+                        controller: widget.tribe,
+                        textDirection: TextDirection.rtl,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'اسم القبيله',
+                            hintTextDirection: TextDirection.rtl),
+                      ),
+                    )),
+                Container(
+                    width: .25 * mediawidth(context),
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: primary)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5.0, right: 5),
+                      child: TextField(
+                        controller: widget.family,
+                        textDirection: TextDirection.rtl,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'اسم العائلة ',
+                            hintTextDirection: TextDirection.rtl),
+                      ),
+                    )),
+                Container(
+                    width: .4 * mediawidth(context),
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: primary)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5.0, right: 5),
+                      child: TextField(
+                        controller: widget.name,
+                        textDirection: TextDirection.rtl,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'الاسم  ',
+                            hintTextDirection: TextDirection.rtl),
+                      ),
+                    )),
+              ],
+            ),
           ),
           SizedBox(
             height: 5,

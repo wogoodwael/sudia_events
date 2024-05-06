@@ -8,5 +8,9 @@ class AccountListModel {
   final IconData trailing;
 
   AccountListModel(
-      {required this.title, required this.subTitle, required this.ontap, required this.leading, required this.trailing});
+      {required this.title,
+      required this.subTitle,
+      required this.ontap,
+      required this.leading,
+      required this.trailing});
 }

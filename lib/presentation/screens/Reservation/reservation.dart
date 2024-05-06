@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sudia_events/business_logic/cubit/family/family_filter_cubit.dart';
 
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -33,7 +35,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
   bool addService = false;
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
-
+  TextEditingController family = TextEditingController();
+  TextEditingController tribe = TextEditingController();
+  List familyFilter = [];
   late final ValueNotifier<List<Event>> _selectedEvents;
   Api api = Api();
 
@@ -380,6 +384,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                     EventsContainer(
                       name: name,
+                      family: family,
+                      tribe: tribe,
                       phone: phone,
                       onPressed: () {
                         FirebaseFirestore firebaseFirestore =
@@ -394,8 +400,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           'phone': phone.text,
                           'gender': widget.gender,
                           'type': widget.type,
-                          'date': _selectedDay!
-                              .toIso8601String(), // Convert DateTime to ISO 8601 string
+                          'date': _selectedDay!.toIso8601String(),
+                          'family': family.text,
+                          'tribe': tribe.text
                         };
 
                         // Add the event data to Firestore
@@ -410,23 +417,25 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           // Append the new event to the existing list of events
                           events[_selectedDay]!.add(
                             Event(
-                              date: _selectedDay!,
-                              name: name.text,
-                              phone: phone.text,
-                              gender: widget.gender ?? '',
-                              type: widget.type ?? "",
-                            ),
+                                date: _selectedDay!,
+                                name: name.text,
+                                phone: phone.text,
+                                gender: widget.gender ?? '',
+                                type: widget.type ?? "",
+                                family: family.text,
+                                tribe: tribe.text),
                           );
                         } else {
                           // Create a new list with the new event
                           events[_selectedDay!] = [
                             Event(
-                              date: _selectedDay!,
-                              name: name.text,
-                              phone: phone.text,
-                              gender: widget.gender ?? '',
-                              type: widget.type ?? "",
-                            ),
+                                date: _selectedDay!,
+                                name: name.text,
+                                phone: phone.text,
+                                gender: widget.gender ?? '',
+                                type: widget.type ?? "",
+                                family: family.text,
+                                tribe: tribe.text),
                           ];
                         }
 

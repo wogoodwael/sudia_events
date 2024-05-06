@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/services/api.dart';
 
 class SearchContainer extends StatefulWidget {
   const SearchContainer({super.key});
@@ -10,6 +13,14 @@ class SearchContainer extends StatefulWidget {
 }
 
 class _SearchContainerState extends State<SearchContainer> {
+  TextEditingController controller = TextEditingController();
+  bool tappedFamily = false;
+  @override
+  void initState() {
+    super.initState();
+    tappedFamily = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -32,6 +43,7 @@ class _SearchContainerState extends State<SearchContainer> {
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 height: 30,
                 child: TextField(
+                  controller: controller,
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       suffixIcon: Icon(
@@ -76,22 +88,34 @@ class _SearchContainerState extends State<SearchContainer> {
                       )),
                     ),
                   ),
-                  Container(
-                    width: 70,
-                    height: 25,
-                    decoration: BoxDecoration(
-                        color: primary,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: primary)),
-                    child: Center(
-                      child: FittedBox(
-                          child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text(
-                          "العائلة",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        tappedFamily = !tappedFamily;
+                      });
+                      // List data = await Api()
+                      //     .filterByFamily(controller.text, controller.text);
+                      // print('-----------------$data');
+                    },
+                    child: Container(
+                      width: 70,
+                      height: 25,
+                      decoration: BoxDecoration(
+                          color: tappedFamily ? primary : Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: primary)),
+                      child: Center(
+                        child: FittedBox(
+                            child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Text(
+                            "العائلة",
+                            style: TextStyle(
+                                color:
+                                    tappedFamily ? Colors.white : Colors.black),
+                          ),
+                        )),
+                      ),
                     ),
                   ),
                   Container(
@@ -112,7 +136,7 @@ class _SearchContainerState extends State<SearchContainer> {
                       )),
                     ),
                   ),
-                  Icon(Icons.filter_list)
+                  GestureDetector(child: Icon(Icons.filter_list))
                 ],
               )
             ],

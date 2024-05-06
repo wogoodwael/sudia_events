@@ -133,6 +133,7 @@ class Api {
       print('Error saving user data to Firestore: $e');
     }
   }
+
 //*fetch events days
   Future<Map<DateTime, List<Event>>> fetchEventsFromFirestore() async {
     final events = <DateTime, List<Event>>{};
@@ -151,6 +152,8 @@ class Api {
         final eventType = eventData['type'] as String;
         final phone = eventData['phone'] as String;
         final gender = eventData['gender'] as String;
+        final family = eventData['family'] as String;
+        final tribe = eventData['tribe'] as String;
 
         if (events.containsKey(eventDateTime)) {
           events[eventDateTime]!.add(
@@ -159,7 +162,9 @@ class Api {
                 name: eventName,
                 type: eventType,
                 phone: phone,
-                gender: gender),
+                gender: gender,
+                family: family,
+                tribe: tribe),
           );
         } else {
           events[eventDateTime] = [
@@ -168,7 +173,9 @@ class Api {
                 name: eventName,
                 type: eventType,
                 phone: phone,
-                gender: gender),
+                gender: gender,
+                family: family,
+                tribe: tribe),
           ];
         }
       }
@@ -178,6 +185,7 @@ class Api {
 
     return events;
   }
+
 //*fetch data of events
   Future<List<Event>> fetchReservationData() async {
     String userId = sharedpref.getString('token')!;
@@ -190,12 +198,13 @@ class Api {
 
       final List<Event> reservationData = querySnapshot.docs
           .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
-                name: doc['name'],
-                date: DateTime.parse(doc['date']),
-                type: doc['type'],
-                phone: doc['phone'],
-                gender: doc['gender'],
-              ))
+              name: doc['name'],
+              date: DateTime.parse(doc['date']),
+              type: doc['type'],
+              phone: doc['phone'],
+              gender: doc['gender'],
+              family: doc['family'],
+              tribe: doc['tribe']))
           .toList();
 
       return reservationData;
@@ -204,4 +213,6 @@ class Api {
       return [];
     }
   }
+
+
 }
