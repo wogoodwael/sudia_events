@@ -10,6 +10,8 @@ import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/presentation/screens/Reservation/widgets/events_conatiner.dart';
 import 'package:sudia_events/presentation/screens/Reservation/widgets/search_container.dart';
+import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
+import 'package:sudia_events/presentation/screens/positioned_logo.dart';
 
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart' as intl;
@@ -95,15 +97,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   ),
                 ),
               ),
-              Positioned(
-                  top: 50,
-                  child: Center(
-                    child: Image.asset(
-                      "assets/images/logo.png",
-                      width: 150,
-                      color: Colors.white,
-                    ),
-                  )),
+              PositionedLogo(),
               Positioned(
                   bottom: -2, left: 20, top: 100, child: SearchContainer())
             ]),
@@ -158,6 +152,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               addService = true;
                               chooseday = false;
                             });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => AddServices()));
                           },
                           child: Container(
                             width: 150,
