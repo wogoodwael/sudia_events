@@ -10,6 +10,7 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/done.dart';
+import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
 // ignore: must_be_immutable
 class VerifyScreen extends StatefulWidget {
@@ -18,13 +19,11 @@ class VerifyScreen extends StatefulWidget {
     required this.verificationId,
     required this.phone,
     this.email,
-    this.password,
     this.register,
   });
   final String verificationId;
   final String phone;
   String? email;
-  String? password;
   bool? register;
 
   @override
@@ -60,7 +59,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     style: TextStyle(fontSize: 30),
                   ),
                   Text(
-                    "لقد ارسلنا رمز التحقق الي +65595****125",
+                    "+ لقد ارسلنا رمز التحقق الي ${widget.phone.substring(widget.phone.length - 3)} ****** ${widget.phone.substring(0, 2)}",
                     style: TextStyle(color: Colors.grey, fontSize: 17),
                   ),
 
@@ -197,17 +196,21 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
                             widget.register!
                                 ? await api.saveUserDataToFirestore(
-                                    uid,
-                                    widget.email ?? '',
-                                    widget.password ?? '',
-                                    widget.phone)
+                                    uid, widget.email ?? '', widget.phone)
                                 : print('login UID $uid');
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => DoneScreen(
-                                          id: uid,
-                                        )));
+                            widget.register!
+                                ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => DoneScreen(
+                                              id: uid,
+                                            )))
+                                : Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => ButtomBarScreen(
+                                              id: uid,
+                                            )));
                             sharedpref.setString('token', uid);
                           });
                         } catch (e) {

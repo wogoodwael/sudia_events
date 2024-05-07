@@ -10,15 +10,18 @@ class Api {
   String? verificationId;
 
   Future<void> verifyPhoneNumber(
-      BuildContext context,
-      TextEditingController _phoneNumberController,
-      String password,
-      String email) async {
+    BuildContext context,
+    TextEditingController _phoneNumberController,
+    String email,
+    bool loading,
+    Function(bool) setLoading,
+  ) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     try {
+      setLoading(true);
       await _auth.verifyPhoneNumber(
-        phoneNumber: _phoneNumberController.text.trim(),
+        phoneNumber: "+${_phoneNumberController.text.trim()}",
         verificationCompleted: (PhoneAuthCredential credential) async {
           UserCredential userCredential =
               await _auth.signInWithCredential(credential);
@@ -31,6 +34,7 @@ class Api {
             content:
                 Text('Failed to verify phone number. Please try again later.'),
           ));
+          setLoading(false);
         },
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
@@ -42,7 +46,6 @@ class Api {
                       verificationId: verificationId,
                       phone: _phoneNumberController.text,
                       email: email,
-                      password: password,
                       register: true,
                     )),
           );
@@ -57,13 +60,18 @@ class Api {
     }
   }
 
-  Future<void> login(BuildContext context,
-      TextEditingController _phoneNumberController) async {
+  Future<void> login(
+    BuildContext context,
+    TextEditingController _phoneNumberController,
+    bool loading,
+    Function(bool) setLoading,
+  ) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     try {
+      setLoading(true); // Set loading to true before starting the login process
       await _auth.verifyPhoneNumber(
-        phoneNumber: _phoneNumberController.text.trim(),
+        phoneNumber: "+${_phoneNumberController.text.trim()}",
         verificationCompleted: (PhoneAuthCredential credential) async {
           UserCredential userCredential =
               await _auth.signInWithCredential(credential);
@@ -76,6 +84,7 @@ class Api {
             content:
                 Text('Failed to verify phone number. Please try again later.'),
           ));
+          setLoading(false); // Set loading to false if verification fails
         },
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
@@ -97,6 +106,7 @@ class Api {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to verify phone number. Please try again later.'),
       ));
+      setLoading(false); // Set loading to false if an exception occurs
     }
   }
 
@@ -117,14 +127,13 @@ class Api {
   }
 
   Future<void> saveUserDataToFirestore(
-      String uid, String email, String password, String phone) async {
+      String uid, String email, String phone) async {
     try {
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
 
       await users.doc(uid).set({
         'email': email,
-        'password': password,
         'phone': phone,
       });
 
@@ -213,6 +222,4 @@ class Api {
       return [];
     }
   }
-
-
 }

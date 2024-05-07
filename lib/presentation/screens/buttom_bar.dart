@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
+import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
 import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
 import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
 
@@ -24,10 +25,7 @@ class _ButtomBarScreenState extends State<ButtomBarScreen>
     super.initState();
     _widgetOptions = <Widget>[
       MyAccountScreen(),
-      Text(
-        'الخدمات',
-        style: optionStyle,
-      ),
+      AddServices(),
       ReservationScreen(
         id: widget.id,
       ),

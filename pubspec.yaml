@@ -44,6 +44,7 @@ dependencies:
   cloud_firestore: ^4.17.2
   shared_preferences: ^2.2.3
   flutter_bloc: ^8.1.5
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

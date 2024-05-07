@@ -15,7 +15,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool value = false;
   Api api = Api();
   TextEditingController phone = TextEditingController();
-  TextEditingController password = TextEditingController();
   TextEditingController email = TextEditingController();
   bool loading = false;
   @override
@@ -45,6 +44,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, right: 10),
                     child: TextField(
+                      keyboardType: TextInputType.name,
+                      textDirection: TextDirection.rtl,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'الاسم',
@@ -88,77 +89,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, right: 10),
                     child: TextField(
+                      textDirection: TextDirection.rtl,
+                      keyboardType: TextInputType.phone,
                       controller: phone,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: '513245458',
+                        hintText:
+                            '513245458                                    966',
                         hintStyle: TextStyle(color: Colors.grey[300]),
                         hintTextDirection: TextDirection.rtl,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: Text("966",
-                              style: TextStyle(
-                                  color: Colors.grey[300], fontSize: 18)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(right: 13.0, bottom: 10),
-                child: Text(
-                  "الرقم السري",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Center(
-                child: Container(
-                  width: .8 * mediawidth(context),
-                  height: 45,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: primary),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8, right: 10),
-                    child: TextField(
-                      controller: password,
-                      obscureText: !visable,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: '0000',
-                        hintStyle: TextStyle(color: Colors.grey[300]),
-                        hintTextDirection: TextDirection.rtl,
-                        prefixIcon: Padding(
-                            padding: const EdgeInsets.only(left: 8, bottom: 4),
-                            child: !visable
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        visable = !visable;
-                                      });
-                                    },
-                                    child: const Icon(
-                                      Icons.visibility_off,
-                                      size: 20,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        visable = !visable;
-                                      });
-                                    },
-                                    child: const Icon(
-                                      Icons.visibility,
-                                      size: 20,
-                                      color: Colors.grey,
-                                    ),
-                                  )),
                       ),
                     ),
                   ),
@@ -184,6 +123,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, right: 10),
                     child: TextField(
+                      textDirection: TextDirection.rtl,
+                      keyboardType: TextInputType.emailAddress,
                       controller: email,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -227,11 +168,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   color: primary,
                   minWidth: 300,
                   onPressed: () async {
-                    setState(() {
-                      loading = true;
+                    api.verifyPhoneNumber(context, phone, email.text, loading,
+                        (bool value) {
+                      setState(() {
+                        loading = value;
+                      });
                     });
-                    await api.verifyPhoneNumber(
-                        context, phone, password.text, email.text);
                   },
                   child: loading
                       ? Container(

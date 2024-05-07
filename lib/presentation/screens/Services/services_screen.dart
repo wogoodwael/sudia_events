@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/presentation/screens/Services/services_body.dart';
 import 'package:sudia_events/presentation/screens/positioned_logo.dart';
 
 class AddServices extends StatefulWidget {
@@ -18,6 +19,7 @@ class _AddServicesState extends State<AddServices> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Expanded(
@@ -38,10 +40,10 @@ class _AddServicesState extends State<AddServices> {
                 Positioned(
                     bottom: 0,
                     left: 20,
-                    top: 100,
+                    top: 90,
                     child: Container(
                       width: .9 * mediawidth(context),
-                      height: 100,
+                      height: 50,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -121,7 +123,15 @@ class _AddServicesState extends State<AddServices> {
               ],
             ),
           ),
-          Expanded(flex: 6, child: Container())
+          Expanded(
+              flex: 7,
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [SliderPage()],
+                  ),
+                ),
+              ))
         ],
       ),
     );

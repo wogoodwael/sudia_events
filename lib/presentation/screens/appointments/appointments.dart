@@ -132,6 +132,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     BorderRadius.all(Radius.circular(10))),
                             height: 30,
                             child: TextField(
+                              textDirection: TextDirection.rtl,
                               controller: searchController,
                               decoration: InputDecoration(
                                   border: InputBorder.none,

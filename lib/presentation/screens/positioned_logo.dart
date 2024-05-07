@@ -7,7 +7,7 @@ class PositionedLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        top: 40,
+        top: 30,
         child: Center(
           child: Image.asset(
             "assets/images/logo.png",
