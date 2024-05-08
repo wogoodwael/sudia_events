@@ -200,7 +200,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
           carouselController: _controller,
           options: CarouselOptions(
               viewportFraction: .9,
-              autoPlay: false,
+              autoPlay: true,
               enlargeCenterPage: true,
               aspectRatio: 2.5,
               onPageChanged: (index, reason) {

@@ -1,12 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:sudia_events/core/helper/custom_date.dart';
-import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
 
 import 'package:sudia_events/presentation/screens/Services/discount_slider.dart';
 import 'package:sudia_events/presentation/screens/Services/hotel_container.dart';
