@@ -7,9 +7,11 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/helper/custom_date.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+
 import 'package:sudia_events/presentation/screens/Services/discount_slider.dart';
 import 'package:sudia_events/presentation/screens/Services/hotel_container.dart';
 import 'package:sudia_events/presentation/screens/Services/services_slider.dart';
+import 'package:sudia_events/presentation/screens/Services/text_divider.dart';
 
 class SliderPage extends StatefulWidget {
   @override
@@ -25,9 +27,29 @@ class _SliderPageState extends State<SliderPage> {
     "سيارات",
     "قاعات افراح",
   ];
+  List title = [
+    'قاعات افراح ',
+    'خدمات',
+  ];
 
   @override
   Widget build(BuildContext context) {
+    List<String> indexData = [
+      "قسم المجد للافراح",
+      "قاعة غيم",
+    ];
+    List<String> servicesData = [
+      "سيارات",
+      "مطاعم الرياض",
+    ];
+    List widgets = [
+      HotelContainer(
+        indexData: indexData,
+      ),
+      HotelContainer(
+        indexData: servicesData,
+      ),
+    ];
     return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ServiceSlider(),
@@ -37,56 +59,30 @@ class _SliderPageState extends State<SliderPage> {
           indent: 10,
         ),
         SizedBox(
-          height: 40,
+          height: 70,
         ),
-        Stack(
-          children: [
-            Container(
-              width: mediawidth(context),
-              height: 20,
-              child: Divider(
-                endIndent: 70,
-              ),
-            ),
-            Positioned(
-                right: 10,
-                child: Container(
-                  width: 170,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      color: Color(0xff544c84),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        reversedDate,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      Text(
-                        "الجمعة",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "قاعات افراح ",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ))
-          ],
+        Column(
+          children: List.generate(2, (index) {
+            return Column(
+              children: [
+                TextDivider(title: title[index]),
+                widgets[index],
+                SizedBox(
+                  height: 10,
+                ),
+                
+              ],
+              
+            );
+            
+          }),
+          
         ),
-        HotelContainer()
+      
+
       ]),
+
     );
+    
   }
 }

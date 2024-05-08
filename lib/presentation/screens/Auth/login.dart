@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sudia_events/core/helper/custom_checkBox.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
@@ -212,31 +213,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    "تذكرني",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Transform.scale(
-                                    scale: .6,
-                                    child: Checkbox(
-                                      activeColor: primary,
-                                      visualDensity: VisualDensity.compact,
-                                      value:
-                                          value, // Set the initial value of the checkbox
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          this.value = value!;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                        CustomCheckBox(text: 'تذكرني')
+                        
+                         ],
                           ),
                           const SizedBox(
                             height: 40,
