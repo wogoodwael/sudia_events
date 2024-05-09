@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/presentation/screens/Services/weddings/wedding_hotels.dart';
 
 class ServiceSlider extends StatefulWidget {
   const ServiceSlider({super.key});
@@ -21,7 +22,13 @@ class _ServiceSliderState extends State<ServiceSlider> {
     "سيارات",
     "قاعات افراح",
   ];
-
+  List goToPages = [
+    WeddingsHotels(),
+    WeddingsHotels(),
+    WeddingsHotels(),
+    WeddingsHotels(),
+    WeddingsHotels(),
+  ];
   int _current = 0;
   final CarouselController _controller = CarouselController();
   @override
@@ -125,14 +132,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                 Icons.arrow_back_ios,
                 size: 15,
               ),
-              onPressed: () {
-                if (_currentPage > 0) {
-                  _pageController.previousPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.ease,
-                  );
-                }
-              },
+              onPressed: () {},
             ),
             const SizedBox(width: 5.0),
             Container(
@@ -149,6 +149,10 @@ class _ServiceSliderState extends State<ServiceSlider> {
                           setState(() {
                             onTapped[index] = !onTapped[index];
                           });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => goToPages[index]));
                         },
                         child: Container(
                           margin: const EdgeInsets.all(5),
@@ -184,14 +188,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                 Icons.arrow_forward_ios,
                 size: 15,
               ),
-              onPressed: () {
-                if (_currentPage < 2) {
-                  _pageController.nextPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.ease,
-                  );
-                }
-              },
+              onPressed: () {},
             ),
           ],
         ),

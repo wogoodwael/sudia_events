@@ -36,13 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
           automaticallyImplyLeading: false,
           title: const Row(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 20, top: 10),
-                child: Text(
-                  "ضيف",
-                  style: TextStyle(color: primary, fontWeight: FontWeight.bold),
-                ),
-              ),
               SizedBox(
                 width: 10,
               ),
@@ -212,10 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                        CustomCheckBox(text: 'تذكرني')
-                        
-                         ],
+                            children: [CustomCheckBox(text: 'تذكرني')],
                           ),
                           const SizedBox(
                             height: 40,

@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:sudia_events/presentation/screens/Services/discount_slider.dart';
 import 'package:sudia_events/presentation/screens/Services/hotel_container.dart';
 import 'package:sudia_events/presentation/screens/Services/services_slider.dart';
 import 'package:sudia_events/presentation/screens/Services/text_divider.dart';
+import 'package:sudia_events/presentation/screens/Services/weddings/wedding_hotels.dart';
 
 class SliderPage extends StatefulWidget {
   @override
@@ -63,19 +63,11 @@ class _SliderPageState extends State<SliderPage> {
                 SizedBox(
                   height: 10,
                 ),
-                
               ],
-              
             );
-            
           }),
-          
         ),
-      
-
       ]),
-
     );
-    
   }
 }
