@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/presentation/screens/Services/resturants/resturants.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/wedding_hotels.dart';
 
 class ServiceSlider extends StatefulWidget {
@@ -17,27 +18,48 @@ class _ServiceSliderState extends State<ServiceSlider> {
   List<bool> onTapped = [false, false, false, false, false];
   List<String> data = [
     " سيارات",
-    "افراح",
+    "مطاعم الرياض",
     "استراحات",
     "سيارات",
     "قاعات افراح",
   ];
-  List goToPages = [
-    WeddingsHotels(),
-    WeddingsHotels(),
-    WeddingsHotels(),
-    WeddingsHotels(),
-    WeddingsHotels(),
-  ];
+
   int _current = 0;
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
+    List<String> weddingsImages = [
+      "assets/images/w1.jpg",
+      "assets/images/w2.jpg",
+      "assets/images/w3.jpeg",
+    ];
+    List<String> resturant = [
+      "assets/images/r1.jpg",
+      "assets/images/r2.jpg",
+      "assets/images/r3.jpg",
+    ];
     final List<String> imgList = [
       "assets/images/s1.jpg",
       "assets/images/s2.jpg",
       "assets/images/s3.jpg",
       "assets/images/s4.jpg",
+    ];
+    List goToPages = [
+      WeddingsHotels(
+        imagePaths: imgList,
+      ),
+      Resturants(
+        imagePaths: resturant, //*
+      ),
+      WeddingsHotels(
+        imagePaths: imgList,
+      ),
+      WeddingsHotels(
+        imagePaths: imgList,
+      ),
+      WeddingsHotels(
+        imagePaths: weddingsImages,
+      ),
     ];
 
     final List<Widget> imageSliders = imgList
