@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AboutBody extends StatefulWidget {
-  const AboutBody({super.key});
+  const AboutBody({super.key, required this.des});
+  final String des;
 
   @override
   State<AboutBody> createState() => _AboutBodyState();
@@ -21,8 +22,8 @@ class _AboutBodyState extends State<AboutBody> {
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.bold),
-                """قاعة غيم هي إحدى القاعات الفاخرة المتعددة الاستخدامات في مدينة جدة بالمملكة العربية السعودية. تتميز بتصميمها العصري والفاخر، وتوفر مساحة مثالية لإقامة مختلف أنواع الفعاليات والمناسبات مثل الحفلات الخاصة، والمؤتمرات، والمعارض، وحفلات الزفاف، والاجتماعات الخاصة، والفعاليات الثقافية والفنية الأخرى.
-                                    """),
+            widget.des,
+            ),
           ),
         ),
       ],

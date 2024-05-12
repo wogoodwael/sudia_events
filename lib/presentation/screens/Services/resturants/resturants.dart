@@ -7,7 +7,7 @@ import 'package:sudia_events/presentation/screens/Services/weddings/apoinion_bod
 
 class Resturants extends StatefulWidget {
   const Resturants({Key? key, required this.imagePaths}) : super(key: key);
-  final List<String> imagePaths;
+  final List imagePaths;
   @override
   State<Resturants> createState() => _ResturantsState();
 }
@@ -46,7 +46,7 @@ class _ResturantsState extends State<Resturants> {
                       });
                     },
                     itemBuilder: (context, index) {
-                      return Image.asset(
+                      return Image.network(
                         widget.imagePaths[index],
                         fit: BoxFit.cover,
                       );
@@ -177,7 +177,9 @@ class _ResturantsState extends State<Resturants> {
                             child: TabBarView(
                               children: [
                                 OpinionBody(),
-                                AboutBody(),
+                                AboutBody(
+                                  des: '',
+                                ),
                               ],
                             ),
                           ),

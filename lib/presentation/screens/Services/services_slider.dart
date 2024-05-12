@@ -1,7 +1,13 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/model/services_model.dart';
+import 'package:sudia_events/data/services/fetch_data.dart';
 import 'package:sudia_events/presentation/screens/Services/resturants/resturants.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/wedding_hotels.dart';
 
@@ -16,125 +22,20 @@ class _ServiceSliderState extends State<ServiceSlider> {
   PageController _pageController = PageController();
   int _currentPage = 0;
   List<bool> onTapped = [false, false, false, false, false];
-  List<String> data = [
-    " سيارات",
-    "مطاعم الرياض",
-    "استراحات",
-    "سيارات",
-    "قاعات افراح",
-  ];
+  late Future<List<ServicesModel>> data;
+  late Future<List<ServicesModel>> servicesDetails;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(seconds: 5)); // data = fetchServicesData();
+  }
 
   int _current = 0;
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
-    List<String> weddingsImages = [
-      "assets/images/w1.jpg",
-      "assets/images/w2.jpg",
-      "assets/images/w3.jpeg",
-    ];
-    List<String> resturant = [
-      "assets/images/r1.jpg",
-      "assets/images/r2.jpg",
-      "assets/images/r3.jpg",
-    ];
-    final List<String> imgList = [
-      "assets/images/s1.jpg",
-      "assets/images/s2.jpg",
-      "assets/images/s3.jpg",
-      "assets/images/s4.jpg",
-    ];
-    List goToPages = [
-      WeddingsHotels(
-        imagePaths: imgList,
-      ),
-      Resturants(
-        imagePaths: resturant, //*
-      ),
-      WeddingsHotels(
-        imagePaths: imgList,
-      ),
-      WeddingsHotels(
-        imagePaths: imgList,
-      ),
-      WeddingsHotels(
-        imagePaths: weddingsImages,
-      ),
-    ];
-
-    final List<Widget> imageSliders = imgList
-        .map((item) => Container(
-              child: Container(
-                margin: const EdgeInsets.all(5.0),
-                child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(
-                      children: <Widget>[
-                        Image.asset(item, fit: BoxFit.cover, width: 1000.0),
-                        Positioned(
-                          bottom: 0.0,
-                          left: 0.0,
-                          right: 0.0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color.fromARGB(200, 0, 0, 0),
-                                  Color.fromARGB(0, 0, 0, 0)
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "35%",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      'منتجعات سياحيه',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "جدة - حي الشاطئ",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
-                                        ),
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          color: Colors.white,
-                                          size: 15,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-              ),
-            ))
-        .toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -154,55 +55,80 @@ class _ServiceSliderState extends State<ServiceSlider> {
                 Icons.arrow_back_ios,
                 size: 15,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                List<ServicesModel> data = await fetchServicesData();
+                print("data************${data[0].des}");
+              },
             ),
             const SizedBox(width: 5.0),
-            Container(
-              width: 250,
-              height: 50,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            onTapped[index] = !onTapped[index];
-                          });
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => goToPages[index]));
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          width: 100,
-                          height: 25,
-                          decoration: BoxDecoration(
-                              color:
-                                  onTapped[index] ? primary : Colors.grey[200],
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
+            FutureBuilder<List<ServicesModel>>(
+              future: fetchServicesData(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ServicesModel>> snapshot) {
+                return Container(
+                  width: 250,
+                  height: 50,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data?.length ?? 1,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                onTapped[index] = !onTapped[index];
+                              });
+                              print(
+                                  "data details ${fetchDetailsServicesData(snapshot.data![index].id)}");
+                              servicesDetails = fetchDetailsServicesData(
+                                  snapshot.data![index].id);
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => snapshot
+                                                  .data![index].type ==
+                                              'castle'
+                                          ? WeddingsHotels(
+                                              imagePaths:
+                                                  snapshot.data![index].image,
+                                              servicesDetails: servicesDetails)
+                                          : Resturants(
+                                              imagePaths:
+                                                  snapshot.data![index].image,
+                                            )));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.all(5),
+                              width: 100,
+                              height: 25,
+                              decoration: BoxDecoration(
                                   color: onTapped[index]
-                                      ? Colors.transparent
-                                      : primary)),
-                          child: Center(
-                            child: Text(
-                              data[index],
-                              style: TextStyle(
-                                  color: onTapped[index]
-                                      ? Colors.white
-                                      : Colors.grey),
+                                      ? primary
+                                      : Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      color: onTapped[index]
+                                          ? Colors.transparent
+                                          : primary)),
+                              child: Center(
+                                child: Text(
+                                  snapshot.data?[index].name ?? "",
+                                  style: TextStyle(
+                                      color: onTapped[index]
+                                          ? Colors.white
+                                          : Colors.grey),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              },
             ),
             const SizedBox(width: 5.0),
             IconButton(
@@ -214,40 +140,174 @@ class _ServiceSliderState extends State<ServiceSlider> {
             ),
           ],
         ),
-        CarouselSlider(
-          items: imageSliders,
-          carouselController: _controller,
-          options: CarouselOptions(
-              viewportFraction: .9,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              aspectRatio: 2.5,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              }),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: imgList.asMap().entries.map((entry) {
-            return GestureDetector(
-              onTap: () => _controller.animateToPage(entry.key),
-              child: Container(
-                width: 70.0,
-                height: 5.0,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : primary)
-                        .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-              ),
-            );
-          }).toList(),
-        ),
+        FutureBuilder<QuerySnapshot>(
+          future: FirebaseFirestore.instance.collection('services').get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return Container(
+                width: mediawidth(context),
+                height: .24 * mediaheight(context),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot
+                      .data!.docs.length, // Use docs.length instead of length
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    final List imgList = snapshot.data!.docs[index]['image'];
+
+                    return Container(
+                      width: mediawidth(context),
+                      height: .24 * mediaheight(context),
+                      child: Column(
+                        children: [
+                          CarouselSlider(
+                            items: imgList
+                                .map((item) => Container(
+                                      child: Container(
+                                        margin: const EdgeInsets.all(5.0),
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(5.0),
+                                          ),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Image.network(item,
+                                                  fit: BoxFit.cover,
+                                                  width: 1000.0),
+                                              Positioned(
+                                                bottom: 0.0,
+                                                left: 0.0,
+                                                right: 0.0,
+                                                child: Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Color.fromARGB(
+                                                            200, 0, 0, 0),
+                                                        Color.fromARGB(
+                                                            0, 0, 0, 0)
+                                                      ],
+                                                      begin: Alignment
+                                                          .bottomCenter,
+                                                      end: Alignment.topCenter,
+                                                    ),
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 20.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "35%",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Text(
+                                                            snapshot.data!
+                                                                    .docs[index]
+                                                                ['name'],
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                "جدة - حي الشاطئ",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                              Icon(
+                                                                Icons
+                                                                    .location_on_outlined,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 15,
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                            carouselController: _controller,
+                            options: CarouselOptions(
+                                viewportFraction: .9,
+                                autoPlay: true,
+                                enlargeCenterPage: true,
+                                aspectRatio: 2.5,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    _current = index;
+                                  });
+                                }),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: imgList.asMap().entries.map((entry) {
+                              return GestureDetector(
+                                onTap: () =>
+                                    _controller.animateToPage(entry.key),
+                                child: Container(
+                                  width: 70.0,
+                                  height: 5.0,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 4.0),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      color: (Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : primary)
+                                          .withOpacity(_current == entry.key
+                                              ? 0.9
+                                              : 0.4)),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              );
+            } else {
+              return CircularProgressIndicator(); // Show loading indicator while data is being fetched
+            }
+          },
+        )
       ],
     );
   }

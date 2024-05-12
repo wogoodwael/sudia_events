@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
@@ -9,12 +11,21 @@ class ShowMoreWeddingBody extends StatefulWidget {
       required this.showMore,
       required this.pageController,
       required this.currentPage,
-      required this.imagePaths, required this.onPressed});
+      required this.imagePaths,
+      required this.onPressed,
+      required this.price,
+      required this.onBooked,
+      required this.des,
+      required this.name});
   final bool showMore;
   final PageController pageController;
   final int currentPage;
-  final List<String> imagePaths;
+  final List imagePaths;
+  final int price;
   final void Function() onPressed;
+  final void Function() onBooked;
+  final String des;
+  final String name;
   @override
   State<ShowMoreWeddingBody> createState() => _ShowMoreWeddingBodyState();
 }
@@ -69,73 +80,78 @@ class _ShowMoreWeddingBodyState extends State<ShowMoreWeddingBody> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Column(
+                    FittedBox(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "السعر",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5.0),
+                                      child: Text(
+                                        'SR',
+                                        style: TextStyle(
+                                            fontSize: 17, color: primary),
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.price.toString(),
+                                      style: TextStyle(
+                                          color: primary,
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
-                                "السعر",
-                                style: TextStyle(color: Colors.white),
+                              FittedBox(
+                                child: Text(
+                                  widget.name,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 30),
+                                ),
                               ),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5.0),
-                                    child: Text(
-                                      'SR',
-                                      style: TextStyle(
-                                          fontSize: 17, color: primary),
-                                    ),
-                                  ),
                                   Text(
-                                    "5000",
+                                    "جدة - حي الشاطئ",
                                     style: TextStyle(
-                                        color: primary,
-                                        fontSize: 35,
-                                        fontWeight: FontWeight.bold),
+                                        color: Colors.white, fontSize: 12),
+                                  ),
+                                  Icon(
+                                    Icons.location_on_outlined,
+                                    color: Colors.white,
+                                    size: 15,
                                   ),
                                 ],
+                              ),
+                              Text(
+                                widget.des,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10),
                               )
                             ],
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              "قاعة غيم",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 30),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "جدة - حي الشاطئ",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                                Icon(
-                                  Icons.location_on_outlined,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ],
-                            ),
-                            Text(
-                              "نبذة عن القصر ومواصفات القصر  وو",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                            )
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Center(
                       child: MaterialButton(
@@ -143,7 +159,7 @@ class _ShowMoreWeddingBodyState extends State<ShowMoreWeddingBody> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         color: primary,
-                        onPressed: widget.onPressed,
+                        onPressed: widget.onBooked,
                         child: Text(
                           "احجز الان",
                           style: TextStyle(color: Colors.white, fontSize: 20),
