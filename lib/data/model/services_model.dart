@@ -1,6 +1,6 @@
 class ServicesModel {
-  final String des;
-  final List image;
+  // final String des;
+  final String image;
   final String name;
   final int price;
   final String id;
@@ -9,9 +9,10 @@ class ServicesModel {
   final String services_provider_name;
 
   ServicesModel(
-      {required this.des,
-      required this.id, 
-      required this.type, 
+      {
+        
+      required this.id,
+      required this.type,
       required this.image,
       required this.name,
       required this.price,
@@ -21,11 +22,13 @@ class ServicesModel {
   factory ServicesModel.fromMap(Map<String, dynamic> map) {
     return ServicesModel(
       name: map['name'],
-      des: map['des'],
+      // des: map['des'],
       image: map['image'],
       price: map['price'],
       services_provider_email: map['service_provider_email'],
-      services_provider_name: map['service_provider_name'], id: map['id'], type: map['type'],
+      services_provider_name: map['service_provider_name'],
+      id: map['id'],
+      type: map['type'],
     );
   }
 }

@@ -7,7 +7,7 @@ import 'package:sudia_events/presentation/screens/Services/weddings/apoinion_bod
 
 class Resturants extends StatefulWidget {
   const Resturants({Key? key, required this.imagePaths}) : super(key: key);
-  final List imagePaths;
+  final String imagePaths;
   @override
   State<Resturants> createState() => _ResturantsState();
 }

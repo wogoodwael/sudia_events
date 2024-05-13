@@ -7,7 +7,9 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/services_model.dart';
+import 'package:sudia_events/data/model/sub_services_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/resturants/resturants.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/wedding_hotels.dart';
 
@@ -23,7 +25,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
   int _currentPage = 0;
   List<bool> onTapped = [false, false, false, false, false];
   late Future<List<ServicesModel>> data;
-  late Future<List<ServicesModel>> servicesDetails;
+  late Future<List<SubServicesModel>> servicesDetails;
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
   }
 
   int _current = 0;
+
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
               ),
               onPressed: () async {
                 List<ServicesModel> data = await fetchServicesData();
-                print("data************${data[0].des}");
+                // print("data************${data[0].des}");
               },
             ),
             const SizedBox(width: 5.0),
@@ -80,24 +83,20 @@ class _ServiceSliderState extends State<ServiceSlider> {
                                 onTapped[index] = !onTapped[index];
                               });
                               print(
-                                  "data details ${fetchDetailsServicesData(snapshot.data![index].id)}");
-                              servicesDetails = fetchDetailsServicesData(
-                                  snapshot.data![index].id);
+                                  "sub services list idddddddddddd ${snapshot.data![index].id}");
 
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => snapshot
-                                                  .data![index].type ==
-                                              'castle'
-                                          ? WeddingsHotels(
-                                              imagePaths:
-                                                  snapshot.data![index].image,
-                                              servicesDetails: servicesDetails)
-                                          : Resturants(
-                                              imagePaths:
-                                                  snapshot.data![index].image,
-                                            )));
+                                      builder: (_) =>
+                                          snapshot.data![index].type == 'castle'
+                                              ? WeddingsHotels(
+                                                  id: snapshot.data![index].id,
+                                                )
+                                              : Resturants(
+                                                  imagePaths: snapshot
+                                                      .data![index].image,
+                                                )));
                             },
                             child: Container(
                               margin: const EdgeInsets.all(5),
@@ -140,10 +139,10 @@ class _ServiceSliderState extends State<ServiceSlider> {
             ),
           ],
         ),
-        FutureBuilder<QuerySnapshot>(
-          future: FirebaseFirestore.instance.collection('services').get(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        FutureBuilder<List<SubServicesModel>>(
+          future: fetchDetailsServicesData("dj0RK7S6XcGnHQt1XVf8"),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<SubServicesModel>> snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
               return Container(
                 width: mediawidth(context),
@@ -151,10 +150,10 @@ class _ServiceSliderState extends State<ServiceSlider> {
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
                   itemCount: snapshot
-                      .data!.docs.length, // Use docs.length instead of length
+                      .data!.length, // Use docs.length instead of length
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
-                    final List imgList = snapshot.data!.docs[index]['image'];
+                    final List imgList = snapshot.data![index].image;
 
                     return Container(
                       width: mediawidth(context),
@@ -218,9 +217,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                                                                 .end,
                                                         children: [
                                                           Text(
-                                                            snapshot.data!
-                                                                    .docs[index]
-                                                                ['name'],
+                                                            'قاعات الرياض',
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.white,
