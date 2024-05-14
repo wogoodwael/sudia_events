@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/data/model/services_model.dart';
 import 'package:sudia_events/data/model/sub_services_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/about_body.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/apoinion_body.dart';
-import 'package:sudia_events/presentation/screens/Services/weddings/show_more_wedding_body.dart';
+import 'package:sudia_events/presentation/screens/payment/payment_screen.dart';
 
 class WeddingsHotels extends StatefulWidget {
   const WeddingsHotels({
@@ -297,45 +296,50 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                                         10)),
                                                     color: primary,
                                                     onPressed: () {
-                                                      FirebaseFirestore
-                                                          firebaseFirestore =
-                                                          FirebaseFirestore
-                                                              .instance;
-                                                      CollectionReference
-                                                          services =
-                                                          firebaseFirestore
-                                                              .collection(
-                                                                  'BookServices');
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (_) =>
+                                                                  PayMentScreen()));
+                                                      // FirebaseFirestore
+                                                      //     firebaseFirestore =
+                                                      //     FirebaseFirestore
+                                                      //         .instance;
+                                                      // CollectionReference
+                                                      //     services =
+                                                      //     firebaseFirestore
+                                                      //         .collection(
+                                                      //             'BookServices');
 
-                                                      // Create a map representing the event data
-                                                      Map<String, dynamic>
-                                                          bookingData = {
-                                                        'type': 'castle',
-                                                        'name': snapshot
-                                                            .data![index]
-                                                            .name[count],
-                                                        'des': snapshot
-                                                            .data![index]
-                                                            .des[count],
-                                                        'price': snapshot
-                                                            .data![index]
-                                                            .price[count],
-                                                      };
+                                                      // // Create a map representing the event data
+                                                      // Map<String, dynamic>
+                                                      //     bookingData = {
+                                                      //   'type': 'castle',
+                                                      //   'name': snapshot
+                                                      //       .data![index]
+                                                      //       .name[count],
+                                                      //   'des': snapshot
+                                                      //       .data![index]
+                                                      //       .des[count],
+                                                      //   'price': snapshot
+                                                      //       .data![index]
+                                                      //       .price[count],
+                                                      // };
 
-                                                      // Add the event data to Firestore
-                                                      services
-                                                          .add(bookingData)
-                                                          .then((value) {
-                                                        print(
-                                                            'services added successfully!');
-                                                        CustomSnackBar(
-                                                            context,
-                                                            'تم حجز الخدمة',
-                                                            Colors.green);
-                                                      }).catchError((error) {
-                                                        print(
-                                                            'Failed to add services: $error');
-                                                      });
+                                                      // // Add the event data to Firestore
+                                                      // services
+                                                      //     .add(bookingData)
+                                                      //     .then((value) {
+                                                      //   print(
+                                                      //       'services added successfully!');
+                                                      //   CustomSnackBar(
+                                                      //       context,
+                                                      //       'تم حجز الخدمة',
+                                                      //       Colors.green);
+                                                      // }).catchError((error) {
+                                                      //   print(
+                                                      //       'Failed to add services: $error');
+                                                      // });
                                                     },
                                                     child: Text(
                                                       "احجز الان",
