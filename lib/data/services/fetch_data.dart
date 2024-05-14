@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sudia_events/data/model/booked_services.dart';
+import 'package:sudia_events/data/model/res_content_model.dart';
 import 'package:sudia_events/data/model/services_model.dart';
 import 'package:sudia_events/data/model/sub_services_model.dart';
 
@@ -55,6 +57,71 @@ Future<List<SubServicesModel>> fetchDetailsServicesData(String id) async {
     return servicesDataDetails;
   } catch (e) {
     print("Error fetching services data: $e");
+    return [];
+  }
+}
+
+//*resturant details
+Future<List<ResturantDetailsModel>> fetchDetailsResturantData(
+    String name) async {
+  try {
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance
+            .collection('ResturantsContent')
+            .where('name', isEqualTo: name)
+            .get();
+    print("Query executed. Total documents: ${querySnapshot.docs.length}");
+    querySnapshot.docs.forEach((doc) {
+      print("Document: $doc");
+    });
+    final List<ResturantDetailsModel> resturantDataDetails =
+        querySnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
+      print("Document: $doc");
+
+      print("Image: ${doc['image']}");
+      print("Price: ${doc['price']}");
+      return ResturantDetailsModel(
+        image: List<dynamic>.from(doc['image']),
+        price: List<dynamic>.from(doc['price']),
+        dishes: List<dynamic>.from(doc['dishes']),
+        discount: List<dynamic>.from(doc['discount']),
+        overview: List<dynamic>.from(doc['overview']),
+      );
+    }).toList();
+    print("Resturant data details: $resturantDataDetails");
+    return resturantDataDetails;
+  } catch (e) {
+    print("Error fetching resturant data: $e");
+    return [];
+  }
+}
+
+//*booked services
+Future<List<BookedServicesModel>> fetchBookedData() async {
+  try {
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('BookServices').get();
+    print("Query executed. Total documents: ${querySnapshot.docs.length}");
+    querySnapshot.docs.forEach((doc) {
+      print("Document: $doc");
+    });
+    final List<BookedServicesModel> booked =
+        querySnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
+      print("Document: $doc");
+
+    
+      print("Price: ${doc['price']}");
+      return BookedServicesModel(
+        name: doc['name'],
+              des: doc['des'],
+              price: doc['price'], type: doc['type'],
+     
+      );
+    }).toList();
+    print("booked data details: $booked");
+    return booked;
+  } catch (e) {
+    print("Error fetching resturant data: $e");
     return [];
   }
 }

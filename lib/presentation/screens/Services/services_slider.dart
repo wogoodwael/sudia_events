@@ -94,8 +94,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                                                   id: snapshot.data![index].id,
                                                 )
                                               : Resturants(
-                                                  imagePaths: snapshot
-                                                      .data![index].image,
+                                               id: snapshot.data![index].id,
                                                 )));
                             },
                             child: Container(

@@ -35,14 +35,7 @@ class _SliderPageState extends State<SliderPage> {
       "سيارات",
       "مطاعم الرياض",
     ];
-    List widgets = [
-      HotelContainer(
-        indexData: indexData,
-      ),
-      HotelContainer(
-        indexData: servicesData,
-      ),
-    ];
+
     return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ServiceSlider(),
@@ -59,7 +52,7 @@ class _SliderPageState extends State<SliderPage> {
             return Column(
               children: [
                 TextDivider(title: title[index]),
-                widgets[index],
+                HotelContainer(),
                 SizedBox(
                   height: 10,
                 ),

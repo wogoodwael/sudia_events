@@ -4,8 +4,21 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class OffersBody extends StatefulWidget {
-  const OffersBody({super.key, required this.ontapped});
+  const OffersBody(
+      {super.key,
+      required this.ontapped,
+      required this.resName,
+      required this.price,
+      required this.discount,
+      required this.img,
+      required this.dishes, required this.lenght});
   final List<bool> ontapped;
+  final String resName;
+  final List price;
+  final List discount;
+  final List img;
+  final List dishes;
+  final int lenght;
   @override
   State<OffersBody> createState() => _OffersBodyState();
 }
@@ -19,8 +32,8 @@ class _OffersBodyState extends State<OffersBody> {
         children: [
           Padding(
             padding: EdgeInsets.only(right: .1 * mediawidth(context)),
-            child: const Text(
-              "مطاعم الرياض",
+            child: Text(
+              widget.resName,
               style: TextStyle(
                   color: primary, fontWeight: FontWeight.w500, fontSize: 20),
             ),
@@ -58,7 +71,7 @@ class _OffersBodyState extends State<OffersBody> {
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
                       scrollDirection: Axis.horizontal,
-                      itemCount: 5,
+                      itemCount: widget.lenght,
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
@@ -69,7 +82,8 @@ class _OffersBodyState extends State<OffersBody> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                         widget. ontapped[index] = !widget. ontapped[index];
+                                          widget.ontapped[index] =
+                                              !widget.ontapped[index];
                                         });
                                       },
                                       child: Container(
@@ -95,8 +109,8 @@ class _OffersBodyState extends State<OffersBody> {
                                           borderRadius: const BorderRadius.only(
                                               topLeft: Radius.circular(10),
                                               topRight: Radius.circular(10)),
-                                          child: Image.asset(
-                                            "assets/images/fresh.jpg",
+                                          child: Image.network(
+                                            widget.img[index],
                                             width: 80,
                                             fit: BoxFit.cover,
                                           ),
@@ -113,7 +127,7 @@ class _OffersBodyState extends State<OffersBody> {
                                             width: 110,
                                             height: 30,
                                             decoration: BoxDecoration(
-                                                color:widget. ontapped[index]
+                                                color: widget.ontapped[index]
                                                     ? primary
                                                     : Color(0xff848484),
                                                 borderRadius: BorderRadius.only(
@@ -129,7 +143,7 @@ class _OffersBodyState extends State<OffersBody> {
                                                   padding: EdgeInsets.only(
                                                       left: 2.0),
                                                   child: Text(
-                                                    "20%",
+                                                    "${widget.discount[index]}%",
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.white,
@@ -150,9 +164,11 @@ class _OffersBodyState extends State<OffersBody> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      "15",
+                                                      widget.price[index],
                                                       style: TextStyle(
-                                                          color:widget. ontapped[index]
+                                                          color: widget
+                                                                      .ontapped[
+                                                                  index]
                                                               ? Colors.amber
                                                               : Colors
                                                                   .grey[900],
@@ -168,7 +184,9 @@ class _OffersBodyState extends State<OffersBody> {
                                                         'SR',
                                                         style: TextStyle(
                                                           fontSize: 10,
-                                                          color:widget. ontapped[index]
+                                                          color: widget
+                                                                      .ontapped[
+                                                                  index]
                                                               ? Colors.amber
                                                               : Colors
                                                                   .grey[900],
@@ -191,14 +209,14 @@ class _OffersBodyState extends State<OffersBody> {
                               decoration: BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(
-                                          color:widget. ontapped[index]
+                                          color: widget.ontapped[index]
                                               ? primary
                                               : Colors.white,
                                           width: 5))),
-                              child: const Center(
+                              child: Center(
                                 child: FittedBox(
                                     child: Text(
-                                  "مأكولات بحرية",
+                                  widget.dishes[index],
                                   style: TextStyle(
                                       color: primary,
                                       fontWeight: FontWeight.bold),

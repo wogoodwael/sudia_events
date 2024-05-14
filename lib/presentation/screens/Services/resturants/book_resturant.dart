@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/model/res_content_model.dart';
+import 'package:sudia_events/data/services/fetch_data.dart';
 import 'package:sudia_events/presentation/screens/Services/resturants/offers_body.dart';
 
 class BookResturant extends StatefulWidget {
-  const BookResturant({super.key});
-
+  const BookResturant({super.key, required this.name});
+  final String name;
   @override
   State<BookResturant> createState() => _BookResturantState();
 }
@@ -29,227 +33,300 @@ class _BookResturantState extends State<BookResturant> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    "assets/images/logo.png",
-                    width: 150,
-                    color: primary,
-                  ),
-                  Transform.scale(
-                      scale: 1.5,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_forward,
-                            color: primary,
-                          ),
-                        ),
-                      ))
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-              flex: 2,
-              child: OffersBody(
-                ontapped: ontapped,
-              )),
-          Expanded(
-            flex: 4,
-            child: Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(4, (index) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 10.0),
-                                      child: Icon(
-                                        Icons.add_circle,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                    Text(number[index]),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.remove_circle,
-                                        color: Colors.grey[700],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      size: 15,
-                                      color: primary,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      size: 15,
-                                      color: primary,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      size: 15,
-                                      color: primary,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      size: 15,
-                                      color: primary,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      size: 15,
-                                      color: primary,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: .2 * mediawidth(context)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    "مأكولات بحرية",
-                                    style: TextStyle(
-                                        color: primary,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Text(
-                                    "مأكولات بحرية",
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                  Container(
-                                    width: 70,
-                                    height: 20,
-                                    child: Text(
-                                        textAlign: TextAlign.right,
-                                        style: TextStyle(
-                                            fontSize: 7, color: Colors.black),
-                                        """   ممتاز جدا ممتاز جدا ممتاز جدا ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ا  ممتاز جدا"""),
-                                  ),
-                                ],
+      body: FutureBuilder<List<ResturantDetailsModel>>(
+        future: fetchDetailsResturantData(widget.name),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<ResturantDetailsModel>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator(
+              color: primary,
+            )); // Show loading indicator while fetching data
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Text('No data available');
+          }
+          return Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        "assets/images/logo.png",
+                        width: 150,
+                        color: primary,
+                      ),
+                      Transform.scale(
+                          scale: 1.5,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: primary,
                               ),
                             ),
-                            Stack(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  width: 70,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey
-                                            .withOpacity(0.5), // Shadow color
-                                        spreadRadius: 1, // Spread radius
-                                        blurRadius: 5, // Blur radius
-                                        offset: const Offset(1,
-                                            5), // Offset in x and y axes from the box
-                                      ),
-                                    ],
-                                    // border: Border.all(),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10)),
-                                    child: Image.asset(
-                                      "assets/images/fresh.jpg",
-                                      width: 20,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                    bottom: -1,
-                                    left: 10,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: Container(
-                                        width: 70,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            color: primary,
-                                            borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(10),
-                                                bottomRight:
-                                                    Radius.circular(10))),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 5.0),
-                                                  child: Text(
-                                                    'SR',
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "14",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ))
-                              ],
-                            ),
-                          ],
-                        ),
-                        Divider(
-                          endIndent: 15,
-                          indent: 15,
-                        ),
-                      ],
-                    );
-                  }),
+                          ))
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+              Expanded(
+                  flex: 2,
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      return OffersBody(
+                        ontapped: ontapped,
+                        resName: widget.name,
+                        price: snapshot.data![index].price,
+                        discount: snapshot.data![index].discount,
+                        img: snapshot.data![index].image,
+                        dishes: snapshot.data![index].dishes,
+                        lenght: snapshot.data![index].dishes.length,
+                      );
+                    },
+                  )),
+              Expanded(
+                flex: 6,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  padding: EdgeInsets.zero,
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: mediawidth(context),
+                      height: mediaheight(context),
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: snapshot.data![index].discount.length,
+                        itemBuilder: (BuildContext context, int index2) {
+                          return SingleChildScrollView(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              FittedBox(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        FittedBox(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10.0),
+                                                child: Icon(
+                                                  Icons.add_circle,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                              Text(number[index]),
+                                              IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.remove_circle,
+                                                  color: Colors.grey[700],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.star,
+                                              size: 15,
+                                              color: primary,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              size: 15,
+                                              color: primary,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              size: 15,
+                                              color: primary,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              size: 15,
+                                              color: primary,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              size: 15,
+                                              color: primary,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: .2 * mediawidth(context)),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            width: 65,
+                                            height: 20,
+                                            child: FittedBox(
+                                              fit: BoxFit.fill,
+                                              child: Text(
+                                                snapshot.data![index]
+                                                    .dishes[index2],
+                                                style: TextStyle(
+                                                    color: primary,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            snapshot
+                                                .data![index].dishes[index2],
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                          Container(
+                                              width: 70,
+                                              height: 20,
+                                              child: Text(
+                                                snapshot.data![index]
+                                                    .overview[index2],
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(
+                                                    fontSize: 7,
+                                                    color: Colors.black),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    Stack(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.all(10),
+                                          width: 70,
+                                          height: 80,
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.withOpacity(
+                                                    0.5), // Shadow color
+                                                spreadRadius:
+                                                    1, // Spread radius
+                                                blurRadius: 5, // Blur radius
+                                                offset: const Offset(1,
+                                                    5), // Offset in x and y axes from the box
+                                              ),
+                                            ],
+                                            // border: Border.all(),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10)),
+                                            child: Image.network(
+                                              snapshot
+                                                  .data![index].image[index2],
+                                              width: 20,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                            bottom: -1,
+                                            left: 10,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20.0),
+                                              child: Container(
+                                                width: 70,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    color: primary,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            bottomLeft: Radius
+                                                                .circular(10),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    10))),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 5.0),
+                                                          child: Text(
+                                                            'SR',
+                                                            style: TextStyle(
+                                                                fontSize: 10,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          snapshot.data![index]
+                                                              .price[index2],
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ))
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                endIndent: 15,
+                                indent: 15,
+                              ),
+                            ],
+                          ));
+                        },
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          );
+        },
       ),
       bottomSheet: Container(
         height: 140,

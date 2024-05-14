@@ -8,11 +8,12 @@ class UnTappedContainer extends StatefulWidget {
       required this.tapped,
       this.onTap,
       required this.indexData,
-      required this.indexPrice});
+      required this.indexPrice, required this.des});
   final bool tapped;
   final void Function()? onTap;
   final String indexData;
   final String indexPrice;
+  final String des;
 
   @override
   State<UnTappedContainer> createState() => _UnTappedContainerState();
@@ -166,7 +167,7 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                 Expanded(
                   child: Text(
                     textAlign: TextAlign.end,
-                    " نبذه عن القصر ومواصفاته ونبذه ع نبذه عن القصر ومواصفاته ونبذه عن نبذه عن القصر  نبذه عن القصر ومواصفاته ونبذه  ومواصفاته ونبذه عن",
+widget.des,
                     softWrap: true,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,

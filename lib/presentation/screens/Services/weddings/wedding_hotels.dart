@@ -28,6 +28,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
   int _currentPage = 0;
   bool next = false;
   bool prevoius = false;
+  int count = 0;
   @override
   void initState() {
     super.initState();
@@ -77,8 +78,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                 },
                                 itemBuilder: (context, index) {
                                   return Image.network(
-                                    snapshot.data![index]
-                                        .image[next ? _currentPage + 1 : index],
+                                    snapshot.data![index].image[count],
                                     fit: BoxFit.fitHeight,
                                   );
                                 },
@@ -128,7 +128,9 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                               onPressed: () {
                                                 setState(() {
                                                   next = !next;
+                                                  count--;
                                                 });
+                                                print("shit $count");
                                               },
                                             ),
                                             SizedBox(
@@ -142,7 +144,9 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                               onPressed: () {
                                                 setState(() {
                                                   next = !next;
+                                                  count++;
                                                 });
+                                                print("shit $count");
                                                 if (_currentPage <
                                                     snapshot.data![index].image
                                                             .length -
@@ -210,13 +214,9 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                               ),
                                                               Text(
                                                                 snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .price[
-                                                                    next
-                                                                        ? _currentPage +
-                                                                            1
-                                                                        : index],
+                                                                    .data![
+                                                                        index]
+                                                                    .price[count],
                                                                 style: TextStyle(
                                                                     color:
                                                                         primary,
@@ -239,12 +239,8 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                         FittedBox(
                                                           child: Text(
                                                             snapshot
-                                                                    .data![index]
-                                                                    .name[
-                                                                next
-                                                                    ? _currentPage +
-                                                                        1
-                                                                    : index],
+                                                                .data![index]
+                                                                .name[count],
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -277,7 +273,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                         ),
                                                         Text(
                                                           snapshot.data![index]
-                                                              .des[index],
+                                                              .des[count],
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -314,27 +310,16 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                       // Create a map representing the event data
                                                       Map<String, dynamic>
                                                           bookingData = {
+                                                        'type': 'castle',
                                                         'name': snapshot
-                                                                .data![index]
-                                                                .name[
-                                                            next
-                                                                ? _currentPage +
-                                                                    1
-                                                                : index],
+                                                            .data![index]
+                                                            .name[count],
                                                         'des': snapshot
-                                                                .data![index]
-                                                                .des[
-                                                            next
-                                                                ? _currentPage +
-                                                                    1
-                                                                : index],
+                                                            .data![index]
+                                                            .des[count],
                                                         'price': snapshot
-                                                                .data![index]
-                                                                .price[
-                                                            next
-                                                                ? _currentPage +
-                                                                    1
-                                                                : index],
+                                                            .data![index]
+                                                            .price[count],
                                                       };
 
                                                       // Add the event data to Firestore
