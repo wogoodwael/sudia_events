@@ -3,6 +3,10 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/data/model/settings_model.dart';
+import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
+import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
+import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
+import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
 import 'package:sudia_events/presentation/screens/client/settings/settings_list.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -19,6 +23,19 @@ class _SettingScreenState extends State<SettingScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  List<Widget>? _widgetOptions;
+  
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = <Widget>[
+      MyAccountScreen(),
+      AddServices(),
+      ReservationScreen(),
+      AppointmentScreen()
+    ];
   }
 
   @override
@@ -125,88 +142,92 @@ class _SettingScreenState extends State<SettingScreen> {
         showUnselectedLabels: true,
         onTap: _onItemTapped,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Stack(children: [
-              Container(
-                height: 190,
-                width: 400,
-                decoration: const BoxDecoration(
-                    color: primary,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15))),
-              ),
-              Positioned(
-                  child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 80.0),
-                  child: Image.asset(
-                    "assets/images/logo.png",
-                    width: 200,
-                    color: Colors.white,
-                  ),
-                ),
-              )),
-              Positioned(
-                  child: Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 160),
-                  width: 90,
-                  height: 110,
-                  decoration: const BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: primary, width: 2))),
-                  child: const Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 35,
-                        backgroundColor: primary,
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.white,
-                          child: Center(
-                            child: Icon(
-                              Icons.settings,
-                              color: Colors.grey,
-                            ),
-                          ),
+      body: _selectedIndex == 0
+          ? Column(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Stack(children: [
+                    Container(
+                      height: 190,
+                      width: 400,
+                      decoration: const BoxDecoration(
+                          color: primary,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15))),
+                    ),
+                    Positioned(
+                        child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 80.0),
+                        child: Image.asset(
+                          "assets/images/logo.png",
+                          width: 200,
+                          color: Colors.white,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          "الاعدادات",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                    )),
+                    Positioned(
+                        child: Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 160),
+                        width: 90,
+                        height: 110,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(color: primary, width: 2))),
+                        child: const Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 35,
+                              backgroundColor: primary,
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.settings,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                "الاعدادات",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )),
+                  ]),
                 ),
-              )),
-            ]),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              color: Colors.white,
-              child: ListView.builder(
-                  itemCount: settings.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                        onTap: settings[index].ontap,
-                        child: SettingsList(
-                          settingsModel: settings[index],
-                          color: color[index],
-                        ));
-                  }),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    color: Colors.white,
+                    child: ListView.builder(
+                        itemCount: settings.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                              onTap: settings[index].ontap,
+                              child: SettingsList(
+                                settingsModel: settings[index],
+                                color: color[index],
+                              ));
+                        }),
+                  ),
+                )
+              ],
+            )
+          : Center(
+              child: _widgetOptions!.elementAt(_selectedIndex),
             ),
-          )
-        ],
-      ),
     );
   }
 }

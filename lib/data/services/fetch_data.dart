@@ -3,6 +3,7 @@ import 'package:sudia_events/data/model/booked_services.dart';
 import 'package:sudia_events/data/model/res_content_model.dart';
 import 'package:sudia_events/data/model/services_model.dart';
 import 'package:sudia_events/data/model/sub_services_model.dart';
+import 'package:sudia_events/data/model/user_model.dart';
 
 Future<List<ServicesModel>> fetchServicesData() async {
   try {
@@ -109,19 +110,41 @@ Future<List<BookedServicesModel>> fetchBookedData() async {
         querySnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
       print("Document: $doc");
 
-    
       print("Price: ${doc['price']}");
       return BookedServicesModel(
         name: doc['name'],
-              des: doc['des'],
-              price: doc['price'], type: doc['type'],
-     
+        des: doc['des'],
+        price: doc['price'],
+        type: doc['type'],
       );
     }).toList();
     print("booked data details: $booked");
     return booked;
   } catch (e) {
     print("Error fetching resturant data: $e");
+    return [];
+  }
+}
+
+Future<List<UserModel>> fetchUserData({required String id}) async {
+  try {
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .where('id', isEqualTo: id)
+            .get();
+
+    final List<UserModel> userData = querySnapshot.docs
+        .map((DocumentSnapshot<Map<String, dynamic>> doc) => UserModel(
+              name: doc['name'],
+              phone: doc['phone'],
+              email: doc['email'],
+            ))
+        .toList();
+
+    return userData;
+  } catch (e) {
+    print("Error fetching userData : $e");
     return [];
   }
 }

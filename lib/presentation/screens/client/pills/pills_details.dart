@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/presentation/screens/client/settings/widgets/header_services.dart';
 
 class PillDetails extends StatefulWidget {
@@ -19,9 +17,7 @@ class _PillDetailsState extends State<PillDetails> {
     List<Widget> firstRow = [
       const Text(''),
       const Text(' المبلغ'),
-      const SizedBox(
-        width: 2,
-      ),
+      const SizedBox(width: 2),
       const Text('مقدم الخدمة '),
     ];
     List<Widget> data = [
@@ -33,9 +29,7 @@ class _PillDetailsState extends State<PillDetails> {
         ' 300',
         style: TextStyle(color: Colors.grey),
       ),
-      const SizedBox(
-        width: 20,
-      ),
+      const SizedBox(width: 20),
       const Text(' قاعة غيم  '),
     ];
 
@@ -68,179 +62,116 @@ class _PillDetailsState extends State<PillDetails> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Expanded(
             flex: 4,
             child: Container(
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                width: 400,
-                height: showContainer ? 150 : 70,
-                child: Column(
-                  children: [
-                    Row(
+              margin: const EdgeInsets.all(8),
+              width: 400,
+              height: showContainer ? 150 : 70,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: firstRow,
+                  ),
+                  const Divider(indent: 10, endIndent: 10),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showContainer = !showContainer;
+                      });
+                    },
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: firstRow,
+                      children: data,
                     ),
-                    const Divider(
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          showContainer = !showContainer; // Toggle the state
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: data,
-                      ),
-                    ),
-                    if (showContainer) // Conditionally show the container
-                      const SizedBox(
-                        width: 400,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                  "1000",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                SizedBox(
-                                  width: 2,
-                                ),
-                                FittedBox(
-                                  child: Text(
-                                    " بوفية ",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                  "1000",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                SizedBox(
-                                  width: 2,
-                                ),
-                                FittedBox(
-                                  child: Text(
-                                    " طبخ ",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                  "1000",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                SizedBox(
-                                  width: 2,
-                                ),
-                                FittedBox(
-                                  child: Text(
-                                    " عصاير ",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    const Divider(
-                      endIndent: 10,
-                      indent: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              showContainer =
-                                  !showContainer; // Toggle the state
-                            });
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            size: 10,
-                          ),
-                        ),
-                        const Text(
-                          ' 1300',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        const Text('مطاعم الرياض '),
-                      ],
-                    ),
-                    const Divider(
-                      endIndent: 10,
-                      indent: 10,
-                    ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          ' 645',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text('الضريبة'),
-                      ],
-                    ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          ' 4300',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text('المجموع'),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  if (showContainer)
+                    _buildServicesDetails(), // Extracted method for services details
+                  const Divider(endIndent: 10, indent: 10),
+                  _buildTotalRow(),
+                ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildServicesDetails() {
+    return SizedBox(
+      width: 400,
+      height: 100,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10),
+          _buildServiceRow('1000', 'بوفية'),
+          _buildServiceRow('1000', 'طبخ'),
+          _buildServiceRow('1000', 'عصاير'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildServiceRow(String amount, String serviceName) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SizedBox(width: 4),
+        Text(amount, style: TextStyle(color: Colors.grey)),
+        SizedBox(width: 2),
+        FittedBox(
+            child: Text(serviceName, style: TextStyle(color: Colors.grey))),
+      ],
+    );
+  }
+
+  Widget _buildTotalRow() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  showContainer = !showContainer;
+                });
+              },
+              child: const Icon(
+                Icons.arrow_back_ios,
+                size: 10,
+              ),
+            ),
+            const Text(
+              ' 1300',
+              style: TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(width: 20),
+            const Text('مطاعم الرياض '),
+          ],
+        ),
+        const Divider(endIndent: 10, indent: 10),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(' 645', style: TextStyle(color: Colors.grey)),
+            SizedBox(width: 20),
+            Text('الضريبة'),
+          ],
+        ),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(' 4300', style: TextStyle(color: Colors.grey)),
+            SizedBox(width: 20),
+            Text('المجموع'),
+          ],
+        ),
+      ],
     );
   }
 }

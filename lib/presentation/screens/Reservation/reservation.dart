@@ -20,8 +20,8 @@ import 'package:intl/date_symbol_data_local.dart'
 
 // ignore: must_be_immutable
 class ReservationScreen extends StatefulWidget {
-  ReservationScreen({super.key, required this.id});
-  final String id;
+  ReservationScreen({super.key,  this.id});
+   String? id;
   String? gender;
   String? type;
   @override

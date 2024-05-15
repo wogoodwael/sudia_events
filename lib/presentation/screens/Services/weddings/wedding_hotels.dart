@@ -301,45 +301,45 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                           MaterialPageRoute(
                                                               builder: (_) =>
                                                                   PayMentScreen()));
-                                                      // FirebaseFirestore
-                                                      //     firebaseFirestore =
-                                                      //     FirebaseFirestore
-                                                      //         .instance;
-                                                      // CollectionReference
-                                                      //     services =
-                                                      //     firebaseFirestore
-                                                      //         .collection(
-                                                      //             'BookServices');
+                                                      FirebaseFirestore
+                                                          firebaseFirestore =
+                                                          FirebaseFirestore
+                                                              .instance;
+                                                      CollectionReference
+                                                          services =
+                                                          firebaseFirestore
+                                                              .collection(
+                                                                  'BookServices');
 
-                                                      // // Create a map representing the event data
-                                                      // Map<String, dynamic>
-                                                      //     bookingData = {
-                                                      //   'type': 'castle',
-                                                      //   'name': snapshot
-                                                      //       .data![index]
-                                                      //       .name[count],
-                                                      //   'des': snapshot
-                                                      //       .data![index]
-                                                      //       .des[count],
-                                                      //   'price': snapshot
-                                                      //       .data![index]
-                                                      //       .price[count],
-                                                      // };
+                                                      // Create a map representing the event data
+                                                      Map<String, dynamic>
+                                                          bookingData = {
+                                                        'type': 'castle',
+                                                        'name': snapshot
+                                                            .data![index]
+                                                            .name[count],
+                                                        'des': snapshot
+                                                            .data![index]
+                                                            .des[count],
+                                                        'price': snapshot
+                                                            .data![index]
+                                                            .price[count],
+                                                      };
 
-                                                      // // Add the event data to Firestore
-                                                      // services
-                                                      //     .add(bookingData)
-                                                      //     .then((value) {
-                                                      //   print(
-                                                      //       'services added successfully!');
-                                                      //   CustomSnackBar(
-                                                      //       context,
-                                                      //       'تم حجز الخدمة',
-                                                      //       Colors.green);
-                                                      // }).catchError((error) {
-                                                      //   print(
-                                                      //       'Failed to add services: $error');
-                                                      // });
+                                                      // Add the event data to Firestore
+                                                      services
+                                                          .add(bookingData)
+                                                          .then((value) {
+                                                        print(
+                                                            'services added successfully!');
+                                                        CustomSnackBar(
+                                                            context,
+                                                            'تم حجز الخدمة',
+                                                            Colors.green);
+                                                      }).catchError((error) {
+                                                        print(
+                                                            'Failed to add services: $error');
+                                                      });
                                                     },
                                                     child: Text(
                                                       "احجز الان",

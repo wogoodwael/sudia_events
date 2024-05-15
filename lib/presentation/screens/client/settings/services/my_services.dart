@@ -3,6 +3,7 @@ import 'package:sudia_events/core/utils/constants.dart';
 
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
+import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
 import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
 
 import 'package:sudia_events/presentation/screens/client/settings/widgets/header_services.dart';
@@ -39,13 +40,8 @@ class _MyServicesState extends State<MyServices> {
           PrevoiusBody()
         ],
       ),
-      Text(
-        'Index 2: School',
-        style: optionStyle,
-      ),
-      ReservationScreen(
-        id: sharedpref.getString('token')!,
-      ),
+      AddServices(),
+      ReservationScreen(),
       AppointmentScreen()
     ];
   }

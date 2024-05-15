@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
 import 'package:sudia_events/business_logic/cubit/family/family_filter_cubit.dart';
+import 'package:sudia_events/business_logic/cubit/get_services/services_cubit.dart';
 import 'package:sudia_events/core/utils/app_routes.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/firebase_options.dart';
@@ -28,7 +30,13 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => FamilyFilterCubit(Api()),
-        )
+        ),
+        BlocProvider(
+          create: (context) => ServicesCubit(),
+        ),
+        BlocProvider(
+          create: (context) => BookedDataCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

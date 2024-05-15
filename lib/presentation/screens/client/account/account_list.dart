@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 
 class AccountList extends StatelessWidget {
-  const AccountList({super.key, required this.accountListModel, required});
+  const AccountList({
+    super.key,
+    required this.accountListModel,
+  });
   final AccountListModel accountListModel;
   @override
   Widget build(BuildContext context) {
@@ -12,12 +15,12 @@ class AccountList extends StatelessWidget {
           padding: const EdgeInsets.only(top: 0),
           child: ListTile(
             title: Text(
-              accountListModel.title,
+              accountListModel.title ?? "",
               textDirection: TextDirection.rtl,
             ),
             subtitleTextStyle: TextStyle(color: Colors.grey),
             subtitle: Text(
-              accountListModel.subTitle,
+              accountListModel.subTitle ?? "",
               textDirection: TextDirection.rtl,
             ),
             trailing: CircleAvatar(

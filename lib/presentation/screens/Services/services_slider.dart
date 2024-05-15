@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sudia_events/business_logic/cubit/get_services/services_cubit.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/services_model.dart';
@@ -31,12 +33,14 @@ class _ServiceSliderState extends State<ServiceSlider> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<ServicesCubit>(context).getServicesCubitfun();
     Future.delayed(Duration(seconds: 5)); // data = fetchServicesData();
   }
 
   int _current = 0;
 
   final CarouselController _controller = CarouselController();
+  List<ServicesModel>? services;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,73 +63,80 @@ class _ServiceSliderState extends State<ServiceSlider> {
                 size: 15,
               ),
               onPressed: () async {
-                List<ServicesModel> data = await fetchServicesData();
-                // print("data************${data[0].des}");
+              
               },
             ),
             const SizedBox(width: 5.0),
-            FutureBuilder<List<ServicesModel>>(
-              future: fetchServicesData(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ServicesModel>> snapshot) {
-                return Container(
-                  width: 250,
-                  height: 50,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data?.length ?? 1,
-                    itemBuilder: (context, index) {
-                      return Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                onTapped[index] = !onTapped[index];
-                              });
-                              print(
-                                  "sub services list idddddddddddd ${snapshot.data![index].id}");
+            BlocBuilder<ServicesCubit, ServicesState>(
+              builder: (BuildContext context, ServicesState state) {
+                services =
+                    BlocProvider.of<ServicesCubit>(context).servicesModel;
+                if (state is ServicesLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is ServicesSuccess) {
+                  return Container(
+                    width: 250,
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: services!.length,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  onTapped[index] = !onTapped[index];
+                                });
+                                // print(
+                                //     "sub services list idddddddddddd ${snapshot.data![index].id}");
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) =>
-                                          snapshot.data![index].type == 'castle'
-                                              ? WeddingsHotels(
-                                                  id: snapshot.data![index].id,
-                                                )
-                                              : Resturants(
-                                               id: snapshot.data![index].id,
-                                                )));
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              width: 100,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                  color: onTapped[index]
-                                      ? primary
-                                      : Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: onTapped[index]
-                                          ? Colors.transparent
-                                          : primary)),
-                              child: Center(
-                                child: Text(
-                                  snapshot.data?[index].name ?? "",
-                                  style: TextStyle(
-                                      color: onTapped[index]
-                                          ? Colors.white
-                                          : Colors.grey),
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            services![index].type == 'castle'
+                                                ? WeddingsHotels(
+                                                    id: services![index].id,
+                                                  )
+                                                : Resturants(
+                                                    id: services![index].id,
+                                                  )));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(5),
+                                width: 100,
+                                height: 25,
+                                decoration: BoxDecoration(
+                                    color: onTapped[index]
+                                        ? primary
+                                        : Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: onTapped[index]
+                                            ? Colors.transparent
+                                            : primary)),
+                                child: Center(
+                                  child: Text(
+                                    services![index].name,
+                                    style: TextStyle(
+                                        color: onTapped[index]
+                                            ? Colors.white
+                                            : Colors.grey),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                );
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: Text("لا يوجد خدمات"),
+                  );
+                }
               },
             ),
             const SizedBox(width: 5.0),

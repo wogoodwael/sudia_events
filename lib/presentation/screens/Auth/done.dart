@@ -30,7 +30,10 @@ class _DoneScreenState extends State<DoneScreen> {
           Expanded(
               flex: 3,
               child: Container(
-                child: Image.asset("assets/images/logo.png", color: primary,),
+                child: Image.asset(
+                  "assets/images/logo.png",
+                  color: primary,
+                ),
               )),
           Expanded(
               flex: 3,
