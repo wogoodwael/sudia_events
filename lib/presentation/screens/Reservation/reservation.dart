@@ -8,6 +8,7 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
+import 'package:sudia_events/presentation/screens/Reservation/add_event.dart';
 import 'package:sudia_events/presentation/screens/Reservation/widgets/events_conatiner.dart';
 import 'package:sudia_events/presentation/screens/Reservation/widgets/search_container.dart';
 import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
@@ -20,8 +21,8 @@ import 'package:intl/date_symbol_data_local.dart'
 
 // ignore: must_be_immutable
 class ReservationScreen extends StatefulWidget {
-  ReservationScreen({super.key,  this.id});
-   String? id;
+  ReservationScreen({super.key, this.id});
+  String? id;
   String? gender;
   String? type;
   @override
@@ -35,10 +36,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Map<DateTime, List<Event>> events = {};
   bool chooseday = false;
   bool addService = false;
-  TextEditingController name = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController family = TextEditingController();
-  TextEditingController tribe = TextEditingController();
+
   List familyFilter = [];
   late final ValueNotifier<List<Event>> _selectedEvents;
   Api api = Api();
@@ -189,6 +187,14 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               addService = false;
                               chooseday = true;
                             });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => AddEventScreen(
+                                          id: widget.id!,
+                                          selectedDay: _selectedDay!,
+                                          selectedEvents: _selectedEvents,
+                                        )));
                           },
                           child: Container(
                             width: 150,
@@ -287,258 +293,103 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               ),
                             ),
                           )
-                        : Container(
-                            width: .9 * mediawidth(context),
-                            height: 120,
-                            child: ValueListenableBuilder(
-                              valueListenable: _selectedEvents,
-                              builder: (context, value, child) {
-                                return ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  // Disable scrolling
-
-                                  shrinkWrap: true,
-                                  itemCount: value.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      margin: EdgeInsets.only(bottom: 10),
-                                      width: .9 * mediawidth(context),
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                          color: primary,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10.0),
-                                            child: Icon(
-                                              Icons.cancel_outlined,
-                                              color: Colors.white,
-                                            ),
+                        : LayoutBuilder(
+                            builder: (BuildContext context,
+                                BoxConstraints constraints) {
+                              return Container(
+                                width: .9 * mediawidth(context),
+                                height: 120,
+                                child: ValueListenableBuilder(
+                                  valueListenable: _selectedEvents,
+                                  builder: (context, value, child) {
+                                    return ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount: value.length,
+                                      itemBuilder: (context, index) {
+                                        print("value ${value[index].name}");
+                                        return Container(
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          width: .9 * mediawidth(context),
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            color: primary,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
+                                          child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                "${_selectedDay != null ? intl.DateFormat('EEEE', 'ar').format(_selectedDay!) : 'No date selected'}",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
+                                                child: Icon(
+                                                  Icons.cancel_outlined,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              Text(
-                                                "${_selectedDay != null ? intl.DateFormat('yyyy/MM/dd', 'ar').format(_selectedDay!) : 'No day selected'}",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "${_selectedDay != null ? intl.DateFormat('EEEE', 'ar').format(_selectedDay!) : 'No date selected'}",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "${_selectedDay != null ? intl.DateFormat('yyyy/MM/dd', 'ar').format(_selectedDay!) : 'No day selected'}",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${value[index].name}',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.white,
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                              FittedBox(
-                                                  child: Text(
-                                                '${value[index].name}',
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.white),
-                                              ))
+                                              VerticalDivider(
+                                                endIndent: 20,
+                                                indent: 10,
+                                                color: Colors.grey[200],
+                                              ),
+                                              Center(
+                                                child: CircleAvatar(
+                                                  backgroundColor: Colors.white,
+                                                  radius: 25,
+                                                  child: Image.asset(
+                                                    "assets/images/just_logo.png",
+                                                    color: primary,
+                                                    width: 40,
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                          VerticalDivider(
-                                            endIndent: 20,
-                                            indent: 10,
-                                            color: Colors.grey[200],
-                                          ),
-                                          Center(
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              radius: 25,
-                                              child: Image.asset(
-                                                "assets/images/just_logo.png",
-                                                color: primary,
-                                                width: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        );
+                                      },
                                     );
                                   },
-                                );
-                              },
-                            ),
-                          ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    EventsContainer(
-                      name: name,
-                      family: family,
-                      tribe: tribe,
-                      phone: phone,
-                      onPressed: () {
-                        FirebaseFirestore firebaseFirestore =
-                            FirebaseFirestore.instance;
-                        CollectionReference reservation =
-                            firebaseFirestore.collection('reservation');
-
-                        // Create a map representing the event data
-                        Map<String, dynamic> eventData = {
-                          'userID': widget.id,
-                          'name': name.text,
-                          'phone': phone.text,
-                          'gender': widget.gender,
-                          'type': widget.type,
-                          'date': _selectedDay!.toIso8601String(),
-                          'family': family.text,
-                          'tribe': tribe.text
-                        };
-
-                        // Add the event data to Firestore
-                        reservation.add(eventData).then((value) {
-                          print('Event added successfully!');
-                        }).catchError((error) {
-                          print('Failed to add event: $error');
-                        });
-
-                        // Check if events already exist for the selected day
-                        if (events.containsKey(_selectedDay)) {
-                          // Append the new event to the existing list of events
-                          events[_selectedDay]!.add(
-                            Event(
-                                date: _selectedDay!,
-                                name: name.text,
-                                phone: phone.text,
-                                gender: widget.gender ?? '',
-                                type: widget.type ?? "",
-                                family: family.text,
-                                tribe: tribe.text),
-                          );
-                        } else {
-                          // Create a new list with the new event
-                          events[_selectedDay!] = [
-                            Event(
-                                date: _selectedDay!,
-                                name: name.text,
-                                phone: phone.text,
-                                gender: widget.gender ?? '',
-                                type: widget.type ?? "",
-                                family: family.text,
-                                tribe: tribe.text),
-                          ];
-                        }
-
-                        // Update the selected events
-                        _selectedEvents.value = _getEventsForDay(_selectedDay!);
-                        setState(() {
-                          _selectedEvents;
-                        });
-
-                        // Clear the text controllers
-                        name.clear();
-                        phone.clear();
-                      },
-                      widgetRow: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          PopupMenuButton<String>(
-                            onSelected: (value) {
-                              setState(() {
-                                widget.type = value;
-                              });
-                            },
-                            itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry<String>>[
-                              const PopupMenuItem<String>(
-                                value: 'نوع المناسبة 1',
-                                child: Text('نوع المناسبة 1'),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'نوع المناسبة 2',
-                                child: Text('نوع المناسبة 2'),
-                              ),
-                              // Add more PopupMenuItem for additional options
-                            ],
-                            // Custom icon with desired color
-                            child: Container(
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: primary)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 5.0, right: 2),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Icon(Icons.keyboard_arrow_down,
-                                        color: Colors.grey),
-                                    Text(
-                                      widget.type ?? 'نوع المناسبة',
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 12),
-                                    ),
-                                  ],
                                 ),
-                              ),
-                            ),
-                          ),
-                          PopupMenuButton<String>(
-                            onSelected: (value) {
-                              setState(() {
-                                widget.gender = value;
-                              });
+                              );
                             },
-                            itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry<String>>[
-                              const PopupMenuItem<String>(
-                                value: 'ذكر',
-                                child: Text('ذكر'),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'أنثى',
-                                child: Text('أنثى'),
-                              ),
-                              // Add more PopupMenuItem for additional options
-                            ],
-                            // Custom icon with desired color
-                            child: Container(
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: primary)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 5.0, right: 2),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Icon(Icons.keyboard_arrow_down,
-                                        color: Colors.grey),
-                                    Text(
-                                      widget.gender ?? "انثي /ذكر",
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          )
                   ],
                 ),
               ),
