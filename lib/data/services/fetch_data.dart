@@ -116,6 +116,9 @@ Future<List<BookedServicesModel>> fetchBookedData() async {
         des: doc['des'],
         price: doc['price'],
         type: doc['type'],
+        bofe: doc['bofe'],
+        cooking: doc['cooking'],
+        jucies: doc['jucies'],
       );
     }).toList();
     print("booked data details: $booked");

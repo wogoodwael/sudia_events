@@ -22,10 +22,7 @@ class HotelContainer extends StatefulWidget {
 }
 
 class _HotelContainerState extends State<HotelContainer> {
-  List<bool> tapped = [
-    false,
-    false,
-  ];
+  List<bool> tapped = [];
   List<BookedServicesModel>? bookedServices;
   @override
   void initState() {
@@ -34,7 +31,10 @@ class _HotelContainerState extends State<HotelContainer> {
     BlocProvider.of<BookedDataCubit>(context).getBookedDataCubitfun();
   }
 
-  // List<String> indexPrice = ['8000', "300",];
+  void _initializeTapped(int length) {
+    tapped = List<bool>.filled(length, false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BookedDataCubit, BookedDataState>(
@@ -46,6 +46,9 @@ class _HotelContainerState extends State<HotelContainer> {
             child: CircularProgressIndicator(),
           );
         } else if (state is BookedDataSuccess) {
+          if (tapped.length != bookedServices!.length) {
+            _initializeTapped(bookedServices!.length);
+          }
           return Column(
               // mainAxisSize: MainAxisSize.min,
               children: List.generate(bookedServices!.length, (index) {
@@ -63,7 +66,22 @@ class _HotelContainerState extends State<HotelContainer> {
                   des: bookedServices![index].des,
                 ),
                 tapped[index]
-                    ? TappedContainer()
+                    ? TappedContainer(
+                        textData: [
+                          if (bookedServices != null &&
+                              bookedServices!.isNotEmpty)
+                            if (bookedServices![index].bofe != "")
+                              bookedServices![index].bofe,
+                          if (bookedServices != null &&
+                              bookedServices!.isNotEmpty)
+                            if (bookedServices![index].cooking != "")
+                              bookedServices![index].cooking,
+                          if (bookedServices != null &&
+                              bookedServices!.isNotEmpty)
+                            if (bookedServices![index].jucies != "")
+                              bookedServices![index].jucies!,
+                        ],
+                      )
                     : SizedBox(
                         height: 20,
                       ),

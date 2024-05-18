@@ -5,17 +5,41 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class TappedContainer extends StatefulWidget {
-  const TappedContainer({super.key});
-
+  const TappedContainer({super.key, required this.textData});
+  final List<String> textData;
   @override
   State<TappedContainer> createState() => _TappedContainerState();
 }
 
 class _TappedContainerState extends State<TappedContainer> {
-  List textData = ['بوفيه', 'طبخ', 'عصاير'];
-  List measuring = ['متر', 'كيلو', 'حبة'];
-  List number = ['5', '1', '20'];
-  List price = ['15', '15', '15'];
+  List<String> measuring = ['متر', 'كيلو', 'حبة'];
+  List<int> number = [5, 1, 20];
+  List<double> pricePerItem = [15.0, 15.0, 15.0];
+  List<double> totalPrices = [];
+
+  @override
+  void initState() {
+    super.initState();
+    totalPrices = List.generate(
+        pricePerItem.length, (index) => number[index] * pricePerItem[index]);
+  }
+
+  void _incrementQuantity(int index) {
+    setState(() {
+      number[index]++;
+      totalPrices[index] = number[index] * pricePerItem[index];
+    });
+  }
+
+  void _decrementQuantity(int index) {
+    setState(() {
+      if (number[index] > 0) {
+        number[index]--;
+        totalPrices[index] = number[index] * pricePerItem[index];
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,14 +48,17 @@ class _TappedContainerState extends State<TappedContainer> {
         width: .92 * mediawidth(context),
         height: 240,
         decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              bottom: BorderSide(color: primary),
-              left: BorderSide(color: primary),
-              right: BorderSide(color: primary),
-            ),
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5), topLeft: Radius.circular(5))),
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(color: primary),
+            left: BorderSide(color: primary),
+            right: BorderSide(color: primary),
+          ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(5),
+            topLeft: Radius.circular(5),
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -43,8 +70,9 @@ class _TappedContainerState extends State<TappedContainer> {
               width: mediawidth(context),
               height: 150,
               child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                itemCount: 3,
+                itemCount: widget. textData.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
@@ -67,14 +95,17 @@ class _TappedContainerState extends State<TappedContainer> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10.0),
-                                  child: Icon(
-                                    Icons.add_circle,
-                                    color: Colors.green[300],
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.add_circle,
+                                      color: Colors.green[300],
+                                    ),
+                                    onPressed: () => _incrementQuantity(index),
                                   ),
                                 ),
-                                Text(number[index]),
+                                Text(number[index].toString()),
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () => _decrementQuantity(index),
                                   icon: Icon(
                                     Icons.remove_circle,
                                     color: Colors.grey[300],
@@ -86,11 +117,11 @@ class _TappedContainerState extends State<TappedContainer> {
                             Row(
                               children: [
                                 Text(
-                                  price[index],
+                                  totalPrices[index].toStringAsFixed(2),
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 Text(
-                                  "SR",
+                                  " SR",
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 7,
@@ -98,10 +129,8 @@ class _TappedContainerState extends State<TappedContainer> {
                                 )
                               ],
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            CustomCheckBox(text: textData[index]),
+                            SizedBox(width: 5),
+                            CustomCheckBox(text:widget. textData[index]),
                           ],
                         ),
                       ),
@@ -110,7 +139,7 @@ class _TappedContainerState extends State<TappedContainer> {
                         indent: 10,
                         endIndent: 10,
                         height: 0,
-                      )
+                      ),
                     ],
                   );
                 },
@@ -135,7 +164,7 @@ class _TappedContainerState extends State<TappedContainer> {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

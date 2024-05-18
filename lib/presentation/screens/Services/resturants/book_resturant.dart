@@ -45,7 +45,7 @@ class _BookResturantState extends State<BookResturant> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Text('No data available');
+            return Center(child: Text('No data available'));
           }
           return Column(
             children: [
