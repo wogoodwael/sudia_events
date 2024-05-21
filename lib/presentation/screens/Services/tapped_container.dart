@@ -72,7 +72,7 @@ class _TappedContainerState extends State<TappedContainer> {
               child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                itemCount: widget. textData.length,
+                itemCount: widget.textData.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
@@ -130,7 +130,10 @@ class _TappedContainerState extends State<TappedContainer> {
                               ],
                             ),
                             SizedBox(width: 5),
-                            CustomCheckBox(text:widget. textData[index]),
+                            CustomCheckBox(
+                              text: widget.textData[index],
+                              value: false,
+                            ),
                           ],
                         ),
                       ),

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +34,40 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends State<VerifyScreen> {
   final _otpPinFieldController = GlobalKey<OtpPinFieldState>();
+  bool isOtpComplete = false;
 
   Api api = Api();
+  final int otpLength = 6; // Adjust the length of the OTP as needed
 
   bool loading = false;
+  late Timer _timer;
+  int _start = 15;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_start == 0) {
+        setState(() {
+          timer.cancel();
+        });
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +86,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   SizedBox(
                     height: .1 * MediaQuery.sizeOf(context).height,
                   ),
-                  const Text(
-                    "ادخل رمز التحقق ",
+                  Text(
+                    "enter verify code".tr(),
                     style: TextStyle(fontSize: 30),
                   ),
                   Text(
-                    "+ لقد ارسلنا رمز التحقق الي ${widget.phone.substring(widget.phone.length - 3)} ****** ${widget.phone.substring(0, 2)}",
+                    "${"massage".tr()}${widget.phone.substring(widget.phone.length - 3)} ****** ${widget.phone.substring(0, 2)}",
                     style: TextStyle(color: Colors.grey, fontSize: 17),
                   ),
 
@@ -76,6 +108,9 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       ///in case you want to change the action of keyboard
                       /// to clear the Otp pin Controller
                       onSubmit: (text) {
+                        setState(() {
+                          isOtpComplete = true;
+                        });
                         print('Entered pin is $text');
 
                         /// return the entered pin
@@ -86,7 +121,15 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         /// return the entered pin
                       },
                       onCodeChanged: (code) {
-                        print('onCodeChanged  is $code');
+                        if (code.length == otpLength) {
+                          setState(() {
+                            isOtpComplete = true;
+                          });
+                        } else {
+                          setState(() {
+                            isOtpComplete = false;
+                          });
+                        }
                       },
 
                       /// to decorate your Otp_Pin_Field
@@ -138,43 +181,49 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       otpPinFieldDecoration:
                           OtpPinFieldDecoration.defaultPinBoxDecoration),
 
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "  تسجيل الخروج ",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      Icon(
-                        Icons.logout,
-                        size: 15,
-                        color: Colors.red,
+                      Center(
+                        child: Text(
+                          "dont recieve".tr(),
+                          style: TextStyle(fontSize: 17),
+                        ),
                       ),
                       SizedBox(
-                        width: 20,
+                        height: 10,
                       ),
-                      Text("اعاده ارسال الرمز "),
-                      Icon(
-                        Icons.restore,
-                        size: 17,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '00:$_start',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(
+                            Icons.timer_sharp,
+                            size: 17,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: _start == 0 ? _resendCode : null,
+                        child: Text(
+                          'resend'.tr(),
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  FittedBox(
-                    child: Row(
-                      children: [
-                        Text(
-                            "اذا كنت تواجه مشكله في تسجيل الدخول تواصل مع خدمه العملاء "),
-                        Icon(
-                          Icons.headset_mic,
-                          size: 17,
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
                     child: MaterialButton(
-                      color: primary,
+                      color: isOtpComplete ? primary : secondary,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       minWidth: .7 * mediawidth(context),
@@ -225,7 +274,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                 color: Colors.white,
                               ))
                           : Text(
-                              "تحقق",
+                              "next".tr(),
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
@@ -238,5 +287,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
         ],
       )),
     );
+  }
+
+  void _resendCode() {
+    setState(() {
+      _start = 15;
+    });
+    startTimer();
   }
 }

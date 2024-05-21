@@ -1,31 +1,53 @@
+import 'package:easy_localization/easy_localization.dart' as ea;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
 import 'package:sudia_events/business_logic/cubit/family/family_filter_cubit.dart';
 import 'package:sudia_events/business_logic/cubit/get_services/services_cubit.dart';
+import 'package:sudia_events/core/helper/language_provider.dart';
 import 'package:sudia_events/core/utils/app_routes.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/firebase_options.dart';
-import 'package:sudia_events/presentation/screens/splash.dart';
+import 'package:sudia_events/presentation/screens/onBoarding/splash_screen.dart';
 
 late SharedPreferences sharedpref;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ea.EasyLocalization.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   sharedpref = await SharedPreferences.getInstance();
-  runApp(MyApp());
+
+  runApp(
+    ea.EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path:
+          'assets/translations', // <-- change the path of the translation files
+      fallbackLocale: const Locale('en'),
+      child: ChangeNotifierProvider(
+        create: (_) => LanguageProvider(),
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   AppRouter appRouter = AppRouter();
+
   @override
   Widget build(BuildContext context) {
+    // Access the current locale
+    Locale currentLocale = context.locale;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -38,11 +60,40 @@ class MyApp extends StatelessWidget {
           create: (context) => BookedDataCubit(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {'/': (context) => SplashScreen()},
-        onGenerateRoute: appRouter.generateRoute,
-        initialRoute: '/',
+      child: Consumer<LanguageProvider>(
+        builder: (context, languageProvider, Widget? child) {
+          // Set text direction based on the current locale
+          TextDirection textDirection = currentLocale.languageCode == 'ar'
+              ? TextDirection.rtl
+              : TextDirection.ltr;
+
+          return MaterialApp(
+            builder: (context, child) {
+              return Directionality(
+                textDirection: textDirection,
+                child: child!,
+              );
+            },
+            theme: ThemeData(primarySwatch: Colors.deepOrange),
+            locale: currentLocale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+            localeResolutionCallback: (locale, supportedLocales) {
+              if (locale == null) return supportedLocales.first;
+
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode) {
+                  return supportedLocale;
+                }
+              }
+              return supportedLocales.first;
+            },
+            debugShowCheckedModeBanner: false,
+            routes: {'/': (context) => SplashScreen()},
+            onGenerateRoute: appRouter.generateRoute,
+            initialRoute: '/',
+          );
+        },
       ),
     );
   }

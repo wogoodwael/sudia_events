@@ -9,21 +9,21 @@ import 'package:sudia_events/presentation/screens/client/pills/pills.dart';
 import 'package:sudia_events/presentation/screens/client/pills/pills_details.dart';
 import 'package:sudia_events/presentation/screens/client/settings/services/my_services.dart';
 import 'package:sudia_events/presentation/screens/client/settings/settings.dart';
-import 'package:sudia_events/presentation/screens/splash.dart';
+import 'package:sudia_events/presentation/screens/onBoarding/splash_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute(builder: (_) => SplashScreen());
       case login:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case register:
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
-     
+
       case myAccount:
         return MaterialPageRoute(builder: (_) => const MyAccountScreen());
-     
+
       case setting:
         return MaterialPageRoute(builder: (_) => const SettingScreen());
       case myServices:
@@ -31,7 +31,7 @@ class AppRouter {
       case pills:
         return MaterialPageRoute(builder: (_) => const PillScreen());
       case pilldetails:
-        return MaterialPageRoute(builder: (_) =>  PillDetails());
+        return MaterialPageRoute(builder: (_) => PillDetails());
     }
     return null;
   }

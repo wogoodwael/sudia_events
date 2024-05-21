@@ -37,15 +37,19 @@ dependencies:
   cupertino_icons: ^1.0.6
   otp_pin_field: ^1.2.2
   easy_stepper: ^0.8.4
-  table_calendar: ^3.1.1
+  table_calendar: ^3.0.9
   camera: ^0.10.5+9
-  firebase_core: ^2.30.1
+  firebase_core: ^2.3.1
   firebase_auth: ^4.19.4
   cloud_firestore: ^4.17.2
   shared_preferences: ^2.2.3
   flutter_bloc: ^8.1.5
   carousel_slider: ^4.2.1
   solid_bottom_sheet: ^0.1.10
+
+  easy_localization: ^3.0.0
+  flutter_svg: ^2.0.10+1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +76,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/translations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
