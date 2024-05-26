@@ -4,32 +4,33 @@ import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
 import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
 import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
 import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
+import 'package:sudia_events/presentation/screens/client/account/user_profile.dart';
+import 'package:sudia_events/presentation/screens/home/home.dart';
 
-class ButtomBarScreen extends StatefulWidget {
-  ButtomBarScreen({Key? key, required this.id}) : super(key: key);
+class BottomBarScreen extends StatefulWidget {
+  BottomBarScreen({Key? key, required this.id}) : super(key: key);
   final String id;
+
   @override
-  State<ButtomBarScreen> createState() => _ButtomBarScreenState();
+  State<BottomBarScreen> createState() => _BottomBarScreenState();
 }
 
-class _ButtomBarScreenState extends State<ButtomBarScreen>
-    with SingleTickerProviderStateMixin {
+class _BottomBarScreenState extends State<BottomBarScreen> {
   int _selectedIndex = 0;
   List<Widget>? _widgetOptions;
-
-  static TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   @override
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      MyAccountScreen(),
+      HomeScreen(),
+      // MyAccountScreen(),
       AddServices(),
       ReservationScreen(
         id: widget.id,
       ),
-      AppointmentScreen()
+      // AppointmentScreen(),
+      UserFormScreen(),
     ];
   }
 
@@ -39,6 +40,12 @@ class _ButtomBarScreenState extends State<ButtomBarScreen>
     });
   }
 
+  double _calculatePosition(int index) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double itemWidth = screenWidth / 4;
+    return index * itemWidth + itemWidth / 2 - 30; // Adjust the position
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,70 +53,79 @@ class _ButtomBarScreenState extends State<ButtomBarScreen>
       body: Center(
         child: _widgetOptions!.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: _selectedIndex == 0 ? primary : Colors.grey,
-                            width: 3))),
-                child: Image.asset(
-                  "assets/images/person.png",
-                  width: 60,
-                )),
-            label: 'حسابي ',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: _selectedIndex == 1 ? primary : Colors.grey,
-                            width: 3))),
-                child: Image.asset(
-                  "assets/images/services.png",
-                  width: 60,
-                )),
-            label: 'الخدمات',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: _selectedIndex == 2 ? primary : Colors.grey,
-                            width: 3))),
-                child: Image.asset(
-                  "assets/images/booking.png",
-                  width: 60,
-                )),
-            label: 'الحجوزات',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: _selectedIndex == 3 ? primary : Colors.grey,
-                            width: 3))),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Image.asset(
-                    "assets/images/appointments.png",
-                    width: 60,
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          // Dark background color
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, -2),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  icon: _selectedIndex == 0 ? Text("") : Icon(Icons.home),
+                  label: _selectedIndex == 0 ? 'الرئيسية' : "",
+                ),
+                BottomNavigationBarItem(
+                  icon: _selectedIndex == 1
+                      ? Text("")
+                      : Icon(Icons.notifications),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon:
+                      _selectedIndex == 2 ? Text("") : Icon(Icons.shopping_bag),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: _selectedIndex == 3 ? Text("") : Icon(Icons.person),
+                  label: '',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: primary,
+              unselectedItemColor: Colors.grey,
+              onTap: _onItemTapped,
+              showSelectedLabels: true,
+              showUnselectedLabels: false,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            Positioned(
+              bottom: 30, // Adjust this value to fit the circle in the middle
+              right: _calculatePosition(_selectedIndex),
+              child: GestureDetector(
+                onTap: () => _onItemTapped(_selectedIndex),
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: primary,
+                  child: Icon(
+                    _selectedIndex == 0
+                        ? Icons.person
+                        : _selectedIndex == 1
+                            ? Icons.notifications
+                            : _selectedIndex == 2
+                                ? Icons.shopping_bag
+                                : Icons.person,
+                    color: Colors.white,
+                    size: 30,
                   ),
-                )),
-            label: 'المواعيد',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: primary,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true, // Show labels for selected items
-        showUnselectedLabels: true,
-        onTap: _onItemTapped,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

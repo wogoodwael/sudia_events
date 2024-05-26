@@ -91,7 +91,7 @@ class _DoneScreenState extends State<DoneScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => ButtomBarScreen(
+                                builder: (_) => BottomBarScreen(
                                       id: widget.id,
                                     )));
                         print("ooooooId${widget.id}");

@@ -257,7 +257,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                 : Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => ButtomBarScreen(
+                                        builder: (_) => BottomBarScreen(
                                               id: uid,
                                             )));
                             sharedpref.setString('token', uid);
