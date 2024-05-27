@@ -3,9 +3,11 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
+import 'package:sudia_events/presentation/screens/Reservation/widgets/search_container.dart';
 
 import 'package:sudia_events/presentation/screens/home/category_selector.dart';
 import 'package:sudia_events/presentation/screens/home/slider_body.dart';
+import 'package:sudia_events/presentation/widgets/search.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart' as data;
 
@@ -17,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController controller = TextEditingController();
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -98,27 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     CategorySelector(),
-                    Container(
-                      width: .9 * mediawidth(context),
-                      height: 45,
-                      decoration: BoxDecoration(color: Colors.grey[200]),
-                      child: TextField(
-                        controller: controller,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'البحث بالاسم . القبيلة.الموقع',
-                            hintStyle: TextStyle(color: Colors.grey[400]),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Colors.grey[400],
-                            ),
-                            suffixIcon: Icon(
-                              Icons.tune,
-                              color: Colors.grey[400],
-                            )),
-                      ),
-                    ),
-                  ],
+               //*
+             SearchContainernew(hintText: 'البحث بالاسم . القبيلة.الموقع')
+                ],
                 )),
             Expanded(
               flex: 6,

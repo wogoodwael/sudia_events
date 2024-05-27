@@ -31,6 +31,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       ),
       // AppointmentScreen(),
       UserFormScreen(),
+      UserFormScreen(),
     ];
   }
 
@@ -42,7 +43,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
   double _calculatePosition(int index) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double itemWidth = screenWidth / 4;
+    double itemWidth = screenWidth / 5;
     return index * itemWidth + itemWidth / 2 - 30; // Adjust the position
   }
 
@@ -77,10 +78,8 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   label: _selectedIndex == 0 ? 'الرئيسية' : "",
                 ),
                 BottomNavigationBarItem(
-                  icon: _selectedIndex == 1
-                      ? Text("")
-                      : Icon(Icons.notifications),
-                  label: '',
+                  icon: _selectedIndex == 1 ? Text("") : Icon(Icons.assignment),
+                  label: _selectedIndex == 1 ? 'الخدمات' : "",
                 ),
                 BottomNavigationBarItem(
                   icon:
@@ -88,7 +87,13 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   label: '',
                 ),
                 BottomNavigationBarItem(
-                  icon: _selectedIndex == 3 ? Text("") : Icon(Icons.person),
+                  icon: _selectedIndex == 3
+                      ? Text("")
+                      : Icon(Icons.notifications),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: _selectedIndex == 4 ? Text("") : Icon(Icons.person),
                   label: '',
                 ),
               ],
@@ -112,12 +117,14 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   backgroundColor: primary,
                   child: Icon(
                     _selectedIndex == 0
-                        ? Icons.person
+                        ? Icons.home
                         : _selectedIndex == 1
-                            ? Icons.notifications
+                            ? Icons.assignment
                             : _selectedIndex == 2
                                 ? Icons.shopping_bag
-                                : Icons.person,
+                                : _selectedIndex == 3
+                                    ? Icons.notifications
+                                    : Icons.person,
                     color: Colors.white,
                     size: 30,
                   ),

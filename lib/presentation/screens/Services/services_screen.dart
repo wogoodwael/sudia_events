@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +8,8 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Services/bottomSheet_body.dart';
 import 'package:sudia_events/presentation/screens/Services/services_body.dart';
+import 'package:sudia_events/presentation/screens/favorite/fav.dart';
+import 'package:sudia_events/presentation/screens/home/slider_body.dart';
 import 'package:sudia_events/presentation/screens/positioned_logo.dart';
 
 class AddServices extends StatefulWidget {
@@ -29,149 +33,81 @@ class _AddServicesState extends State<AddServices> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Container(
-                      height: 150,
-                      width: 400,
-                      decoration: const BoxDecoration(
-                        color: primary,
+        actions: [
+          Text('موقعك'),
+          SizedBox(width: 10),
+          Icon(Icons.location_on_rounded),
+          SizedBox(width: 10),
+        ],
+        leading: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('favorites')
+              .snapshots(),
+          builder: (context, snapshot) {
+            int favoriteCount = 0;
+            if (snapshot.hasData) {
+              favoriteCount = snapshot.data!.docs.length;
+            }
+            return Stack(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.shopify_sharp,
+                    color: primary,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => FavouriteScreen()));
+                  },
+                ),
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: Text(
+                      '$favoriteCount',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  PositionedLogo(),
-                  Positioned(
-                      bottom: 0,
-                      left: 20,
-                      top: 90,
-                      child: Container(
-                        width: .9 * mediawidth(context),
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  addService = true;
-                                  chooseday = false;
-                                });
-                              },
-                              child: Container(
-                                width: 130,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: addService ? primary : Colors.white,
-                                  border: !addService
-                                      ? Border.all(color: primary)
-                                      : Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "اضافة خدمات ",
-                                    style: TextStyle(
-                                      color:
-                                          addService ? Colors.white : primary,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  addService = false;
-                                  chooseday = true;
-                                });
-                              },
-                              child: Container(
-                                width: 130,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  border: !chooseday
-                                      ? Border.all(color: primary)
-                                      : Border.all(color: Colors.white),
-                                  color: chooseday ? primary : Colors.white,
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "اختيار اليوم ",
-                                    style: TextStyle(
-                                      color: chooseday ? Colors.white : primary,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ))
-                ],
-              ),
-            ),
-            Expanded(
-                flex: 7,
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [SliderPage()],
-                    ),
-                  ),
-                ))
-          ],
+                ),
+              ],
+            );
+          },
         ),
-        bottomSheet: SolidBottomSheet(
-            controller: _controller,
-            maxHeight: 200,
-            headerBar: GestureDetector(
-              onTap: () {
-                _controller.isOpened ? _controller.hide() : _controller.show();
-              },
+      ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: SliderBodeyHomePage(),
+          ),
+          Expanded(
+              flex: 7,
               child: Container(
-                width: 30,
-                height: 15,
-                decoration: BoxDecoration(
-                    color: Color(0xfff9f9f9),
-                    border: Border(
-                      top: BorderSide(color: primary),
-                      left: BorderSide(color: primary),
-                      right: BorderSide(color: primary),
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    )),
-              ),
-            ),
-            body: ButtomSheetBody(
-              onTap: () {
-                _controller.isOpened ? _controller.hide() : _controller.show();
-              },
-            )));
+                child: ServicesBodey(),
+              ))
+        ],
+      ),
+    );
   }
 }
