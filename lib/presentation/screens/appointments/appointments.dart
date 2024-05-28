@@ -270,11 +270,11 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Calender(
-                        getEventsForDay: _getEventsForDay,
-                        focusedDay: _focusedDay,
-                        selectedDay: _selectedDay!,
-                        onDaySelected: _onDaySelected),
+                    // Calender(
+                    //     getEventsForDay: _getEventsForDay,
+                    //     focusedDay: _focusedDay,
+                    //     selectedDay: _selectedDay!,
+                    //     onDaySelected: _onDaySelected),
                     SizedBox(
                       height: 10,
                     ),

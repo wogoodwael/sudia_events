@@ -158,9 +158,9 @@ class Api {
         final eventDateString = eventData['date'] as String;
         final eventDateTime = DateTime.parse(eventDateString);
         final eventName = eventData['name'] as String;
-        final eventType = eventData['type'] as String;
+
         final phone = eventData['phone'] as String;
-        final gender = eventData['gender'] as String;
+
         final family = eventData['family'] as String;
         final tribe = eventData['tribe'] as String;
 
@@ -169,9 +169,7 @@ class Api {
             Event(
                 date: eventDateTime,
                 name: eventName,
-                type: eventType,
                 phone: phone,
-                gender: gender,
                 family: family,
                 tribe: tribe),
           );
@@ -180,9 +178,7 @@ class Api {
             Event(
                 date: eventDateTime,
                 name: eventName,
-                type: eventType,
                 phone: phone,
-                gender: gender,
                 family: family,
                 tribe: tribe),
           ];
@@ -209,9 +205,7 @@ class Api {
           .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
               name: doc['name'],
               date: DateTime.parse(doc['date']),
-              type: doc['type'],
               phone: doc['phone'],
-              gender: doc['gender'],
               family: doc['family'],
               tribe: doc['tribe']))
           .toList();

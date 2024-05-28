@@ -114,8 +114,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         date: widget.selectedDay,
                         name: name.text,
                         phone: phone.text,
-                        gender: gender ?? "",
-                        type: type ?? "",
+                        // gender: gender ?? "",
+                        // type: type ?? "",
                         family: family.text,
                         tribe: tribe.text),
                   );
@@ -126,8 +126,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         date: widget.selectedDay!,
                         name: name.text,
                         phone: phone.text,
-                        gender: gender ?? '',
-                        type: type ?? "",
+                        // gender: gender ?? '',
+                        // type: type ?? "",
                         family: family.text,
                         tribe: tribe.text),
                   ];

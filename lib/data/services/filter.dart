@@ -25,13 +25,11 @@ Future<List<Event>> filterEventsByFamily(String familyName) async {
 
       // Create an Event object and add it to the filteredData list
       Event event = Event(
-        type: eventtype,
         name: eventName,
         family: eventFamily,
         tribe: eventTribe,
         date: eventDateTime,
         phone: eventPhone,
-        gender: eventgender,
       );
       filteredData.add(event);
     });
@@ -43,6 +41,7 @@ Future<List<Event>> filterEventsByFamily(String familyName) async {
     return [];
   }
 }
+
 Future<List<Event>> filterEventsByTribe(String tribeName) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -67,13 +66,11 @@ Future<List<Event>> filterEventsByTribe(String tribeName) async {
 
       // Create an Event object and add it to the filteredData list
       Event event = Event(
-        type: eventtype,
         name: eventName,
         family: eventFamily,
         tribe: eventTribe,
         date: eventDateTime,
         phone: eventPhone,
-        gender: eventgender,
       );
       filteredData.add(event);
     });
@@ -86,8 +83,8 @@ Future<List<Event>> filterEventsByTribe(String tribeName) async {
   }
 }
 
-
-Future<List<Event>> filterEventsByFamilyAndTribe(String familyName, String tribeName) async {
+Future<List<Event>> filterEventsByFamilyAndTribe(
+    String familyName, String tribeName) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   List<Event> filteredData = [];
@@ -103,8 +100,7 @@ Future<List<Event>> filterEventsByFamilyAndTribe(String familyName, String tribe
       // Extract individual fields from the document data
       String eventName = doc['name'];
       String eventPhone = doc['phone'];
-      String eventtype = doc['type'];
-      String eventgender = doc['gender'];
+
       String eventFamily = doc['family'];
       String eventTribe = doc['tribe'];
       final eventDateString = doc['date'] as String;
@@ -112,13 +108,11 @@ Future<List<Event>> filterEventsByFamilyAndTribe(String familyName, String tribe
 
       // Create an Event object and add it to the filteredData list
       Event event = Event(
-        type: eventtype,
         name: eventName,
         family: eventFamily,
         tribe: eventTribe,
         date: eventDateTime,
         phone: eventPhone,
-        gender: eventgender,
       );
       filteredData.add(event);
     });

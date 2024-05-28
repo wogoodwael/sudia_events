@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class SearchContainernew extends StatelessWidget {
-  SearchContainernew({super.key, required this.hintText});
-  TextEditingController controller = TextEditingController();
+  SearchContainernew(
+      {super.key, required this.hintText, required this.controller, required this.onTap});
+  final TextEditingController controller;
   final String hintText;
-
+  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,9 +23,12 @@ class SearchContainernew extends StatelessWidget {
               Icons.search,
               color: Colors.grey[400],
             ),
-            suffixIcon: Icon(
-              Icons.tune,
-              color: Colors.grey[400],
+            suffixIcon: GestureDetector(
+              onTap: onTap,
+              child: Icon(
+                Icons.tune,
+                color: Colors.grey[400],
+              ),
             )),
       ),
     );

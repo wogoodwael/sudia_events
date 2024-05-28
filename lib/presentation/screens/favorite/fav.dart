@@ -14,6 +14,7 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
+  TextEditingController controller=TextEditingController();
   Future<void> _removeFromFavorites(String docId) async {
     try {
       await FirebaseFirestore.instance
@@ -97,7 +98,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       body: Column(
         children: [
           SearchContainernew(
-            hintText: 'البحث',
+            hintText: 'البحث', controller: controller, onTap: () {  },
           ),
           SizedBox(
             height: 10,
