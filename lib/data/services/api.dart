@@ -39,7 +39,7 @@ class Api {
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
 
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (_) => VerifyScreen(
@@ -89,7 +89,7 @@ class Api {
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
 
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (_) => VerifyScreen(

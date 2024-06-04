@@ -1,21 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sudia_events/business_logic/cubit/family/family_filter_cubit.dart';
-
+import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
-import 'package:sudia_events/presentation/screens/Reservation/add_event.dart';
-import 'package:sudia_events/presentation/screens/Reservation/widgets/events_conatiner.dart';
-import 'package:sudia_events/presentation/screens/Reservation/widgets/search_container.dart';
-import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
-import 'package:sudia_events/presentation/screens/positioned_logo.dart';
-
+import 'package:sudia_events/presentation/widgets/search.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:intl/date_symbol_data_local.dart'
     as data; // Import for date formatting initialization
 
@@ -30,17 +21,29 @@ class ReservationScreen extends StatefulWidget {
 }
 
 class _ReservationScreenState extends State<ReservationScreen> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+ 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   Map<DateTime, List<Event>> events = {};
   bool chooseday = false;
   bool addService = false;
-
+  TextEditingController contoller = TextEditingController();
   List familyFilter = [];
   late final ValueNotifier<List<Event>> _selectedEvents;
   Api api = Api();
-
+  List<bool> onTapped = [
+    false,
+    false,
+    false,
+    false,
+  ];
+  String selectedService = 'زواج';
+  List services = [
+    'الكل',
+    'نشط',
+    'مكتمل ',
+    'ملغي',
+  ];
   @override
   void initState() {
     super.initState();
@@ -80,323 +83,288 @@ class _ReservationScreenState extends State<ReservationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('الحجوزات'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.arrow_forward_ios,
+              color: primary,
+            ),
+            onPressed: () {},
+          ),
+        ],
+        leading: IconButton(
+          icon: Icon(
+            Icons.favorite_border,
+            color: primary,
+          ),
+          onPressed: () {},
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
-            flex: 2,
-            child: Stack(children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Container(
-                  height: 190,
-                  width: 400,
-                  decoration: const BoxDecoration(
-                    color: primary,
+              flex: 1,
+              child: Column(
+                children: [
+                  SearchContainernew(
+                      hintText: 'البحث', controller: contoller, onTap: () {}),
+                  Container(
+                    width: mediawidth(context),
+                    height: 45,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: services.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              onTapped[index] = !onTapped[index];
+                              selectedService = services[index];
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(5),
+                            width: 80,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color:
+                                  onTapped[index] ? primary : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    services[index],
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: onTapped[index]
+                                            ? Colors.white
+                                            : Colors.black),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.check,
+                                  size: 15,
+                                  color: onTapped[index]
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ),
-              PositionedLogo(),
-              Positioned(
-                  bottom: -2, left: 20, top: 100, child: SearchContainer())
-            ]),
-          ),
+                ],
+              )),
           SizedBox(
             height: 10,
           ),
           Expanded(
-            flex: 4,
+            flex: 5,
             child: Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TableCalendar(
-                      headerStyle: HeaderStyle(
-                          formatButtonVisible: false, titleCentered: true),
-                      eventLoader: _getEventsForDay,
-                      locale: 'ar',
-                      focusedDay: _focusedDay,
-                      firstDay: DateTime.utc(2010, 3, 14),
-                      lastDay: DateTime.utc(2030, 3, 14),
-                      selectedDayPredicate: (day) {
-                        return isSameDay(_selectedDay, day);
-                      },
-                      onDaySelected: _onDaySelected,
-                      calendarStyle: const CalendarStyle(
-                          outsideDaysVisible: true,
-                          markersMaxCount: 5,
-                          markerDecoration: BoxDecoration(
-                              color: Colors.grey, shape: BoxShape.circle),
-                          selectedDecoration: BoxDecoration(
-                              color: Color(0xffff8923), shape: BoxShape.circle),
-                          todayDecoration: BoxDecoration(
-                              color: primary, shape: BoxShape.circle)),
-                      startingDayOfWeek: StartingDayOfWeek.saturday,
-                      calendarFormat: _calendarFormat,
-                      onPageChanged: (focusedDay) {
-                        _focusedDay = focusedDay;
-                      },
-                    ),
-                    Divider(
-                      endIndent: 20,
-                      indent: 20,
-                      color: primary,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Card(
+                  surfaceTintColor: Colors.white,
+                  elevation: 5,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10)),
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              addService = true;
-                              chooseday = false;
-                            });
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => AddServices()));
-                          },
-                          child: Container(
-                            width: 150,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: addService ? primary : Colors.white,
-                              border: !addService
-                                  ? Border.all(color: primary)
-                                  : Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              '09:56 10/05/2024',
+                              style:
+                                  TextStyle(fontSize: 14.0, color: Colors.grey),
                             ),
-                            child: Center(
-                              child: Text(
-                                "اضافة خدمات ",
-                                style: TextStyle(
-                                  color: addService ? Colors.white : primary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                              ),
-                            ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              addService = false;
-                              chooseday = true;
-                            });
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => AddEventScreen(
-                                          id: widget.id!,
-                                          selectedDay: _selectedDay!,
-                                          selectedEvents: _selectedEvents,
-                                        )));
-                          },
-                          child: Container(
-                            width: 150,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              border: !chooseday
-                                  ? Border.all(color: primary)
-                                  : Border.all(color: Colors.white),
-                              color: chooseday ? primary : Colors.white,
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                              ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                                backgroundColor: Colors.green,
+                                child: Icon(
+                                  Icons.shopping_bag,
+                                  color: Colors.white,
+                                )),
+                            SizedBox(width: 16.0),
+                            Text(
+                              'حجز رقم SP 0023900',
+                              style:
+                                  TextStyle(fontSize: 15.0, color: Colors.grey),
                             ),
-                            child: Center(
-                              child: Text(
-                                "اختيار اليوم ",
-                                style: TextStyle(
-                                  color: chooseday ? Colors.white : primary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                              ),
+                            SizedBox(width: 16.0),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              'عدد الخدمات',
+                              style:
+                                  TextStyle(fontSize: 15.0, color: Colors.grey),
                             ),
+                            Text(
+                              '2',
+                              style:
+                                  TextStyle(fontSize: 20.0, color: Colors.red),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _OrderItem(
+                          title: 'ورود الطايف SP 0023900',
+                          price: 'SAR150.00',
+                          details: '1 ورد مجفف\n2 ورد صناعي',
+                        ),
+                        Divider(
+                          endIndent: 10,
+                          indent: 10,
+                        ),
+                        _OrderItem(
+                          title: 'عصيرات المنجا SP 0023900',
+                          price: 'SAR150.00',
+                          details: '1 عصير طبيعي\n2 عصير ليمون',
+                        ),
+                        SizedBox(height: 16.0),
+                        Divider(),
+                        Row(
+                          children: [
+                            Text(
+                              'الاجمالي',
+                              style: TextStyle(
+                                  fontSize: 15.0, fontWeight: FontWeight.bold),
+                            ),
+                            Spacer(),
+                            Text(
+                              'SAR300.00',
+                              style:
+                                  TextStyle(fontSize: 18.0, color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+                        Text(
+                          'التوصيل إلى',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey),
+                        ),
+                        SizedBox(height: 16.0),
+                        Container(
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _selectedEvents.value.isEmpty
-                        ? Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            width: .9 * mediawidth(context),
-                            height: 80,
-                            decoration: BoxDecoration(
-                                color: primary,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                          child: Row(
+                            children: [
+                              Icon(Icons.location_pin, color: Colors.red),
+                              SizedBox(width: 16.0),
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10.0),
-                                    child: Icon(
-                                      Icons.cancel_outlined,
-                                      color: Colors.white,
-                                    ),
+                                  Text(
+                                    'الاستلام من -- مطعم الديرة',
+                                    style: TextStyle(fontSize: 16.0),
                                   ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "${_selectedDay != null ? intl.DateFormat('EEEE', 'ar').format(_selectedDay!) : 'No date selected'}",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "${_selectedDay != null ? intl.DateFormat('yyyy/MM/dd', 'ar').format(_selectedDay!) : 'No day selected'}",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        'لا يوجد مناسبات في هذا التاريخ  ',
-                                        style: TextStyle(
-                                            fontSize: 10, color: Colors.white),
-                                      )
-                                    ],
-                                  ),
-                                  VerticalDivider(
-                                    endIndent: 10,
-                                    indent: 10,
-                                    color: Colors.grey[200],
-                                  ),
-                                  Center(
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 25,
-                                      child: Image.asset(
-                                        "assets/images/just_logo.png",
-                                        color: primary,
-                                        width: 40,
-                                      ),
-                                    ),
+                                  SizedBox(height: 4.0),
+                                  Text(
+                                    'حي السلامة - جدة - المملكة العربية السعودية',
+                                    style: TextStyle(fontSize: 14.0),
                                   ),
                                 ],
                               ),
-                            ),
-                          )
-                        : LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints constraints) {
-                              return Container(
-                                width: .9 * mediawidth(context),
-                                height: 120,
-                                child: ValueListenableBuilder(
-                                  valueListenable: _selectedEvents,
-                                  builder: (context, value, child) {
-                                    return ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      itemCount: value.length,
-                                      itemBuilder: (context, index) {
-                                        print("value ${value[index].name}");
-                                        return Container(
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          width: .9 * mediawidth(context),
-                                          height: 100,
-                                          decoration: BoxDecoration(
-                                            color: primary,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0),
-                                                child: Icon(
-                                                  Icons.cancel_outlined,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "${_selectedDay != null ? intl.DateFormat('EEEE', 'ar').format(_selectedDay!) : 'No date selected'}",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "${_selectedDay != null ? intl.DateFormat('yyyy/MM/dd', 'ar').format(_selectedDay!) : 'No day selected'}",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '${value[index].name}',
-                                                    style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Colors.white,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              VerticalDivider(
-                                                endIndent: 20,
-                                                indent: 10,
-                                                color: Colors.grey[200],
-                                              ),
-                                              Center(
-                                                child: CircleAvatar(
-                                                  backgroundColor: Colors.white,
-                                                  radius: 25,
-                                                  child: Image.asset(
-                                                    "assets/images/just_logo.png",
-                                                    color: primary,
-                                                    width: 40,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
+                              Spacer(),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 20,
                                 ),
-                              );
-                            },
-                          )
-                  ],
-                ),
-              ),
-            ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _OrderItem extends StatelessWidget {
+  final String title;
+  final String price;
+  final String details;
+
+  _OrderItem({required this.title, required this.price, required this.details});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: 14.0, color: Colors.grey[600]),
+                  ),
+                  Spacer(),
+                  Text(
+                    price,
+                    style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                  ),
+                ],
+              ),
+              SizedBox(height: 4.0),
+              Row(
+                children: [
+                  Text(
+                    details,
+                    style: TextStyle(fontSize: 10.0, color: Colors.grey),
+                  ),
+                  Spacer(),
+                  Text(
+                    price,
+                    style: TextStyle(fontSize: 10.0),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

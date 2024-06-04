@@ -3,14 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/presentation/screens/Services/bottomSheet_body.dart';
 import 'package:sudia_events/presentation/screens/Services/services_body.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 import 'package:sudia_events/presentation/screens/home/slider_body.dart';
-import 'package:sudia_events/presentation/screens/positioned_logo.dart';
 
 class AddServices extends StatefulWidget {
   const AddServices({super.key});
@@ -22,7 +18,6 @@ class AddServices extends StatefulWidget {
 class _AddServicesState extends State<AddServices> {
   bool chooseday = false;
   bool addService = false;
-  SolidController _controller = SolidController();
   @override
   void initState() {
     // TODO: implement initState

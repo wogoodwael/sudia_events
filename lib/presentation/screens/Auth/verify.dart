@@ -248,13 +248,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                     uid, widget.email ?? '', widget.phone)
                                 : print('login UID $uid');
                             widget.register!
-                                ? Navigator.push(
+                                ? Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => DoneScreen(
+                                        builder: (_) => BottomBarScreen(
                                               id: uid,
                                             )))
-                                : Navigator.push(
+                                : Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => BottomBarScreen(

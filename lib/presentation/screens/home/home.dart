@@ -7,11 +7,9 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/data/services/filter.dart';
-import 'package:sudia_events/presentation/screens/Reservation/widgets/search_container.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/presentation/screens/home/booking.dart';
-import 'package:sudia_events/presentation/widgets/search.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart' as data;
 
@@ -23,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   Map<DateTime, List<Event>> events = {};
