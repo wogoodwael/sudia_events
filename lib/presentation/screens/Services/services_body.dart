@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/presentation/screens/Services/All/all_services.dart';
 
 class ServicesBodey extends StatelessWidget {
   TextEditingController controller = TextEditingController();
@@ -101,10 +102,16 @@ class CategorySection extends StatelessWidget {
         CategoryItem(title: 'أماكن', icon: Icons.location_on),
         CategoryItem(title: 'مستلزمات', icon: Icons.shopping_bag),
         CategoryItem(title: 'ورود وهدايا', icon: Icons.card_giftcard),
-        Icon(
-          Icons.more_horiz_outlined,
-          color: primary,
-          size: 35,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => ServicesScreen()));
+          },
+          child: Icon(
+            Icons.more_horiz_outlined,
+            color: primary,
+            size: 35,
+          ),
         )
       ],
     );

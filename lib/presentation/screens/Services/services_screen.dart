@@ -9,8 +9,9 @@ import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 import 'package:sudia_events/presentation/screens/home/slider_body.dart';
 
 class AddServices extends StatefulWidget {
-  const AddServices({super.key});
-
+   AddServices({super.key, this.date, this.day});
+  String? day;
+  String? date;
   @override
   State<AddServices> createState() => _AddServicesState();
 }

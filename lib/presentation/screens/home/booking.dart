@@ -8,6 +8,8 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
+import '../Services/services_screen.dart';
+
 class BookingScreen extends StatefulWidget {
   final DateTime bookingDate;
 
@@ -207,15 +209,62 @@ class _BookingScreenState extends State<BookingScreen> {
     // Add the event data to Firestore
     reservation.add(eventData).then((value) {
       print('Event added successfully!');
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('تم بنجاح'),
+            content: Text('لقد تم حجز مناسيتك ينجاح هل تريد اضافة خدمات؟'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => AddServices()),
+                  );
+                },
+                child: Text('نعم'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => BottomBarScreen(
+                              id: sharedpref.getString('token')!,
+                            )),
+                  );
+                },
+                child: Text('لا'),
+              ),
+            ],
+          );
+        },
+      );
     }).catchError((error) {
       print('Failed to add event: $error');
+      // Show error dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to add event: $error'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     });
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => BottomBarScreen(
-                  id: sharedpref.getString('token')!,
-                )));
   }
 
   @override
