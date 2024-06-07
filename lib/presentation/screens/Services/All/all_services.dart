@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/service.dart';
+import 'package:sudia_events/presentation/screens/Services/subServices/sub_services.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 class ServicesScreen extends StatefulWidget {
@@ -145,7 +146,16 @@ class _ServicesScreenState extends State<ServicesScreen> {
                 return ListView.builder(
                   itemCount: services.length,
                   itemBuilder: (context, index) {
-                    return ServiceTile(service: services[index]);
+                    return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => SubServicesScreen(
+                                        itemName: services[index].name,
+                                      )));
+                        },
+                        child: ServiceTile(service: services[index]));
                   },
                 );
               },
