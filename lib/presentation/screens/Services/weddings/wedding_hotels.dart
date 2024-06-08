@@ -644,10 +644,10 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                     _bookSelectedServices(parentContext, servicesList,
                         selectedServices, castleName, price, des);
                     Navigator.of(context).pop();
-                    Navigator.push(
-                      parentContext,
-                      MaterialPageRoute(builder: (_) => AddServices()),
-                    );
+                    // Navigator.push(
+                    //   parentContext,
+                    //   MaterialPageRoute(builder: (_) => AddServices()),
+                    // );
                   },
                   child: Text('حجز'),
                 ),

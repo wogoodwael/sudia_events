@@ -11,6 +11,7 @@ import 'package:sudia_events/data/model/sub_services_item.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/details.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
+// ignore: must_be_immutable
 class SubServicesScreen extends StatelessWidget {
   final String itemName;
 
@@ -59,7 +60,16 @@ class SubServicesScreen extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => MenuItemDetail()));
+                                  builder: (_) => MenuItemDetail(
+                                        img: item.image,
+                                        name: item.des,
+                                        price: item.price,
+                                        options: item.options,
+                                        optionsprice: item.optionsprice,
+                                        dis: item.dis,
+                                        rating: item.rating,
+                                        about: item.about,
+                                      )));
                         },
                         child: SmallOfferItem(
                           item.image,
@@ -115,6 +125,9 @@ class SubServicesScreen extends StatelessWidget {
         .where('name', isEqualTo: itemName)
         .snapshots()
         .map((snapshot) {
+      snapshot.docs
+          .forEach((doc) => print(doc.data())); // Add this line to log data
+
       return snapshot.docs.map((doc) => MenuItem.fromMap(doc.data())).toList();
     });
   }

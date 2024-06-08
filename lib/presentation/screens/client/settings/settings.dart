@@ -32,7 +32,7 @@ class _SettingScreenState extends State<SettingScreen> {
     super.initState();
     _widgetOptions = <Widget>[
       MyAccountScreen(),
-      AddServices(),
+      // AddServices(),
       ReservationScreen(),
       AppointmentScreen()
     ];

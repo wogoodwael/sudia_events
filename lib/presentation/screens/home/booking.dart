@@ -222,7 +222,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   Navigator.of(context).pop(); // Close the dialog
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => AddServices()),
+                    MaterialPageRoute(builder: (_) => AddServices(date: widget.bookingDate,)),
                   );
                 },
                 child: Text('نعم'),

@@ -27,7 +27,9 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     _widgetOptions = <Widget>[
       HomeScreen(),
       // MyAccountScreen(),
-      AddServices(),
+      AddServices(
+        date: DateTime.now(),
+      ),
       ReservationScreen(
         id: widget.id,
       ),
@@ -35,7 +37,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       NotificationScreen(),
       ProfileScreen(),
       // UserFormScreen(),
-
     ];
   }
 

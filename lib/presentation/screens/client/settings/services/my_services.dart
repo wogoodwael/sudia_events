@@ -40,7 +40,7 @@ class _MyServicesState extends State<MyServices> {
           PrevoiusBody()
         ],
       ),
-      AddServices(),
+      // AddServices(),
       ReservationScreen(),
       AppointmentScreen()
     ];
