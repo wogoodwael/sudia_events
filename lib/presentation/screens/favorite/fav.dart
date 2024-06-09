@@ -14,7 +14,25 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
-  TextEditingController controller=TextEditingController();
+  TextEditingController controller = TextEditingController();
+  String searchQuery = "";
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      setState(() {
+        searchQuery = controller.text.toLowerCase();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   Future<void> _removeFromFavorites(String docId) async {
     try {
       await FirebaseFirestore.instance
@@ -25,6 +43,19 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           .delete();
     } catch (e) {
       print('Error removing favorite: $e');
+    }
+  }
+
+  List<DocumentSnapshot> _filterFavorites(
+      List<DocumentSnapshot> favorites, String query) {
+    if (query.isEmpty) {
+      return favorites;
+    } else {
+      return favorites.where((favorite) {
+        var data = favorite.data() as Map<String, dynamic>;
+        var name = data['name']?.toString().toLowerCase() ?? '';
+        return name.contains(query);
+      }).toList();
     }
   }
 
@@ -98,7 +129,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       body: Column(
         children: [
           SearchContainernew(
-            hintText: 'البحث', controller: controller, onTap: () {  },
+            hintText: 'البحث',
+            controller: controller,
+            onTap: () {},
           ),
           SizedBox(
             height: 10,
@@ -125,6 +158,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 }
 
                 var favorites = snapshot.data!.docs;
+                var filteredFavorites =
+                    _filterFavorites(favorites, searchQuery);
 
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -133,9 +168,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
                   ),
-                  itemCount: favorites.length,
+                  itemCount: filteredFavorites.length,
                   itemBuilder: (context, index) {
-                    var favorite = favorites[index];
+                    var favorite = filteredFavorites[index];
                     var data = favorite.data() as Map<String, dynamic>;
                     return Container(
                       margin: EdgeInsets.all(10),

@@ -13,19 +13,37 @@ class ServicesScreen extends StatefulWidget {
 
 class _ServicesScreenState extends State<ServicesScreen> {
   TextEditingController controller = TextEditingController();
-  List<bool> onTapped = [
-    true,
-    false,
-    false,
-    false,
-  ];
+  String searchQuery = "";
+  List<bool> onTapped = [true, false, false, false];
   String selectedService = 'الكل';
-  List services = [
-    'الكل',
-    'قاعات افراح',
-    'استراحات',
-    'ورود',
-  ];
+  List<String> services = ['الكل', 'قاعات افراح', 'استراحات', 'ورود'];
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      setState(() {
+        searchQuery = controller.text.toLowerCase();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  List<Service> _filterServices(List<Service> items, String query) {
+    if (query.isEmpty) {
+      return items;
+    } else {
+      return items.where((item) {
+        var name = item.name.toLowerCase();
+        return name.contains(query);
+      }).toList();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +56,14 @@ class _ServicesScreenState extends State<ServicesScreen> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_forward,
-                color: primary,
-              )),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_forward,
+              color: primary,
+            ),
+          ),
         ],
         title: Text('قائمة الخدمات'),
       ),
@@ -52,70 +71,76 @@ class _ServicesScreenState extends State<ServicesScreen> {
         children: [
           Expanded(
             flex: 2,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: .03 * mediaheight(context),
-                ),
-                SearchContainernew(
-                    hintText: 'البحث', controller: controller, onTap: () {}),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: mediawidth(context),
-                  height: 45,
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: services.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            for (int i = 0; i < onTapped.length; i++) {
-                              onTapped[i] = i == index;
-                            }
-                            selectedService = services[index];
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          width: 80,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: onTapped[index] ? primary : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Center(
-                                child: Text(
-                                  services[index],
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: onTapped[index]
-                                        ? Colors.white
-                                        : Colors.black,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: .03 * mediaheight(context),
+                  ),
+                  SearchContainernew(
+                    hintText: 'البحث',
+                    controller: controller,
+                    onTap: () {},
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: mediawidth(context),
+                    height: 45,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: services.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              for (int i = 0; i < onTapped.length; i++) {
+                                onTapped[i] = i == index;
+                              }
+                              selectedService = services[index];
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(5),
+                            width: 80,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color:
+                                  onTapped[index] ? primary : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    services[index],
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: onTapped[index]
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.check,
-                                size: 15,
-                                color: onTapped[index]
-                                    ? Colors.white
-                                    : Colors.transparent,
-                              ),
-                            ],
+                                Icon(
+                                  Icons.check,
+                                  size: 15,
+                                  color: onTapped[index]
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -127,12 +152,14 @@ class _ServicesScreenState extends State<ServicesScreen> {
                       .snapshots()
                   : FirebaseFirestore.instance
                       .collection('services')
-                      .where('uniqu',
-                          isEqualTo: selectedService == 'استراحات'
-                              ? 'break'
-                              : selectedService == 'ورود'
-                                  ? 'flowers'
-                                  : 'castle')
+                      .where(
+                        'uniqu',
+                        isEqualTo: selectedService == 'استراحات'
+                            ? 'break'
+                            : selectedService == 'ورود'
+                                ? 'flowers'
+                                : 'castle',
+                      )
                       .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -143,19 +170,24 @@ class _ServicesScreenState extends State<ServicesScreen> {
                         doc.data() as Map<String, dynamic>))
                     .toList();
 
+                var filteredServices = _filterServices(services, searchQuery);
+
                 return ListView.builder(
-                  itemCount: services.length,
+                  itemCount: filteredServices.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => SubServicesScreen(
-                                        itemName: services[index].name,
-                                      )));
-                        },
-                        child: ServiceTile(service: services[index]));
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SubServicesScreen(
+                              itemName: filteredServices[index].name,
+                            ),
+                          ),
+                        );
+                      },
+                      child: ServiceTile(service: filteredServices[index]),
+                    );
                   },
                 );
               },
@@ -243,10 +275,11 @@ class ServiceTile extends StatelessWidget {
                     width: 50,
                     height: 20,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: service.status == 'مفتوح'
-                            ? Colors.green[100]
-                            : Colors.red),
+                      borderRadius: BorderRadius.circular(10),
+                      color: service.status == 'مفتوح'
+                          ? Colors.green[100]
+                          : Colors.red,
+                    ),
                     child: Center(
                       child: Text(
                         service.status,

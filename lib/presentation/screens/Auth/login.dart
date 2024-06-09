@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Center(
                                 child: Container(
                                   width: .8 * mediawidth(context),
-                                  height: 45,
+                                  height: 50,
                                   decoration: BoxDecoration(
                                       border: Border.all(color: primary),
                                       borderRadius: BorderRadius.circular(10)),
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Row(
                                 children: [
                                   Transform.scale(
-                                    scale: .6,
+                                    scale: .8,
                                     child: Checkbox(
                                       activeColor: primary,
                                       visualDensity: VisualDensity.compact,
@@ -196,14 +196,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                       borderRadius: BorderRadius.circular(10)),
                                   color: remember ? primary : secondary,
                                   minWidth: 300,
-                                  onPressed: () async {
-                                    Api().login(context, phone, loading,
-                                        (bool value) {
-                                      setState(() {
-                                        loading = value;
-                                      });
-                                    });
-                                  },
+                                  onPressed: remember
+                                      ? () async {
+                                          Api().login(context, phone, loading,
+                                              (bool value) {
+                                            setState(() {
+                                              loading = value;
+                                            });
+                                          });
+                                        }
+                                      : () {},
                                   child: loading
                                       ? Container(
                                           height: 30,

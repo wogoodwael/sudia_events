@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
+import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final String name;
@@ -63,6 +66,43 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     _discount = _subtotal * 0.20;
     _total = _subtotal - _discount + _deliveryFee;
+  }
+
+  Future<void> _uploadCheckoutData() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        CollectionReference bookedServices =
+            FirebaseFirestore.instance.collection('booked_services');
+        DateTime now = DateTime.now();
+
+        for (var item in _checkoutItems) {
+          await bookedServices.add({
+            'user_id': user.uid,
+            'name': widget.name,
+            'number': widget.number,
+            'item_name': item['name'],
+            'price': item['price'],
+            'discount': item['discount'],
+            'options': item['options'],
+            'timestamp': now,
+            'subtotal': _subtotal,
+            'discount_amount': _discount,
+            'delivery_fee': _deliveryFee,
+            'total': _total
+          });
+        }
+        CustomSnackBar(context, 'تم حجز الخدمة', Colors.green);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) =>
+                    BottomBarScreen(id: sharedpref.getString('token')!)));
+        // Optionally, clear the checkout items or navigate to a success screen
+      }
+    } on Exception catch (e) {
+      CustomSnackBar(context, e.toString(), Colors.red);
+    }
   }
 
   @override
@@ -161,7 +201,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   ],
                                 ),
 
-                                _OrderItem(
+                                OrderItem(
                                   title: item[
                                       'name'], // Assuming 'title' key exists
                                   price:
@@ -475,7 +515,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     color: primary,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _uploadCheckoutData();
+                                    },
                                     child: Text(
                                       "الدفع",
                                       style: TextStyle(
@@ -507,12 +549,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 }
 
-class _OrderItem extends StatelessWidget {
+class OrderItem extends StatelessWidget {
   final String title;
   final String price;
   final List<dynamic> options;
 
-  _OrderItem({
+  OrderItem({
     required this.title,
     required this.price,
     required this.options,
@@ -534,17 +576,25 @@ class _OrderItem extends StatelessWidget {
         ),
         SizedBox(height: 4.0),
         ...options.map((option) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return Column(
             children: [
-              Text(
-                '${option['option']}',
-                style: TextStyle(fontSize: 14.0, color: Colors.grey),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${option['option']}',
+                    style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                  ),
+                  Text(
+                    ' SAR${option['price']}',
+                    style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                  ),
+                ],
               ),
-              Text(
-                ' SAR${option['price']}',
-                style: TextStyle(fontSize: 14.0, color: Colors.grey),
+              Divider(
+                height: 0,
               ),
+              // Repeat _OrderItem as needed based on your data structure
             ],
           );
         }).toList(),

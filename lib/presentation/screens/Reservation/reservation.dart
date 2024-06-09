@@ -1,83 +1,44 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart'; // For date formatting
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/data/model/event.dart';
-import 'package:sudia_events/data/services/api.dart';
-import 'package:sudia_events/presentation/widgets/search.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/date_symbol_data_local.dart'
-    as data; // Import for date formatting initialization
+import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
+import 'package:sudia_events/presentation/widgets/search.dart'; // Firestore package
 
-// ignore: must_be_immutable
 class ReservationScreen extends StatefulWidget {
-  ReservationScreen({super.key, this.id});
-  String? id;
-  String? gender;
-  String? type;
+  ReservationScreen({Key? key, this.id}) : super(key: key);
+  final String? id;
+
   @override
   State<ReservationScreen> createState() => _ReservationScreenState();
 }
 
 class _ReservationScreenState extends State<ReservationScreen> {
- 
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-  Map<DateTime, List<Event>> events = {};
-  bool chooseday = false;
-  bool addService = false;
-  TextEditingController contoller = TextEditingController();
-  List familyFilter = [];
-  late final ValueNotifier<List<Event>> _selectedEvents;
-  Api api = Api();
-  List<bool> onTapped = [
-    false,
-    false,
-    false,
-    false,
-  ];
-  String selectedService = 'زواج';
-  List services = [
-    'الكل',
-    'نشط',
-    'مكتمل ',
-    'ملغي',
-  ];
+  final TextEditingController controller = TextEditingController();
+  final List<String> services = ['الكل', 'نشط', 'مكتمل ', 'ملغي'];
+  final List<bool> onTapped = [false, false, false, false];
+  String selectedService = 'الكل';
+  List<dynamic> reservations = [];
+
   @override
   void initState() {
     super.initState();
-    chooseday = true;
-    _selectedDay = _focusedDay;
-    data.initializeDateFormatting('ar');
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-    api.fetchEventsFromFirestore().then((fetchedEvents) {
-      setState(() {
-        events = fetchedEvents;
-        _selectedEvents.value = _getEventsForDay(_selectedDay!);
-      });
+    _fetchReservations();
+  }
+
+  Future<void> _fetchReservations() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    QuerySnapshot querySnapshot =
+        await firestore.collection('booked_services').get();
+
+    setState(() {
+      reservations = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+        return data;
+      }).toList();
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _selectedEvents.value =
-            _getEventsForDay(_selectedDay!); // Update selected events here
-        // update `_focusedDay` here as well
-      });
-    }
-  }
-
-  List<Event> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
   }
 
   @override
@@ -90,7 +51,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           IconButton(
             icon: Icon(
               Icons.arrow_forward_ios,
-              color: primary,
+              color: Colors.white,
             ),
             onPressed: () {},
           ),
@@ -98,7 +59,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.favorite_border,
-            color: primary,
+            color: Colors.white,
           ),
           onPressed: () {},
         ),
@@ -110,7 +71,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
               child: Column(
                 children: [
                   SearchContainernew(
-                      hintText: 'البحث', controller: contoller, onTap: () {}),
+                      hintText: 'البحث', controller: controller, onTap: () {}),
                   Container(
                     width: mediawidth(context),
                     height: 45,
@@ -164,22 +125,25 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   ),
                 ],
               )),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           Expanded(
             flex: 5,
-            child: Container(
-                child: ListView.builder(
-              itemCount: 5,
+            child: ListView.builder(
+              itemCount: reservations.length,
               itemBuilder: (context, index) {
+                final reservation = reservations[index];
+                final timestamp = reservation['timestamp'] as Timestamp;
+                final date =
+                    DateFormat('dd/MM/yyyy HH:mm').format(timestamp.toDate());
+
                 return Card(
                   surfaceTintColor: Colors.white,
                   elevation: 5,
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10)),
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     padding: EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +152,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              '09:56 10/05/2024',
+                              date,
                               style:
                                   TextStyle(fontSize: 14.0, color: Colors.grey),
                             ),
@@ -198,14 +162,13 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CircleAvatar(
-                                backgroundColor: Colors.green,
-                                child: Icon(
-                                  Icons.shopping_bag,
-                                  color: Colors.white,
-                                )),
+                              backgroundColor: Colors.green,
+                              child:
+                                  Icon(Icons.shopping_bag, color: Colors.white),
+                            ),
                             SizedBox(width: 16.0),
                             Text(
-                              'حجز رقم SP 0023900',
+                              'حجز رقم 888',
                               style:
                                   TextStyle(fontSize: 15.0, color: Colors.grey),
                             ),
@@ -221,31 +184,19 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   TextStyle(fontSize: 15.0, color: Colors.grey),
                             ),
                             Text(
-                              '2',
+                              reservation['options'].length.toString(),
                               style:
                                   TextStyle(fontSize: 20.0, color: Colors.red),
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _OrderItem(
-                          title: 'ورود الطايف SP 0023900',
-                          price: 'SAR150.00',
-                          details: '1 ورد مجفف\n2 ورد صناعي',
-                        ),
-                        Divider(
-                          endIndent: 10,
-                          indent: 10,
-                        ),
-                        _OrderItem(
-                          title: 'عصيرات المنجا SP 0023900',
-                          price: 'SAR150.00',
-                          details: '1 عصير طبيعي\n2 عصير ليمون',
+                        SizedBox(height: 10),
+                        OrderItem(
+                          title: reservation['name'],
+                          price: 'SAR${reservation['price']}',
+                          options: reservation['options'] as List<dynamic>,
                         ),
                         SizedBox(height: 16.0),
-                        Divider(),
                         Row(
                           children: [
                             Text(
@@ -255,7 +206,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                             ),
                             Spacer(),
                             Text(
-                              'SAR300.00',
+                              'SAR${reservation['total'].toString()}',
                               style:
                                   TextStyle(fontSize: 18.0, color: Colors.grey),
                             ),
@@ -284,7 +235,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'الاستلام من -- مطعم الديرة',
+                                    reservation['delivery_fee'].toString(),
                                     style: TextStyle(fontSize: 16.0),
                                   ),
                                   SizedBox(height: 4.0),
@@ -297,10 +248,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               Spacer(),
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 20,
-                                ),
+                                child: Icon(Icons.arrow_forward_ios, size: 20),
                               ),
                             ],
                           ),
@@ -311,60 +259,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   ),
                 );
               },
-            )),
+            ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _OrderItem extends StatelessWidget {
-  final String title;
-  final String price;
-  final String details;
-
-  _OrderItem({required this.title, required this.price, required this.details});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: 14.0, color: Colors.grey[600]),
-                  ),
-                  Spacer(),
-                  Text(
-                    price,
-                    style: TextStyle(fontSize: 14.0, color: Colors.grey),
-                  ),
-                ],
-              ),
-              SizedBox(height: 4.0),
-              Row(
-                children: [
-                  Text(
-                    details,
-                    style: TextStyle(fontSize: 10.0, color: Colors.grey),
-                  ),
-                  Spacer(),
-                  Text(
-                    price,
-                    style: TextStyle(fontSize: 10.0),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

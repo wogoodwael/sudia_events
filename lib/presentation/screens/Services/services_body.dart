@@ -8,6 +8,7 @@ import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Services/All/all_services.dart';
+import 'package:sudia_events/presentation/screens/Services/offers_screen.dart';
 
 class ServicesBodey extends StatelessWidget {
   TextEditingController controller = TextEditingController();
@@ -179,8 +180,17 @@ class WeeklyOffersSection extends StatelessWidget {
                   itemCount: offers.length,
                   itemBuilder: (context, index) {
                     var offer = offers[index];
-                    return WeeklyOfferItem(offer['img'], offer['name'],
-                        offer['discount'], offer['price'] ?? "");
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => OffersScreen()));
+                      },
+                      child: WeeklyOfferItem(
+                          offer['img'] ?? "",
+                          offer['name'] ?? "",
+                          offer['discount'] ?? "",
+                          offer['price'] ?? ""),
+                    );
                   },
                 );
               },
@@ -241,8 +251,11 @@ class WeeklyOfferItem extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Image.network(img,
-                      fit: BoxFit.cover, height: 100, width: double.infinity),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(img,
+                        fit: BoxFit.cover, height: 100, width: double.infinity),
+                  ),
                   Positioned(
                     top: 8,
                     right: 8,

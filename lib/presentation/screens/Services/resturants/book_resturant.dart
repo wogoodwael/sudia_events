@@ -8,7 +8,7 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/res_content_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
-import 'package:sudia_events/presentation/screens/Services/resturants/offers_body.dart';
+import 'package:sudia_events/presentation/screens/Services/offers_screen.dart';
 
 class BookResturant extends StatefulWidget {
   const BookResturant({super.key, required this.name});
@@ -84,15 +84,15 @@ class _BookResturantState extends State<BookResturant> {
                     padding: EdgeInsets.zero,
                     itemCount: 1,
                     itemBuilder: (BuildContext context, int index) {
-                      return OffersBody(
-                        ontapped: ontapped,
-                        resName: widget.name,
-                        price: snapshot.data![index].price,
-                        discount: snapshot.data![index].discount,
-                        img: snapshot.data![index].image,
-                        dishes: snapshot.data![index].dishes,
-                        lenght: snapshot.data![index].dishes.length,
-                      );
+                      // return OffersBody(
+                      //   ontapped: ontapped,
+                      //   resName: widget.name,
+                      //   price: snapshot.data![index].price,
+                      //   discount: snapshot.data![index].discount,
+                      //   img: snapshot.data![index].image,
+                      //   dishes: snapshot.data![index].dishes,
+                      //   lenght: snapshot.data![index].dishes.length,
+                      // );
                     },
                   )),
               Expanded(

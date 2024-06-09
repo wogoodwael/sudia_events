@@ -6,7 +6,6 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
-import 'package:sudia_events/data/services/filter.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/presentation/screens/home/booking.dart';
@@ -38,6 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Api api = Api();
   String selectedService = 'زواج';
 
+  bool isFavoriteChecked = false;
+  bool isLocationChecked = false;
+
+  TextEditingController searchController = TextEditingController();
+  List<Event> filteredEvents = [];
+
   @override
   void initState() {
     super.initState();
@@ -51,14 +56,35 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         events = fetchedEvents;
         _selectedEvents.value = _getEventsForDay(_selectedDay!);
+        filteredEvents = _getAllEvents();
       });
     });
+
+    // Listen for changes in the search controller and filter events
+    searchController.addListener(_filterEvents);
   }
 
   @override
   void dispose() {
     _selectedEvents.dispose();
+    searchController.removeListener(_filterEvents);
+    searchController.dispose();
     super.dispose();
+  }
+
+  void _filterEvents() {
+    String query = searchController.text.toLowerCase();
+    setState(() {
+      filteredEvents = _getAllEvents().where((event) {
+        return event.name.toLowerCase().contains(query) ||
+            event.family.toLowerCase().contains(query) ||
+            event.tribe.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  List<Event> _getAllEvents() {
+    return events.values.expand((eventList) => eventList).toList();
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -79,11 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return isSameDay(eventDate, _selectedDay!);
   }
 
-  TextEditingController searchController = TextEditingController();
-  List<String>? parts;
-  String? first;
-  String? secondPart;
-  String? searchText;
   void _showCalendarBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -98,7 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 focusedDay: _focusedDay,
                 onDaySelected: (selectedDay, focusedDay) {
                   _onDaySelected(selectedDay, focusedDay);
-                  // Close the bottom sheet after selecting a date
                 },
                 getEventsForDay: _getEventsForDay,
               ),
@@ -131,47 +151,54 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showEventBottomSheet() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // Ensure the bottom sheet is scrollable
       builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Center(
-                child: Text(selectedService),
-              ),
-              SizedBox(height: 20),
-              _buildFilterOptions(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    minWidth: 150,
-                    color: primary,
-                    child: Text(
-                      'تطبيق',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      _showCalendarBottomSheet();
-                    },
+                  Center(
+                    child: Text(selectedService),
                   ),
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    minWidth: 150,
-                    color: Colors.white,
-                    child: Text('الغاء'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                  SizedBox(height: 20),
+                  _buildFilterOptions(setState),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        minWidth: 150,
+                        color: primary,
+                        child: Text(
+                          'تطبيق',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          _showCalendarBottomSheet();
+                        },
+                      ),
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        minWidth: 150,
+                        color: Colors.white,
+                        child: Text('الغاء'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -269,7 +296,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 80,
                             height: 30,
                             decoration: BoxDecoration(
-                              color: onTapped[index] ? primary : Colors.white,
+                              color:
+                                  onTapped[index] ? primary : Colors.grey[200],
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Row(
@@ -314,26 +342,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           Icons.search,
                           color: Colors.grey[400],
                         ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.tune,
-                            color: Colors.grey[400],
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              onTappedIcon = !onTappedIcon;
-                              parts = searchController.text.split(" ");
-                              first = parts!.isNotEmpty ? parts![0] : "";
-                              secondPart = parts!.length > 1
-                                  ? parts!.sublist(1).join("")
-                                  : "";
-                              first = first!.replaceAll(" ", "");
-                            });
-
-                            print("First part: $first");
-                            print("Second part: $secondPart");
-                          },
-                        ),
                       ),
                     ),
                   ),
@@ -351,6 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(width: 10),
                 IconButton(
+                  iconSize: 30,
                   icon: Icon(Icons.add_circle_rounded),
                   onPressed: () {
                     _showEventBottomSheet();
@@ -365,9 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: .9 * mediawidth(context),
               height: 150,
               child: FutureBuilder<List<Event>>(
-                future: onTappedIcon
-                    ? filterEventsByFamilyAndTribe(first!, secondPart!)
-                    : api.fetchReservationData(),
+                future: api.fetchReservationData(),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Event>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -379,15 +386,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
+                    List<Event> eventsToShow = searchController.text.isEmpty
+                        ? snapshot.data!
+                        : filteredEvents;
                     return ListView.builder(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
+                      itemCount: eventsToShow.length,
                       itemBuilder: (context, index) {
-                        Event event = snapshot.data![index];
+                        Event event = eventsToShow[index];
                         return EventContainer(
                           time: intl.DateFormat('yyyy/MM/dd', 'ar')
-                              .format(snapshot.data![index].date),
+                              .format(event.date),
                           name: '${event.name} ${event.family} ${event.tribe}',
                           title: selectedService,
                           location: 'جده - حي البساتين',
@@ -405,26 +415,31 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildFilterOptions() {
+  Widget _buildFilterOptions(StateSetter setState) {
     return Column(
       children: [
-        _buildCheckboxOption('العائلة', true),
-        _buildCheckboxOption('القبيلة', false),
-        _buildCheckboxOption('المفضلة', true),
-        _buildCheckboxOption('الموقع', true),
+        _buildCheckboxOption('المفضلة', isFavoriteChecked, (value) {
+          setState(() {
+            isFavoriteChecked = value!;
+          });
+        }),
+        _buildCheckboxOption('الموقع', isLocationChecked, (value) {
+          setState(() {
+            isLocationChecked = value!;
+          });
+        }),
       ],
     );
   }
 
-  Widget _buildCheckboxOption(String label, bool isChecked) {
+  Widget _buildCheckboxOption(
+      String label, bool isChecked, ValueChanged<bool?> onChanged) {
     return Row(
       children: [
         Checkbox(
           activeColor: primary,
           value: isChecked,
-          onChanged: (bool? value) {
-            // Handle checkbox state change
-          },
+          onChanged: onChanged,
         ),
         Text(label),
         Spacer(),

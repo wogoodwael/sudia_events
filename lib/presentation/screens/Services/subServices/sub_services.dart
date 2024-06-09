@@ -11,42 +11,100 @@ import 'package:sudia_events/data/model/sub_services_item.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/details.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
-// ignore: must_be_immutable
-class SubServicesScreen extends StatelessWidget {
+class SubServicesScreen extends StatefulWidget {
   final String itemName;
 
   SubServicesScreen({required this.itemName});
+
+  @override
+  _SubServicesScreenState createState() => _SubServicesScreenState();
+}
+
+class _SubServicesScreenState extends State<SubServicesScreen> {
   TextEditingController controller = TextEditingController();
+  String searchQuery = "";
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      setState(() {
+        searchQuery = controller.text.toLowerCase();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  List<MenuItem> _filterMenuItems(List<MenuItem> items, String query) {
+    if (query.isEmpty) {
+      return items;
+    } else {
+      return items.where((item) {
+        var name = item.des.toLowerCase();
+        return name.contains(query);
+      }).toList();
+    }
+  }
+
+  List<PrivateSubServices> _filterPrivateItems(
+      List<PrivateSubServices> items, String query) {
+    if (query.isEmpty) {
+      return items;
+    } else {
+      return items.where((item) {
+        var name = item.name.toLowerCase();
+        return name.contains(query);
+      }).toList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(itemName),
+        title: Text(widget.itemName),
         centerTitle: true,
       ),
       body: Column(
         children: [
           Expanded(
-              flex: 1,
-              child: SearchContainernew(
-                  hintText: 'البحث', controller: controller, onTap: () {})),
+            flex: 2,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: 50,
+                    child: SearchContainernew(
+                      hintText: 'البحث',
+                      controller: controller,
+                      onTap: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           SizedBox(
-            height: .05 * mediaheight(context),
+            height: 10,
           ),
           Expanded(
-            flex: 9,
+            flex: 8,
             child: StreamBuilder<List<MenuItem>>(
-              stream: fetchMenuItems(itemName),
+              stream: fetchMenuItems(widget.itemName),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  print("item name  $itemName");
                   return Center(child: Text('No data available'));
                 } else {
-                  var menuItems = snapshot.data!;
+                  var menuItems = _filterMenuItems(snapshot.data!, searchQuery);
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -58,18 +116,20 @@ class SubServicesScreen extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => MenuItemDetail(
-                                        img: item.image,
-                                        name: item.des,
-                                        price: item.price,
-                                        options: item.options,
-                                        optionsprice: item.optionsprice,
-                                        dis: item.dis,
-                                        rating: item.rating,
-                                        about: item.about,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MenuItemDetail(
+                                img: item.image,
+                                name: item.des,
+                                price: item.price,
+                                options: item.options,
+                                optionsprice: item.optionsprice,
+                                dis: item.dis,
+                                rating: item.rating,
+                                about: item.about,
+                              ),
+                            ),
+                          );
                         },
                         child: SmallOfferItem(
                           item.image,
@@ -84,29 +144,37 @@ class SubServicesScreen extends StatelessWidget {
               },
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(
-            flex: 8,
+            flex: 6,
             child: StreamBuilder<List<PrivateSubServices>>(
-              stream: fetchPrivateItems(itemName),
+              stream: fetchPrivateItems(widget.itemName),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  print("item name  $itemName");
                   return Center(child: Text('No data available'));
                 } else {
-                  var menuItems = snapshot.data!;
+                  var privateItems =
+                      _filterPrivateItems(snapshot.data!, searchQuery);
                   return Container(
                     width: .95 * mediawidth(context),
                     height: 50,
                     child: ListView.builder(
-                      itemCount: menuItems.length,
+                      itemCount: privateItems.length,
                       itemBuilder: (BuildContext context, int index) {
-                        var item = menuItems[index];
-                        return PrivateOfferItem(item.image, item.price,
-                            item.des, item.rating, item.name);
+                        var item = privateItems[index];
+                        return PrivateOfferItem(
+                          item.image,
+                          item.price,
+                          item.des,
+                          item.rating,
+                          item.name,
+                        );
                       },
                     ),
                   );
@@ -125,9 +193,6 @@ class SubServicesScreen extends StatelessWidget {
         .where('name', isEqualTo: itemName)
         .snapshots()
         .map((snapshot) {
-      snapshot.docs
-          .forEach((doc) => print(doc.data())); // Add this line to log data
-
       return snapshot.docs.map((doc) => MenuItem.fromMap(doc.data())).toList();
     });
   }
@@ -153,15 +218,11 @@ class SmallOfferItem extends StatelessWidget {
   SmallOfferItem(this.img, this.price, this.des, this.rating);
   Future<void> addToFavorites(BuildContext context) async {
     try {
-      // Get current user
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        // User is not logged in
-        // You can handle this case according to your app's logic
         return;
       }
 
-      // Add item to favorites collection
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -170,13 +231,10 @@ class SmallOfferItem extends StatelessWidget {
         'img': img,
         'des': des,
         'price': price,
-        // You can add more fields if needed
       });
 
-      // Show a snackbar or toast to indicate success
       CustomSnackBar(context, 'Item added to favorites', Colors.green);
     } catch (e) {
-      // Handle errors
       print('Error adding to favorites: $e');
     }
   }
@@ -256,15 +314,11 @@ class PrivateOfferItem extends StatelessWidget {
   PrivateOfferItem(this.img, this.price, this.des, this.rating, this.name);
   Future<void> addToFavorites(BuildContext context) async {
     try {
-      // Get current user
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        // User is not logged in
-        // You can handle this case according to your app's logic
         return;
       }
 
-      // Add item to favorites collection
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -273,13 +327,10 @@ class PrivateOfferItem extends StatelessWidget {
         'img': img,
         'des': des,
         'price': price,
-        // You can add more fields if needed
       });
 
-      // Show a snackbar or toast to indicate success
       CustomSnackBar(context, 'Item added to favorites', Colors.green);
     } catch (e) {
-      // Handle errors
       print('Error adding to favorites: $e');
     }
   }
