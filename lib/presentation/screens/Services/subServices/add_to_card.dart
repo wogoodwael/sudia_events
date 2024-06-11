@@ -10,7 +10,8 @@ import 'package:sudia_events/presentation/screens/Services/subServices/check_out
 class OrderSummaryPage extends StatefulWidget {
   final String name;
   final String number;
-  const OrderSummaryPage({super.key, required this.name, required this.number});
+  final DateTime date;
+  const OrderSummaryPage({super.key, required this.name, required this.number, required this.date});
   @override
   _OrderSummaryPageState createState() => _OrderSummaryPageState();
 }
@@ -22,7 +23,6 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
   double _deliveryFee = 0.0; // Assuming free delivery
   double _total = 0.0;
   String _reasonForCancellation = 'Duplicate order';
-
 
   @override
   void initState() {
@@ -425,7 +425,7 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
                                         MaterialPageRoute(
                                             builder: (_) => CheckoutScreen(
                                                   name: widget.name,
-                                                  number: widget.number,
+                                                  number: widget.number, date: widget.date,
                                                 )));
                                   },
                                   child: Row(

@@ -385,6 +385,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.data!.isEmpty) {
+                    return Center(
+                      child: Text("لم تقم بحجز اي مناسبات بعد"),
+                    );
                   } else {
                     List<Event> eventsToShow = searchController.text.isEmpty
                         ? snapshot.data!

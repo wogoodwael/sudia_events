@@ -11,7 +11,10 @@ import 'package:sudia_events/presentation/screens/Services/All/all_services.dart
 import 'package:sudia_events/presentation/screens/Services/offers_screen.dart';
 
 class ServicesBodey extends StatelessWidget {
+  final DateTime date;
   TextEditingController controller = TextEditingController();
+
+  ServicesBodey({super.key, required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class ServicesBodey extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              CategorySection(),
+              CategorySection(date: date,),
               SizedBox(height: 16),
               WeeklyOffersSection(),
               SizedBox(height: 16),
@@ -91,6 +94,9 @@ class ServicesBodey extends StatelessWidget {
 }
 
 class CategorySection extends StatelessWidget {
+  final DateTime date;
+
+  const CategorySection({super.key, required this.date});
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -106,7 +112,11 @@ class CategorySection extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => ServicesScreen()));
+                context,
+                MaterialPageRoute(
+                    builder: (_) => ServicesScreen(
+                          date: date,
+                        )));
           },
           child: Icon(
             Icons.more_horiz_outlined,

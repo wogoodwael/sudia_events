@@ -7,6 +7,9 @@ import 'package:sudia_events/presentation/screens/Services/subServices/sub_servi
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 class ServicesScreen extends StatefulWidget {
+  final DateTime date;
+
+  const ServicesScreen({super.key, required this.date});
   @override
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
@@ -181,7 +184,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (_) => SubServicesScreen(
-                              itemName: filteredServices[index].name,
+                              itemName: filteredServices[index].name, date: widget.date,
                             ),
                           ),
                         );

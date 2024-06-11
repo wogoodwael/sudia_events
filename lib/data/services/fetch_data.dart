@@ -129,7 +129,7 @@ Future<List<BookedServicesModel>> fetchBookedData() async {
   }
 }
 
-Future<List<UserModel>> fetchUserData({required String id}) async {
+Stream<List<UserModel>> fetchUserData({required String id}) async* {
   try {
     final QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await FirebaseFirestore.instance
@@ -137,17 +137,20 @@ Future<List<UserModel>> fetchUserData({required String id}) async {
             .where('id', isEqualTo: id)
             .get();
 
-    final List<UserModel> userData = querySnapshot.docs
-        .map((DocumentSnapshot<Map<String, dynamic>> doc) => UserModel(
-              name: doc['name'],
-              phone: doc['phone'],
-              email: doc['email'],
-            ))
-        .toList();
+    final List<UserModel> userData =
+        querySnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
+      print(doc.data());
+      return UserModel(
+        name: doc['name'] ?? "",
+        phone: doc['phone'] ?? "",
+        email: doc['email'] ?? "",
+        img: doc['profileImageUrl'] ?? "",
+      );
+    }).toList();
 
-    return userData;
+    yield userData;
   } catch (e) {
     print("Error fetching userData : $e");
-    return [];
+    yield [];
   }
 }

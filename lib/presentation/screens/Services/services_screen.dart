@@ -9,7 +9,10 @@ import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 import 'package:sudia_events/presentation/screens/home/slider_body.dart';
 
 class AddServices extends StatefulWidget {
-  AddServices({super.key, required this.date, });
+  AddServices({
+    super.key,
+    required this.date,
+  });
   final DateTime date;
   @override
   State<AddServices> createState() => _AddServicesState();
@@ -99,7 +102,9 @@ class _AddServicesState extends State<AddServices> {
           Expanded(
               flex: 7,
               child: Container(
-                child: ServicesBodey(),
+                child: ServicesBodey(
+                  date: widget.date,
+                ),
               ))
         ],
       ),

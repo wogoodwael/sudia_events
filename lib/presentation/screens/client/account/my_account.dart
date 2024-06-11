@@ -258,8 +258,8 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          FutureBuilder<List<UserModel>>(
-            future: fetchUserData(id: sharedpref.getString('token')!),
+          StreamBuilder<List<UserModel>>(
+            stream: fetchUserData(id: sharedpref.getString('token')!),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(

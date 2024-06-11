@@ -13,8 +13,8 @@ import 'package:sudia_events/presentation/widgets/search.dart';
 
 class SubServicesScreen extends StatefulWidget {
   final String itemName;
-
-  SubServicesScreen({required this.itemName});
+  final DateTime date;
+  SubServicesScreen({required this.itemName, required this.date});
 
   @override
   _SubServicesScreenState createState() => _SubServicesScreenState();
@@ -126,7 +126,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                 optionsprice: item.optionsprice,
                                 dis: item.dis,
                                 rating: item.rating,
-                                about: item.about,
+                                about: item.about, date: widget.date,
                               ),
                             ),
                           );

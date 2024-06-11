@@ -6,13 +6,17 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
+import 'package:intl/intl.dart' as intl;
 
 class CheckoutScreen extends StatefulWidget {
   final String name;
   final String number;
-  CheckoutScreen({required this.name, required this.number});
+  final DateTime date;
+  CheckoutScreen(
+      {required this.name, required this.number, required this.date});
 
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -74,7 +78,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       if (user != null) {
         CollectionReference bookedServices =
             FirebaseFirestore.instance.collection('booked_services');
-        DateTime now = DateTime.now();
 
         for (var item in _checkoutItems) {
           await bookedServices.add({
@@ -85,7 +88,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'price': item['price'],
             'discount': item['discount'],
             'options': item['options'],
-            'timestamp': now,
+            'timestamp': widget.date,
             'subtotal': _subtotal,
             'discount_amount': _discount,
             'delivery_fee': _deliveryFee,
@@ -156,7 +159,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '09:56 10/05/2024', // Placeholder for date/time
+                                      intl.DateFormat('yyyy/MM/dd', 'en')
+                                          .format(widget.date),
                                       style: TextStyle(
                                           fontSize: 14.0, color: Colors.grey),
                                     ),
@@ -200,7 +204,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     ),
                                   ],
                                 ),
-
                                 OrderItem(
                                   title: item[
                                       'name'], // Assuming 'title' key exists
@@ -209,13 +212,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   options: item['options'] as List<
                                       dynamic>, // Assuming 'options' is a List<dynamic>
                                 ),
-                                Divider(
-                                  endIndent: 10,
-                                  indent: 10,
-                                ),
-                                // Repeat _OrderItem as needed based on your data structure
                                 SizedBox(height: 10.0),
-
                                 Row(
                                   children: [
                                     Text(

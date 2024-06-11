@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/add_to_card.dart';
+import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
 class MenuItemDetail extends StatefulWidget {
   final String img;
@@ -14,6 +16,7 @@ class MenuItemDetail extends StatefulWidget {
   final List options;
   final List optionsprice;
   final String about;
+  final DateTime date;
 
   const MenuItemDetail({
     super.key,
@@ -25,6 +28,7 @@ class MenuItemDetail extends StatefulWidget {
     required this.dis,
     required this.rating,
     required this.about,
+    required this.date,
   });
 
   @override
@@ -34,47 +38,82 @@ class MenuItemDetail extends StatefulWidget {
 class _MenuItemDetailState extends State<MenuItemDetail> {
   List<bool> _selectedOptions = [];
   int _quantity = 1;
-
   Future<void> addToCheckOut(BuildContext context) async {
     try {
       // Get current user
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         // User is not logged in
-        // You can handle this case according to your app's logic
+        // Handle this case according to your app's logic
         return;
       }
 
-      // Collect selected options and their prices
-      List<Map<String, dynamic>> selectedOptions = [];
-      for (int i = 0; i < widget.options.length; i++) {
-        if (_selectedOptions[i]) {
-          selectedOptions.add(
-              {'option': widget.options[i], 'price': widget.optionsprice[i]});
+      // Check if the user's reservations collection is empty
+      QuerySnapshot reservationSnapshot = await FirebaseFirestore.instance
+          .collection('reservation')
+          .where('userID', isEqualTo: user.uid)
+          .get();
+
+      if (reservationSnapshot.docs.isEmpty) {
+        // Show an alert dialog if no reservations are found
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('لا يوجد مناسبات '),
+              content: Text('يجب ان تقوم بانشاء مناسبه قبل ان تحجز خدمة .'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('حسنا '),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                    // Navigate back to the bottom bar screen
+                    // Replace 'BottomBarScreen()' with the actual widget or navigation logic
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => BottomBarScreen(id: user.uid),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        return; // Exit the method
+      } else if (reservationSnapshot.docs.isNotEmpty) {
+        // Collect selected options and their prices
+        List<Map<String, dynamic>> selectedOptions = [];
+        for (int i = 0; i < widget.options.length; i++) {
+          if (_selectedOptions[i]) {
+            selectedOptions.add({
+              'option': widget.options[i],
+              'price': widget.optionsprice[i],
+            });
+          }
         }
-      }
 
-      // Add item to checkout collection
-      for (int i = 0; i < _quantity; i++) {
-        await FirebaseFirestore.instance
-            .collection('SubServices')
-            .doc(user.uid)
-            .collection('checkout')
-            .add({
-          'img': widget.img,
-          'name': widget.name,
-          'options': selectedOptions,
-          'discount': widget.dis,
-          'price': widget.price,
-          'quantity': _quantity,
-          'timestamp':
-              FieldValue.serverTimestamp(), // Add a timestamp for ordering
-        });
-      }
+        // Add item to checkout collection
+        for (int i = 0; i < _quantity; i++) {
+          await FirebaseFirestore.instance
+              .collection('SubServices')
+              .doc(user.uid)
+              .collection('checkout')
+              .add({
+            'img': widget.img,
+            'name': widget.name,
+            'options': selectedOptions,
+            'discount': widget.dis,
+            'price': widget.price,
+            'quantity': _quantity,
+            'timestamp': widget.date, // Add a timestamp for ordering
+          });
+        }
 
-      // Show a snackbar or toast to indicate success
-      CustomSnackBar(
-          context, 'Item added to checkout three times', Colors.green);
+        // Show a snackbar or toast to indicate success
+        CustomSnackBar(
+            context, 'Item added to checkout three times', Colors.green);
+      }
     } catch (e) {
       // Handle errors
       print('Error adding to checkout: $e');
@@ -169,6 +208,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                                       name: widget.name,
                                       number:
                                           _selectedOptions.length.toString(),
+                                      date: widget.date,
                                     )));
                       },
                     ),
