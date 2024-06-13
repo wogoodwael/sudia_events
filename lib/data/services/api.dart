@@ -193,12 +193,11 @@ class Api {
 
 //*fetch data of events
   Future<List<Event>> fetchReservationData() async {
-    String userId = sharedpref.getString('token')!;
     try {
       final QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance
               .collection('reservation')
-              .where('userID', isEqualTo: userId)
+             
               .get();
 
       final List<Event> reservationData = querySnapshot.docs

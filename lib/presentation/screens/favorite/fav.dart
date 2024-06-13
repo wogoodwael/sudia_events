@@ -211,7 +211,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(data['name'],
+                                  Text(data['name'] ?? data['des'],
                                       style: GoogleFonts.cairo(fontSize: 16)),
                                   SizedBox(height: 4),
                                   Row(
@@ -228,7 +228,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                       style: TextStyle(
                                           decoration:
                                               TextDecoration.lineThrough)),
-                                  Text('SAR ${data['discount']}',
+                                  Text(
+                                      'SAR ${data['discount'] ?? data['price']}',
                                       style: TextStyle(color: Colors.red)),
                                 ],
                               ),

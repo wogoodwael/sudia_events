@@ -77,7 +77,9 @@ class ServicesBodey extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              CategorySection(date: date,),
+              CategorySection(
+                date: date,
+              ),
               SizedBox(height: 16),
               WeeklyOffersSection(),
               SizedBox(height: 16),
@@ -210,12 +212,20 @@ class WeeklyOffersSection extends StatelessWidget {
   }
 }
 
-class WeeklyOfferItem extends StatelessWidget {
+class WeeklyOfferItem extends StatefulWidget {
   final String img;
   final String name;
   final String discount;
   final String price;
   WeeklyOfferItem(this.img, this.name, this.discount, this.price);
+
+  @override
+  State<WeeklyOfferItem> createState() => _WeeklyOfferItemState();
+}
+
+class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
+  bool isAddedToFav = false;
+
   Future<void> addToFavorites(BuildContext context) async {
     try {
       // Get current user
@@ -232,13 +242,15 @@ class WeeklyOfferItem extends StatelessWidget {
           .doc(user.uid)
           .collection('favorites')
           .add({
-        'img': img,
-        'name': name,
-        'discount': discount,
-        'price': price,
+        'img': widget.img,
+        'name': widget.name,
+        'discount': widget.discount,
+        'price': widget.price,
         // You can add more fields if needed
       });
-
+      setState(() {
+        isAddedToFav = !isAddedToFav;
+      });
       // Show a snackbar or toast to indicate success
       CustomSnackBar(context, 'Item added to favorites', Colors.green);
     } catch (e) {
@@ -263,7 +275,7 @@ class WeeklyOfferItem extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(img,
+                    child: Image.network(widget.img,
                         fit: BoxFit.cover, height: 100, width: double.infinity),
                   ),
                   Positioned(
@@ -277,7 +289,7 @@ class WeeklyOfferItem extends StatelessWidget {
                         radius: 15,
                         backgroundColor: Colors.white,
                         child: Icon(
-                          Icons.favorite_border,
+                          isAddedToFav ? Icons.favorite : Icons.favorite_border,
                           color: Colors.red,
                         ),
                       ),
@@ -290,7 +302,7 @@ class WeeklyOfferItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style: GoogleFonts.cairo(fontSize: 16)),
+                    Text(widget.name, style: GoogleFonts.cairo(fontSize: 16)),
                     SizedBox(height: 4),
                     Row(
                       children: [
@@ -299,10 +311,11 @@ class WeeklyOfferItem extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 4),
-                    Text('SAR $price',
+                    Text('SAR ${widget.price}',
                         style:
                             TextStyle(decoration: TextDecoration.lineThrough)),
-                    Text('SAR $discount', style: TextStyle(color: Colors.red)),
+                    Text('SAR ${widget.discount}',
+                        style: TextStyle(color: Colors.red)),
                   ],
                 ),
               ),

@@ -151,12 +151,14 @@ class _BookingScreenState extends State<BookingScreen> {
                           IconButton(
                               icon: Image.asset(
                                 "assets/images/locationb.png",
+                                color: Colors.grey,
                                 width: 50,
                               ),
                               onPressed: () {}),
                           IconButton(
                               icon: Image.asset(
                                 "assets/images/message.png",
+                                color: Colors.grey,
                                 width: 50,
                               ),
                               onPressed: () {}),
@@ -215,14 +217,17 @@ class _BookingScreenState extends State<BookingScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('تم بنجاح'),
-            content: Text('لقد تم حجز مناسيتك ينجاح هل تريد اضافة خدمات؟'),
+            content: Text('لقد تم حجز مناسبتك ينجاح هل تريد اضافة خدمات؟'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => AddServices(date: widget.bookingDate,)),
+                    MaterialPageRoute(
+                        builder: (_) => AddServices(
+                              date: widget.bookingDate,
+                            )),
                   );
                 },
                 child: Text('نعم'),
@@ -417,12 +422,14 @@ class _BookingScreenState extends State<BookingScreen> {
                         IconButton(
                             icon: Image.asset(
                               "assets/images/message.png",
+                              color: Colors.grey,
                               width: 50,
                             ),
                             onPressed: () {}),
                         IconButton(
                             icon: Image.asset(
                               "assets/images/locationb.png",
+                              color: Colors.grey,
                               width: 50,
                             ),
                             onPressed: () {}),

@@ -126,7 +126,8 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                 optionsprice: item.optionsprice,
                                 dis: item.dis,
                                 rating: item.rating,
-                                about: item.about, date: widget.date,
+                                about: item.about,
+                                date: widget.date,
                               ),
                             ),
                           );
@@ -210,12 +211,20 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
   }
 }
 
-class SmallOfferItem extends StatelessWidget {
+class SmallOfferItem extends StatefulWidget {
   final String img;
   final String des;
   final String rating;
   final String price;
   SmallOfferItem(this.img, this.price, this.des, this.rating);
+
+  @override
+  State<SmallOfferItem> createState() => _SmallOfferItemState();
+}
+
+class _SmallOfferItemState extends State<SmallOfferItem> {
+  bool addedToFav = false;
+
   Future<void> addToFavorites(BuildContext context) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -228,11 +237,13 @@ class SmallOfferItem extends StatelessWidget {
           .doc(user.uid)
           .collection('favorites')
           .add({
-        'img': img,
-        'des': des,
-        'price': price,
+        'img': widget.img,
+        'des': widget.des,
+        'price': widget.price,
       });
-
+      setState(() {
+        addedToFav = !addedToFav;
+      });
       CustomSnackBar(context, 'Item added to favorites', Colors.green);
     } catch (e) {
       print('Error adding to favorites: $e');
@@ -257,7 +268,7 @@ class SmallOfferItem extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(img,
+                    child: Image.network(widget.img,
                         fit: BoxFit.cover, height: 100, width: double.infinity),
                   ),
                   Positioned(
@@ -271,7 +282,7 @@ class SmallOfferItem extends StatelessWidget {
                         radius: 15,
                         backgroundColor: Colors.white,
                         child: Icon(
-                          Icons.favorite_border,
+                          addedToFav ? Icons.favorite : Icons.favorite_border,
                           color: Colors.red,
                         ),
                       ),
@@ -284,16 +295,18 @@ class SmallOfferItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(des, style: GoogleFonts.cairo(fontSize: 16)),
+                    Text(widget.des, style: GoogleFonts.cairo(fontSize: 16)),
                     SizedBox(height: 4),
                     Row(
                       children: [
-                        Text(rating, style: TextStyle(color: Colors.orange)),
+                        Text(widget.rating,
+                            style: TextStyle(color: Colors.orange)),
                         Icon(Icons.star, color: Colors.orange, size: 16),
                       ],
                     ),
                     SizedBox(height: 4),
-                    Text('SAR $price', style: TextStyle(color: Colors.red)),
+                    Text('SAR ${widget.price}',
+                        style: TextStyle(color: Colors.red)),
                   ],
                 ),
               ),
