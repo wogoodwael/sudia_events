@@ -11,7 +11,11 @@ class OrderSummaryPage extends StatefulWidget {
   final String name;
   final String number;
   final DateTime date;
-  const OrderSummaryPage({super.key, required this.name, required this.number, required this.date});
+  const OrderSummaryPage(
+      {super.key,
+      required this.name,
+      required this.number,
+      required this.date});
   @override
   _OrderSummaryPageState createState() => _OrderSummaryPageState();
 }
@@ -425,7 +429,8 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
                                         MaterialPageRoute(
                                             builder: (_) => CheckoutScreen(
                                                   name: widget.name,
-                                                  number: widget.number, date: widget.date,
+                                                  number: widget.number,
+                                                  date: widget.date,
                                                 )));
                                   },
                                   child: Row(

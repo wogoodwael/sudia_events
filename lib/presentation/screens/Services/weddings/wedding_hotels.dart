@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/sub_services_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
-import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/about_body.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/apoinion_body.dart';
 import 'package:sudia_events/presentation/screens/payment/payment_screen.dart';
@@ -553,9 +551,10 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                       );
                     } catch (e) {
                       return Column(
-                        
                         children: [
-                          SizedBox(height: .5*mediaheight(context),),
+                          SizedBox(
+                            height: .5 * mediaheight(context),
+                          ),
                           Center(
                             child: Text("لا يوجد قاعات اخري "),
                           ),
@@ -703,7 +702,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
 
       services.add(bookingData).then((value) {
         print('Service added successfully!');
-        CustomSnackBar(context, 'تم حجز الخدمة', Colors.green);
+        // CustomSnackBar(context, 'تم حجز الخدمة', Colors.green);
       }).catchError((error) {
         print('Failed to add service: $error');
       });

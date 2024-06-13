@@ -9,7 +9,10 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Services/All/all_services.dart';
 import 'package:sudia_events/presentation/screens/Services/offers_screen.dart';
+import 'package:sudia_events/presentation/screens/Services/subServices/details.dart';
+import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 
+// ignore: must_be_immutable
 class ServicesBodey extends StatelessWidget {
   final DateTime date;
   TextEditingController controller = TextEditingController();
@@ -106,11 +109,31 @@ class CategorySection extends StatelessWidget {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        CategoryItem(title: 'مطابخ', icon: Icons.kitchen),
-        CategoryItem(title: 'مطاعم', icon: Icons.restaurant),
-        CategoryItem(title: 'أماكن', icon: Icons.location_on),
-        CategoryItem(title: 'مستلزمات', icon: Icons.shopping_bag),
-        CategoryItem(title: 'ورود وهدايا', icon: Icons.card_giftcard),
+        CategoryItem(
+          title: 'مطابخ',
+          icon: Icons.kitchen,
+          date: date,
+        ),
+        CategoryItem(
+          title: 'مطاعم',
+          icon: Icons.restaurant,
+          date: date,
+        ),
+        CategoryItem(
+          title: 'أماكن',
+          icon: Icons.location_on,
+          date: date,
+        ),
+        CategoryItem(
+          title: 'مستلزمات',
+          icon: Icons.shopping_bag,
+          date: date,
+        ),
+        CategoryItem(
+          title: 'ورود وهدايا',
+          icon: Icons.card_giftcard,
+          date: date,
+        ),
         GestureDetector(
           onTap: () {
             Navigator.push(
@@ -134,22 +157,33 @@ class CategorySection extends StatelessWidget {
 class CategoryItem extends StatelessWidget {
   final String title;
   final IconData icon;
+  final DateTime date;
 
-  CategoryItem({required this.title, required this.icon});
+  CategoryItem({required this.title, required this.icon, required this.date});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      surfaceTintColor: Colors.white,
-      elevation: 2,
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40, color: primary),
-          SizedBox(height: 8),
-          Text(title, style: GoogleFonts.cairo(fontSize: 14)),
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ServicesScreen(
+                      date: date,
+                    )));
+      },
+      child: Card(
+        surfaceTintColor: Colors.white,
+        elevation: 2,
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 40, color: primary),
+            SizedBox(height: 8),
+            Text(title, style: GoogleFonts.cairo(fontSize: 14)),
+          ],
+        ),
       ),
     );
   }
@@ -161,9 +195,22 @@ class WeeklyOffersSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('العروض الأسبوعية',
-            style:
-                GoogleFonts.cairo(fontSize: 18, fontWeight: FontWeight.bold)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('العروض الأسبوعية',
+                style: GoogleFonts.cairo(
+                    fontSize: 18, fontWeight: FontWeight.bold)),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => OffersScreen()));
+              },
+              child: Text(' عرض الكل ',
+                  style: GoogleFonts.cairo(fontSize: 15, color: primary)),
+            ),
+          ],
+        ),
         SizedBox(height: 10),
         Container(
             height: 220,
@@ -193,10 +240,6 @@ class WeeklyOffersSection extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var offer = offers[index];
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => OffersScreen()));
-                      },
                       child: WeeklyOfferItem(
                           offer['img'] ?? "",
                           offer['name'] ?? "",
@@ -252,7 +295,7 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
         isAddedToFav = !isAddedToFav;
       });
       // Show a snackbar or toast to indicate success
-      CustomSnackBar(context, 'Item added to favorites', Colors.green);
+      CustomSnackBar(context, 'Item added to favorites', Colors.green, .75 * mediaheight(context),);
     } catch (e) {
       // Handle errors
       print('Error adding to favorites: $e');
@@ -261,65 +304,87 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 170,
-      margin: EdgeInsets.only(right: 10),
-      child: Card(
-        color: Colors.white,
-        surfaceTintColor: Colors.white,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(widget.img,
-                        fit: BoxFit.cover, height: 100, width: double.infinity),
-                  ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: GestureDetector(
-                      onTap: () async {
-                        await addToFavorites(context);
-                      },
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          isAddedToFav ? Icons.favorite : Icons.favorite_border,
-                          color: Colors.red,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => MenuItemDetail(
+                    img: widget.img,
+                    name: widget.name,
+                    price: widget.price,
+                    options: [],
+                    optionsprice: [],
+                    dis: widget.discount,
+                    rating: '4.5',
+                    about: 'من افضل واشهي الاطباق',
+                    date: DateTime.now(),
+                    type: 'offers')));
+      },
+      child: Container(
+        width: 170,
+        margin: EdgeInsets.only(right: 10),
+        child: Card(
+          color: Colors.white,
+          surfaceTintColor: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(widget.img,
+                          fit: BoxFit.cover,
+                          height: 100,
+                          width: double.infinity),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: () async {
+                          await addToFavorites(context);
+                        },
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            isAddedToFav
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Colors.red,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.name, style: GoogleFonts.cairo(fontSize: 16)),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Text('4.9', style: TextStyle(color: Colors.orange)),
-                        Icon(Icons.star, color: Colors.orange, size: 16),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Text('SAR ${widget.price}',
-                        style:
-                            TextStyle(decoration: TextDecoration.lineThrough)),
-                    Text('SAR ${widget.discount}',
-                        style: TextStyle(color: Colors.red)),
                   ],
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.name, style: GoogleFonts.cairo(fontSize: 16)),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Text('4.9', style: TextStyle(color: Colors.orange)),
+                          Icon(Icons.star, color: Colors.orange, size: 16),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Text('SAR ${widget.price}',
+                          style: TextStyle(
+                              decoration: TextDecoration.lineThrough)),
+                      Text('SAR ${widget.discount}',
+                          style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -536,24 +601,32 @@ class FavoriteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      margin: EdgeInsets.only(right: 10),
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              img,
-              fit: BoxFit.cover,
-              height: 100,
-              width: double.infinity,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => FavouriteScreen()));
+      },
+      child: Container(
+        width: 150,
+        margin: EdgeInsets.only(right: 10),
+        child: Card(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(
+                  img,
+                  fit: BoxFit.cover,
+                  height: 100,
+                  width: double.infinity,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(name, style: GoogleFonts.cairo(fontSize: 16)),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(name, style: GoogleFonts.cairo(fontSize: 16)),
-            ),
-          ],
+          ),
         ),
       ),
     );

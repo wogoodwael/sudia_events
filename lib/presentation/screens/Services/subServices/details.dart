@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/add_to_card.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
@@ -17,6 +18,7 @@ class MenuItemDetail extends StatefulWidget {
   final List optionsprice;
   final String about;
   final DateTime date;
+  final String type;
 
   const MenuItemDetail({
     super.key,
@@ -29,6 +31,7 @@ class MenuItemDetail extends StatefulWidget {
     required this.rating,
     required this.about,
     required this.date,
+    required this.type,
   });
 
   @override
@@ -112,12 +115,21 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
 
         // Show a snackbar or toast to indicate success
         CustomSnackBar(
-            context, 'Item added to checkout three times', Colors.green);
+          context,
+          'Item added to checkout ',
+          Colors.green,
+          .9 * mediaheight(context),
+        );
       }
     } catch (e) {
       // Handle errors
       print('Error adding to checkout: $e');
-      CustomSnackBar(context, 'Failed to add item to checkout', Colors.red);
+      CustomSnackBar(
+        context,
+        'Failed to add item to checkout',
+        Colors.red,
+        .9 * mediaheight(context),
+      );
     }
   }
 
@@ -141,17 +153,25 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
           children: [
             SizedBox(height: 10),
             Expanded(
-              flex: 2,
+              flex: widget.type.contains("قاعة")
+                  ? 5
+                  : widget.type == 'offers'
+                      ? 5
+                      : 2,
               child: Stack(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
                         widget.img,
                         width: double.infinity,
-                        height: 200,
+                        height: widget.type.contains('قاعة')
+                            ? 500
+                            : widget.type == 'offers'
+                                ? 700
+                                : 200,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -227,7 +247,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
             Row(
               children: [
                 Text(
-                  'SAR ${widget.dis}',
+                  'SAR ${(double.parse(widget.price) * (1 - double.parse(widget.dis) / 100)).toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.red,
@@ -285,15 +305,25 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
               ),
             ),
             SizedBox(height: 16),
-            Text(
-              ':Additional Options',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            widget.type == 'offers'
+                ? Center(
+                    child: Text(
+                      'لا توجد اضافات الان ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                : Text(
+                    ':Additional Options',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
             Expanded(
-              flex: 2,
+              flex: widget.type == 'offers' ? 1 : 2,
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.5,

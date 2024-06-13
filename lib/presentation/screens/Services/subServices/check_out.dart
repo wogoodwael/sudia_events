@@ -6,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:intl/intl.dart' as intl;
@@ -95,7 +94,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'total': _total
           });
         }
-        CustomSnackBar(context, 'تم حجز الخدمة', Colors.green);
+        CustomSnackBar(
+          context,
+          'تم حجز الخدمة',
+          Colors.green,
+          .75 * mediaheight(context),
+        );
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -104,7 +108,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         // Optionally, clear the checkout items or navigate to a success screen
       }
     } on Exception catch (e) {
-      CustomSnackBar(context, e.toString(), Colors.red);
+      CustomSnackBar(
+        context,
+        e.toString(),
+        Colors.red,
+        .9 * mediaheight(context),
+      );
     }
   }
 
@@ -513,7 +522,41 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     ),
                                     color: primary,
                                     onPressed: () {
-                                      _uploadCheckoutData();
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('تاكيد  الدفع'),
+                                            content: Text(
+                                                'هل انت متاكد من حجز الخدمة ؟ '),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  _uploadCheckoutData(); // Close the dialog
+                                                },
+                                                child: Text('نعم'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // Close the dialog
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            BottomBarScreen(
+                                                              id: sharedpref
+                                                                  .getString(
+                                                                      'token')!,
+                                                            )),
+                                                  );
+                                                },
+                                                child: Text('لا'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                     child: Text(
                                       "الدفع",

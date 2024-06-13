@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 class FavouriteScreen extends StatefulWidget {

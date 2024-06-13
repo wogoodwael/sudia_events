@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
@@ -128,6 +130,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                 rating: item.rating,
                                 about: item.about,
                                 date: widget.date,
+                                type: widget.itemName,
                               ),
                             ),
                           );
@@ -169,12 +172,33 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                       itemCount: privateItems.length,
                       itemBuilder: (BuildContext context, int index) {
                         var item = privateItems[index];
-                        return PrivateOfferItem(
-                          item.image,
-                          item.price,
-                          item.des,
-                          item.rating,
-                          item.name,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MenuItemDetail(
+                                  img: item.image,
+                                  name: item.des,
+                                  price: item.price,
+                                  options: item.options,
+                                  optionsprice: item.optionsprice,
+                                  dis: item.dis,
+                                  rating: item.rating,
+                                  about: item.about,
+                                  date: widget.date,
+                                  type: widget.itemName,
+                                ),
+                              ),
+                            );
+                          },
+                          child: PrivateOfferItem(
+                            item.image,
+                            item.price,
+                            item.des,
+                            item.rating,
+                            item.name,
+                          ),
                         );
                       },
                     ),
@@ -244,7 +268,7 @@ class _SmallOfferItemState extends State<SmallOfferItem> {
       setState(() {
         addedToFav = !addedToFav;
       });
-      CustomSnackBar(context, 'Item added to favorites', Colors.green);
+      CustomSnackBar(context, 'Item added to favorites', Colors.green, .9 * mediaheight(context),);
     } catch (e) {
       print('Error adding to favorites: $e');
     }
@@ -295,7 +319,9 @@ class _SmallOfferItemState extends State<SmallOfferItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.des, style: GoogleFonts.cairo(fontSize: 16)),
+                    FittedBox(
+                        child: Text(widget.des,
+                            style: GoogleFonts.cairo(fontSize: 16))),
                     SizedBox(height: 4),
                     Row(
                       children: [
@@ -342,7 +368,7 @@ class PrivateOfferItem extends StatelessWidget {
         'price': price,
       });
 
-      CustomSnackBar(context, 'Item added to favorites', Colors.green);
+      CustomSnackBar(context, 'Item added to favorites', Colors.green, .9 * mediaheight(context),);
     } catch (e) {
       print('Error adding to favorites: $e');
     }
@@ -362,42 +388,48 @@ class PrivateOfferItem extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        img,
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 70,
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          img,
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 70,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(name, style: GoogleFonts.cairo(fontSize: 16)),
-                          SizedBox(height: 4),
-                          Text(des,
-                              style: GoogleFonts.cairo(
-                                  fontSize: 14, color: Colors.grey)),
-                          Text('SAR $price',
-                              style: TextStyle(color: Colors.red)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(rating,
-                                  style: TextStyle(color: Colors.orange)),
-                              Icon(Icons.star, color: Colors.orange, size: 16),
-                            ],
-                          ),
-                          SizedBox(height: 4),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(name, style: GoogleFonts.cairo(fontSize: 16)),
+                            SizedBox(height: 4),
+                            FittedBox(
+                              child: Text(des,
+                                  style: GoogleFonts.cairo(
+                                      fontSize: 14, color: Colors.grey)),
+                            ),
+                            Text('SAR $price',
+                                style: TextStyle(color: Colors.red)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(rating,
+                                    style: TextStyle(color: Colors.orange)),
+                                Icon(Icons.star,
+                                    color: Colors.orange, size: 16),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
