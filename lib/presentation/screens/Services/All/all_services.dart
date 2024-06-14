@@ -3,13 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/service.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/sub_services.dart';
+import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 class ServicesScreen extends StatefulWidget {
   final DateTime date;
+  final bool inside;
 
-  const ServicesScreen({super.key, required this.date});
+  const ServicesScreen({super.key, required this.date, required this.inside});
   @override
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
@@ -53,9 +56,18 @@ class _ServicesScreenState extends State<ServicesScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: Icon(
-          Icons.home,
-          color: primary,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) =>
+                        BottomBarScreen(id: sharedpref.getString('token')!)));
+          },
+          child: Icon(
+            Icons.home,
+            color: primary,
+          ),
         ),
         actions: [
           IconButton(
@@ -184,7 +196,9 @@ class _ServicesScreenState extends State<ServicesScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (_) => SubServicesScreen(
-                              itemName: filteredServices[index].name, date: widget.date,
+                              itemName: filteredServices[index].name,
+                              date: widget.date,
+                              inside: widget.inside,
                             ),
                           ),
                         );

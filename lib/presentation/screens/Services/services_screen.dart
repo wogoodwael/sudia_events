@@ -11,9 +11,10 @@ import 'package:sudia_events/presentation/screens/home/slider_body.dart';
 class AddServices extends StatefulWidget {
   AddServices({
     super.key,
-    required this.date,
+    required this.date, required this.inside,
   });
   final DateTime date;
+  final bool inside;
   @override
   State<AddServices> createState() => _AddServicesState();
 }
@@ -103,7 +104,7 @@ class _AddServicesState extends State<AddServices> {
               flex: 7,
               child: Container(
                 child: ServicesBodey(
-                  date: widget.date,
+                  date: widget.date, inside: widget.inside,
                 ),
               ))
         ],

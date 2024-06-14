@@ -19,7 +19,7 @@ class MenuItemDetail extends StatefulWidget {
   final String about;
   final DateTime date;
   final String type;
-
+  final bool inside;
   const MenuItemDetail({
     super.key,
     required this.img,
@@ -32,6 +32,7 @@ class MenuItemDetail extends StatefulWidget {
     required this.about,
     required this.date,
     required this.type,
+    required this.inside,
   });
 
   @override
@@ -57,14 +58,14 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
           .where('userID', isEqualTo: user.uid)
           .get();
 
-      if (reservationSnapshot.docs.isEmpty) {
+      if (reservationSnapshot.docs.isEmpty || widget.inside == false) {
         // Show an alert dialog if no reservations are found
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('لا يوجد مناسبات '),
-              content: Text('يجب ان تقوم بانشاء مناسبه قبل ان تحجز خدمة .'),
+              content: Text('يجب ان تقوم بحجز الخدمة من داخل المناسبة '),
               actions: <Widget>[
                 TextButton(
                   child: Text('حسنا '),
@@ -84,7 +85,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
           },
         );
         return; // Exit the method
-      } else if (reservationSnapshot.docs.isNotEmpty) {
+      } else if (reservationSnapshot.docs.isNotEmpty && widget.inside == true) {
         // Collect selected options and their prices
         List<Map<String, dynamic>> selectedOptions = [];
         for (int i = 0; i < widget.options.length; i++) {

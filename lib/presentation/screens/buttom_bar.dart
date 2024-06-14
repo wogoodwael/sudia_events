@@ -28,7 +28,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       HomeScreen(),
       // MyAccountScreen(),
       AddServices(
-        date: DateTime.now(),
+        date: DateTime.now(), inside: false,
       ),
       ReservationScreen(
         id: widget.id,
@@ -48,7 +48,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
   double _calculatePosition(int index) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double itemWidth = screenWidth / 5;
+    double itemWidth = screenWidth / 5.2;
     return index * itemWidth + itemWidth / 2 - 30; // Adjust the position
   }
 
@@ -96,17 +96,17 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                       icon: _selectedIndex == 2
                           ? Text("")
                           : Icon(Icons.shopping_bag),
-                      label: '',
+                      label: _selectedIndex == 2 ? 'الحجوزات' : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 3
                           ? Text("")
                           : Icon(Icons.notifications),
-                      label: '',
+                      label: _selectedIndex == 3 ? 'الاشعارات' : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 4 ? Text("") : Icon(Icons.person),
-                      label: '',
+                      label: _selectedIndex == 4 ? 'الحساب' : "",
                     ),
                   ],
                   currentIndex: _selectedIndex,

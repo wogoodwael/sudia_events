@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/helper/calender.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -133,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (_) => BookingScreen(
@@ -211,8 +213,14 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        actions: const [
-          Text('موقعك'),
+        actions: [
+          Text(
+            'موقعك',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
           SizedBox(width: 10),
           Icon(Icons.location_on_rounded),
           SizedBox(width: 10),
@@ -232,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.shopify_sharp,
+                    Icons.favorite_border,
                     color: primary,
                     size: 25,
                   ),
@@ -293,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           child: Container(
                             margin: const EdgeInsets.all(5),
-                            width: 80,
+                            width: 100,
                             height: 30,
                             decoration: BoxDecoration(
                               color:
@@ -301,13 +309,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: onTapped[index]
+                                  ? MainAxisAlignment.spaceAround
+                                  : MainAxisAlignment.center,
                               children: [
                                 Center(
                                   child: Text(
                                     services[index],
-                                    style: TextStyle(
-                                        fontSize: 14,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
                                         color: onTapped[index]
                                             ? Colors.white
                                             : Colors.black),
@@ -355,7 +366,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   "احجز موعد مناسبتك",
-                  style: TextStyle(color: primary),
+                  style: GoogleFonts.inter(
+                      color: primary,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400),
                 ),
                 SizedBox(width: 10),
                 IconButton(

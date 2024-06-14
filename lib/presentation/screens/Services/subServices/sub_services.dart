@@ -16,7 +16,9 @@ import 'package:sudia_events/presentation/widgets/search.dart';
 class SubServicesScreen extends StatefulWidget {
   final String itemName;
   final DateTime date;
-  SubServicesScreen({required this.itemName, required this.date});
+  final bool inside;
+  SubServicesScreen(
+      {required this.itemName, required this.date, required this.inside});
 
   @override
   _SubServicesScreenState createState() => _SubServicesScreenState();
@@ -131,6 +133,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                 about: item.about,
                                 date: widget.date,
                                 type: widget.itemName,
+                                inside: widget.inside,
                               ),
                             ),
                           );
@@ -188,6 +191,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                   about: item.about,
                                   date: widget.date,
                                   type: widget.itemName,
+                                  inside: widget.inside,
                                 ),
                               ),
                             );
@@ -268,7 +272,12 @@ class _SmallOfferItemState extends State<SmallOfferItem> {
       setState(() {
         addedToFav = !addedToFav;
       });
-      CustomSnackBar(context, 'Item added to favorites', Colors.green, .9 * mediaheight(context),);
+      CustomSnackBar(
+        context,
+        'Item added to favorites',
+        Colors.green,
+        .9 * mediaheight(context),
+      );
     } catch (e) {
       print('Error adding to favorites: $e');
     }
@@ -368,7 +377,12 @@ class PrivateOfferItem extends StatelessWidget {
         'price': price,
       });
 
-      CustomSnackBar(context, 'Item added to favorites', Colors.green, .9 * mediaheight(context),);
+      CustomSnackBar(
+        context,
+        'Item added to favorites',
+        Colors.green,
+        .9 * mediaheight(context),
+      );
     } catch (e) {
       print('Error adding to favorites: $e');
     }

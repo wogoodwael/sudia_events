@@ -15,9 +15,10 @@ import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 // ignore: must_be_immutable
 class ServicesBodey extends StatelessWidget {
   final DateTime date;
+  final bool inside;
   TextEditingController controller = TextEditingController();
 
-  ServicesBodey({super.key, required this.date});
+  ServicesBodey({super.key, required this.date, required this.inside});
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +83,12 @@ class ServicesBodey extends StatelessWidget {
               SizedBox(height: 10),
               CategorySection(
                 date: date,
+                inside: inside,
               ),
               SizedBox(height: 16),
-              WeeklyOffersSection(),
+              WeeklyOffersSection(
+                inside: inside,
+              ),
               SizedBox(height: 16),
               PreviousReservationsSection(),
               SizedBox(height: 16),
@@ -100,8 +104,8 @@ class ServicesBodey extends StatelessWidget {
 
 class CategorySection extends StatelessWidget {
   final DateTime date;
-
-  const CategorySection({super.key, required this.date});
+  final bool inside;
+  const CategorySection({super.key, required this.date, required this.inside});
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -113,34 +117,40 @@ class CategorySection extends StatelessWidget {
           title: 'مطابخ',
           icon: Icons.kitchen,
           date: date,
+          inside: inside,
         ),
         CategoryItem(
           title: 'مطاعم',
           icon: Icons.restaurant,
           date: date,
+          inside: inside,
         ),
         CategoryItem(
           title: 'أماكن',
           icon: Icons.location_on,
           date: date,
+          inside: inside,
         ),
         CategoryItem(
           title: 'مستلزمات',
           icon: Icons.shopping_bag,
           date: date,
+          inside: inside,
         ),
         CategoryItem(
           title: 'ورود وهدايا',
           icon: Icons.card_giftcard,
           date: date,
+          inside: inside,
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (_) => ServicesScreen(
                           date: date,
+                          inside: inside,
                         )));
           },
           child: Icon(
@@ -158,18 +168,23 @@ class CategoryItem extends StatelessWidget {
   final String title;
   final IconData icon;
   final DateTime date;
-
-  CategoryItem({required this.title, required this.icon, required this.date});
+  final bool inside;
+  CategoryItem(
+      {required this.title,
+      required this.icon,
+      required this.date,
+      required this.inside});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (_) => ServicesScreen(
                       date: date,
+                      inside: inside,
                     )));
       },
       child: Card(
@@ -190,6 +205,9 @@ class CategoryItem extends StatelessWidget {
 }
 
 class WeeklyOffersSection extends StatelessWidget {
+  final bool inside;
+
+  const WeeklyOffersSection({super.key, required this.inside});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -204,7 +222,11 @@ class WeeklyOffersSection extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => OffersScreen()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => OffersScreen(
+                              inside: inside,
+                            )));
               },
               child: Text(' عرض الكل ',
                   style: GoogleFonts.cairo(fontSize: 15, color: primary)),
@@ -219,7 +241,7 @@ class WeeklyOffersSection extends StatelessWidget {
                   FirebaseFirestore.instance.collection('offers').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -244,7 +266,8 @@ class WeeklyOffersSection extends StatelessWidget {
                           offer['img'] ?? "",
                           offer['name'] ?? "",
                           offer['discount'] ?? "",
-                          offer['price'] ?? ""),
+                          offer['price'] ?? "",
+                          inside),
                     );
                   },
                 );
@@ -260,7 +283,8 @@ class WeeklyOfferItem extends StatefulWidget {
   final String name;
   final String discount;
   final String price;
-  WeeklyOfferItem(this.img, this.name, this.discount, this.price);
+  final bool inside;
+  WeeklyOfferItem(this.img, this.name, this.discount, this.price, this.inside);
 
   @override
   State<WeeklyOfferItem> createState() => _WeeklyOfferItemState();
@@ -295,7 +319,12 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
         isAddedToFav = !isAddedToFav;
       });
       // Show a snackbar or toast to indicate success
-      CustomSnackBar(context, 'Item added to favorites', Colors.green, .75 * mediaheight(context),);
+      CustomSnackBar(
+        context,
+        'Item added to favorites',
+        Colors.green,
+        .75 * mediaheight(context),
+      );
     } catch (e) {
       // Handle errors
       print('Error adding to favorites: $e');
@@ -310,16 +339,18 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
             context,
             MaterialPageRoute(
                 builder: (_) => MenuItemDetail(
-                    img: widget.img,
-                    name: widget.name,
-                    price: widget.price,
-                    options: [],
-                    optionsprice: [],
-                    dis: widget.discount,
-                    rating: '4.5',
-                    about: 'من افضل واشهي الاطباق',
-                    date: DateTime.now(),
-                    type: 'offers')));
+                      img: widget.img,
+                      name: widget.name,
+                      price: widget.price,
+                      options: [],
+                      optionsprice: [],
+                      dis: widget.discount,
+                      rating: '4.5',
+                      about: 'من افضل واشهي الاطباق',
+                      date: DateTime.now(),
+                      type: 'offers',
+                      inside: widget.inside,
+                    )));
       },
       child: Container(
         width: 170,

@@ -222,12 +222,14 @@ class _BookingScreenState extends State<BookingScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (_) => AddServices(
                               date: widget.bookingDate,
+                              inside: true,
                             )),
+                    // This predicate removes all previous routes
                   );
                 },
                 child: Text('نعم'),
@@ -235,7 +237,7 @@ class _BookingScreenState extends State<BookingScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (_) => BottomBarScreen(

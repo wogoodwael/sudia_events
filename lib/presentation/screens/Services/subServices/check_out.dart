@@ -41,7 +41,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           .collection('SubServices')
           .doc(user.uid)
           .collection('checkout')
-          .where('name', isEqualTo: widget.name)
           .get();
 
       List<Map<String, dynamic>> checkoutItems = querySnapshot.docs.map((doc) {
