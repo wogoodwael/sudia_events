@@ -116,6 +116,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
   }
 
+  Future<void> _removeFromCheckOut() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        print('No user is currently signed in.');
+        return;
+      }
+
+      QuerySnapshot checkoutSnapshot = await FirebaseFirestore.instance
+          .collection('SubServices')
+          .doc(user.uid)
+          .collection('checkout')
+          .get();
+
+      // Use WriteBatch for atomic deletion
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      for (QueryDocumentSnapshot doc in checkoutSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      await batch.commit();
+
+      print('All checkout documents deleted for user: ${user.uid}');
+    } catch (e) {
+      print('Error removing checkout: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -531,7 +560,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                             actions: <Widget>[
                                               TextButton(
                                                 onPressed: () {
-                                                  _uploadCheckoutData(); // Close the dialog
+                                                  _uploadCheckoutData();
+                                                  _removeFromCheckOut();
+                                                  // Close the dialog
                                                 },
                                                 child: Text('نعم'),
                                               ),

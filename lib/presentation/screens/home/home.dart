@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,15 +9,19 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
-import 'package:sudia_events/presentation/screens/favorite/fav.dart';
+
+import 'package:sudia_events/presentation/screens/Auth/login.dart';
+
 import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/presentation/screens/home/booking.dart';
+import 'package:sudia_events/presentation/screens/home/check.dart';
+import 'package:sudia_events/presentation/screens/home/location.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart' as data;
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
+  const HomeScreen({super.key, required this.id});
+  final String id;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -214,11 +219,17 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         actions: [
-          Text(
-            'موقعك',
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => LocationScreen()));
+            },
+            child: Text(
+              'موقعك',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
           SizedBox(width: 10),
@@ -227,9 +238,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection('favorites')
+              .collection('SubServices')
+              .doc(widget.id)
+              .collection('checkout')
               .snapshots(),
           builder: (context, snapshot) {
             int favoriteCount = 0;
@@ -240,13 +251,17 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.favorite_border,
+                    Icons.shopify_rounded,
                     color: primary,
                     size: 25,
                   ),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => FavouriteScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => CheckoutScreenOverView(
+                                  id: widget.id,
+                                )));
                   },
                 ),
                 Positioned(
@@ -376,7 +391,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   iconSize: 30,
                   icon: Icon(Icons.add_circle_rounded),
                   onPressed: () {
-                    _showEventBottomSheet();
+                    widget.id == '123'
+                        ? showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(" يجب تسجيل الدخول"),
+                                content: Text(
+                                    "لكي تقوم بانشاء مناسبه يجب تسجيل الدخول اولا "),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => LoginScreen()));
+                                    },
+                                    child: Text("حسنا"),
+                                  )
+                                ],
+                              );
+                            },
+                          )
+                        : _showEventBottomSheet();
                   },
                 ),
               ],

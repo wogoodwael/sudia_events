@@ -227,7 +227,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     MaterialPageRoute(
                         builder: (_) => AddServices(
                               date: widget.bookingDate,
-                              inside: true,
+                              inside: true, id: sharedpref.getString('token')!,
                             )),
                     // This predicate removes all previous routes
                   );

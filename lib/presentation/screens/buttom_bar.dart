@@ -25,10 +25,14 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      HomeScreen(),
+      HomeScreen(
+        id: widget.id,
+      ),
       // MyAccountScreen(),
       AddServices(
-        date: DateTime.now(), inside: false,
+        date: DateTime.now(),
+        inside: false,
+        id: widget.id,
       ),
       ReservationScreen(
         id: widget.id,

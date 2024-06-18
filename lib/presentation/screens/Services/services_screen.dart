@@ -6,15 +6,18 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/presentation/screens/Services/services_body.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
+import 'package:sudia_events/presentation/screens/home/check.dart';
 import 'package:sudia_events/presentation/screens/home/slider_body.dart';
 
 class AddServices extends StatefulWidget {
   AddServices({
     super.key,
-    required this.date, required this.inside,
+    required this.date,
+    required this.inside, required this.id,
   });
   final DateTime date;
   final bool inside;
+  final String id;
   @override
   State<AddServices> createState() => _AddServicesState();
 }
@@ -43,9 +46,9 @@ class _AddServicesState extends State<AddServices> {
         ],
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection('users')
+              .collection('SubServices')
               .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection('favorites')
+              .collection('checkout')
               .snapshots(),
           builder: (context, snapshot) {
             int favoriteCount = 0;
@@ -61,8 +64,12 @@ class _AddServicesState extends State<AddServices> {
                     size: 25,
                   ),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => FavouriteScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => CheckoutScreenOverView(
+                                  id: widget.id,
+                                )));
                   },
                 ),
                 Positioned(
@@ -104,7 +111,8 @@ class _AddServicesState extends State<AddServices> {
               flex: 7,
               child: Container(
                 child: ServicesBodey(
-                  date: widget.date, inside: widget.inside,
+                  date: widget.date,
+                  inside: widget.inside,
                 ),
               ))
         ],
