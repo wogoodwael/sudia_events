@@ -9,6 +9,7 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
+import 'package:sudia_events/main.dart';
 
 import 'package:sudia_events/presentation/screens/Auth/login.dart';
 
@@ -222,7 +223,13 @@ class _HomeScreenState extends State<HomeScreen> {
           GestureDetector(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => LocationScreen()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => LocationScreen(
+                            lat: sharedpref.getDouble('lat')!,
+                            long: sharedpref.getDouble('long')!,
+                            fromHome: true,
+                          )));
             },
             child: Text(
               'موقعك',
@@ -450,9 +457,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: eventsToShow.length,
                       itemBuilder: (context, index) {
                         Event event = eventsToShow[index];
+                        DateTime now = DateTime.now();
+                        DateTime eventDate = event.date;
+
+                        // Check if the event date is tomorrow, today, or after a week
+                        bool isToday = eventDate.year == now.year &&
+                            eventDate.month == now.month &&
+                            eventDate.day == now.day;
+
+                        bool isTomorrow = eventDate.year == now.year &&
+                            eventDate.month == now.month &&
+                            eventDate.day == now.day + 1;
+
+                        bool isAfterWeek =
+                            eventDate.isAfter(now.add(Duration(days: 5)));
+
+                        // Determine the message to display
+                        String message;
+                        if (isToday) {
+                          message = 'اليوم';
+                        } else if (isTomorrow) {
+                          message = 'غدا';
+                        } else if (isAfterWeek) {
+                          message = 'الاسبوع القادم';
+                        } else {
+                          message = intl.DateFormat('yyyy/MM/dd', 'ar').format(event
+                              .date); // Default to today if none of the above conditions are met
+                        }
                         return EventContainer(
-                          time: intl.DateFormat('yyyy/MM/dd', 'ar')
-                              .format(event.date),
+                          time: message,
                           name: '${event.name} ${event.family} ${event.tribe}',
                           title: selectedService,
                           location: 'جده - حي البساتين',

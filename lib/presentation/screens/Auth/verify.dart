@@ -122,11 +122,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       height: 0.1 * MediaQuery.of(context).size.height,
                     ),
                     Text(
-                      "enter verify code",
+                      "enter verify code".tr(),
                       style: TextStyle(fontSize: 30),
                     ),
                     Text(
-                      "massage${widget.phone.substring(widget.phone.length - 3)} ****** ${widget.phone.substring(0, 2)}",
+                      "${"massage".tr()}${widget.phone.substring(widget.phone.length - 3)} ****** ${widget.phone.substring(0, 2)}",
                       style: TextStyle(color: Colors.grey, fontSize: 17),
                     ),
                     OtpPinField(
@@ -189,7 +189,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       children: [
                         Center(
                           child: Text(
-                            'dont recieve',
+                            "dont recieve".tr(),
                             style: TextStyle(fontSize: 17),
                           ),
                         ),
@@ -216,7 +216,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         GestureDetector(
                           onTap: _start == 0 ? _resendCode : null,
                           child: Text(
-                            'resend',
+                            'resend'.tr(),
                             style: TextStyle(
                               color: Colors.grey,
                             ),
@@ -279,7 +279,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                 ),
                               )
                             : Text(
-                                'next',
+                                "next".tr(),
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               ),
