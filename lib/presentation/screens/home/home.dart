@@ -28,6 +28,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String filterValue = '';
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   Map<DateTime, List<Event>> events = {};
@@ -45,8 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Api api = Api();
   String selectedService = 'زواج';
 
-  bool isFavoriteChecked = false;
-  bool isLocationChecked = false;
+  bool marriage = false;
+  bool graduation = false;
+  bool privateEvent = false;
+  bool publicEvent = false;
 
   TextEditingController searchController = TextEditingController();
   List<Event> filteredEvents = [];
@@ -146,6 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(
                           builder: (_) => BookingScreen(
                                 bookingDate: _selectedDay!,
+                                type: filterValue,
                               )));
                 },
               ),
@@ -451,6 +455,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     List<Event> eventsToShow = searchController.text.isEmpty
                         ? snapshot.data!
                         : filteredEvents;
+                    eventsToShow.sort((a, b) {
+                      DateTime now = DateTime.now();
+                      int aDiff = a.date.difference(now).inDays;
+                      int bDiff = b.date.difference(now).inDays;
+                      return aDiff.compareTo(bDiff);
+                    });
                     return ListView.builder(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
@@ -481,15 +491,137 @@ class _HomeScreenState extends State<HomeScreen> {
                         } else if (isAfterWeek) {
                           message = 'الاسبوع القادم';
                         } else {
-                          message = intl.DateFormat('yyyy/MM/dd', 'ar').format(event
-                              .date); // Default to today if none of the above conditions are met
+                          int daysDifference = eventDate.difference(now).inDays;
+                          if (daysDifference > 0) {
+                            message = 'بعد $daysDifference يوم';
+                          } else {
+                            message = 'قبل ${-daysDifference} يوم';
+                          } // Default to today if none of the above conditions are met
                         }
-                        return EventContainer(
-                          time: message,
-                          name: '${event.name} ${event.family} ${event.tribe}',
-                          title: selectedService,
-                          location: 'جده - حي البساتين',
-                          avatarUrl: 'assets/images/person.png',
+                        String date = intl.DateFormat('yyyy/MM/dd', 'ar')
+                            .format(event.date);
+                        String dayName =
+                            intl.DateFormat('EEEE', 'ar').format(event.date);
+
+                        return GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  icon: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Icon(Icons.close))),
+                                  surfaceTintColor: Colors.white,
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor: Colors.green,
+                                        child: Text(
+                                          "M",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "تفاصيل",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text("${dayName}  ${date}"),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: .5 * mediawidth(context),
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            border:
+                                                Border(bottom: BorderSide())),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("حالة الحجز"),
+                                            Text("مكرر "),
+                                            Text(event.type),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text("المحتفي به "),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: .5 * mediawidth(context),
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Center(
+                                          child: Text(
+                                            '${event.name} ${event.family} ${event.tribe}',
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.share,
+                                            color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Text(
+                                            "بطاقة الدعوة ",
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          )
+                                        ],
+                                      ),
+                                      IconButton(
+                                          icon: Image.asset(
+                                            "assets/images/locationb.png",
+                                            color: Colors.green,
+                                            width: 50,
+                                          ),
+                                          onPressed: () {}),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: EventContainer(
+                            time: message,
+                            name:
+                                '${event.name} ${event.family} ${event.tribe}',
+                            title: event.type,
+                            location: 'جده - حي البساتين',
+                            avatarUrl: 'assets/images/person.png',
+                          ),
                         );
                       },
                     );
@@ -506,14 +638,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildFilterOptions(StateSetter setState) {
     return Column(
       children: [
-        _buildCheckboxOption('المفضلة', isFavoriteChecked, (value) {
+        _buildCheckboxOption('زواج', marriage, (value) {
           setState(() {
-            isFavoriteChecked = value!;
+            marriage = value!;
+            filterValue = 'زواج';
           });
         }),
-        _buildCheckboxOption('الموقع', isLocationChecked, (value) {
+        _buildCheckboxOption('مناسبة خاصة', privateEvent, (value) {
           setState(() {
-            isLocationChecked = value!;
+            privateEvent = value!;
+            filterValue = 'مناسبة خاصة';
+          });
+        }),
+        _buildCheckboxOption('حفل تخرج', graduation, (value) {
+          setState(() {
+            graduation = value!;
+            filterValue = 'حفل تخرج';
+          });
+        }),
+        _buildCheckboxOption('مناسبة عامة', publicEvent, (value) {
+          setState(() {
+            publicEvent = value!;
+            filterValue = 'مناسبة عامة';
           });
         }),
       ],
@@ -531,19 +677,31 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Text(label),
         Spacer(),
-        label == 'المفضلة'
+        label == 'زواج'
             ? Icon(
-                Icons.favorite,
+                Icons.castle_rounded,
                 size: 20,
                 color: primary,
               )
-            : label == 'الموقع'
+            : label == 'مناسبة خاصة'
                 ? Icon(
-                    Icons.location_on,
+                    Icons.event,
                     size: 20,
                     color: primary,
                   )
-                : Text('')
+                : label == 'مناسبة عامة'
+                    ? Icon(
+                        Icons.event_available,
+                        size: 20,
+                        color: primary,
+                      )
+                    : label == 'حفل تخرج'
+                        ? Icon(
+                            Icons.date_range_rounded,
+                            size: 20,
+                            color: primary,
+                          )
+                        : Text("")
       ],
     );
   }

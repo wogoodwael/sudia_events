@@ -8,6 +8,7 @@ import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Services/All/all_services.dart';
+import 'package:sudia_events/presentation/screens/Services/All/invitation.dart';
 import 'package:sudia_events/presentation/screens/Services/offers_screen.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/details.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
@@ -16,9 +17,11 @@ import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 class ServicesBodey extends StatelessWidget {
   final DateTime date;
   final bool inside;
+  final String id;
   TextEditingController controller = TextEditingController();
 
-  ServicesBodey({super.key, required this.date, required this.inside});
+  ServicesBodey(
+      {super.key, required this.date, required this.inside, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,9 @@ class ServicesBodey extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -40,9 +46,19 @@ class ServicesBodey extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Icon(
-                    Icons.add_circle,
-                    size: 15,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => InvitationCardScreen(
+                                    id: id,
+                                  )));
+                    },
+                    child: Icon(
+                      Icons.add_circle,
+                      size: 20,
+                    ),
                   ),
                 ],
               ),
@@ -612,7 +628,7 @@ class FavoritesSection extends StatelessWidget {
                   var favorite = favorites[index];
                   return FavoriteItem(
                     img: favorite['img'],
-                    name: favorite['name'],
+                    name: favorite['name'] ?? "",
                   );
                 },
               ),

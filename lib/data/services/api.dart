@@ -160,7 +160,7 @@ class Api {
         final eventName = eventData['name'] as String;
 
         final phone = eventData['phone'] as String;
-
+        final type = eventData['type'] as String;
         final family = eventData['family'] as String;
         final tribe = eventData['tribe'] as String;
 
@@ -171,7 +171,7 @@ class Api {
                 name: eventName,
                 phone: phone,
                 family: family,
-                tribe: tribe),
+                tribe: tribe, type: type),
           );
         } else {
           events[eventDateTime] = [
@@ -180,7 +180,7 @@ class Api {
                 name: eventName,
                 phone: phone,
                 family: family,
-                tribe: tribe),
+                tribe: tribe, type: type),
           ];
         }
       }
@@ -195,10 +195,7 @@ class Api {
   Future<List<Event>> fetchReservationData() async {
     try {
       final QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance
-              .collection('reservation')
-             
-              .get();
+          await FirebaseFirestore.instance.collection('reservation').get();
 
       final List<Event> reservationData = querySnapshot.docs
           .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
@@ -206,7 +203,7 @@ class Api {
               date: DateTime.parse(doc['date']),
               phone: doc['phone'],
               family: doc['family'],
-              tribe: doc['tribe']))
+              tribe: doc['tribe'], type: doc['type']))
           .toList();
 
       return reservationData;

@@ -13,7 +13,8 @@ class AddServices extends StatefulWidget {
   AddServices({
     super.key,
     required this.date,
-    required this.inside, required this.id,
+    required this.inside,
+    required this.id,
   });
   final DateTime date;
   final bool inside;
@@ -113,6 +114,7 @@ class _AddServicesState extends State<AddServices> {
                 child: ServicesBodey(
                   date: widget.date,
                   inside: widget.inside,
+                  id: widget.id,
                 ),
               ))
         ],

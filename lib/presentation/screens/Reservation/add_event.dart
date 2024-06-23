@@ -109,27 +109,27 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 // Check if events already exist for the selected day
                 if (widget.events.containsKey(widget.selectedDay)) {
                   // Append the new event to the existing list of events
-                  widget.events[widget.selectedDay]!.add(
-                    Event(
-                        date: widget.selectedDay,
-                        name: name.text,
-                        phone: phone.text,
-                        // gender: gender ?? "",
-                        // type: type ?? "",
-                        family: family.text,
-                        tribe: tribe.text),
-                  );
+                  // widget.events[widget.selectedDay]!.add(
+                  //   // Event(
+                  //   //     date: widget.selectedDay,
+                  //   //     name: name.text,
+                  //   //     phone: phone.text,
+                  //   //     // gender: gender ?? "",
+                  //   //     // type: type ?? "",
+                  //   //     family: family.text,
+                  //   //     tribe: tribe.text),
+                  // );
                 } else {
                   // Create a new list with the new event
                   widget.events[widget.selectedDay] = [
-                    Event(
-                        date: widget.selectedDay!,
-                        name: name.text,
-                        phone: phone.text,
-                        // gender: gender ?? '',
-                        // type: type ?? "",
-                        family: family.text,
-                        tribe: tribe.text),
+                    // Event(
+                    //     date: widget.selectedDay!,
+                    //     name: name.text,
+                    //     phone: phone.text,
+                    //     // gender: gender ?? '',
+                    //     // type: type ?? "",
+                    //     family: family.text,
+                    //     tribe: tribe.text),
                   ];
                 }
 

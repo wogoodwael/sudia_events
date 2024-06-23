@@ -16,8 +16,7 @@ Future<List<Event>> filterEventsByFamily(String familyName) async {
       // Extract individual fields from the document data
       String eventName = doc['name'];
       String eventPhone = doc['phone'];
-      String eventtype = doc['type'];
-      String eventgender = doc['gender'];
+      String type = doc['type'];
       String eventFamily = doc['family'];
       String eventTribe = doc['tribe'];
       final eventDateString = doc['date'] as String;
@@ -30,6 +29,7 @@ Future<List<Event>> filterEventsByFamily(String familyName) async {
         tribe: eventTribe,
         date: eventDateTime,
         phone: eventPhone,
+        type: type,
       );
       filteredData.add(event);
     });
@@ -57,8 +57,7 @@ Future<List<Event>> filterEventsByTribe(String tribeName) async {
       // Extract individual fields from the document data
       String eventName = doc['name'];
       String eventPhone = doc['phone'];
-      String eventtype = doc['type'];
-      String eventgender = doc['gender'];
+      String type = doc['type'];
       String eventFamily = doc['family'];
       String eventTribe = doc['tribe'];
       final eventDateString = doc['date'] as String;
@@ -71,6 +70,7 @@ Future<List<Event>> filterEventsByTribe(String tribeName) async {
         tribe: eventTribe,
         date: eventDateTime,
         phone: eventPhone,
+        type: type,
       );
       filteredData.add(event);
     });
@@ -100,6 +100,7 @@ Future<List<Event>> filterEventsByFamilyAndTribe(
       // Extract individual fields from the document data
       String eventName = doc['name'];
       String eventPhone = doc['phone'];
+      String type = doc['type'];
 
       String eventFamily = doc['family'];
       String eventTribe = doc['tribe'];
@@ -113,6 +114,7 @@ Future<List<Event>> filterEventsByFamilyAndTribe(
         tribe: eventTribe,
         date: eventDateTime,
         phone: eventPhone,
+        type: type,
       );
       filteredData.add(event);
     });

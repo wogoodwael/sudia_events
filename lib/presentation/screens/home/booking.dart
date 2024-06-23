@@ -12,8 +12,8 @@ import '../Services/services_screen.dart';
 
 class BookingScreen extends StatefulWidget {
   final DateTime bookingDate;
-
-  const BookingScreen({super.key, required this.bookingDate});
+  final String type;
+  const BookingScreen({super.key, required this.bookingDate, required this.type});
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
@@ -205,7 +205,8 @@ class _BookingScreenState extends State<BookingScreen> {
       'phone': phone.text,
       'date': widget.bookingDate.toIso8601String(),
       'family': family.text,
-      'tribe': tribe.text
+      'tribe': tribe.text,
+      'type': widget.type,
     };
 
     // Add the event data to Firestore
@@ -227,7 +228,8 @@ class _BookingScreenState extends State<BookingScreen> {
                     MaterialPageRoute(
                         builder: (_) => AddServices(
                               date: widget.bookingDate,
-                              inside: true, id: sharedpref.getString('token')!,
+                              inside: true,
+                              id: sharedpref.getString('token')!,
                             )),
                     // This predicate removes all previous routes
                   );
