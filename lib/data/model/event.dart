@@ -6,9 +6,11 @@ class Event {
   final String type;
   final String family;
   final String tribe;
+  final String time;
 
   Event({
     required this.family,
+    required this.time,
     required this.tribe,
     required this.date,
     required this.type,
@@ -22,7 +24,9 @@ class Event {
       name: map['name'],
       phone: map['phone'],
       family: map['family'],
-      tribe: map['tribe'], type: map['type'],
+      tribe: map['tribe'],
+      type: map['type'],
+      time: map['time'] ?? "",
     );
   }
 }

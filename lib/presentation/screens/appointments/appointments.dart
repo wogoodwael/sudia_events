@@ -183,8 +183,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   setState(() {
                                     tappedFamily = !tappedFamily;
                                   });
-                                  print(
-                                      "@@${filterEventsByFamily(controllerfamily.text)}");
+                                  // print(
+                                  //     "@@${filterEventsByFamily(controllerfamily.text)}");
                                 },
                                 child: Container(
                                   width: 70,
@@ -245,10 +245,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     setState(() {
                                       onTappedIcon = !onTappedIcon;
                                     });
-                                    print(
-                                        "@***@${filterEventsByFamilyAndTribe(first, secondPart)}");
-                                    print(
-                                        "firsssssssst$first, secooond $secondPart");
+                                    // print(
+                                    //     "@***@${filterEventsByFamilyAndTribe(first, secondPart)}");
+                                    // print(
+                                    //     "firsssssssst$first, secooond $secondPart");
                                   },
                                   child: Icon(Icons.filter_list))
                             ],
@@ -287,14 +287,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       width: .9 * mediawidth(context),
                       height: 200,
                       child: FutureBuilder<List<Event>>(
-                        future: tappedFamily
-                            ? filterEventsByFamily(first)
-                            : tappedTribe
-                                ? filterEventsByTribe(first)
-                                : onTappedIcon
-                                    ? filterEventsByFamilyAndTribe(
-                                        first, secondPart)
-                                    : api.fetchReservationData(),
+                        future: api.fetchReservationData(),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Event>> snapshot) {
                           if (snapshot.connectionState ==

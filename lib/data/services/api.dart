@@ -171,7 +171,7 @@ class Api {
                 name: eventName,
                 phone: phone,
                 family: family,
-                tribe: tribe, type: type),
+                tribe: tribe, type: type, time: doc['time']),
           );
         } else {
           events[eventDateTime] = [
@@ -180,7 +180,7 @@ class Api {
                 name: eventName,
                 phone: phone,
                 family: family,
-                tribe: tribe, type: type),
+                tribe: tribe, type: type, time: doc['time']),
           ];
         }
       }
@@ -203,7 +203,7 @@ class Api {
               date: DateTime.parse(doc['date']),
               phone: doc['phone'],
               family: doc['family'],
-              tribe: doc['tribe'], type: doc['type']))
+              tribe: doc['tribe'], type: doc['type'], time: doc['time']))
           .toList();
 
       return reservationData;

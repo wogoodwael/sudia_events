@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/helper/calender.dart';
+import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
@@ -40,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<bool> onTapped = [false, false, false, false, false];
 
-  List services = ['الكل', 'زواج', 'مناسبة عامة', 'ملكة', 'مناسبة'];
+  List services = ['الكل', 'زواج', 'مناسبة خاصة', 'حفل تخرج', 'مناسبة'];
   List familyFilter = [];
   late final ValueNotifier<List<Event>> _selectedEvents;
   Api api = Api();
@@ -53,10 +55,33 @@ class _HomeScreenState extends State<HomeScreen> {
 
   TextEditingController searchController = TextEditingController();
   List<Event> filteredEvents = [];
+  Future<List<Event>> _fetchEvents() async {
+    if (selectedService == 'الكل') {
+      return api.fetchReservationData();
+    } else {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('reservation')
+              .where('type', isEqualTo: selectedService)
+              .get();
+
+      final List<Event> reservationData = querySnapshot.docs
+          .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
+              name: doc.data()!['name'],
+              date: DateTime.parse(doc.data()!['date']),
+              phone: doc.data()!['phone'],
+              family: doc.data()!['family'],
+              tribe: doc.data()!['tribe'],
+              type: doc.data()!['type'], time: doc.data()?['time']))
+          .toList();
+      return reservationData;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    selectedService = 'الكل';
     tappedFamily = false;
     tappedTribe = false;
     onTappedIcon = false;
@@ -436,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: .9 * mediawidth(context),
               height: 150,
               child: FutureBuilder<List<Event>>(
-                future: api.fetchReservationData(),
+                future: _fetchEvents(),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Event>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -620,7 +645,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 '${event.name} ${event.family} ${event.tribe}',
                             title: event.type,
                             location: 'جده - حي البساتين',
-                            avatarUrl: 'assets/images/person.png',
+                            avatarUrl: 'assets/images/person.png', clock: event.time,
                           ),
                         );
                       },
@@ -707,20 +732,66 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class EventContainer extends StatelessWidget {
+class EventContainer extends StatefulWidget {
   final String time;
   final String title;
   final String name;
   final String location;
   final String avatarUrl;
+  final String clock;
 
   EventContainer({
     required this.time,
     required this.title,
     required this.name,
     required this.location,
-    required this.avatarUrl,
+    required this.avatarUrl, required this.clock,
   });
+
+  @override
+  State<EventContainer> createState() => _EventContainerState();
+}
+
+class _EventContainerState extends State<EventContainer> {
+  bool isAddedToFav = false;
+
+  Future<void> addToFavorites(BuildContext context) async {
+    try {
+      // Get current user
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // User is not logged in
+        // You can handle this case according to your app's logic
+        return;
+      }
+
+      // Add item to favorites collection
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('favoriteEvent')
+          .add({
+        'time': widget.time,
+        'name': widget.name,
+        'title': widget.title,
+        'clock': widget.clock,
+        // You can add more fields if needed
+      });
+      setState(() {
+        isAddedToFav = !isAddedToFav;
+      });
+      // Show a snackbar or toast to indicate success
+      CustomSnackBar(
+        context,
+        'Item added to favorites',
+        Colors.green,
+        .75 * mediaheight(context),
+      );
+    } catch (e) {
+      // Handle errors
+      print('Error adding to favorites: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -730,7 +801,7 @@ class EventContainer extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            time,
+            widget.time,
             style: TextStyle(
               color: Colors.red,
               fontSize: 16,
@@ -759,7 +830,7 @@ class EventContainer extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: ExactAssetImage(avatarUrl),
+                    backgroundImage: ExactAssetImage(widget.avatarUrl),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -767,7 +838,7 @@ class EventContainer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          title,
+                          widget.title,
                           style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
@@ -775,7 +846,7 @@ class EventContainer extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          name,
+                          widget.name,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -783,7 +854,7 @@ class EventContainer extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          location,
+                          widget.location,
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
@@ -797,7 +868,7 @@ class EventContainer extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      '10:24 AM',
+                     widget.clock,
                       style: TextStyle(color: Colors.green, fontSize: 14),
                     ),
                   ),

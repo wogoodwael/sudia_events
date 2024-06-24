@@ -13,7 +13,8 @@ import '../Services/services_screen.dart';
 class BookingScreen extends StatefulWidget {
   final DateTime bookingDate;
   final String type;
-  const BookingScreen({super.key, required this.bookingDate, required this.type});
+  const BookingScreen(
+      {super.key, required this.bookingDate, required this.type});
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
@@ -72,51 +73,6 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text(
-                    'على ابنة',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.grey.withOpacity(.5))),
-                    child: TextField(
-                      controller: family,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        prefixIcon: Icon(Icons.person),
-                        border: InputBorder.none,
-                        hintText: 'احمد علي الزهراني',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    'القبيلة',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.grey.withOpacity(.5))),
-                    child: TextField(
-                      controller: tribe,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        prefixIcon: Icon(Icons.person),
-                        border: InputBorder.none,
-                        hintText: 'الزهراني',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                    ),
-                  ),
                   SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -198,15 +154,22 @@ class _BookingScreenState extends State<BookingScreen> {
     CollectionReference reservation =
         firebaseFirestore.collection('reservation');
 
+    // Split the name into parts
+    List<String> nameParts = name.text.split(' ');
+    String firstName = nameParts.isNotEmpty ? nameParts[0] : '';
+    String familyName = nameParts.length > 1 ? nameParts[1] : '';
+    String tribeName = nameParts.length > 2 ? nameParts[2] : '';
+
     // Create a map representing the event data
     Map<String, dynamic> eventData = {
       'userID': sharedpref.getString('token'),
-      'name': name.text,
+      'name': firstName,
+      'family': familyName,
+      'tribe': tribeName,
       'phone': phone.text,
       'date': widget.bookingDate.toIso8601String(),
-      'family': family.text,
-      'tribe': tribe.text,
       'type': widget.type,
+      'time': _selectedTime.format(context),
     };
 
     // Add the event data to Firestore

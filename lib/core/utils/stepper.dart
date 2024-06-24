@@ -10,12 +10,14 @@ class StepperScreen extends StatefulWidget {
     required this.stepperColor,
     required this.textColor,
     this.finishColor,
+    this.onStepTapped,
   }) : super(key: key);
 
   final Color lineColor;
   final Color stepperColor;
   final Color textColor;
   final Color? finishColor;
+  Function(int)? onStepTapped;
   int active;
 
   @override
@@ -63,20 +65,27 @@ class _StepperScreenState extends State<StepperScreen> {
           ),
         );
       }),
-      onStepReached: (index) => setState(() => widget.active = index),
+      onStepReached: (index) {
+        setState(() {
+          widget.active = index;
+        });
+        if (widget.onStepTapped != null) {
+          widget.onStepTapped!(index);
+        }
+      },
     );
   }
 
   String _getTitleForIndex(int index) {
     switch (index) {
       case 0:
-        return "تم التنفيذ";
+        return "تم ";
       case 1:
-        return "قيد التنفيذ";
+        return "تسليم";
       case 2:
-        return "الاستلام من مقدم الخدمة";
+        return "توصيل";
       case 3:
-        return "قيد المراجعة";
+        return "مراجعة";
       default:
         return "";
     }

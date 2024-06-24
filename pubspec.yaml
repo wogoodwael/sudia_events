@@ -60,6 +60,9 @@ dependencies:
   geolocator: ^7.7.0
   geocoding: ^3.0.0
   search_map_location: ^0.0.6
+  share_screenshot_widget: ^0.0.5
+  share_plus: ^6.3.4
+  screenshot: ^2.5.0
 
 
 

@@ -1,15 +1,37 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:share_screenshot_widget/share_screenshot_widget.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 
-// ignore: must_be_immutable
-class InvitationCardScreen extends StatelessWidget {
+class InvitationCardScreen extends StatefulWidget {
   final String id;
-  List price = ['مجانية', '15.00SR', '35.00SR'];
+  final List<String> price = ['مجانية', '15.00SR', '35.00SR'];
+  final List<String> name = ['M458w', 'M8ws', 'Mqqk'];
 
   InvitationCardScreen({super.key, required this.id});
+
+  @override
+  _InvitationCardScreenState createState() => _InvitationCardScreenState();
+}
+
+class _InvitationCardScreenState extends State<InvitationCardScreen> {
+  final GlobalKey _screenshotKey = GlobalKey();
+  final TextEditingController _nameController = TextEditingController();
+  String _selectedPrice = '';
+  String _selectedRadio = '';
+  String _selectedCheckbox = '';
+  String _selectedCheckboxCard = '';
+  String _selectedImage = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +40,7 @@ class InvitationCardScreen extends StatelessWidget {
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('SubServices')
-              .doc(id)
+              .doc(widget.id)
               .collection('checkout')
               .snapshots(),
           builder: (context, snapshot) {
@@ -39,7 +61,7 @@ class InvitationCardScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (_) => CheckoutScreenOverView(
-                                  id: id,
+                                  id: widget.id,
                                 )));
                   },
                 ),
@@ -108,7 +130,11 @@ class InvitationCardScreen extends StatelessWidget {
                         child: Text(value),
                       );
                     }).toList(),
-                    onChanged: (_) {},
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedImage = newValue!;
+                      });
+                    },
                   ),
                 ),
               ),
@@ -123,9 +149,17 @@ class InvitationCardScreen extends StatelessWidget {
                 height: .27 * mediaheight(context),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 3,
+                  itemCount: widget.price.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _buildCardItem(context, price[index]);
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedPrice = widget.price[index];
+                        });
+                      },
+                      child: _buildCardItem(context, widget.price[index],
+                          widget.name[index], widget.name[index]),
+                    );
                   },
                 ),
               ),
@@ -161,68 +195,44 @@ class InvitationCardScreen extends StatelessWidget {
                             'اللهم بارك لهما ',
                             style: TextStyle(color: Colors.grey),
                           ),
-                          leading: RadioTheme(
-                            data: RadioThemeData(
-                              fillColor: MaterialStateColor.resolveWith(
-                                (states) {
-                                  if (states.contains(MaterialState.selected)) {
-                                    return Colors.grey;
-                                  }
-                                  return Colors.grey;
-                                },
-                              ),
-                            ),
-                            child: Radio(
-                              value: 'option1',
-                              groupValue: 'option',
-                              onChanged: (value) {},
-                            ),
+                          leading: Radio<String>(
+                            value: 'اللهم بارك لهما',
+                            groupValue: _selectedRadio,
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedRadio = value!;
+                              });
+                            },
                           ),
                         ),
-                        RadioTheme(
-                          data: RadioThemeData(
-                            fillColor: MaterialStateColor.resolveWith(
-                              (states) {
-                                if (states.contains(MaterialState.selected)) {
-                                  return Colors.grey;
-                                }
-                                return Colors.grey;
-                              },
-                            ),
+                        ListTile(
+                          title: Text(
+                            'الحمد لله',
+                            style: TextStyle(color: Colors.grey),
                           ),
-                          child: ListTile(
-                            title: Text(
-                              'الحمد لله',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            leading: Radio(
-                              value: 'option2',
-                              groupValue: 'option',
-                              onChanged: (value) {},
-                            ),
+                          leading: Radio<String>(
+                            value: 'الحمد لله',
+                            groupValue: _selectedRadio,
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedRadio = value!;
+                              });
+                            },
                           ),
                         ),
-                        RadioTheme(
-                          data: RadioThemeData(
-                            fillColor: MaterialStateColor.resolveWith(
-                              (states) {
-                                if (states.contains(MaterialState.selected)) {
-                                  return Colors.grey;
-                                }
-                                return Colors.grey;
-                              },
-                            ),
+                        ListTile(
+                          title: Text(
+                            'جديد',
+                            style: TextStyle(color: Colors.grey),
                           ),
-                          child: ListTile(
-                            title: Text(
-                              'جديد',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            leading: Radio(
-                              value: 'option2',
-                              groupValue: 'option',
-                              onChanged: (value) {},
-                            ),
+                          leading: Radio<String>(
+                            value: 'جديد',
+                            groupValue: _selectedRadio,
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedRadio = value!;
+                              });
+                            },
                           ),
                         ),
                       ],
@@ -272,7 +282,7 @@ class InvitationCardScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         color: primary,
-                        onPressed: () {},
+                        onPressed: _showDialog,
                         child: Row(
                           children: [
                             Text(
@@ -312,7 +322,8 @@ class InvitationCardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCardItem(BuildContext context, String price) {
+  Widget _buildCardItem(
+      BuildContext context, String price, String title, String cardName) {
     return Card(
       surfaceTintColor: Colors.white,
       shape: RoundedRectangleBorder(
@@ -355,11 +366,16 @@ class InvitationCardScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Checkbox(
-                          side: BorderSide(color: Colors.grey),
-                          value: false,
-                          onChanged: (bool? value) {}),
+                        side: BorderSide(color: Colors.grey),
+                        value: _selectedCheckboxCard == title,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _selectedCheckboxCard = value! ? title : '';
+                          });
+                        },
+                      ),
                       Text(
-                        'بطاقة M24001',
+                        cardName,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
@@ -414,6 +430,7 @@ class InvitationCardScreen extends StatelessWidget {
               color: Colors.grey,
             ),
             context: context,
+            controller: _nameController,
           ),
           SizedBox(
             height: .02 * mediaheight(context),
@@ -449,6 +466,7 @@ class InvitationCardScreen extends StatelessWidget {
     required String labelText,
     required Widget icon,
     Color iconColor = Colors.grey,
+    TextEditingController? controller,
   }) {
     return Row(
       children: [
@@ -457,6 +475,7 @@ class InvitationCardScreen extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: TextField(
+              controller: controller,
               decoration: InputDecoration(
                 labelText: labelText,
                 labelStyle: TextStyle(color: Colors.grey),
@@ -474,9 +493,77 @@ class InvitationCardScreen extends StatelessWidget {
   Widget _buildCheckbox(String title) {
     return Row(
       children: [
-        Checkbox(value: false, onChanged: (bool? value) {}),
+        Checkbox(
+          value: _selectedCheckbox == title,
+          onChanged: (bool? value) {
+            setState(() {
+              _selectedCheckbox = value! ? title : '';
+            });
+          },
+        ),
         Text(title),
       ],
     );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: RepaintBoundary(
+            key: _screenshotKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/images/invitation.png'),
+                Text('الاسم: ${_nameController.text}'),
+                Text('عبارة الدعوة: $_selectedRadio'),
+                Text('تنبيه: $_selectedCheckbox'),
+                Text('اسم البطاقة : $_selectedCheckboxCard'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                _shareScreenshot();
+              },
+              child: Text('Share'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<String?> shareWidgets({required GlobalKey globalKey}) async {
+    try {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      var image = await boundary.toImage();
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/screenshot.png').create();
+      await imagePath.writeAsBytes(pngBytes);
+
+      return imagePath.path;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  void _shareScreenshot() async {
+    final imagePath = await shareWidgets(globalKey: _screenshotKey);
+    if (imagePath != null) {
+      Share.shareXFiles(
+        [XFile(imagePath, mimeType: "image/png")],
+        text: 'Screenshot from Flutter app',
+        subject: 'Screenshot',
+      );
+    }
   }
 }
