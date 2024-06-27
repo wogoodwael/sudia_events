@@ -4,11 +4,14 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
 import 'package:sudia_events/core/helper/calender.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/model/booked_services.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
@@ -23,13 +26,15 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart' as data;
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.id});
+  const HomeScreen({super.key, required this.id, required this.public});
   final String id;
+  final bool public;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<BookedServicesModel>? bookedServicesModel;
   String filterValue = '';
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -39,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool tappedFamily = false;
   bool tappedTribe = false;
   bool onTappedIcon = false;
-
+  String type = '';
   List<bool> onTapped = [false, false, false, false, false];
 
   List services = ['الكل', 'زواج', 'مناسبة خاصة', 'حفل تخرج', 'مناسبة'];
@@ -55,9 +60,33 @@ class _HomeScreenState extends State<HomeScreen> {
 
   TextEditingController searchController = TextEditingController();
   List<Event> filteredEvents = [];
+  bool isFav = false;
   Future<List<Event>> _fetchEvents() async {
-    if (selectedService == 'الكل') {
-      return api.fetchReservationData();
+    List<Event> events;
+
+    if (selectedService == 'الكل' && !isFav) {
+      events = await api.fetchReservationData();
+    } else if (isFav) {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('favoriteEvent')
+              .get();
+
+      events = querySnapshot.docs
+          .map((doc) => Event(
+                name: doc.data()['name'],
+                date: DateTime.parse(doc.data()['date']),
+                phone: doc.data()['phone'] ?? "",
+                family: doc.data()['family'],
+                tribe: doc.data()['tribe'],
+                type: doc.data()['type'],
+                time: doc.data()['time'],
+                uniquID: doc.data()[
+                    'uniquID'], // Assuming uniquID is present in the doc
+              ))
+          .toList();
     } else {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance
@@ -65,22 +94,49 @@ class _HomeScreenState extends State<HomeScreen> {
               .where('type', isEqualTo: selectedService)
               .get();
 
-      final List<Event> reservationData = querySnapshot.docs
-          .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
-              name: doc.data()!['name'],
-              date: DateTime.parse(doc.data()!['date']),
-              phone: doc.data()!['phone'],
-              family: doc.data()!['family'],
-              tribe: doc.data()!['tribe'],
-              type: doc.data()!['type'], time: doc.data()?['time']))
+      events = querySnapshot.docs
+          .map((doc) => Event(
+                name: doc.data()['name'],
+                date: DateTime.parse(doc.data()['date']),
+                phone: doc.data()['phone'] ?? "",
+                family: doc.data()['family'],
+                tribe: doc.data()['tribe'],
+                type: doc.data()['type'],
+                time: doc.data()['time'],
+                uniquID: doc.data()[
+                    'uniquID'], // Assuming uniquID is present in the doc
+              ))
           .toList();
-      return reservationData;
     }
+    for (var event in events) {
+      if (event.uniquID != null && event.uniquID!.isNotEmpty) {
+        QuerySnapshot<Map<String, dynamic>> bookedServicesSnapshot =
+            await FirebaseFirestore.instance
+                .collection('booked_services')
+                .where("uniquID", isEqualTo: event.uniquID)
+                .get();
+
+        bool publicEvent = false;
+        List<String> publicEvents = [];
+        for (var service in bookedServicesSnapshot.docs) {
+          if (service.data().containsKey('type') &&
+              service.data()['type'] == 'public') {
+            publicEvents.add(service.data()['type']);
+          }
+        }
+        sharedpref.setStringList('public', publicEvents);
+        publicEvent = publicEvents.isNotEmpty;
+        print("pppp$publicEvents");
+      }
+    }
+
+    return events;
   }
 
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<BookedDataCubit>(context).getBookedDataCubitfun();
     selectedService = 'الكل';
     tappedFamily = false;
     tappedTribe = false;
@@ -141,50 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return isSameDay(eventDate, _selectedDay!);
   }
 
-  void _showCalendarBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomCalendar(
-                selectedDay: _selectedDay!,
-                focusedDay: _focusedDay,
-                onDaySelected: (selectedDay, focusedDay) {
-                  _onDaySelected(selectedDay, focusedDay);
-                },
-                getEventsForDay: _getEventsForDay,
-              ),
-              SizedBox(height: 16),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                minWidth: 300,
-                color: primary,
-                child: Text(
-                  'التالي',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => BookingScreen(
-                                bookingDate: _selectedDay!,
-                                type: filterValue,
-                              )));
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   void _showEventBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -216,7 +228,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          _showCalendarBottomSheet();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => BookingScreen(
+                                        bookingDate: _selectedDay!,
+                                        type: filterValue,
+                                      )));
                         },
                       ),
                       MaterialButton(
@@ -398,6 +416,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller: searchController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isFav = !isFav;
+                              });
+                            },
+                            child: Icon(
+                              isFav ? Icons.favorite : Icons.favorite_border,
+                              color: Colors.red,
+                            )),
                         hintText: 'البحث',
                         hintStyle: TextStyle(color: Colors.grey[400]),
                         prefixIcon: Icon(
@@ -472,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.data!.isEmpty) {
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(
                       child: Text("لم تقم بحجز اي مناسبات بعد"),
                     );
@@ -480,173 +508,182 @@ class _HomeScreenState extends State<HomeScreen> {
                     List<Event> eventsToShow = searchController.text.isEmpty
                         ? snapshot.data!
                         : filteredEvents;
-                    eventsToShow.sort((a, b) {
-                      DateTime now = DateTime.now();
-                      int aDiff = a.date.difference(now).inDays;
-                      int bDiff = b.date.difference(now).inDays;
-                      return aDiff.compareTo(bDiff);
-                    });
-                    return ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: eventsToShow.length,
-                      itemBuilder: (context, index) {
-                        Event event = eventsToShow[index];
-                        DateTime now = DateTime.now();
-                        DateTime eventDate = event.date;
 
-                        // Check if the event date is tomorrow, today, or after a week
-                        bool isToday = eventDate.year == now.year &&
-                            eventDate.month == now.month &&
-                            eventDate.day == now.day;
+                    return BlocBuilder<BookedDataCubit, BookedDataState>(
+                      builder: (context, state) {
+                        bookedServicesModel =
+                            BlocProvider.of<BookedDataCubit>(context)
+                                .bookedServices;
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: eventsToShow.length,
+                          itemBuilder: (context, index) {
+                            Event event = eventsToShow[index];
+                            DateTime now = DateTime.now();
+                            DateTime eventDate = event.date;
 
-                        bool isTomorrow = eventDate.year == now.year &&
-                            eventDate.month == now.month &&
-                            eventDate.day == now.day + 1;
+                            // Check if the event date is tomorrow, today, or after a week
+                            bool isToday = eventDate.year == now.year &&
+                                eventDate.month == now.month &&
+                                eventDate.day == now.day;
 
-                        bool isAfterWeek =
-                            eventDate.isAfter(now.add(Duration(days: 5)));
+                            bool isTomorrow = eventDate.year == now.year &&
+                                eventDate.month == now.month &&
+                                eventDate.day == now.day + 1;
 
-                        // Determine the message to display
-                        String message;
-                        if (isToday) {
-                          message = 'اليوم';
-                        } else if (isTomorrow) {
-                          message = 'غدا';
-                        } else if (isAfterWeek) {
-                          message = 'الاسبوع القادم';
-                        } else {
-                          int daysDifference = eventDate.difference(now).inDays;
-                          if (daysDifference > 0) {
-                            message = 'بعد $daysDifference يوم';
-                          } else {
-                            message = 'قبل ${-daysDifference} يوم';
-                          } // Default to today if none of the above conditions are met
-                        }
-                        String date = intl.DateFormat('yyyy/MM/dd', 'ar')
-                            .format(event.date);
-                        String dayName =
-                            intl.DateFormat('EEEE', 'ar').format(event.date);
+                            bool isAfterWeek =
+                                eventDate.isAfter(now.add(Duration(days: 5)));
 
-                        return GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  icon: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: GestureDetector(
+                            // Determine the message to display
+                            String message;
+                            if (isToday) {
+                              message = 'اليوم';
+                            } else if (isTomorrow) {
+                              message = 'غدا';
+                            } else if (isAfterWeek) {
+                              message = 'الاسبوع القادم';
+                            } else {
+                              int daysDifference =
+                                  eventDate.difference(now).inDays;
+                              if (daysDifference > 0) {
+                                message = 'بعد $daysDifference يوم';
+                              } else {
+                                message = 'قبل ${-daysDifference} يوم';
+                              }
+                            }
+
+                            String date = intl.DateFormat('yyyy/MM/dd', 'ar')
+                                .format(event.date);
+                            String dayName = intl.DateFormat('EEEE', 'ar')
+                                .format(event.date);
+
+                            // Check if the event is booked
+                            bool isBooked = bookedServicesModel?.any(
+                                    (bookedEvent) =>
+                                        bookedEvent.uniqueID ==
+                                        event.uniquID) ??
+                                false;
+
+                            return GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      icon: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: GestureDetector(
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Icon(Icons.close))),
-                                  surfaceTintColor: Colors.white,
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 20,
-                                        backgroundColor: Colors.green,
-                                        child: Text(
-                                          "M",
-                                          style: TextStyle(color: Colors.white),
+                                          child: Icon(Icons.close),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        "تفاصيل",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text("${dayName}  ${date}"),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        width: .5 * mediawidth(context),
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            border:
-                                                Border(bottom: BorderSide())),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text("حالة الحجز"),
-                                            Text("مكرر "),
-                                            Text(event.type),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text("المحتفي به "),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        width: .5 * mediawidth(context),
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[300],
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Center(
-                                          child: Text(
-                                            '${event.name} ${event.family} ${event.tribe}',
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                      surfaceTintColor: Colors.white,
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Icon(
-                                            Icons.share,
-                                            color: Colors.grey,
-                                            size: 20,
+                                          CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor: Colors.green,
+                                            child: Text(
+                                              "M",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
+                                          SizedBox(height: 10),
                                           Text(
-                                            "بطاقة الدعوة ",
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          )
+                                            "تفاصيل",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text("$dayName  $date"),
+                                          SizedBox(height: 10),
+                                          Container(
+                                            width: .5 * mediawidth(context),
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              border:
+                                                  Border(bottom: BorderSide()),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text("حالة الحجز"),
+                                                Text("مكرر "),
+                                                Text(event.type),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text("المحتفي به "),
+                                          SizedBox(height: 10),
+                                          Container(
+                                            width: .5 * mediawidth(context),
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Center(
+                                              child: Text(isBooked
+                                                  ? "${event.name} ${event.family} ${event.tribe}"
+                                                  : "لا يوجد معلومات"),
+                                            ),
+                                          ),
+                                          SizedBox(height: 20),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.share,
+                                                color: Colors.grey,
+                                                size: 20,
+                                              ),
+                                              SizedBox(width: 20),
+                                              Text(
+                                                "بطاقة الدعوة ",
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                          IconButton(
+                                            icon: Image.asset(
+                                              "assets/images/locationb.png",
+                                              color: Colors.green,
+                                              width: 50,
+                                            ),
+                                            onPressed: () {},
+                                          ),
                                         ],
                                       ),
-                                      IconButton(
-                                          icon: Image.asset(
-                                            "assets/images/locationb.png",
-                                            color: Colors.green,
-                                            width: 50,
-                                          ),
-                                          onPressed: () {}),
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 );
                               },
+                              child: EventContainer(
+                                time: message,
+                                name: isBooked
+                                    ? "${event.name} ${event.family} ${event.tribe}"
+                                    : "لا يوجد معلومات",
+                                title: '${event.type} ',
+                                location:
+                                    publicEvent ? 'جده - حي البساتين' : "",
+                                avatarUrl: 'assets/images/person.png',
+                                clock: event.time,
+                                dateTime: event.date,
+                                uniquID: event.uniquID,
+                              ),
                             );
                           },
-                          child: EventContainer(
-                            time: message,
-                            name:
-                                '${event.name} ${event.family} ${event.tribe}',
-                            title: event.type,
-                            location: 'جده - حي البساتين',
-                            avatarUrl: 'assets/images/person.png', clock: event.time,
-                          ),
                         );
                       },
                     );
@@ -669,22 +706,16 @@ class _HomeScreenState extends State<HomeScreen> {
             filterValue = 'زواج';
           });
         }),
-        _buildCheckboxOption('مناسبة خاصة', privateEvent, (value) {
-          setState(() {
-            privateEvent = value!;
-            filterValue = 'مناسبة خاصة';
-          });
-        }),
         _buildCheckboxOption('حفل تخرج', graduation, (value) {
           setState(() {
             graduation = value!;
             filterValue = 'حفل تخرج';
           });
         }),
-        _buildCheckboxOption('مناسبة عامة', publicEvent, (value) {
+        _buildCheckboxOption('عيد ميلاد', publicEvent, (value) {
           setState(() {
             publicEvent = value!;
-            filterValue = 'مناسبة عامة';
+            filterValue = 'عيد ميلاد';
           });
         }),
       ],
@@ -708,7 +739,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 20,
                 color: primary,
               )
-            : label == 'مناسبة خاصة'
+            : label == 'عيد ميلاد'
                 ? Icon(
                     Icons.event,
                     size: 20,
@@ -739,13 +770,18 @@ class EventContainer extends StatefulWidget {
   final String location;
   final String avatarUrl;
   final String clock;
+  final String uniquID;
+  final DateTime dateTime;
 
   EventContainer({
     required this.time,
     required this.title,
     required this.name,
     required this.location,
-    required this.avatarUrl, required this.clock,
+    required this.avatarUrl,
+    required this.clock,
+    required this.dateTime,
+    required this.uniquID,
   });
 
   @override
@@ -764,17 +800,24 @@ class _EventContainerState extends State<EventContainer> {
         // You can handle this case according to your app's logic
         return;
       }
-
+      List<String> nameParts = widget.name.split(' ');
+      String firstName = nameParts.isNotEmpty ? nameParts[0] : '';
+      String familyName = nameParts.length > 1 ? nameParts[1] : '';
+      String tribeName = nameParts.length > 2 ? nameParts[2] : '';
       // Add item to favorites collection
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .collection('favoriteEvent')
           .add({
-        'time': widget.time,
-        'name': widget.name,
-        'title': widget.title,
-        'clock': widget.clock,
+        'userID': sharedpref.getString('token'),
+        'name': firstName,
+        'family': familyName,
+        'tribe': tribeName,
+        'date': widget.dateTime.toIso8601String(),
+        'type': widget.title,
+        'time': widget.clock,
+        'uniquID': widget.uniquID
         // You can add more fields if needed
       });
       setState(() {
@@ -868,7 +911,7 @@ class _EventContainerState extends State<EventContainer> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                     widget.clock,
+                      widget.clock,
                       style: TextStyle(color: Colors.green, fontSize: 14),
                     ),
                   ),
@@ -883,9 +926,12 @@ class _EventContainerState extends State<EventContainer> {
                     margin: EdgeInsets.symmetric(horizontal: 16),
                   ),
                   IconButton(
-                    icon: Icon(Icons.favorite_border),
+                    icon: Icon(
+                        isAddedToFav ? Icons.favorite : Icons.favorite_border),
                     color: Colors.red,
-                    onPressed: () {},
+                    onPressed: () {
+                      addToFavorites(context);
+                    },
                   ),
                 ],
               ),

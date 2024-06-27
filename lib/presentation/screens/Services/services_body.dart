@@ -18,10 +18,11 @@ class ServicesBodey extends StatelessWidget {
   final DateTime date;
   final bool inside;
   final String id;
+  final String uniquId;
   TextEditingController controller = TextEditingController();
 
   ServicesBodey(
-      {super.key, required this.date, required this.inside, required this.id});
+      {super.key, required this.date, required this.inside, required this.id, required this.uniquId});
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +100,11 @@ class ServicesBodey extends StatelessWidget {
               SizedBox(height: 10),
               CategorySection(
                 date: date,
-                inside: inside,
+                inside: inside, uniquID: uniquId,
               ),
               SizedBox(height: 16),
               WeeklyOffersSection(
-                inside: inside,
+                inside: inside, uniquId: uniquId,
               ),
               SizedBox(height: 16),
               PreviousReservationsSection(),
@@ -121,7 +122,8 @@ class ServicesBodey extends StatelessWidget {
 class CategorySection extends StatelessWidget {
   final DateTime date;
   final bool inside;
-  const CategorySection({super.key, required this.date, required this.inside});
+  final String uniquID;
+  const CategorySection({super.key, required this.date, required this.inside, required this.uniquID});
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -133,31 +135,31 @@ class CategorySection extends StatelessWidget {
           title: 'مطابخ',
           icon: Icons.kitchen,
           date: date,
-          inside: inside,
+          inside: inside, uniquID: uniquID,
         ),
         CategoryItem(
           title: 'مطاعم',
           icon: Icons.restaurant,
           date: date,
-          inside: inside,
+          inside: inside, uniquID: uniquID,
         ),
         CategoryItem(
           title: 'أماكن',
           icon: Icons.location_on,
           date: date,
-          inside: inside,
+          inside: inside, uniquID: uniquID,
         ),
         CategoryItem(
           title: 'مستلزمات',
           icon: Icons.shopping_bag,
           date: date,
-          inside: inside,
+          inside: inside, uniquID: uniquID,
         ),
         CategoryItem(
           title: 'ورود وهدايا',
           icon: Icons.card_giftcard,
           date: date,
-          inside: inside,
+          inside: inside, uniquID: uniquID,
         ),
         GestureDetector(
           onTap: () {
@@ -166,7 +168,7 @@ class CategorySection extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (_) => ServicesScreen(
                           date: date,
-                          inside: inside,
+                          inside: inside, uniquID: '',
                         )));
           },
           child: Icon(
@@ -182,6 +184,7 @@ class CategorySection extends StatelessWidget {
 
 class CategoryItem extends StatelessWidget {
   final String title;
+  final String uniquID;
   final IconData icon;
   final DateTime date;
   final bool inside;
@@ -189,7 +192,7 @@ class CategoryItem extends StatelessWidget {
       {required this.title,
       required this.icon,
       required this.date,
-      required this.inside});
+      required this.inside, required this.uniquID});
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +203,7 @@ class CategoryItem extends StatelessWidget {
             MaterialPageRoute(
                 builder: (_) => ServicesScreen(
                       date: date,
-                      inside: inside,
+                      inside: inside, uniquID:uniquID,
                     )));
       },
       child: Card(
@@ -222,8 +225,9 @@ class CategoryItem extends StatelessWidget {
 
 class WeeklyOffersSection extends StatelessWidget {
   final bool inside;
+  final String uniquId;
 
-  const WeeklyOffersSection({super.key, required this.inside});
+  const WeeklyOffersSection({super.key, required this.inside, required this.uniquId});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -241,7 +245,7 @@ class WeeklyOffersSection extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (_) => OffersScreen(
-                              inside: inside,
+                              inside: inside, uniquId: uniquId,
                             )));
               },
               child: Text(' عرض الكل ',
@@ -283,7 +287,8 @@ class WeeklyOffersSection extends StatelessWidget {
                           offer['name'] ?? "",
                           offer['discount'] ?? "",
                           offer['price'] ?? "",
-                          inside),
+                          inside, uniquId
+                          ),
                     );
                   },
                 );
@@ -300,7 +305,8 @@ class WeeklyOfferItem extends StatefulWidget {
   final String discount;
   final String price;
   final bool inside;
-  WeeklyOfferItem(this.img, this.name, this.discount, this.price, this.inside);
+   final String uniquID;
+  WeeklyOfferItem(this.img, this.name, this.discount, this.price, this.inside, this.uniquID);
 
   @override
   State<WeeklyOfferItem> createState() => _WeeklyOfferItemState();
@@ -308,6 +314,7 @@ class WeeklyOfferItem extends StatefulWidget {
 
 class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
   bool isAddedToFav = false;
+ 
 
   Future<void> addToFavorites(BuildContext context) async {
     try {
@@ -365,7 +372,7 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
                       about: 'من افضل واشهي الاطباق',
                       date: DateTime.now(),
                       type: 'offers',
-                      inside: widget.inside,
+                      inside: widget.inside, uniquID: widget.uniquID,
                     )));
       },
       child: Container(

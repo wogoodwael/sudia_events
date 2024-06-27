@@ -10,8 +10,13 @@ import 'package:sudia_events/presentation/screens/home/home.dart';
 import 'package:sudia_events/presentation/screens/notification/notification.dart';
 
 class BottomBarScreen extends StatefulWidget {
-  BottomBarScreen({Key? key, required this.id}) : super(key: key);
+  BottomBarScreen(
+      {Key? key, required this.id, this.public, this.uniquId, this.date})
+      : super(key: key);
   final String id;
+  bool? public;
+  String? uniquId;
+  DateTime? date;
 
   @override
   State<BottomBarScreen> createState() => _BottomBarScreenState();
@@ -27,12 +32,14 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     _widgetOptions = <Widget>[
       HomeScreen(
         id: widget.id,
+        public: widget.public ?? false,
       ),
       // MyAccountScreen(),
       AddServices(
         date: DateTime.now(),
         inside: false,
         id: widget.id,
+        uniquId: widget.uniquId ?? "",
       ),
       ReservationScreen(
         id: widget.id,

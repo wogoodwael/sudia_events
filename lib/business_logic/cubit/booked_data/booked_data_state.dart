@@ -1,6 +1,6 @@
 part of 'booked_data_cubit.dart';
 
-@immutable
+
 sealed class BookedDataState {}
 
 final class BookedDataInitial extends BookedDataState {}

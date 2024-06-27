@@ -14,6 +14,7 @@ class MenuItemDetail extends StatefulWidget {
   final String price;
   final String rating;
   final String dis;
+  final String uniquID;
   final List options;
   final List optionsprice;
   final String about;
@@ -33,6 +34,7 @@ class MenuItemDetail extends StatefulWidget {
     required this.date,
     required this.type,
     required this.inside,
+    required this.uniquID,
   });
 
   @override
@@ -75,7 +77,10 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                     // Replace 'BottomBarScreen()' with the actual widget or navigation logic
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => BottomBarScreen(id: user.uid),
+                        builder: (context) => BottomBarScreen(
+                          id: user.uid,
+                          public: false, uniquId: widget.uniquID, date: widget.date,
+                        ),
                       ),
                     );
                   },
@@ -110,7 +115,8 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
             'discount': widget.dis,
             'price': widget.price,
             'quantity': _quantity,
-            'timestamp': widget.date, // Add a timestamp for ordering
+            'timestamp': widget.date,
+            "uniquID":widget.uniquID // Add a timestamp for ordering
           });
         }
 
@@ -230,6 +236,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                                       number:
                                           _selectedOptions.length.toString(),
                                       date: widget.date,
+                                      uniquId: widget.uniquID,
                                     )));
                       },
                     ),

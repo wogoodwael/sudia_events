@@ -163,6 +163,7 @@ class Api {
         final type = eventData['type'] as String;
         final family = eventData['family'] as String;
         final tribe = eventData['tribe'] as String;
+        final uniquId = eventData['uniquID'] as String;
 
         if (events.containsKey(eventDateTime)) {
           events[eventDateTime]!.add(
@@ -171,7 +172,9 @@ class Api {
                 name: eventName,
                 phone: phone,
                 family: family,
-                tribe: tribe, type: type, time: doc['time']),
+                tribe: tribe,
+                type: type,
+                time: doc['time'], uniquID: uniquId),
           );
         } else {
           events[eventDateTime] = [
@@ -180,7 +183,9 @@ class Api {
                 name: eventName,
                 phone: phone,
                 family: family,
-                tribe: tribe, type: type, time: doc['time']),
+                tribe: tribe,
+                type: type,
+                time: doc['time'], uniquID: uniquId),
           ];
         }
       }
@@ -195,7 +200,10 @@ class Api {
   Future<List<Event>> fetchReservationData() async {
     try {
       final QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance.collection('reservation').get();
+          await FirebaseFirestore.instance
+              .collection('reservation')
+              .orderBy('date', descending: true)
+              .get();
 
       final List<Event> reservationData = querySnapshot.docs
           .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
@@ -203,7 +211,11 @@ class Api {
               date: DateTime.parse(doc['date']),
               phone: doc['phone'],
               family: doc['family'],
-              tribe: doc['tribe'], type: doc['type'], time: doc['time']))
+              tribe: doc['tribe'],
+              type: doc['type'],
+              time: doc['time']
+              ,uniquID: doc['uniquID'],
+              ))
           .toList();
 
       return reservationData;

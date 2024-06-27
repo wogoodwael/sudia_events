@@ -96,7 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) =>
-                                        BottomBarScreen(id: '123')));
+                                        BottomBarScreen(id: '123', public: false, uniquId:'111', date: DateTime.now() ,)));
                           }
                         },
                         child: _currentPage == 3

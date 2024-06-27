@@ -14,11 +14,12 @@ class AddServices extends StatefulWidget {
     super.key,
     required this.date,
     required this.inside,
-    required this.id,
+    required this.id, required this.uniquId,
   });
   final DateTime date;
   final bool inside;
   final String id;
+  final String uniquId;
   @override
   State<AddServices> createState() => _AddServicesState();
 }
@@ -114,7 +115,7 @@ class _AddServicesState extends State<AddServices> {
                 child: ServicesBodey(
                   date: widget.date,
                   inside: widget.inside,
-                  id: widget.id,
+                  id: widget.id, uniquId: widget.uniquId,
                 ),
               ))
         ],

@@ -101,30 +101,33 @@ Future<List<ResturantDetailsModel>> fetchDetailsResturantData(
 Future<List<BookedServicesModel>> fetchBookedData() async {
   try {
     final QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('BookServices').get();
+        await FirebaseFirestore.instance.collection('booked_services').get();
+
     print("Query executed. Total documents: ${querySnapshot.docs.length}");
-    querySnapshot.docs.forEach((doc) {
-      print("Document: $doc");
-    });
     final List<BookedServicesModel> booked =
         querySnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
-      print("Document: $doc");
+      print("Document: ${doc.data()}");
 
-      print("Price: ${doc['price']}");
       return BookedServicesModel(
-        name: doc['name'],
-        des: doc['des'],
-        price: doc['price'],
-        type: doc['type'],
-        bofe: doc['bofe'],
-        cooking: doc['cooking'],
-        jucies: doc['jucies'],
-      );
+          name: doc['name'],
+          price: doc['price'],
+          type: doc['type'],
+          deliveryFee: doc['delivery_fee'],
+          discount: doc['discount'],
+          discountAmount: doc['discount_amount'],
+          itemName: doc['item_name'],
+          number: doc['number'],
+          options: doc['options'],
+          subtotal: doc['subtotal'],
+          timestamp: doc['timestamp'],
+          total: doc['total'],
+          uniqueID: doc['uniquID'],
+          userId: doc['user_id']);
     }).toList();
     print("booked data details: $booked");
     return booked;
   } catch (e) {
-    print("Error fetching resturant data: $e");
+    print("Error fetching booked data: $e");
     return [];
   }
 }

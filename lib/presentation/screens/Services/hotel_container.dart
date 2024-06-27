@@ -1,99 +1,99 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
-import 'package:sudia_events/core/helper/custom_checkBox.dart';
-import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/data/model/booked_services.dart';
-import 'package:sudia_events/data/services/fetch_data.dart';
-import 'package:sudia_events/presentation/screens/Services/tapped_container.dart';
-import 'package:sudia_events/presentation/screens/Services/untapped_container.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/rendering.dart';
+// import 'package:flutter/widgets.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
+// import 'package:sudia_events/core/helper/custom_checkBox.dart';
+// import 'package:sudia_events/core/utils/constants.dart';
+// import 'package:sudia_events/core/utils/strings.dart';
+// import 'package:sudia_events/data/model/booked_services.dart';
+// import 'package:sudia_events/data/services/fetch_data.dart';
+// import 'package:sudia_events/presentation/screens/Services/tapped_container.dart';
+// import 'package:sudia_events/presentation/screens/Services/untapped_container.dart';
 
-class HotelContainer extends StatefulWidget {
-  const HotelContainer({
-    super.key,
-  });
+// class HotelContainer extends StatefulWidget {
+//   const HotelContainer({
+//     super.key,
+//   });
 
-  @override
-  State<HotelContainer> createState() => _HotelContainerState();
-}
+//   @override
+//   State<HotelContainer> createState() => _HotelContainerState();
+// }
 
-class _HotelContainerState extends State<HotelContainer> {
-  List<bool> tapped = [];
-  List<BookedServicesModel>? bookedServices;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    BlocProvider.of<BookedDataCubit>(context).getBookedDataCubitfun();
-  }
+// class _HotelContainerState extends State<HotelContainer> {
+//   List<bool> tapped = [];
+//   List<BookedServicesModel>? bookedServices;
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     BlocProvider.of<BookedDataCubit>(context).getBookedDataCubitfun();
+//   }
 
-  void _initializeTapped(int length) {
-    tapped = List<bool>.filled(length, false);
-  }
+//   void _initializeTapped(int length) {
+//     tapped = List<bool>.filled(length, false);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<BookedDataCubit, BookedDataState>(
-      builder: (BuildContext context, BookedDataState state) {
-        bookedServices =
-            BlocProvider.of<BookedDataCubit>(context).bookedServices;
-        if (state is BookedDataLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is BookedDataSuccess) {
-          if (tapped.length != bookedServices!.length) {
-            _initializeTapped(bookedServices!.length);
-          }
-          return Column(
-              // mainAxisSize: MainAxisSize.min,
-              children: List.generate(bookedServices!.length, (index) {
-            return Column(
-              children: [
-                UnTappedContainer(
-                  tapped: tapped[index],
-                  indexData: bookedServices![index].name,
-                  indexPrice: bookedServices![index].price,
-                  onTap: () {
-                    setState(() {
-                      tapped[index] = !tapped[index];
-                    });
-                  },
-                  des: bookedServices![index].des,
-                ),
-                tapped[index]
-                    ? TappedContainer(
-                        textData: [
-                          if (bookedServices != null &&
-                              bookedServices!.isNotEmpty)
-                            if (bookedServices![index].bofe != "")
-                              bookedServices![index].bofe,
-                          if (bookedServices != null &&
-                              bookedServices!.isNotEmpty)
-                            if (bookedServices![index].cooking != "")
-                              bookedServices![index].cooking,
-                          if (bookedServices != null &&
-                              bookedServices!.isNotEmpty)
-                            if (bookedServices![index].jucies != "")
-                              bookedServices![index].jucies!,
-                        ],
-                      )
-                    : SizedBox(
-                        height: 20,
-                      ),
-              ],
-            );
-          }));
-        } else {
-          return Center(
-            child: Text("لم تقم بحجز اي خدمات بعد "),
-          );
-        }
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<BookedDataCubit, BookedDataState>(
+//       builder: (BuildContext context, BookedDataState state) {
+//         bookedServices =
+//             BlocProvider.of<BookedDataCubit>(context).bookedServices;
+//         if (state is BookedDataLoading) {
+//           return Center(
+//             child: CircularProgressIndicator(),
+//           );
+//         } else if (state is BookedDataSuccess) {
+//           if (tapped.length != bookedServices!.length) {
+//             _initializeTapped(bookedServices!.length);
+//           }
+//           return Column(
+//               // mainAxisSize: MainAxisSize.min,
+//               children: List.generate(bookedServices!.length, (index) {
+//             return Column(
+//               children: [
+//                 UnTappedContainer(
+//                   tapped: tapped[index],
+//                   indexData: bookedServices![index].name,
+//                   indexPrice: bookedServices![index].price,
+//                   onTap: () {
+//                     setState(() {
+//                       tapped[index] = !tapped[index];
+//                     });
+//                   },
+//                   des: bookedServices![index].des,
+//                 ),
+//                 tapped[index]
+//                     ? TappedContainer(
+//                         textData: [
+//                           if (bookedServices != null &&
+//                               bookedServices!.isNotEmpty)
+//                             if (bookedServices![index].bofe != "")
+//                               bookedServices![index].bofe,
+//                           if (bookedServices != null &&
+//                               bookedServices!.isNotEmpty)
+//                             if (bookedServices![index].cooking != "")
+//                               bookedServices![index].cooking,
+//                           if (bookedServices != null &&
+//                               bookedServices!.isNotEmpty)
+//                             if (bookedServices![index].jucies != "")
+//                               bookedServices![index].jucies!,
+//                         ],
+//                       )
+//                     : SizedBox(
+//                         height: 20,
+//                       ),
+//               ],
+//             );
+//           }));
+//         } else {
+//           return Center(
+//             child: Text("لم تقم بحجز اي خدمات بعد "),
+//           );
+//         }
+//       },
+//     );
+//   }
+// }

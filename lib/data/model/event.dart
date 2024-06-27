@@ -7,9 +7,11 @@ class Event {
   final String family;
   final String tribe;
   final String time;
+  final String uniquID;
 
-  Event({
+  Event( {
     required this.family,
+    required this.uniquID,
     required this.time,
     required this.tribe,
     required this.date,
@@ -26,7 +28,7 @@ class Event {
       family: map['family'],
       tribe: map['tribe'],
       type: map['type'],
-      time: map['time'] ?? "",
+      time: map['time'] ?? "", uniquID: map['uniquID'],
     );
   }
 }

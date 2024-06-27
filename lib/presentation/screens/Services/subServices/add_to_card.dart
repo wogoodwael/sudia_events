@@ -10,12 +10,13 @@ import 'package:sudia_events/presentation/screens/Services/subServices/check_out
 class OrderSummaryPage extends StatefulWidget {
   final String name;
   final String number;
+  final String uniquId;
   final DateTime date;
   const OrderSummaryPage(
       {super.key,
       required this.name,
       required this.number,
-      required this.date});
+      required this.date, required this.uniquId});
   @override
   _OrderSummaryPageState createState() => _OrderSummaryPageState();
 }
@@ -460,7 +461,7 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
                                                       CheckoutScreen(
                                                         name: widget.name,
                                                         number: widget.number,
-                                                        date: widget.date,
+                                                        date: widget.date, uniquID: widget.uniquId,
                                                       )));
                                         },
                                         child: Row(

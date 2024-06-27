@@ -250,7 +250,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (_) => BottomBarScreen(
-                            id: sharedpref.getString("token")!,
+                            id: sharedpref.getString("token")!, public: false, uniquId: '11',date: DateTime.now(),
                           ),
                         ),
                       );

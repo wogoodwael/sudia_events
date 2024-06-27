@@ -13,9 +13,13 @@ import 'package:intl/intl.dart' as intl;
 class CheckoutScreen extends StatefulWidget {
   final String name;
   final String number;
+  final String uniquID;
   final DateTime date;
   CheckoutScreen(
-      {required this.name, required this.number, required this.date});
+      {required this.name,
+      required this.number,
+      required this.date,
+      required this.uniquID});
 
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -26,7 +30,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   double _subtotal = 0.0;
   double _discount = 0.0;
   double _total = 0.0;
-  double _deliveryFee = 20.0; // Assuming a fixed delivery fee
+  double _deliveryFee = 20.0;
+  bool public = false; // Assuming a fixed delivery fee
 
   @override
   void initState() {
@@ -90,8 +95,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'subtotal': _subtotal,
             'discount_amount': _discount,
             'delivery_fee': _deliveryFee,
-            'total': _total
+            'total': _total,
+            'uniquID': widget.uniquID,
+            'type': "public"
           });
+          sharedpref.setString('uniquID', widget.uniquID);
+          sharedpref.setString('date', widget.date.timeZoneName);
         }
         CustomSnackBar(
           context,
@@ -102,8 +111,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) =>
-                    BottomBarScreen(id: sharedpref.getString('token')!)));
+                builder: (_) => BottomBarScreen(
+                      id: sharedpref.getString('token')!,
+                      public: true,
+                      uniquId: widget.uniquID,
+                      date: widget.date,
+                    )));
         // Optionally, clear the checkout items or navigate to a success screen
       }
     } on Exception catch (e) {
@@ -575,9 +588,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                     MaterialPageRoute(
                                                         builder: (_) =>
                                                             BottomBarScreen(
+                                                              uniquId: widget
+                                                                  .uniquID,
+                                                              date: widget.date,
                                                               id: sharedpref
                                                                   .getString(
                                                                       'token')!,
+                                                              public: false,
                                                             )),
                                                   );
                                                 },

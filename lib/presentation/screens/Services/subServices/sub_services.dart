@@ -15,10 +15,11 @@ import 'package:sudia_events/presentation/widgets/search.dart';
 
 class SubServicesScreen extends StatefulWidget {
   final String itemName;
+  final String uniquID;
   final DateTime date;
   final bool inside;
   SubServicesScreen(
-      {required this.itemName, required this.date, required this.inside});
+      {required this.itemName, required this.date, required this.inside, required this.uniquID});
 
   @override
   _SubServicesScreenState createState() => _SubServicesScreenState();
@@ -133,7 +134,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                 about: item.about,
                                 date: widget.date,
                                 type: widget.itemName,
-                                inside: widget.inside,
+                                inside: widget.inside, uniquID: widget.uniquID,
                               ),
                             ),
                           );
@@ -191,7 +192,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                   about: item.about,
                                   date: widget.date,
                                   type: widget.itemName,
-                                  inside: widget.inside,
+                                  inside: widget.inside, uniquID: widget.uniquID,
                                 ),
                               ),
                             );

@@ -11,8 +11,9 @@ import 'package:sudia_events/presentation/widgets/search.dart';
 class ServicesScreen extends StatefulWidget {
   final DateTime date;
   final bool inside;
+  final String uniquID;
 
-  const ServicesScreen({super.key, required this.date, required this.inside});
+  const ServicesScreen({super.key, required this.date, required this.inside, required this.uniquID});
   @override
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
@@ -62,7 +63,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (_) =>
-                        BottomBarScreen(id: sharedpref.getString('token')!)));
+                        BottomBarScreen(id: sharedpref.getString('token')!, public: false, uniquId: widget.uniquID, date: widget.date,)));
           },
           child: Icon(
             Icons.home,
@@ -198,7 +199,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                             builder: (_) => SubServicesScreen(
                               itemName: filteredServices[index].name,
                               date: widget.date,
-                              inside: widget.inside,
+                              inside: widget.inside, uniquID: widget.uniquID,
                             ),
                           ),
                         );

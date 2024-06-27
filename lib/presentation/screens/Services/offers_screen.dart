@@ -7,7 +7,8 @@ import 'package:sudia_events/presentation/widgets/search.dart';
 
 class OffersScreen extends StatefulWidget {
   final bool inside;
-  const OffersScreen({super.key, required this.inside});
+  final String uniquId;
+  const OffersScreen({super.key, required this.inside, required this.uniquId});
 
   @override
   State<OffersScreen> createState() => _OffersScreenState();
@@ -120,8 +121,8 @@ class _OffersScreenState extends State<OffersScreen> {
                       offer['img'],
                       offer['name'],
                       offer['discount'],
-                      offer['price'],widget.inside
-                    );
+                      offer['price'],widget.inside,
+                  widget.uniquId  );
                   },
                 );
               },

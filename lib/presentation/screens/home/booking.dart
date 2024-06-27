@@ -3,11 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:sudia_events/core/helper/calender.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/model/event.dart';
+import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
-
+import 'package:table_calendar/table_calendar.dart';
+import 'package:uuid/uuid.dart';
+import 'package:intl/date_symbol_data_local.dart' as data;
 import '../Services/services_screen.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -159,7 +164,7 @@ class _BookingScreenState extends State<BookingScreen> {
     String firstName = nameParts.isNotEmpty ? nameParts[0] : '';
     String familyName = nameParts.length > 1 ? nameParts[1] : '';
     String tribeName = nameParts.length > 2 ? nameParts[2] : '';
-
+    String uniqueID = Uuid().v4();
     // Create a map representing the event data
     Map<String, dynamic> eventData = {
       'userID': sharedpref.getString('token'),
@@ -170,6 +175,7 @@ class _BookingScreenState extends State<BookingScreen> {
       'date': widget.bookingDate.toIso8601String(),
       'type': widget.type,
       'time': _selectedTime.format(context),
+      'uniquID': uniqueID
     };
 
     // Add the event data to Firestore
@@ -193,6 +199,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               date: widget.bookingDate,
                               inside: true,
                               id: sharedpref.getString('token')!,
+                              uniquId: uniqueID,
                             )),
                     // This predicate removes all previous routes
                   );
@@ -207,6 +214,9 @@ class _BookingScreenState extends State<BookingScreen> {
                     MaterialPageRoute(
                         builder: (_) => BottomBarScreen(
                               id: sharedpref.getString('token')!,
+                              public: false,
+                              uniquId: uniqueID,
+                              date: widget.bookingDate,
                             )),
                   );
                 },
@@ -239,6 +249,78 @@ class _BookingScreenState extends State<BookingScreen> {
     });
   }
 
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  Map<DateTime, List<Event>> events = {};
+  bool chooseday = false;
+  Api api = Api();
+
+  late final ValueNotifier<List<Event>> _selectedEvents;
+
+  TextEditingController searchController = TextEditingController();
+  List<Event> filteredEvents = [];
+  bool isFav = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedDay = _focusedDay;
+    data.initializeDateFormatting('ar');
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    api.fetchEventsFromFirestore().then((fetchedEvents) {
+      setState(() {
+        events = fetchedEvents;
+        _selectedEvents.value = _getEventsForDay(_selectedDay!);
+        filteredEvents = _getAllEvents();
+      });
+    });
+
+    // Listen for changes in the search controller and filter events
+    searchController.addListener(_filterEvents);
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    searchController.removeListener(_filterEvents);
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterEvents() {
+    String query = searchController.text.toLowerCase();
+    setState(() {
+      filteredEvents = _getAllEvents().where((event) {
+        return event.name.toLowerCase().contains(query) ||
+            event.family.toLowerCase().contains(query) ||
+            event.tribe.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  List<Event> _getAllEvents() {
+    return events.values.expand((eventList) => eventList).toList();
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _selectedEvents.value = _getEventsForDay(_selectedDay!);
+      });
+    }
+  }
+
+  List<Event> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
+  }
+
+  bool isEventSelectedDay(DateTime eventDate) {
+    return isSameDay(eventDate, _selectedDay!);
+  }
+
   @override
   Widget build(BuildContext context) {
     final String formattedDate =
@@ -267,13 +349,14 @@ class _BookingScreenState extends State<BookingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('تهانينا .. !', style: TextStyle(fontSize: 24)),
-              SizedBox(height: 10),
-              Image.asset(
-                "assets/images/heart.png",
-                width: 120,
+              CustomCalendar(
+                selectedDay: _selectedDay!,
+                focusedDay: _focusedDay,
+                onDaySelected: (selectedDay, focusedDay) {
+                  _onDaySelected(selectedDay, focusedDay);
+                },
+                getEventsForDay: _getEventsForDay,
               ),
-              SizedBox(height: 10),
               Text('تستطيع اختيار الحجز', style: TextStyle(fontSize: 15)),
               SizedBox(height: 15),
               Text(formattedDate,
@@ -382,21 +465,8 @@ class _BookingScreenState extends State<BookingScreen> {
                       children: [
                         IconButton(
                             icon: Image.asset(
-                              "assets/images/phone.png",
-                              width: 50,
-                            ),
-                            onPressed: () {}),
-                        IconButton(
-                            icon: Image.asset(
-                              "assets/images/message.png",
-                              color: Colors.grey,
-                              width: 50,
-                            ),
-                            onPressed: () {}),
-                        IconButton(
-                            icon: Image.asset(
                               "assets/images/locationb.png",
-                              color: Colors.grey,
+                              color: Colors.green,
                               width: 50,
                             ),
                             onPressed: () {}),

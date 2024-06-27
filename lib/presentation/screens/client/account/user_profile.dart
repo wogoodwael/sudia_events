@@ -78,8 +78,11 @@ class _UserFormScreenState extends State<UserFormScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (_) =>
-                  BottomBarScreen(id: sharedpref.getString('token')!)));
+              builder: (_) => BottomBarScreen(
+                    id: sharedpref.getString('token')!,
+                    uniquId: sharedpref.getString('uniquID') ?? "1",
+                    date: DateTime.now(),
+                  )));
     }
   }
 
