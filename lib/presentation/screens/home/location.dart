@@ -193,28 +193,28 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   SizedBox(height: .05 * mediaheight(context)),
-                  MaterialButton(
-                    elevation: 0,
-                    height: 50,
-                    minWidth: .9 * mediawidth(context),
-                    color: secondary,
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "اضف عنوان جديد",
-                          style: TextStyle(
-                            color: primary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                          ),
-                        ),
-                        SizedBox(width: .4 * mediawidth(context)),
-                        Icon(Icons.add, color: primary),
-                      ],
-                    ),
-                  ),
+                  //   MaterialButton(
+                  //     elevation: 0,
+                  //     height: 50,
+                  //     minWidth: .9 * mediawidth(context),
+                  //     color: secondary,
+                  //     onPressed: () {},
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       children: [
+                  //         Text(
+                  //           "اضف عنوان جديد",
+                  //           style: TextStyle(
+                  //             color: primary,
+                  //             fontWeight: FontWeight.bold,
+                  //             fontSize: 17,
+                  //           ),
+                  //         ),
+                  //         SizedBox(width: .4 * mediawidth(context)),
+                  //         Icon(Icons.add, color: primary),
+                  //       ],
+                  //     ),
+                  //   ),
                 ],
               ),
             ),
@@ -250,7 +250,10 @@ class _LocationScreenState extends State<LocationScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (_) => BottomBarScreen(
-                            id: sharedpref.getString("token")!, public: false, uniquId: '11',date: DateTime.now(),
+                            id: sharedpref.getString("token")!,
+                            public: false,
+                            uniquId: '11',
+                            date: DateTime.now(),
                           ),
                         ),
                       );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,7 +17,7 @@ class ReservationScreen extends StatefulWidget {
 
 class _ReservationScreenState extends State<ReservationScreen> {
   final TextEditingController controller = TextEditingController();
-  final List<String> services = ['الكل', 'نشط', 'مكتمل ', 'ملغي'];
+  final List<String> services = ['All'.tr(), 'active'.tr(), 'complete'.tr(), 'cancel'.tr()];
   final List<bool> onTapped = [false, false, false, false];
   String selectedService = 'الكل';
   List<dynamic> reservations = [];
@@ -45,7 +46,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('الحجوزات'),
+        title: Text('booked'.tr()),
         centerTitle: true,
         actions: [
           IconButton(
@@ -71,7 +72,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
               child: Column(
                 children: [
                   SearchContainernew(
-                      hintText: 'البحث', controller: controller, onTap: () {}),
+                      hintText: 'search'.tr(), controller: controller, onTap: () {}),
                   Container(
                     width: mediawidth(context),
                     height: 45,

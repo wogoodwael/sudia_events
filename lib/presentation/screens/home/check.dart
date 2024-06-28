@@ -73,7 +73,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
             },
           ),
         ],
-        title: Text('المفضلة'),
+        title: Text('السلة'),
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('SubServices')
@@ -153,7 +153,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No favorites found'));
+                  return Center(child: Text('No items found'));
                 }
 
                 var favorites = snapshot.data!.docs;
@@ -207,30 +207,32 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 5.0, right: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(data['name'] ?? "",
-                                      style: GoogleFonts.cairo(fontSize: 16)),
-                                  SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Text('4.9',
-                                          style:
-                                              TextStyle(color: Colors.orange)),
-                                      Icon(Icons.star,
-                                          color: Colors.orange, size: 16),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text('SAR ${data['price']}',
-                                      style: TextStyle(
-                                          decoration:
-                                              TextDecoration.lineThrough)),
-                                  Text(
-                                      'SAR ${data['discount'] ?? data['price']}',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(data['name'] ?? "",
+                                        style: GoogleFonts.cairo(fontSize: 16)),
+                                    SizedBox(height: 4),
+                                    Row(
+                                      children: [
+                                        Text('4.9',
+                                            style: TextStyle(
+                                                color: Colors.orange)),
+                                        Icon(Icons.star,
+                                            color: Colors.orange, size: 16),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text('SAR ${data['price']}',
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough)),
+                                    Text(
+                                        'SAR ${data['discount'] ?? data['price']}',
+                                        style: TextStyle(color: Colors.red)),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

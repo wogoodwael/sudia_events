@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,11 @@ class ServicesBodey extends StatelessWidget {
   TextEditingController controller = TextEditingController();
 
   ServicesBodey(
-      {super.key, required this.date, required this.inside, required this.id, required this.uniquId});
+      {super.key,
+      required this.date,
+      required this.inside,
+      required this.id,
+      required this.uniquId});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,7 @@ class ServicesBodey extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "بطاقة الدعوة",
+                    "invitation card".tr(),
                     style: TextStyle(color: primary),
                   ),
                   SizedBox(
@@ -89,7 +94,7 @@ class ServicesBodey extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "وش ودك تحجز لمناسبتك يا جمعان ",
+               "what".tr(),
                   style: TextStyle(
                     color: primary,
                     fontWeight: FontWeight.bold,
@@ -100,11 +105,13 @@ class ServicesBodey extends StatelessWidget {
               SizedBox(height: 10),
               CategorySection(
                 date: date,
-                inside: inside, uniquID: uniquId,
+                inside: inside,
+                uniquID: uniquId,
               ),
               SizedBox(height: 16),
               WeeklyOffersSection(
-                inside: inside, uniquId: uniquId,
+                inside: inside,
+                uniquId: uniquId,
               ),
               SizedBox(height: 16),
               PreviousReservationsSection(),
@@ -123,7 +130,11 @@ class CategorySection extends StatelessWidget {
   final DateTime date;
   final bool inside;
   final String uniquID;
-  const CategorySection({super.key, required this.date, required this.inside, required this.uniquID});
+  const CategorySection(
+      {super.key,
+      required this.date,
+      required this.inside,
+      required this.uniquID});
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -132,34 +143,39 @@ class CategorySection extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       children: [
         CategoryItem(
-          title: 'مطابخ',
+          title: 'kitchens'.tr(),
           icon: Icons.kitchen,
           date: date,
-          inside: inside, uniquID: uniquID,
+          inside: inside,
+          uniquID: uniquID,
         ),
         CategoryItem(
-          title: 'مطاعم',
+          title: 'resturants'.tr(),
           icon: Icons.restaurant,
           date: date,
-          inside: inside, uniquID: uniquID,
+          inside: inside,
+          uniquID: uniquID,
         ),
         CategoryItem(
-          title: 'أماكن',
+          title: 'Places'.tr(),
           icon: Icons.location_on,
           date: date,
-          inside: inside, uniquID: uniquID,
+          inside: inside,
+          uniquID: uniquID,
         ),
         CategoryItem(
-          title: 'مستلزمات',
+          title: 'supplies'.tr(),
           icon: Icons.shopping_bag,
           date: date,
-          inside: inside, uniquID: uniquID,
+          inside: inside,
+          uniquID: uniquID,
         ),
         CategoryItem(
-          title: 'ورود وهدايا',
+          title: 'gifts'.tr(),
           icon: Icons.card_giftcard,
           date: date,
-          inside: inside, uniquID: uniquID,
+          inside: inside,
+          uniquID: uniquID,
         ),
         GestureDetector(
           onTap: () {
@@ -168,7 +184,8 @@ class CategorySection extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (_) => ServicesScreen(
                           date: date,
-                          inside: inside, uniquID: '',
+                          inside: inside,
+                          uniquID: '',
                         )));
           },
           child: Icon(
@@ -192,7 +209,8 @@ class CategoryItem extends StatelessWidget {
       {required this.title,
       required this.icon,
       required this.date,
-      required this.inside, required this.uniquID});
+      required this.inside,
+      required this.uniquID});
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +221,8 @@ class CategoryItem extends StatelessWidget {
             MaterialPageRoute(
                 builder: (_) => ServicesScreen(
                       date: date,
-                      inside: inside, uniquID:uniquID,
+                      inside: inside,
+                      uniquID: uniquID,
                     )));
       },
       child: Card(
@@ -227,7 +246,8 @@ class WeeklyOffersSection extends StatelessWidget {
   final bool inside;
   final String uniquId;
 
-  const WeeklyOffersSection({super.key, required this.inside, required this.uniquId});
+  const WeeklyOffersSection(
+      {super.key, required this.inside, required this.uniquId});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -236,7 +256,7 @@ class WeeklyOffersSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('العروض الأسبوعية',
+            Text("weekly offers".tr(),
                 style: GoogleFonts.cairo(
                     fontSize: 18, fontWeight: FontWeight.bold)),
             GestureDetector(
@@ -245,10 +265,11 @@ class WeeklyOffersSection extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (_) => OffersScreen(
-                              inside: inside, uniquId: uniquId,
+                              inside: inside,
+                              uniquId: uniquId,
                             )));
               },
-              child: Text(' عرض الكل ',
+              child: Text('see all'.tr(),
                   style: GoogleFonts.cairo(fontSize: 15, color: primary)),
             ),
           ],
@@ -287,8 +308,8 @@ class WeeklyOffersSection extends StatelessWidget {
                           offer['name'] ?? "",
                           offer['discount'] ?? "",
                           offer['price'] ?? "",
-                          inside, uniquId
-                          ),
+                          inside,
+                          uniquId),
                     );
                   },
                 );
@@ -305,8 +326,9 @@ class WeeklyOfferItem extends StatefulWidget {
   final String discount;
   final String price;
   final bool inside;
-   final String uniquID;
-  WeeklyOfferItem(this.img, this.name, this.discount, this.price, this.inside, this.uniquID);
+  final String uniquID;
+  WeeklyOfferItem(this.img, this.name, this.discount, this.price, this.inside,
+      this.uniquID);
 
   @override
   State<WeeklyOfferItem> createState() => _WeeklyOfferItemState();
@@ -314,7 +336,6 @@ class WeeklyOfferItem extends StatefulWidget {
 
 class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
   bool isAddedToFav = false;
- 
 
   Future<void> addToFavorites(BuildContext context) async {
     try {
@@ -372,7 +393,8 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
                       about: 'من افضل واشهي الاطباق',
                       date: DateTime.now(),
                       type: 'offers',
-                      inside: widget.inside, uniquID: widget.uniquID,
+                      inside: widget.inside,
+                      uniquID: widget.uniquID,
                     )));
       },
       child: Container(
@@ -453,7 +475,7 @@ class PreviousReservationsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'الحجوزات السابقة',
+          "prevoius booked".tr(),
           style: GoogleFonts.cairo(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10),
@@ -598,7 +620,7 @@ class FavoritesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('مفضلتي',
+        Text('Favorite'.tr(),
             style:
                 GoogleFonts.cairo(fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 10),
@@ -635,7 +657,7 @@ class FavoritesSection extends StatelessWidget {
                   var favorite = favorites[index];
                   return FavoriteItem(
                     img: favorite['img'],
-                    name: favorite['name'] ?? "",
+                    name: favorite['name'] ?? favorite['des'],
                   );
                 },
               ),

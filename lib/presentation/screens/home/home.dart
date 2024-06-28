@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -45,9 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool tappedTribe = false;
   bool onTappedIcon = false;
   String type = '';
-  List<bool> onTapped = [false, false, false, false, false];
+  List<bool> onTapped = [false, false, false, false];
 
-  List services = ['الكل', 'زواج', 'مناسبة خاصة', 'حفل تخرج', 'مناسبة'];
+  List services = ['الكل', 'زواج', 'حفل تخرج', 'عيد ميلاد'];
   List familyFilter = [];
   late final ValueNotifier<List<Event>> _selectedEvents;
   Api api = Api();
@@ -279,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           )));
             },
             child: Text(
-              'موقعك',
+              'location'.tr(),
               style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -426,7 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               isFav ? Icons.favorite : Icons.favorite_border,
                               color: Colors.red,
                             )),
-                        hintText: 'البحث',
+                        hintText: 'search'.tr(),
                         hintStyle: TextStyle(color: Colors.grey[400]),
                         prefixIcon: Icon(
                           Icons.search,
@@ -444,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               children: [
                 Text(
-                  "احجز موعد مناسبتك",
+                 "bookreservation".tr(),
                   style: GoogleFonts.inter(
                       color: primary,
                       fontSize: 15,

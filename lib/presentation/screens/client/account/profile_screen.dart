@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           ),
         ],
-        title: Text('صفحتي', style: TextStyle(color: Colors.black)),
+        title: Text('Account'.tr(), style: TextStyle(color: Colors.black)),
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -152,12 +153,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   return AlertDialog(
                                     title: Center(
                                         child: Text(
-                                      'تسجيل الخروج ',
+                                      'log out'.tr(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     )),
                                     content: Text(
-                                      'هل انت متاكد من تسجيل الخروج ؟ ',
+                                      'sure'.tr(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -170,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             minWidth: 100,
                                             color: primary,
                                             child: Text(
-                                              'التالي ',
+                                              'next'.tr(),
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -184,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                           MaterialButton(
                                             minWidth: 100,
-                                            child: Text('الغاء '),
+                                            child: Text('not sure'.tr()),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -195,16 +196,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   );
                                 },
                               );
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => LoginScreen()));
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  "تسجيل الخروج",
+                                  'log out'.tr(),
                                   style: TextStyle(
                                       color: primary,
                                       fontWeight: FontWeight.bold),
@@ -228,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.location_on),
-                title: Text('عناويني'),
+                title: Text('location'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to addresses
@@ -236,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.favorite),
-                title: Text('المفضلة'),
+                title: Text('Favorite'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(context,
@@ -245,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.local_offer),
-                title: Text('عروضي الترويجية'),
+                title: Text('trending'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to promotional offers
@@ -253,7 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.payment),
-                title: Text('طرق الدفع'),
+                title: Text('payment methods'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to payment methods
@@ -261,7 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.account_balance_wallet),
-                title: Text('محفظتي'),
+                title: Text('My wallet'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to wallet
@@ -269,7 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.message),
-                title: Text('الرسائل'),
+                title: Text('Messages'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(context,
@@ -278,7 +275,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.group_add),
-                title: Text('انضم إلينا'),
+                title: Text('join us'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to join us
@@ -286,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.person_add),
-                title: Text('دعوة أصدقائك'),
+                title: Text('invite freinds'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to invite friends
@@ -294,7 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.security),
-                title: Text('الحماية'),
+                title: Text('security'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to security
@@ -302,7 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.help),
-                title: Text('مركز المساعدة'),
+                title: Text('help center'.tr()),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to help center
@@ -316,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('اللغة'),
+                        Text('language'.tr()),
                         DropdownButton<String>(
                           value: 'العربية',
                           items: <String>['العربية', 'English']
@@ -338,7 +335,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            'الإشعارات',
+                            'notification'.tr(),
                             style: TextStyle(fontSize: 15),
                           ),
                         ),
@@ -360,7 +357,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            'التحديث التلقائي',
+                            'Auto Update'.tr(),
                             style: TextStyle(fontSize: 15),
                           ),
                         ),
@@ -382,7 +379,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            'الاصوات',
+                            'sounds'.tr(),
                             style: TextStyle(fontSize: 15),
                           ),
                         ),
@@ -399,28 +396,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     ListTile(
-                      title: Text('التحديث تلقائيًا'),
+                      title: Text(
+                        'Auto Update'.tr(),
+                      ),
                       trailing: Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle automatic updates
                       },
                     ),
                     ListTile(
-                      title: Text('شروط الخدمة'),
+                      title: Text('conditions'.tr()),
                       trailing: Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle terms of service
                       },
                     ),
                     ListTile(
-                      title: Text('سياسة الخصوصية'),
+                      title: Text('privacy policy'.tr()),
                       trailing: Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle privacy policy
                       },
                     ),
                     ListTile(
-                      title: Text('سياسة الاستبدال والاسترجاع'),
+                      title: Text('terms of use'.tr()),
                       trailing: Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle replacement and refund policy

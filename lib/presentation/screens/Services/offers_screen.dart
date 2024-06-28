@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/presentation/screens/Services/services_body.dart';
+import 'package:sudia_events/presentation/screens/Services/All/services_body.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 class OffersScreen extends StatefulWidget {
@@ -118,11 +118,12 @@ class _OffersScreenState extends State<OffersScreen> {
                   itemBuilder: (context, index) {
                     var offer = filteredOffers[index];
                     return WeeklyOfferItem(
-                      offer['img'],
-                      offer['name'],
-                      offer['discount'],
-                      offer['price'],widget.inside,
-                  widget.uniquId  );
+                        offer['img'],
+                        offer['name'],
+                        offer['discount'],
+                        offer['price'],
+                        widget.inside,
+                        widget.uniquId);
                   },
                 );
               },

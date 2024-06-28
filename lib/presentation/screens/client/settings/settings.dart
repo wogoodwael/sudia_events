@@ -4,7 +4,7 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/data/model/settings_model.dart';
 import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
-import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
+import 'package:sudia_events/presentation/screens/Services/All/services_screen.dart';
 import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
 import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
 import 'package:sudia_events/presentation/screens/client/settings/settings_list.dart';

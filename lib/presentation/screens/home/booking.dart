@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,7 +14,7 @@ import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/date_symbol_data_local.dart' as data;
-import '../Services/services_screen.dart';
+import '../Services/All/services_screen.dart';
 
 class BookingScreen extends StatefulWidget {
   final DateTime bookingDate;
@@ -105,21 +106,8 @@ class _BookingScreenState extends State<BookingScreen> {
                         children: [
                           IconButton(
                               icon: Image.asset(
-                                "assets/images/phone.png",
-                                width: 50,
-                              ),
-                              onPressed: () {}),
-                          IconButton(
-                              icon: Image.asset(
                                 "assets/images/locationb.png",
-                                color: Colors.grey,
-                                width: 50,
-                              ),
-                              onPressed: () {}),
-                          IconButton(
-                              icon: Image.asset(
-                                "assets/images/message.png",
-                                color: Colors.grey,
+                                color: Colors.green,
                                 width: 50,
                               ),
                               onPressed: () {}),
@@ -338,7 +326,7 @@ class _BookingScreenState extends State<BookingScreen> {
           },
         ),
         title: Text(
-          'الحجوزات',
+          'booked'.tr(),
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,

@@ -3,11 +3,13 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:share_screenshot_widget/share_screenshot_widget.dart';
+import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
@@ -31,6 +33,13 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
   String _selectedCheckbox = '';
   String _selectedCheckboxCard = '';
   String _selectedImage = '';
+  List<bool> isAddedToFavList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    isAddedToFavList = List<bool>.filled(widget.price.length, false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +167,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                         });
                       },
                       child: _buildCardItem(context, widget.price[index],
-                          widget.name[index], widget.name[index]),
+                          widget.name[index], widget.name[index], index),
                     );
                   },
                 ),
@@ -322,8 +331,47 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
     );
   }
 
-  Widget _buildCardItem(
-      BuildContext context, String price, String title, String cardName) {
+  Widget _buildCardItem(BuildContext context, String price, String title,
+      String cardName, int index) {
+    Future<void> addToFavorites(BuildContext context) async {
+      try {
+        // Get current user
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          // User is not logged in
+          // You can handle this case according to your app's logic
+          return;
+        }
+
+        // Add item to favorites collection
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('favorites')
+            .add({
+          'img':
+              'https://firebasestorage.googleapis.com/v0/b/saudievents-99e16.appspot.com/o/invitation_images%2Finvitation.png?alt=media&token=5763a96c-55eb-4995-8625-257d1258f562',
+          'name': cardName,
+          'discount': "",
+          'price': price,
+          // You can add more fields if needed
+        });
+        setState(() {
+          isAddedToFavList[index] = !isAddedToFavList[index];
+        });
+        // Show a snackbar or toast to indicate success
+        CustomSnackBar(
+          context,
+          'Item added to favorites',
+          Colors.green,
+          .75 * mediaheight(context),
+        );
+      } catch (e) {
+        // Handle errors
+        print('Error adding to favorites: $e');
+      }
+    }
+
     return Card(
       surfaceTintColor: Colors.white,
       shape: RoundedRectangleBorder(
@@ -351,9 +399,18 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                 Positioned(
                   bottom: 8.0,
                   right: 8.0,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.favorite_border, color: Colors.red),
+                  child: GestureDetector(
+                    onTap: () async {
+                      await addToFavorites(context);
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                          isAddedToFavList[index]
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: Colors.red),
+                    ),
                   ),
                 ),
               ],
@@ -513,15 +570,18 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
         return AlertDialog(
           content: RepaintBoundary(
             key: _screenshotKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset('assets/images/invitation.png'),
-                Text('الاسم: ${_nameController.text}'),
-                Text('عبارة الدعوة: $_selectedRadio'),
-                Text('تنبيه: $_selectedCheckbox'),
-                Text('اسم البطاقة : $_selectedCheckboxCard'),
-              ],
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/images/invitation.png'),
+                  Text('الاسم: ${_nameController.text}'),
+                  Text('عبارة الدعوة: $_selectedRadio'),
+                  Text('تنبيه: $_selectedCheckbox'),
+                  Text('اسم البطاقة : $_selectedCheckboxCard'),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -541,7 +601,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
     try {
       RenderRepaintBoundary boundary =
           globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      var image = await boundary.toImage();
+      var image = await boundary.toImage(pixelRatio: 3.0);
       ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
 

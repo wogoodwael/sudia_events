@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_location/search_map_location.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
@@ -30,28 +31,35 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            SearchLocation(
-              apiKey:
-                  'AIzaSyCKckCh7RP4ezDtY4F2m5CEV0Y8tfntDFk', // Replace with your Google Maps API key
-              placeholder: 'Search location...',
-              placeType: PlaceType.address,
-              hasClearButton: true,
-              onSelected: (Place place) async {
-                final geolocation = await place.geolocation;
-                setState(() {
-                  selectedLocation = LatLng(
-                    geolocation!.coordinates!.latitude,
-                    geolocation.coordinates!.longitude,
-                  );
-                });
-              },
+            Column(
+              children: [
+                Center(
+                  child: SearchLocation(
+                    apiKey:
+                        'AIzaSyCKckCh7RP4ezDtY4F2m5CEV0Y8tfntDFk', // Replace with your Google Maps API key
+                    placeholder: 'Search location...',
+                    placeType: PlaceType.address,
+                    hasClearButton: true,
+                    onSelected: (Place place) async {
+                      final geolocation = await place.geolocation;
+                      setState(() {
+                        selectedLocation = LatLng(
+                          geolocation!.coordinates!.latitude,
+                          geolocation.coordinates!.longitude,
+                        );
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
             if (selectedLocation != null)
-              Expanded(
+              Container(
+                width: mediawidth(context),
+                height: .7 * mediaheight(context),
                 child: GoogleMap(
                   initialCameraPosition: CameraPosition(
                     target: selectedLocation!,

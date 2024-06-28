@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sudia_events/core/helper/language_provider.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
-import 'package:sudia_events/presentation/screens/Services/services_screen.dart';
+import 'package:sudia_events/presentation/screens/Services/All/services_screen.dart';
 import 'package:sudia_events/presentation/screens/client/account/profile_screen.dart';
 import 'package:sudia_events/presentation/screens/home/home.dart';
 import 'package:sudia_events/presentation/screens/notification/notification.dart';
@@ -95,29 +95,29 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   items: [
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 0 ? Text("") : Icon(Icons.home),
-                      label: _selectedIndex == 0 ? 'الرئيسية' : "",
+                      label: _selectedIndex == 0 ? 'home'.tr() : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 1
                           ? Text("")
                           : Icon(Icons.assignment),
-                      label: _selectedIndex == 1 ? 'الخدمات' : "",
+                      label: _selectedIndex == 1 ? 'services'.tr() : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 2
                           ? Text("")
                           : Icon(Icons.shopping_bag),
-                      label: _selectedIndex == 2 ? 'الحجوزات' : "",
+                      label: _selectedIndex == 2 ? 'reservation'.tr() : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 3
                           ? Text("")
                           : Icon(Icons.notifications),
-                      label: _selectedIndex == 3 ? 'الاشعارات' : "",
+                      label: _selectedIndex == 3 ? 'Notification'.tr() : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 4 ? Text("") : Icon(Icons.person),
-                      label: _selectedIndex == 4 ? 'الحساب' : "",
+                      label: _selectedIndex == 4 ? 'Account'.tr() : "",
                     ),
                   ],
                   currentIndex: _selectedIndex,
