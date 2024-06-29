@@ -51,7 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: StreamBuilder<List<UserModel>>(
-                  stream: fetchUserData(id: sharedpref.getString('token')!),
+                  stream:
+                      fetchUserData(id: sharedpref.getString('token') ?? ""),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -106,14 +107,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      snapshot.data![0].name,
+                                      snapshot.data?[0].name ?? "",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       children: [
-                                        Text(snapshot.data![0].phone),
+                                        Text(snapshot.data?[0].phone ?? ""),
                                         SizedBox(width: 8),
                                         Icon(Icons.phone, size: 16),
                                       ],
@@ -121,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Row(
                                       children: [
                                         Text(
-                                          snapshot.data![0].email,
+                                          snapshot.data?[0].email ?? "",
                                         ),
                                         SizedBox(width: 8),
                                         Icon(Icons.email, size: 16),
@@ -133,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CircleAvatar(
                                 radius: 40,
                                 backgroundImage: NetworkImage(
-                                  snapshot.data![0].img,
+                                  snapshot.data?[0].img ?? "",
                                 ), // Your avatar image
                               ),
                             ],
@@ -176,11 +177,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   color: Colors.white),
                                             ),
                                             onPressed: () {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          LoginScreen()));
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        LoginScreen()),
+                                                (Route<dynamic> route) => false,
+                                              );
                                             },
                                           ),
                                           MaterialButton(

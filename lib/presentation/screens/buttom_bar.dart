@@ -39,7 +39,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
         date: DateTime.now(),
         inside: false,
         id: widget.id,
-        uniquId: widget.uniquId ?? "",
+        uniquId: widget.uniquId ?? "123",
       ),
       ReservationScreen(
         id: widget.id,
@@ -77,7 +77,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
           return Container(
             margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color(0xff1F2A37),
               // Dark background color
               boxShadow: [
                 BoxShadow(

@@ -73,7 +73,9 @@
     "prevoius booked":"Prevoius Reservations", 
     "Basket":"Basket", 
         "sure":"Are you sure you wanna log out ?" , 
-    "not sure":"cancel"
+    "not sure":"cancel" , 
+    "add to fav":"Item added to favorite" , 
+    "add to checkout":"Item added to basket"
     
 
 }

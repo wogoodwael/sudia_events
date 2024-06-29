@@ -827,7 +827,7 @@ class _EventContainerState extends State<EventContainer> {
       // Show a snackbar or toast to indicate success
       CustomSnackBar(
         context,
-        'Item added to favorites',
+        'add to fav'.tr(),
         Colors.green,
         .75 * mediaheight(context),
       );

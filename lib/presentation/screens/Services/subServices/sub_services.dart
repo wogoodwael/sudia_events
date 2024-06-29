@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,10 @@ class SubServicesScreen extends StatefulWidget {
   final DateTime date;
   final bool inside;
   SubServicesScreen(
-      {required this.itemName, required this.date, required this.inside, required this.uniquID});
+      {required this.itemName,
+      required this.date,
+      required this.inside,
+      required this.uniquID});
 
   @override
   _SubServicesScreenState createState() => _SubServicesScreenState();
@@ -134,7 +138,8 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                 about: item.about,
                                 date: widget.date,
                                 type: widget.itemName,
-                                inside: widget.inside, uniquID: widget.uniquID,
+                                inside: widget.inside,
+                                uniquID: widget.uniquID,
                               ),
                             ),
                           );
@@ -192,7 +197,8 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                   about: item.about,
                                   date: widget.date,
                                   type: widget.itemName,
-                                  inside: widget.inside, uniquID: widget.uniquID,
+                                  inside: widget.inside,
+                                  uniquID: widget.uniquID,
                                 ),
                               ),
                             );
@@ -275,7 +281,7 @@ class _SmallOfferItemState extends State<SmallOfferItem> {
       });
       CustomSnackBar(
         context,
-        'Item added to favorites',
+        'add to fav'.tr(),
         Colors.green,
         .9 * mediaheight(context),
       );
@@ -380,7 +386,7 @@ class PrivateOfferItem extends StatelessWidget {
 
       CustomSnackBar(
         context,
-        'Item added to favorites',
+        'add to fav'.tr(),
         Colors.green,
         .9 * mediaheight(context),
       );

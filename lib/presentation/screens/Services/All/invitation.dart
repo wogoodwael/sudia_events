@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -362,7 +363,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
         // Show a snackbar or toast to indicate success
         CustomSnackBar(
           context,
-          'Item added to favorites',
+          'add to fav'.tr(),
           Colors.green,
           .75 * mediaheight(context),
         );

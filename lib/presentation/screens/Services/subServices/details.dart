@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +124,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
         // Show a snackbar or toast to indicate success
         CustomSnackBar(
           context,
-          'Item added to checkout ',
+          'add to checkout'.tr(),
           Colors.green,
           .9 * mediaheight(context),
         );

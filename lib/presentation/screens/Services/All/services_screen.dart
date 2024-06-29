@@ -15,7 +15,8 @@ class AddServices extends StatefulWidget {
     super.key,
     required this.date,
     required this.inside,
-    required this.id, required this.uniquId,
+    required this.id,
+    required this.uniquId,
   });
   final DateTime date;
   final bool inside;
@@ -50,13 +51,13 @@ class _AddServicesState extends State<AddServices> {
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('SubServices')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(FirebaseAuth.instance.currentUser?.uid)
               .collection('checkout')
               .snapshots(),
           builder: (context, snapshot) {
             int favoriteCount = 0;
             if (snapshot.hasData) {
-              favoriteCount = snapshot.data!.docs.length;
+              favoriteCount = snapshot.data?.docs.length ?? 0;
             }
             return Stack(
               children: <Widget>[
@@ -116,7 +117,8 @@ class _AddServicesState extends State<AddServices> {
                 child: ServicesBodey(
                   date: widget.date,
                   inside: widget.inside,
-                  id: widget.id, uniquId: widget.uniquId,
+                  id: widget.id,
+                  uniquId: widget.uniquId,
                 ),
               ))
         ],
