@@ -122,7 +122,7 @@ Future<List<BookedServicesModel>> fetchBookedData() async {
           timestamp: doc['timestamp'],
           total: doc['total'],
           uniqueID: doc['uniquID'],
-          userId: doc['user_id']);
+          userId: doc['user_id'], status: doc['status']);
     }).toList();
     print("booked data details: $booked");
     return booked;

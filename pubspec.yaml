@@ -63,6 +63,7 @@ dependencies:
   share_screenshot_widget: ^0.0.5
   share_plus: ^6.3.4
   screenshot: ^2.5.0
+  intl_phone_field: ^3.2.0
 
 
 

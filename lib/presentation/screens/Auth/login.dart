@@ -4,11 +4,13 @@ import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:sudia_events/core/helper/language_provider.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/register.dart';
 
 // ignore: must_be_immutable
@@ -26,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool login = false;
   bool loading = false;
 
-  TextEditingController phone = TextEditingController();
+  TextEditingController phoneE = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -93,17 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (BuildContext context, LanguageProvider value, Widget? child) {
           return Column(
             children: [
-              Expanded(
-                flex: 3,
-                child: Container(
-                  width: mediawidth(context),
-                  height: 50,
-                  child: Image.asset(
-                    "assets/images/logo.png",
-                    color: primary,
-                  ),
-                ),
-              ),
               register
                   ? RegisterScreen()
                   : Expanded(
@@ -140,22 +131,32 @@ class _LoginScreenState extends State<LoginScreen> {
                                   width: .8 * mediawidth(context),
                                   height: 50,
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: primary),
-                                      borderRadius: BorderRadius.circular(10)),
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, right: 10, left: 5),
-                                    child: TextField(
-                                      keyboardType: TextInputType.phone,
-                                      controller: phone,
+                                    padding: EdgeInsets.only(
+                                        top: .01 * mediaheight(context)),
+                                    child: IntlPhoneField(
+                                      controller: phoneE,
+                                      dropdownIcon: Icon(
+                                          Icons.keyboard_arrow_down_rounded),
                                       decoration: InputDecoration(
+                                        contentPadding:
+                                            EdgeInsets.only(top: 5, left: 10),
                                         border: InputBorder.none,
-                                        hintText:
-                                            '513245458                                    966',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey[300]),
-                                        hintTextDirection: value.textDirection,
+                                        counterText: "",
+                                        errorStyle: TextStyle(
+                                            fontSize: 0,
+                                            height:
+                                                0), // This hides the error text
                                       ),
+                                      initialCountryCode: 'IN',
+                                      onChanged: (phone) {
+                                        print(phone.completeNumber);
+                                        sharedpref.setString(
+                                            'phone', phone.completeNumber);
+                                      },
                                     ),
                                   ),
                                 ),
@@ -198,8 +199,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   minWidth: 300,
                                   onPressed: remember
                                       ? () async {
-                                          Api().login(context, phone, loading,
-                                              (bool value) {
+                                          Api().login(
+                                              context,
+                                              sharedpref.getString("phone")!,
+                                              loading, (bool value) {
                                             setState(() {
                                               loading = value;
                                             });

@@ -62,7 +62,7 @@ class Api {
 
   Future<void> login(
     BuildContext context,
-    TextEditingController _phoneNumberController,
+    String phone,
     bool loading,
     Function(bool) setLoading,
   ) async {
@@ -71,7 +71,7 @@ class Api {
     try {
       setLoading(true); // Set loading to true before starting the login process
       await _auth.verifyPhoneNumber(
-        phoneNumber: "+${_phoneNumberController.text.trim()}",
+        phoneNumber: phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
           UserCredential userCredential =
               await _auth.signInWithCredential(credential);
@@ -94,7 +94,7 @@ class Api {
             MaterialPageRoute(
                 builder: (_) => VerifyScreen(
                       verificationId: verificationId,
-                      phone: _phoneNumberController.text,
+                      phone: phone,
                       register: false,
                     )),
           );
@@ -174,7 +174,8 @@ class Api {
                 family: family,
                 tribe: tribe,
                 type: type,
-                time: doc['time'], uniquID: uniquId),
+                time: doc['time'],
+                uniquID: uniquId),
           );
         } else {
           events[eventDateTime] = [
@@ -185,7 +186,8 @@ class Api {
                 family: family,
                 tribe: tribe,
                 type: type,
-                time: doc['time'], uniquID: uniquId),
+                time: doc['time'],
+                uniquID: uniquId),
           ];
         }
       }
@@ -207,14 +209,14 @@ class Api {
 
       final List<Event> reservationData = querySnapshot.docs
           .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
-              name: doc['name'],
-              date: DateTime.parse(doc['date']),
-              phone: doc['phone'],
-              family: doc['family'],
-              tribe: doc['tribe'],
-              type: doc['type'],
-              time: doc['time']
-              ,uniquID: doc['uniquID'],
+                name: doc['name'],
+                date: DateTime.parse(doc['date']),
+                phone: doc['phone'],
+                family: doc['family'],
+                tribe: doc['tribe'],
+                type: doc['type'],
+                time: doc['time'],
+                uniquID: doc['uniquID'],
               ))
           .toList();
 

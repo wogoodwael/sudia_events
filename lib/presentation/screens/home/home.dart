@@ -198,6 +198,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return isSameDay(eventDate, _selectedDay!);
   }
 
+  void _onServiceSelected(int index) {
+    setState(() {
+      for (int i = 0; i < onTapped.length; i++) {
+        onTapped[i] = i == index;
+      }
+      selectedService = services[index];
+      isFav = false; // Reset favorites when a specific service is selected
+    });
+  }
+
   void _showEventBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -349,65 +359,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(services.length, (index) {
+              return ChoiceChip(
+                checkmarkColor: Colors.white,
+                selectedColor: primary,
+                label: Text(
+                  services[index],
+                  style: TextStyle(
+                      color: onTapped[index] ? Colors.white : Colors.black),
+                ),
+                selected: onTapped[index],
+                onSelected: (_) => _onServiceSelected(index),
+              );
+            }),
+          ),
           Expanded(
             flex: 2,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    width: mediawidth(context),
-                    height: 40,
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: services.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              onTapped[index] = !onTapped[index];
-                              selectedService = services[index];
-                            });
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.all(5),
-                            width: 100,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color:
-                                  onTapped[index] ? primary : Colors.grey[200],
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: onTapped[index]
-                                  ? MainAxisAlignment.spaceAround
-                                  : MainAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Text(
-                                    services[index],
-                                    style: GoogleFonts.roboto(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: onTapped[index]
-                                            ? Colors.white
-                                            : Colors.black),
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.check,
-                                  size: 15,
-                                  color: onTapped[index]
-                                      ? Colors.white
-                                      : Colors.transparent,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
                   SizedBox(height: 10),
                   Container(
                     width: .9 * mediawidth(context),
@@ -445,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               children: [
                 Text(
-                 "bookreservation".tr(),
+                  "bookreservation".tr(),
                   style: GoogleFonts.inter(
                       color: primary,
                       fontSize: 15,

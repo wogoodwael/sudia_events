@@ -17,7 +17,12 @@ class ReservationScreen extends StatefulWidget {
 
 class _ReservationScreenState extends State<ReservationScreen> {
   final TextEditingController controller = TextEditingController();
-  final List<String> services = ['All'.tr(), 'active'.tr(), 'complete'.tr(), 'cancel'.tr()];
+  final List<String> services = [
+    'All'.tr(),
+    'active'.tr(),
+    'complete'.tr(),
+    'cancel'.tr()
+  ];
   final List<bool> onTapped = [false, false, false, false];
   String selectedService = 'الكل';
   List<dynamic> reservations = [];
@@ -72,7 +77,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
               child: Column(
                 children: [
                   SearchContainernew(
-                      hintText: 'search'.tr(), controller: controller, onTap: () {}),
+                      hintText: 'search'.tr(),
+                      controller: controller,
+                      onTap: () {}),
                   Container(
                     width: mediawidth(context),
                     height: 45,
@@ -149,48 +156,125 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              date,
-                              style:
-                                  TextStyle(fontSize: 14.0, color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.green,
-                              child:
-                                  Icon(Icons.shopping_bag, color: Colors.white),
-                            ),
-                            SizedBox(width: 16.0),
-                            Text(
-                              'حجز رقم 888',
-                              style:
-                                  TextStyle(fontSize: 15.0, color: Colors.grey),
-                            ),
-                            SizedBox(width: 16.0),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'عدد الخدمات',
-                              style:
-                                  TextStyle(fontSize: 15.0, color: Colors.grey),
-                            ),
-                            Text(
-                              reservation['options'].length.toString(),
-                              style:
-                                  TextStyle(fontSize: 20.0, color: Colors.red),
-                            ),
-                          ],
-                        ),
+                        Container(
+                            width: mediawidth(context),
+                            color: secondary,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, left: 10, right: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        date,
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.green,
+                                        child: Icon(Icons.shopping_bag,
+                                            color: Colors.white),
+                                      ),
+                                      SizedBox(width: 16.0),
+                                      Text(
+                                        'حجز رقم 888',
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      SizedBox(width: 16.0),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      'عدد الخدمات',
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                    Text(
+                                      reservation['options'].length.toString(),
+                                      style: TextStyle(
+                                          fontSize: 20.0, color: Colors.red),
+                                    ),
+                                    reservation['status'] == "pending"
+                                        ? MaterialButton(
+                                            elevation: 0,
+                                            minWidth: 40,
+                                            height: 30,
+                                            color: Colors.red,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            onPressed: () {},
+                                            child: Text(
+                                              "حذف",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ))
+                                        : reservation['status'] == 'complete'
+                                            ? MaterialButton(
+                                                minWidth: 40,
+                                                height: 30,
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                color: Colors.green[100],
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "مكتمل",
+                                                  style: TextStyle(
+                                                      color: Colors.green[700]),
+                                                ),
+                                              )
+                                            : reservation['status'] == 'Active'
+                                                ? MaterialButton(
+                                                    elevation: 0,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    color: Colors.yellow[100],
+                                                    onPressed: () {},
+                                                    child: Text(
+                                                        "اعادة جدولة الحجز"),
+                                                  )
+                                                : MaterialButton(
+                                                    elevation: 0,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    color: Colors.grey[300],
+                                                    onPressed: () {},
+                                                    child: Text("ملغي"),
+                                                  )
+                                  ],
+                                ),
+                              ],
+                            )),
                         SizedBox(height: 10),
                         OrderItem(
                           title: reservation['name'],

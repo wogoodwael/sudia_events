@@ -96,6 +96,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'discount_amount': _discount,
             'delivery_fee': _deliveryFee,
             'total': _total,
+            'status': 'pending',
             'uniquID': widget.uniquID,
             'type': "public"
           });

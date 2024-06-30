@@ -15,9 +15,11 @@ class BookedServicesModel {
   final String type;
   final String uniqueID;
   final String userId;
+  final String status;
 
   BookedServicesModel({
     required this.deliveryFee,
+    required this.status,
     required this.discount,
     required this.discountAmount,
     required this.itemName,
@@ -49,6 +51,7 @@ class BookedServicesModel {
       type: map['type'],
       uniqueID: map['uniquID'],
       userId: map['user_id'],
+      status: map['status'],
     );
   }
 }
