@@ -4,6 +4,8 @@ import 'package:intl/intl.dart'; // For date formatting
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/presentation/screens/Reservation/delete_order.dart';
+import 'package:sudia_events/presentation/screens/Reservation/sechdual.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/widgets/search.dart'; // Firestore package
 
@@ -143,7 +145,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 final timestamp = reservation['timestamp'] as Timestamp;
                 final date =
                     DateFormat('dd/MM/yyyy HH:mm').format(timestamp.toDate());
-
+                final prevoiusDate =
+                    DateFormat('dd/MM/yyyy').format(timestamp.toDate());
+                final prevoiusTime =
+                    DateFormat('jm').format(timestamp.toDate());
                 return Card(
                   surfaceTintColor: Colors.white,
                   elevation: 5,
@@ -222,7 +227,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          CancelOrderScreen(
+                                                              item_name:
+                                                                  reservation[
+                                                                      'item_name'])));
+                                            },
                                             child: Text(
                                               "حذف",
                                               style: TextStyle(
@@ -255,7 +269,21 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                     .circular(
                                                                         20)),
                                                     color: Colors.yellow[100],
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (_) =>
+                                                                  SechdualScreen(
+                                                                    date:
+                                                                        prevoiusTime,
+                                                                    day:
+                                                                        prevoiusDate,
+                                                                    itemName:
+                                                                        reservation[
+                                                                            'item_name'],
+                                                                  )));
+                                                    },
                                                     child: Text(
                                                         "اعادة جدولة الحجز"),
                                                   )

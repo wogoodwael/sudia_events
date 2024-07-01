@@ -243,7 +243,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => BookingScreen(
-                                        bookingDate: _selectedDay!,
                                         type: filterValue,
                                       )));
                         },

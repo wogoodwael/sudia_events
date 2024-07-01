@@ -17,10 +17,8 @@ import 'package:intl/date_symbol_data_local.dart' as data;
 import '../Services/All/services_screen.dart';
 
 class BookingScreen extends StatefulWidget {
-  final DateTime bookingDate;
   final String type;
-  const BookingScreen(
-      {super.key, required this.bookingDate, required this.type});
+  const BookingScreen({super.key, required this.type});
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
@@ -84,7 +82,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        '${DateFormat('yyyy/MM/dd').format(widget.bookingDate)}',
+                        '${DateFormat('yyyy/MM/dd').format(_selectedDay!)}',
                         style: TextStyle(color: Colors.grey, fontSize: 15),
                       ),
                       Text(
@@ -160,7 +158,7 @@ class _BookingScreenState extends State<BookingScreen> {
       'family': familyName,
       'tribe': tribeName,
       'phone': phone.text,
-      'date': widget.bookingDate.toIso8601String(),
+      'date': _selectedDay!.toIso8601String(),
       'type': widget.type,
       'time': _selectedTime.format(context),
       'uniquID': uniqueID
@@ -184,7 +182,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => AddServices(
-                              date: widget.bookingDate,
+                              date: _selectedDay!,
                               inside: true,
                               id: sharedpref.getString('token')!,
                               uniquId: uniqueID,
@@ -204,7 +202,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               id: sharedpref.getString('token')!,
                               public: false,
                               uniquId: uniqueID,
-                              date: widget.bookingDate,
+                              date: _selectedDay,
                             )),
                   );
                 },
@@ -240,19 +238,22 @@ class _BookingScreenState extends State<BookingScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   Map<DateTime, List<Event>> events = {};
-  bool chooseday = false;
   Api api = Api();
-
   late final ValueNotifier<List<Event>> _selectedEvents;
-
   TextEditingController searchController = TextEditingController();
   List<Event> filteredEvents = [];
   bool isFav = false;
-
+  bool addService = false;
+  bool tappedFamily = false;
+  bool tappedTribe = false;
+  bool onTappedIcon = false;
   @override
   void initState() {
     super.initState();
 
+    tappedFamily = false;
+    tappedTribe = false;
+    onTappedIcon = false;
     _selectedDay = _focusedDay;
     data.initializeDateFormatting('ar');
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
@@ -312,7 +313,7 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     final String formattedDate =
-        DateFormat('EEE dd/MM/yyyy').format(widget.bookingDate);
+        DateFormat('EEE dd/MM/yyyy').format(_selectedDay!);
 
     return Scaffold(
       backgroundColor: Colors.white,

@@ -288,7 +288,7 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
               ],
             ),
             SizedBox(height: 20),
-            active == 0
+            active == 1
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
