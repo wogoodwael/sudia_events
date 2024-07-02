@@ -20,18 +20,20 @@ import 'package:sudia_events/presentation/screens/home/check.dart';
 
 class InvitationCardScreen extends StatefulWidget {
   final String id;
+  final DateTime date;
   final List<String> price = ['مجانية', '15.00SR', '35.00SR'];
   final List<String> name = ['M458w', 'M8ws', 'Mqqk'];
 
-  InvitationCardScreen({super.key, required this.id});
+  InvitationCardScreen({super.key, required this.id, required this.date});
 
   @override
   _InvitationCardScreenState createState() => _InvitationCardScreenState();
 }
 
 class _InvitationCardScreenState extends State<InvitationCardScreen> {
-  final GlobalKey _screenshotKey = GlobalKey();
-  final TextEditingController _nameController = TextEditingController();
+  TextEditingController husband = TextEditingController();
+  TextEditingController wife = TextEditingController();
+  TextEditingController visitors = TextEditingController();
   String _selectedPrice = '';
   String _selectedRadio = '';
   String _selectedCheckbox = '';
@@ -119,7 +121,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InvitationForm(),
+              InvitationForm(husband: husband, wife: wife, visitors: visitors,),
               SizedBox(height: 16),
               Container(
                 color: Colors.white,
@@ -151,6 +153,10 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                         MaterialPageRoute(
                             builder: (_) => ContinueInvitation(
                                   id: widget.id,
+                                  husband: husband.text,
+                                  wife: wife.text,
+                                  visitors: visitors.text,
+                                  date: widget.date,
                                 )));
                   },
                   child: Text(
@@ -322,7 +328,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
               color: Colors.grey,
             ),
             context: context,
-            controller: _nameController,
+            controller: husband,
           ),
           SizedBox(
             height: .02 * mediaheight(context),
@@ -382,41 +388,12 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
     );
   }
 
-
-
-
-  Future<String?> shareWidgets({required GlobalKey globalKey}) async {
-    try {
-      RenderRepaintBoundary boundary =
-          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      var image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-      final directory = await getApplicationDocumentsDirectory();
-      final imagePath = await File('${directory.path}/screenshot.png').create();
-      await imagePath.writeAsBytes(pngBytes);
-
-      return imagePath.path;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
-  void _shareScreenshot() async {
-    final imagePath = await shareWidgets(globalKey: _screenshotKey);
-    if (imagePath != null) {
-      Share.shareXFiles(
-        [XFile(imagePath, mimeType: "image/png")],
-        text: 'Screenshot from Flutter app',
-        subject: 'Screenshot',
-      );
-    }
-  }
 }
 
 class InvitationForm extends StatefulWidget {
+  final TextEditingController husband, wife, visitors;
+
+  const InvitationForm({super.key, required this.husband, required this.wife, required this.visitors});
   @override
   _InvitationFormState createState() => _InvitationFormState();
 }
@@ -450,6 +427,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: TextField(
+                    controller: widget.husband,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'محمد احمد ',
@@ -504,6 +482,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: TextField(
+                    controller: widget.wife,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'علي احمد الزهراني',
@@ -556,6 +535,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: TextField(
+                    controller: widget.visitors,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'الاسم الاول - الاسم الثاني ',

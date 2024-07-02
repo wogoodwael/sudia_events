@@ -392,48 +392,51 @@ class _BookingScreenState extends State<BookingScreen> {
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Row(
-                        children: [
-                          Transform.scale(
-                            scale: .7,
-                            child: Switch(
-                              activeColor: primary,
-                              value: _isSwitched,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isSwitched = value;
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(width: .37 * mediawidth(context)),
-                          Text(
-                            _selectedTime.format(context),
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          GestureDetector(
-                              onTap: () async {
-                                final TimeOfDay? pickedTime =
-                                    await showTimePicker(
-                                  context: context,
-                                  initialTime: _selectedTime,
-                                );
-                                if (pickedTime != null &&
-                                    pickedTime != _selectedTime) {
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Transform.scale(
+                              scale: .7,
+                              child: Switch(
+                                activeColor: primary,
+                                value: _isSwitched,
+                                onChanged: (value) {
                                   setState(() {
-                                    _selectedTime = pickedTime;
+                                    _isSwitched = value;
                                   });
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Icon(
-                                  Icons.timer_sharp,
-                                  size: 20,
-                                  color: Colors.green,
-                                ),
-                              ))
-                        ],
+                                },
+                              ),
+                            ),
+                            SizedBox(width: .37 * mediawidth(context)),
+                            Text(
+                              _selectedTime.format(context),
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            GestureDetector(
+                                onTap: () async {
+                                  final TimeOfDay? pickedTime =
+                                      await showTimePicker(
+                                    context: context,
+                                    initialTime: _selectedTime,
+                                  );
+                                  if (pickedTime != null &&
+                                      pickedTime != _selectedTime) {
+                                    setState(() {
+                                      _selectedTime = pickedTime;
+                                    });
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: Icon(
+                                    Icons.timer_sharp,
+                                    size: 20,
+                                    color: Colors.green,
+                                  ),
+                                ))
+                          ],
+                        ),
                       ),
                     ),
                   ),

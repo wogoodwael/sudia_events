@@ -59,6 +59,7 @@ class ServicesBodey extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (_) => InvitationCardScreen(
                                     id: id,
+                                    date: date,
                                   )));
                     },
                     child: Icon(
@@ -94,7 +95,7 @@ class ServicesBodey extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-               "what".tr(),
+                  "what".tr(),
                   style: TextStyle(
                     color: primary,
                     fontWeight: FontWeight.bold,

@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               register
                   ? RegisterScreen()
                   : Expanded(
-                      flex: 4,
+                      flex: 6,
                       child: Container(
                         width: .9 * mediawidth(context),
                         child: SingleChildScrollView(
@@ -161,8 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 10,
+                              SizedBox(
+                                height: .45 * mediaheight(context),
                               ),
                               Row(
                                 children: [
@@ -187,9 +187,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
-                              ),
-                              const SizedBox(
-                                height: 40,
                               ),
                               Center(
                                 child: MaterialButton(
@@ -231,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
               Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

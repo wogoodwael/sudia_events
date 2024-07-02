@@ -1,18 +1,36 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 
 class ContinueInvitation extends StatefulWidget {
   final String id;
-  const ContinueInvitation({super.key, required this.id});
+  final String husband, wife, visitors;
+  final DateTime date;
+  const ContinueInvitation(
+      {super.key,
+      required this.id,
+      required this.husband,
+      required this.wife,
+      required this.visitors,
+      required this.date});
 
   @override
   State<ContinueInvitation> createState() => _ContinueInvitationState();
 }
 
 class _ContinueInvitationState extends State<ContinueInvitation> {
+  final GlobalKey _screenshotKey = GlobalKey();
   String _selectedCheckbox = '';
   List<String> texts = [
     'دعوة زواج',
@@ -199,27 +217,47 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                             showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return AlertDialog(
-                                    content: Stack(
-                                      children: [
-                                        Container(
-                                          width: mediawidth(context),
-                                          height: .7 * mediaheight(context),
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/images/1.png'),
-                                                  fit: BoxFit.fitWidth)),
-                                        ),
-                                        Positioned(
-                                          top: 50,
-                                          left: 20,
-                                          right: 20,
-                                          child: Column(
-                                            children: _buildSelectedTexts(),
+                                  return RepaintBoundary(
+                                    key: _screenshotKey,
+                                    child: AlertDialog(
+                                      content: Stack(
+                                        children: [
+                                          Container(
+                                            width: mediawidth(context),
+                                            height: .7 * mediaheight(context),
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'assets/images/1.png'),
+                                                    fit: BoxFit.fitWidth)),
                                           ),
-                                        ),
-                                      ],
+                                          Positioned(
+                                            top: .2 * mediaheight(context),
+                                            left: 20,
+                                            right: 20,
+                                            child: Column(
+                                              children: _buildSelectedTexts(
+                                                  widget.husband,
+                                                  widget.wife,
+                                                  widget.visitors,
+                                                  _selectedCheckbox),
+                                            ),
+                                          ),
+                                          Positioned(
+                                              top: 30,
+                                              right: 30,
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.white,
+                                                child: IconButton(
+                                                    onPressed: _shareScreenshot,
+                                                    icon: Icon(
+                                                      Icons.share,
+                                                      size: 15,
+                                                    )),
+                                              ))
+                                        ],
+                                      ),
                                     ),
                                   );
                                 });
@@ -264,6 +302,47 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
     );
   }
 
+  Future<String?> shareWidgets({required GlobalKey globalKey}) async {
+    try {
+      if (globalKey.currentContext == null) {
+        throw Exception("GlobalKey's currentContext is null");
+      }
+
+      RenderRepaintBoundary? boundary = globalKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary?;
+      if (boundary == null) {
+        throw Exception("RenderRepaintBoundary is null");
+      }
+
+      var image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      if (byteData == null) {
+        throw Exception("ByteData is null");
+      }
+
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/screenshot.png').create();
+      await imagePath.writeAsBytes(pngBytes);
+
+      return imagePath.path;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  void _shareScreenshot() async {
+    final imagePath = await shareWidgets(globalKey: _screenshotKey);
+    if (imagePath != null) {
+      Share.shareXFiles(
+        [XFile(imagePath, mimeType: "image/png")],
+        text: 'Screenshot from Flutter app',
+        subject: 'Screenshot',
+      );
+    }
+  }
+
   Widget _buildCheckbox(String title) {
     return Row(
       children: [
@@ -280,22 +359,115 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
     );
   }
 
-  List<Widget> _buildSelectedTexts() {
+  List<Widget> _buildSelectedTexts(
+      String husband, String wife, String visitors, String selected) {
     List<Widget> selectedTexts = [];
     for (int i = 0; i < _selected.length; i++) {
       if (_selected[i] != null) {
         selectedTexts.add(
-          Text(
-            texts[value.indexOf(_selected[i]!)],
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              texts[value.indexOf(_selected[i]!)],
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         );
+
+        // Add the strings after the second text
+        if (i == 1) {
+          selectedTexts.addAll([
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              husband,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "علي ابنة",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              wife,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "ويشرفنا حضوركم الكريم ومشاركتنا فرحتنا وتناول طعام العشاء",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "الموافق يوم ${DateFormat('yyyy/MM/dd').format(widget.date)}",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ]);
+        }
       }
     }
+
+    // Add "المدعون :" after the last index
+    selectedTexts.addAll([
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          'الداعون :',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      Container(
+        width: .8 * mediawidth(context),
+        height: 30,
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(20)),
+        child: Center(child: Text(visitors)),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      Text(
+        selected,
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      )
+    ]);
     return selectedTexts;
   }
 }
-
