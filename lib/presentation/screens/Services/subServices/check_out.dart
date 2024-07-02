@@ -97,7 +97,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'delivery_fee': _deliveryFee,
             'total': _total,
             'status': 'pending',
-            'uniquID': widget.uniquID,
+            'uniquID': sharedpref.getString("uniquId"),
             'type': "public"
           });
           sharedpref.setString('uniquID', widget.uniquID);

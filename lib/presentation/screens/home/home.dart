@@ -109,27 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ))
           .toList();
     }
-    for (var event in events) {
-      if (event.uniquID != null && event.uniquID!.isNotEmpty) {
-        QuerySnapshot<Map<String, dynamic>> bookedServicesSnapshot =
-            await FirebaseFirestore.instance
-                .collection('booked_services')
-                .where("uniquID", isEqualTo: event.uniquID)
-                .get();
-
-        bool publicEvent = false;
-        List<String> publicEvents = [];
-        for (var service in bookedServicesSnapshot.docs) {
-          if (service.data().containsKey('type') &&
-              service.data()['type'] == 'public') {
-            publicEvents.add(service.data()['type']);
-          }
-        }
-        sharedpref.setStringList('public', publicEvents);
-        publicEvent = publicEvents.isNotEmpty;
-        print("pppp$publicEvents");
-      }
-    }
 
     return events;
   }

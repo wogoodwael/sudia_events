@@ -151,6 +151,7 @@ class _BookingScreenState extends State<BookingScreen> {
     String familyName = nameParts.length > 1 ? nameParts[1] : '';
     String tribeName = nameParts.length > 2 ? nameParts[2] : '';
     String uniqueID = Uuid().v4();
+    sharedpref.setString('uniquId', uniqueID);
     // Create a map representing the event data
     Map<String, dynamic> eventData = {
       'userID': sharedpref.getString('token'),

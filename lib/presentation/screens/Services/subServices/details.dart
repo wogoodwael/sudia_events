@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/add_to_card.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
@@ -80,7 +84,9 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                       MaterialPageRoute(
                         builder: (context) => BottomBarScreen(
                           id: user.uid,
-                          public: false, uniquId: widget.uniquID, date: widget.date,
+                          public: false,
+                          uniquId: widget.uniquID,
+                          date: widget.date,
                         ),
                       ),
                     );
@@ -117,7 +123,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
             'price': widget.price,
             'quantity': _quantity,
             'timestamp': widget.date,
-            "uniquID":widget.uniquID // Add a timestamp for ordering
+            "uniquID": widget.uniquID // Add a timestamp for ordering
           });
         }
 
@@ -141,6 +147,43 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
     }
   }
 
+  Future<void> _requestLocationPermissionAndFetchLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, handle it gracefully.
+        log('Location permissions are denied.');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle it gracefully.
+      log('Location permissions are permanently denied, we cannot request permissions.');
+      return;
+    }
+
+    // When we reach here, permissions are granted or are already granted,
+    // we can fetch the location now.
+    _fetchLocation();
+  }
+
+  void _fetchLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      // Handle position data as needed, e.g., save to Firestore.
+      log('Location fetched: ${position.latitude}, ${position.longitude}');
+      sharedpref.setDouble('lat', position.latitude);
+      sharedpref.setDouble('long', position.longitude);
+    } catch (e) {
+      log('Error fetching location: $e');
+      // Handle error fetching location.
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -149,6 +192,34 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
 
   void _addToCart() {
     addToCheckOut(context);
+  }
+
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset("assets/images/heart.png"),
+                Text(
+                    "You must give location access to the app so you wanna give this app permission of location ? ")
+              ],
+            ),
+            actions: [
+              MaterialButton(
+                minWidth: .9 * mediawidth(context),
+                color: primary,
+                onPressed: () async {
+                  await _requestLocationPermissionAndFetchLocation();
+                  Navigator.pop(context);
+                },
+                child: Text("yes"),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -369,7 +440,9 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       color: primary,
-                      onPressed: _addToCart,
+                      onPressed: sharedpref.getDouble("lat") != null
+                          ? _addToCart
+                          : _showDialog,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [

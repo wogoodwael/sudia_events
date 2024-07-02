@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/user_model.dart';
@@ -18,6 +20,24 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool _notificationSwitchValue = false;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.instance.requestPermission();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -346,9 +366,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           scale: .7,
                           child: Switch(
                             activeColor: primary,
-                            value: false,
+                            value: _notificationSwitchValue,
                             onChanged: (bool value) {
-                              // Handle notification toggle
+                              if (value) {
+                                // If the switch is turned on, request notification permission
+                              
+                              } else {
+                                // Handle switch turned off
+                                print("Switch turned off");
+                              }
                             },
                           ),
                         ),
