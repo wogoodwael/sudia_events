@@ -1,7 +1,11 @@
 import 'package:easy_localization/easy_localization.dart' as ea;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
@@ -9,12 +13,38 @@ import 'package:sudia_events/business_logic/cubit/family/family_filter_cubit.dar
 import 'package:sudia_events/business_logic/cubit/get_services/services_cubit.dart';
 import 'package:sudia_events/core/helper/language_provider.dart';
 import 'package:sudia_events/core/utils/app_routes.dart';
+
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/firebase_options.dart';
 import 'package:sudia_events/presentation/screens/onBoarding/splash_screen.dart';
 
 late SharedPreferences sharedpref;
+final navigatorKey = GlobalKey<NavigatorState>();
+Future _firebaseBackgroundMessage(RemoteMessage message) async {
+  if (message.notification != null) {
+    print("Some notification Received in background...");
+  }
+}
 
+// to handle notification on foreground on web platform
+void showNotification({required String title, required String body}) {
+  showDialog(
+    context: navigatorKey.currentContext!,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: Text(body),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Ok"))
+      ],
+    ),
+  );
+}
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ea.EasyLocalization.ensureInitialized();
@@ -25,6 +55,20 @@ void main() async {
 
   sharedpref = await SharedPreferences.getInstance();
 
+ const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    // description
+    importance: Importance.high,
+  );
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
+  runApp(MyApp());
   runApp(
     ea.EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
@@ -90,6 +134,7 @@ class MyApp extends StatelessWidget {
               return supportedLocales.first;
             },
             debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
             routes: {'/': (context) => SplashScreen()},
             onGenerateRoute: appRouter.generateRoute,
             initialRoute: '/',

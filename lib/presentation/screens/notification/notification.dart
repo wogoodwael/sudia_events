@@ -6,6 +6,7 @@ import 'package:sudia_events/core/utils/stepper.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
+// ignore: must_be_immutable
 class NotificationScreen extends StatelessWidget {
   TextEditingController controller = TextEditingController();
 

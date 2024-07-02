@@ -3,6 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -20,23 +22,108 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  bool _notificationSwitchValue = false;
+  bool _switchValue = false;
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseMessaging.instance.requestPermission();
+  void _showPermissionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Notification Permission Required"),
+          content: Text(
+              "This app needs notification permission to send you updates. Do you want to allow it?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Deny"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _switchValue = false;
+                });
+                print("Notification permission denied by user");
+              },
+            ),
+            TextButton(
+              child: Text("Allow"),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                PermissionStatus status =
+                    await Permission.notification.request();
+
+                if (status.isGranted) {
+                  print("Notification permission granted");
+                  initializeFCM();
+                } else {
+                  setState(() {
+                    _switchValue = false;
+                  });
+                  print("Notification permission not granted");
+                  if (status.isPermanentlyDenied) {
+                    openAppSettings();
+                  }
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future _firebaseBackgroundMessage(RemoteMessage message) async {
+    if (message.notification != null) {
+      print("Some notification Received in background...");
+    }
+  }
+
+  void initializeFCM() {
+    FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+        showNotification(message);
+      }
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        // Handle notification when the app is opened from the background
       }
     });
   }
 
+  void showNotification(RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
 
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'high_importance_channel',
+            'High Importance Notifications',
+            icon: 'launch_background',
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _requestPermissions() async {
+    PermissionStatus status = await Permission.notification.request();
+    if (status.isGranted) {
+      print("Notification permission granted");
+    } else {
+      print("Notification permission denied");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -366,14 +453,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           scale: .7,
                           child: Switch(
                             activeColor: primary,
-                            value: _notificationSwitchValue,
-                            onChanged: (bool value) {
+                            value: _switchValue,
+                            onChanged: (bool value) async {
+                              String? token =
+                                  await FirebaseMessaging.instance.getToken();
+                              print("device token $token");
+                              setState(() {
+                                _switchValue = value;
+                              });
                               if (value) {
                                 // If the switch is turned on, request notification permission
-                              
+                                _showPermissionDialog(context);
                               } else {
-                                // Handle switch turned off
-                                print("Switch turned off");
+                                print("denied");
+                                setState(() {
+                                  _switchValue = false;
+                                });
+                                await Permission.notification
+                                    .request()
+                                    .then((status) {
+                                  if (!status.isGranted) {
+                                    print("Notification permission denied");
+                                  }
+                                });
                               }
                             },
                           ),

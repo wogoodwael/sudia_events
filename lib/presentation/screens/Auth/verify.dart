@@ -9,11 +9,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
 
 import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
+// ignore: must_be_immutable
 class VerifyScreen extends StatefulWidget {
   VerifyScreen({
     Key? key,
@@ -66,6 +66,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     _timer.cancel();
     super.dispose();
   }
+
 
   Future<void> _requestLocationPermissionAndFetchLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
