@@ -3,16 +3,19 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:share_screenshot_widget/share_screenshot_widget.dart';
+
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
+import 'package:sudia_events/presentation/screens/Services/All/continue.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 
 class InvitationCardScreen extends StatefulWidget {
@@ -116,43 +119,8 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Container(
-                  width: .85 * mediawidth(context),
-                  height: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey.withOpacity(.4))),
-                  child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.check_box,
-                        size: 20,
-                        color: primary,
-                      ),
-                      labelText: 'ارفاق',
-                      border: InputBorder.none,
-                    ),
-                    items: <String>['Option 1', 'Option 2', 'Option 3']
-                        .map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedImage = newValue!;
-                      });
-                    },
-                  ),
-                ),
-              ),
+              InvitationForm(),
               SizedBox(height: 16),
-              Text(
-                "اختر",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
               Container(
                 color: Colors.white,
                 width: .9 * mediawidth(context),
@@ -173,158 +141,24 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
-              _additionContainer('اسم العريس', context),
-              SizedBox(height: 16),
-              Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'اختر',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          title: Text(
-                            'اللهم بارك لهما ',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          leading: Radio<String>(
-                            value: 'اللهم بارك لهما',
-                            groupValue: _selectedRadio,
-                            onChanged: (String? value) {
-                              setState(() {
-                                _selectedRadio = value!;
-                              });
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: Text(
-                            'الحمد لله',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          leading: Radio<String>(
-                            value: 'الحمد لله',
-                            groupValue: _selectedRadio,
-                            onChanged: (String? value) {
-                              setState(() {
-                                _selectedRadio = value!;
-                              });
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: Text(
-                            'جديد',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          leading: Radio<String>(
-                            value: 'جديد',
-                            groupValue: _selectedRadio,
-                            onChanged: (String? value) {
-                              setState(() {
-                                _selectedRadio = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      width: .95 * mediawidth(context),
-                      height: 60,
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Text(
-                          'بكل الصفا والود وروعة اريج الورد عسي السعادة في حياتهم تزدهر والحظ يضحك لهما علي طول الزمان ',
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              Column(
-                children: [
-                  _buildCheckbox('ممنوع اصطحاب الأطفال'),
-                  _buildCheckbox('ممنوع إستخدام الكاميرا والتصوير'),
-                  _buildCheckbox('الدخول ببطاقة الدعوة'),
-                ],
-              ),
-              SizedBox(height: 16),
-              Card(
-                color: Colors.white,
-                surfaceTintColor: Colors.white,
-                elevation: 5,
-                child: Container(
-                  width: .9 * mediawidth(context),
-                  height: 50,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      MaterialButton(
-                        minWidth: 150,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        color: primary,
-                        onPressed: _showDialog,
-                        child: Row(
-                          children: [
-                            Text(
-                              "اضافة",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.check_circle_outline,
-                              size: 15,
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      ),
-                      Text(
-                        'SAR 15.00',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+              Center(
+                child: MaterialButton(
+                  minWidth: .9 * mediawidth(context),
+                  color: primary,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ContinueInvitation(
+                                  id: widget.id,
+                                )));
+                  },
+                  child: Text(
+                    "التالي ",
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -548,55 +382,8 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
     );
   }
 
-  Widget _buildCheckbox(String title) {
-    return Row(
-      children: [
-        Checkbox(
-          value: _selectedCheckbox == title,
-          onChanged: (bool? value) {
-            setState(() {
-              _selectedCheckbox = value! ? title : '';
-            });
-          },
-        ),
-        Text(title),
-      ],
-    );
-  }
 
-  void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: RepaintBoundary(
-            key: _screenshotKey,
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset('assets/images/invitation.png'),
-                  Text('الاسم: ${_nameController.text}'),
-                  Text('عبارة الدعوة: $_selectedRadio'),
-                  Text('تنبيه: $_selectedCheckbox'),
-                  Text('اسم البطاقة : $_selectedCheckboxCard'),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                _shareScreenshot();
-              },
-              child: Text('Share'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   Future<String?> shareWidgets({required GlobalKey globalKey}) async {
     try {
@@ -626,5 +413,222 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
         subject: 'Screenshot',
       );
     }
+  }
+}
+
+class InvitationForm extends StatefulWidget {
+  @override
+  _InvitationFormState createState() => _InvitationFormState();
+}
+
+class _InvitationFormState extends State<InvitationForm> {
+  int _selectedBridegroom = 1;
+  int _selectedRole = 1;
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  bool value = false;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      surfaceTintColor: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('اسم العريس', style: TextStyle(fontSize: 15)),
+            ),
+            Center(
+              child: Container(
+                  width: .8 * mediawidth(context),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'محمد احمد ',
+                        contentPadding: EdgeInsets.only(top: 10),
+                        hintTextDirection: TextDirection.rtl,
+                        suffixIcon: Icon(
+                          Icons.person,
+                          color: Colors.grey,
+                        )),
+                  )),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text('اختر', style: TextStyle(fontSize: 14)),
+            RadioListTile(
+              title: Align(
+                alignment: Alignment.centerRight,
+                child: Text("علي ابنة"),
+              ),
+              value: 1,
+              groupValue: _selectedRole,
+              onChanged: (val) {
+                setState(() {
+                  _selectedRole = val as int; // Ensure the type cast is to int
+                });
+              },
+              controlAffinity: ListTileControlAffinity.trailing,
+              contentPadding: EdgeInsets.symmetric(horizontal: 0),
+            ),
+            RadioListTile(
+              title: Align(
+                alignment: Alignment.centerRight,
+                child: Text("علي كريمة"),
+              ),
+              value: 2,
+              groupValue: _selectedRole,
+              onChanged: (val) {
+                setState(() {
+                  _selectedRole = val as int; // Ensure the type cast is to int
+                });
+              },
+              controlAffinity: ListTileControlAffinity.trailing,
+              contentPadding: EdgeInsets.symmetric(horizontal: 0),
+            ),
+            Center(
+              child: Container(
+                  width: .8 * mediawidth(context),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'علي احمد الزهراني',
+                        contentPadding: EdgeInsets.only(top: 10),
+                        hintTextDirection: TextDirection.rtl,
+                        suffixIcon: Icon(
+                          Icons.person,
+                          color: Colors.grey,
+                        )),
+                  )),
+            ),
+            RadioListTile(
+              title: Align(
+                alignment: Alignment.centerRight,
+                child: Text("الداعي"),
+              ),
+              value: 1,
+              groupValue: _selectedBridegroom,
+              onChanged: (val) {
+                setState(() {
+                  _selectedBridegroom =
+                      val as int; // Ensure the type cast is to int
+                });
+              },
+              controlAffinity: ListTileControlAffinity.trailing,
+              contentPadding: EdgeInsets.symmetric(horizontal: 0),
+            ),
+            RadioListTile(
+              title: Align(
+                alignment: Alignment.centerRight,
+                child: Text("الداعون"),
+              ),
+              value: 2,
+              groupValue: _selectedBridegroom,
+              onChanged: (val) {
+                setState(() {
+                  _selectedBridegroom =
+                      val as int; // Ensure the type cast is to int
+                });
+              },
+              controlAffinity: ListTileControlAffinity.trailing,
+              contentPadding: EdgeInsets.symmetric(horizontal: 0),
+            ),
+            Center(
+              child: Container(
+                  width: .8 * mediawidth(context),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'الاسم الاول - الاسم الثاني ',
+                        contentPadding: EdgeInsets.only(top: 10),
+                        hintTextDirection: TextDirection.rtl,
+                        suffixIcon: Icon(
+                          Icons.person,
+                          color: Colors.grey,
+                        )),
+                  )),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text('العنوان', style: TextStyle(fontSize: 18)),
+            SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Container(
+                  width: .8 * mediawidth(context),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TextField(
+                    controller: _addressController,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'قاعة السلام للاحتفالات الكبري ',
+                        contentPadding: EdgeInsets.only(top: 10),
+                        hintTextDirection: TextDirection.rtl,
+                        suffixIcon: Icon(
+                          Icons.location_city,
+                          color: Colors.grey,
+                        )),
+                  )),
+            ),
+            SizedBox(height: 16),
+            Text('التلفون', style: TextStyle(fontSize: 18)),
+            Center(
+              child: Container(
+                width: .8 * mediawidth(context),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: .01 * mediaheight(context)),
+                  child: IntlPhoneField(
+                    controller: _phoneController,
+                    dropdownIcon: Icon(Icons.keyboard_arrow_down_rounded),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 5, left: 10),
+                      border: InputBorder.none,
+                      counterText: "",
+                      errorStyle: TextStyle(
+                          fontSize: 0, height: 0), // This hides the error text
+                    ),
+                    initialCountryCode: 'IN',
+                    onChanged: (phone) {
+                      print(phone.completeNumber);
+                      sharedpref.setString('phone', phone.completeNumber);
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

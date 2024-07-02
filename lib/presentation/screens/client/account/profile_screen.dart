@@ -29,41 +29,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Notification Permission Required"),
-          content: Text(
-              "This app needs notification permission to send you updates. Do you want to allow it?"),
+          surfaceTintColor: Colors.white,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset("assets/images/notify.png"),
+              Text(
+                "Notification",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                  "please Enable The notification to recieve updates and reminders?"),
+            ],
+          ),
           actions: <Widget>[
-            TextButton(
-              child: Text("Deny"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _switchValue = false;
-                });
-                print("Notification permission denied by user");
-              },
-            ),
-            TextButton(
-              child: Text("Allow"),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                PermissionStatus status =
-                    await Permission.notification.request();
+            Column(
+              children: [
+                MaterialButton(
+                  minWidth: .9 * mediawidth(context),
+                  color: primary,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    "Turn on",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  ),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    PermissionStatus status =
+                        await Permission.notification.request();
 
-                if (status.isGranted) {
-                  print("Notification permission granted");
-                  initializeFCM();
-                } else {
-                  setState(() {
-                    _switchValue = false;
-                  });
-                  print("Notification permission not granted");
-                  if (status.isPermanentlyDenied) {
-                    openAppSettings();
-                  }
-                }
-              },
-            ),
+                    if (status.isGranted) {
+                      print("Notification permission granted");
+                      initializeFCM();
+                    } else {
+                      setState(() {
+                        _switchValue = false;
+                      });
+                      print("Notification permission not granted");
+                      if (status.isPermanentlyDenied) {
+                        openAppSettings();
+                      }
+                    }
+                  },
+                ),
+                MaterialButton(
+                  minWidth: .9 * mediawidth(context),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: primary),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text("Skip for now "),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _switchValue = false;
+                    });
+                    print("Notification permission denied by user");
+                  },
+                ),
+              ],
+            )
           ],
         );
       },
@@ -465,17 +494,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 // If the switch is turned on, request notification permission
                                 _showPermissionDialog(context);
                               } else {
-                                print("denied");
-                                setState(() {
-                                  _switchValue = false;
-                                });
-                                await Permission.notification
-                                    .request()
-                                    .then((status) {
-                                  if (!status.isGranted) {
-                                    print("Notification permission denied");
-                                  }
-                                });
+                                openAppSettings();
                               }
                             },
                           ),
