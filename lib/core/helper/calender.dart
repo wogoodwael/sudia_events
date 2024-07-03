@@ -92,6 +92,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
       lastDay: DateTime.utc(2030, 12, 31),
       focusedDay: _focusedDay,
       selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+      enabledDayPredicate: (day) =>
+          day.isAfter(DateTime.now().subtract(Duration(days: 1))),
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
           _selectedDay = selectedDay;

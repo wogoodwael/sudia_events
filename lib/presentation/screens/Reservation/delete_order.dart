@@ -7,9 +7,9 @@ import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
 class CancelOrderScreen extends StatefulWidget {
-  final String item_name;
+  final String uniquID;
 
-  const CancelOrderScreen({super.key, required this.item_name});
+  const CancelOrderScreen({super.key, required this.uniquID});
   @override
   _CancelOrderScreenState createState() => _CancelOrderScreenState();
 }
@@ -23,7 +23,7 @@ class _CancelOrderScreenState extends State<CancelOrderScreen> {
       // Query the collection to find the document with the specified field value
       QuerySnapshot querySnapshot = await firestore
           .collection('booked_services')
-          .where('item_name', isEqualTo: widget.item_name)
+          .where('uniquID', isEqualTo: widget.uniquID)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {

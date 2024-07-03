@@ -140,7 +140,9 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
         actions: [
           IconButton(
             icon: Icon(Icons.arrow_forward),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
@@ -224,12 +226,12 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                                         children: [
                                           Container(
                                             width: mediawidth(context),
-                                            height: .7 * mediaheight(context),
+                                            height: .8 * mediaheight(context),
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                     image: AssetImage(
                                                         'assets/images/1.png'),
-                                                    fit: BoxFit.fitWidth)),
+                                                    fit: BoxFit.fitHeight)),
                                           ),
                                           Positioned(
                                             top: .2 * mediaheight(context),
@@ -337,7 +339,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
     if (imagePath != null) {
       Share.shareXFiles(
         [XFile(imagePath, mimeType: "image/png")],
-        text: 'Screenshot from Flutter app',
+        text: 'Screenshot from Sudia Events app',
         subject: 'Screenshot',
       );
     }
@@ -387,7 +389,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
             Text(
               husband,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 17,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
@@ -403,11 +405,15 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
             Text(
               wife,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 17,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(
+              height: 5,
+            ),
+            Image.asset("assets/images/2.png"),
             SizedBox(
               height: 5,
             ),
@@ -441,7 +447,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          'الداعون :',
+          'الداعون',
           style: TextStyle(
             fontSize: 14,
             color: Colors.white,

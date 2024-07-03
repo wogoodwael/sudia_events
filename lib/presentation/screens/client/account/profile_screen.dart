@@ -312,7 +312,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              await sharedpref.clear();
                                               Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(

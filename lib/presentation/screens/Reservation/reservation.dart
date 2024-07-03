@@ -157,7 +157,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -219,29 +219,62 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                           fontSize: 20.0, color: Colors.red),
                                     ),
                                     reservation['status'] == "pending"
-                                        ? MaterialButton(
-                                            elevation: 0,
-                                            minWidth: 40,
-                                            height: 30,
-                                            color: Colors.red,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          CancelOrderScreen(
-                                                              item_name:
-                                                                  reservation[
-                                                                      'item_name'])));
-                                            },
-                                            child: Text(
-                                              "حذف",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ))
+                                        ? Row(
+                                            children: [
+                                              MaterialButton(
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                color: Colors.yellow[100],
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              SechdualScreen(
+                                                                date:
+                                                                    prevoiusTime,
+                                                                day:
+                                                                    prevoiusDate,
+                                                                itemName:
+                                                                    reservation[
+                                                                        'item_name'],
+                                                              )));
+                                                },
+                                                child:
+                                                    Text("اعادة جدولة الحجز"),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              MaterialButton(
+                                                  elevation: 0,
+                                                  minWidth: 40,
+                                                  height: 30,
+                                                  color: Colors.red,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) =>
+                                                                CancelOrderScreen(
+                                                                    uniquID:
+                                                                        reservation[
+                                                                            'uniquID'])));
+                                                  },
+                                                  child: Text(
+                                                    "حذف",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )),
+                                            ],
+                                          )
                                         : reservation['status'] == 'complete'
                                             ? MaterialButton(
                                                 minWidth: 40,
