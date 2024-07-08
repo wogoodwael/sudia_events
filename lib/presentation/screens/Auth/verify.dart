@@ -20,11 +20,12 @@ class VerifyScreen extends StatefulWidget {
     required this.verificationId,
     required this.phone,
     this.email,
-    this.register,
+    this.register,  this.name,
   }) : super(key: key);
 
   final String verificationId;
   final String phone;
+ String ?name;
   String? email;
   bool? register;
 
@@ -249,7 +250,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
                               widget.register!
                                   ? await api.saveUserDataToFirestore(
-                                      uid, widget.email ?? '', widget.phone)
+                                      uid, widget.email ?? '', widget.phone, widget.name??"")
                                   : print('login UID $uid');
 
                               // Request location permission and fetch location

@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:sudia_events/core/helper/language_provider.dart';
@@ -43,9 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              SizedBox(
-                width: 10,
-              ),
               Padding(
                 padding: EdgeInsets.only(top: 25),
                 child: GestureDetector(
@@ -87,7 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: primary,
                   ),
                 ),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                child: Text(
+                  "تسجيل الدخول",
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w700, fontSize: 15),
+                ),
+              ),
             ],
           )),
       backgroundColor: Colors.white,
@@ -95,167 +101,203 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (BuildContext context, LanguageProvider value, Widget? child) {
           return Column(
             children: [
-              register
-                  ? RegisterScreen()
-                  : Expanded(
-                      flex: 6,
-                      child: Container(
-                        width: .9 * mediawidth(context),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 100,
-                                height:
-                                    52, // Increase height to account for border
-
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 20.0),
-                                  child: Text(
-                                    'phone'.tr(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                ),
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(color: primary))),
-                              ),
-                              const SizedBox(
-                                height: 40,
-                              ),
-                              Center(
-                                child: Container(
-                                  width: .8 * mediawidth(context),
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: .01 * mediaheight(context)),
-                                    child: IntlPhoneField(
-                                      controller: phoneE,
-                                      dropdownIcon: Icon(
-                                          Icons.keyboard_arrow_down_rounded),
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.only(top: 5, left: 10),
-                                        border: InputBorder.none,
-                                        counterText: "",
-                                        errorStyle: TextStyle(
-                                            fontSize: 0,
-                                            height:
-                                                0), // This hides the error text
-                                      ),
-                                      initialCountryCode: 'IN',
-                                      onChanged: (phone) {
-                                        print(phone.completeNumber);
-                                        sharedpref.setString(
-                                            'phone', phone.completeNumber);
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: .45 * mediaheight(context),
-                              ),
-                              Row(
-                                children: [
-                                  Transform.scale(
-                                    scale: .8,
-                                    child: Checkbox(
-                                      activeColor: primary,
-                                      visualDensity: VisualDensity.compact,
-                                      value:
-                                          remember, // Set the initial value of the checkbox
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          remember = value!;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Text(
-                                    'remember'.tr(),
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              Center(
-                                child: MaterialButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  color: remember ? primary : secondary,
-                                  minWidth: 300,
-                                  onPressed: remember
-                                      ? () async {
-                                          Api().login(
-                                              context,
-                                              sharedpref.getString("phone")!,
-                                              loading, (bool value) {
-                                            setState(() {
-                                              loading = value;
-                                            });
-                                          });
-                                        }
-                                      : () {},
-                                  child: loading
-                                      ? Container(
-                                          height: 30,
-                                          width: 30,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          ))
-                                      : Text(
-                                          'login'.tr(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
               Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                flex: 6,
+                child: Container(
+                  width: .9 * mediawidth(context),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          register ? "have".tr() : "donthave".tr(),
-                          style: TextStyle(color: Colors.grey, fontSize: 17),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Center(
+                          child: Container(
+                            width: .8 * mediawidth(context),
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: .01 * mediaheight(context)),
+                              child: IntlPhoneField(
+                                controller: phoneE,
+                                onSubmitted: (p0) {
+                                  setState(() {
+                                    phoneE;
+                                  });
+                                },
+                                dropdownIcon:
+                                    Icon(Icons.keyboard_arrow_down_rounded),
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.only(top: 5, left: 10),
+                                  border: InputBorder.none,
+                                  counterText: "",
+                                  errorStyle: TextStyle(
+                                      fontSize: 0,
+                                      height: 0), // This hides the error text
+                                ),
+                                initialCountryCode: 'IN',
+                                onChanged: (phone) {
+                                  print(phone.completeNumber);
+                                  sharedpref.setString(
+                                      'phone', phone.completeNumber);
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                         SizedBox(
-                          width: 10,
+                          height: .05 * mediaheight(context),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              register = !register;
-                            });
-                          },
-                          child: Text(
-                            register ? "login".tr() : "signup".tr(),
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: primary,
-                                color: primary,
-                                fontSize: 17),
-                          ),
-                        )
+                        Row(
+                          children: [
+                            Transform.scale(
+                              scale: .8,
+                              child: Checkbox(
+                                activeColor: primary,
+                                visualDensity: VisualDensity.compact,
+                                value:
+                                    remember, // Set the initial value of the checkbox
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    remember = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Text(
+                              'remember'.tr(),
+                              style: TextStyle(
+                                  fontSize: 13, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "اقبل",
+                                style: GoogleFonts.roboto(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "شروط الخدمة",
+                                style: GoogleFonts.roboto(
+                                    color: primary,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                " و ",
+                                style: GoogleFonts.roboto(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                "سياسة الخصوصية",
+                                style: GoogleFonts.roboto(
+                                    color: primary,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
+                          Center(
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              color:
+                                  phoneE.text.isNotEmpty ? primary : secondary,
+                              minWidth: 300,
+                              onPressed: phoneE.text.isNotEmpty
+                                  ? () async {
+                                      Api().login(
+                                          context,
+                                          sharedpref.getString("phone")!,
+                                          loading, (bool value) {
+                                        setState(() {
+                                          loading = value;
+                                        });
+                                      });
+                                    }
+                                  : () {},
+                              child: loading
+                                  ? Container(
+                                      height: 30,
+                                      width: 30,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ))
+                                  : Text(
+                                      'login'.tr(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                register ? "have".tr() : "donthave".tr(),
+                                style: GoogleFonts.roboto(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => RegisterScreen()));
+                                },
+                                child: Text(
+                                  register ? "login".tr() : "signup".tr(),
+                                  style: GoogleFonts.roboto(
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: primary,
+                                      fontWeight: FontWeight.w600,
+                                      color: primary,
+                                      fontSize: 18),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ))
             ],

@@ -13,8 +13,10 @@ class Api {
     BuildContext context,
     TextEditingController _phoneNumberController,
     String email,
+   
     bool loading,
     Function(bool) setLoading,
+     String name,
   ) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -46,7 +48,7 @@ class Api {
                       verificationId: verificationId,
                       phone: _phoneNumberController.text,
                       email: email,
-                      register: true,
+                      register: true, name: name,
                     )),
           );
         },
@@ -127,7 +129,7 @@ class Api {
   }
 
   Future<void> saveUserDataToFirestore(
-      String uid, String email, String phone) async {
+      String uid, String email, String phone, String name ) async {
     try {
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
@@ -135,6 +137,7 @@ class Api {
       await users.doc(uid).set({
         'email': email,
         'phone': phone,
+        'name':name
       });
 
       print('User data saved to Firestore');

@@ -38,6 +38,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
             return Column(
               children: [
+                SizedBox(
+                  height: .1 * mediaheight(context),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:
+                      List.generate(4, (index) => buildDot(index, context)),
+                ),
                 Expanded(
                   child: PageView(
                     controller: _pageController,
@@ -47,6 +55,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       });
                     },
                     children: [
+                      buildPage(
+                        image: fourthDoc['image'],
+                        title: fourthDoc['title'],
+                        subtitle: fourthDoc['subtitle'],
+                      ),
                       buildPage(
                         image: firstDoc['image'],
                         title: firstDoc['title'],
@@ -62,56 +75,73 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         title: thirdDoc['title'],
                         subtitle: thirdDoc['subtitle'],
                       ),
-                      buildPage(
-                        image: fourthDoc['image'],
-                        title: fourthDoc['title'],
-                        subtitle: fourthDoc['subtitle'],
-                      ),
                     ],
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children:
-                      List.generate(4, (index) => buildDot(index, context)),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Column(
                     children: [
-                      MaterialButton(
-                        color: primary,
-                        minWidth: .7 * mediawidth(context),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        onPressed: () {
-                          if (_currentPage < 3) {
-                            _pageController.nextPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        BottomBarScreen(id: '123', public: false, uniquId:'111', date: DateTime.now() ,)));
-                          }
-                        },
-                        child: _currentPage == 3
-                            ? Text(
+                      _currentPage == 3
+                          ? MaterialButton(
+                              color: primary,
+                              minWidth: .7 * mediawidth(context),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              onPressed: () {
+                                if (_currentPage < 3) {
+                                  _pageController.nextPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => BottomBarScreen(
+                                                id: '123',
+                                                public: false,
+                                                uniquId: '111',
+                                                date: DateTime.now(),
+                                              )));
+                                }
+                              },
+                              child: Text(
                                 "ابدأ",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold),
-                              )
-                            : Text(
-                                'التالي',
-                                style: TextStyle(color: Colors.white),
+                              ))
+                          : CircleAvatar(
+                              backgroundColor: primary,
+                              radius: 30,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  if (_currentPage < 3) {
+                                    _pageController.nextPage(
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => BottomBarScreen(
+                                                  id: '123',
+                                                  public: false,
+                                                  uniquId: '111',
+                                                  date: DateTime.now(),
+                                                )));
+                                  }
+                                },
                               ),
-                      ),
+                            ),
                       MaterialButton(
                         minWidth: .7 * mediawidth(context),
                         elevation: _currentPage == 3 ? 2 : 0,
