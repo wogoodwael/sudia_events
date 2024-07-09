@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
@@ -45,14 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
   bool tappedTribe = false;
   bool onTappedIcon = false;
   String type = '';
-  List<bool> onTapped = [false, false, false, false];
+  List<bool> onTapped = [false, false, false, false, false];
 
-  List services = ['الكل', 'زواج', 'حفل تخرج', 'عيد ميلاد'];
+  List services = ['الكل', 'زواج', 'حفل تخرج', 'عيد ميلاد', 'خطوبة'];
   List familyFilter = [];
   late final ValueNotifier<List<Event>> _selectedEvents;
   Api api = Api();
   String selectedService = 'زواج';
-
+  List<Color?> colors = [Colors.green[200], Colors.yellow[300]];
   bool marriage = false;
   bool graduation = false;
   bool privateEvent = false;
@@ -186,72 +187,26 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _showEventBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // Ensure the bottom sheet is scrollable
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                    child: Text(selectedService),
-                  ),
-                  SizedBox(height: 20),
-                  _buildFilterOptions(setState),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        minWidth: 150,
-                        color: primary,
-                        child: Text(
-                          'تطبيق',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => BookingScreen(
-                                        type: filterValue,
-                                      )));
-                        },
-                      ),
-                      MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        minWidth: 150,
-                        color: Colors.white,
-                        child: Text('الغاء'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              DateFormat('EEEE', 'ar').format(DateTime.now()),
+            ),
+          ],
+        ),
+        centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.white,
         actions: [
@@ -266,17 +221,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             fromHome: true,
                           )));
             },
-            child: Text(
-              'location'.tr(),
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
+            child: Container(
+              width: 100,
+              height: 30,
+              decoration: BoxDecoration(color: Colors.yellow[100]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'location'.tr(),
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Icon(Icons.location_on_rounded),
+                  SizedBox(width: 10),
+                ],
               ),
             ),
-          ),
-          SizedBox(width: 10),
-          Icon(Icons.location_on_rounded),
-          SizedBox(width: 10),
+          )
         ],
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -293,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.shopify_rounded,
+                    Icons.shopping_cart_outlined,
                     color: primary,
                     size: 25,
                   ),
@@ -336,28 +301,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(services.length, (index) {
-              return ChoiceChip(
-                checkmarkColor: Colors.white,
-                selectedColor: primary,
-                label: Text(
-                  services[index],
-                  style: TextStyle(
-                      color: onTapped[index] ? Colors.white : Colors.black),
-                ),
-                selected: onTapped[index],
-                onSelected: (_) => _onServiceSelected(index),
-              );
-            }),
-          ),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 10),
                   Container(
                     width: .9 * mediawidth(context),
                     height: 45,
@@ -388,6 +336,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(services.length, (index) {
+              return ChoiceChip(
+                checkmarkColor: Colors.white,
+                selectedColor: primary,
+                label: Text(
+                  services[index],
+                  style: TextStyle(
+                      color: onTapped[index] ? Colors.white : Colors.black),
+                ),
+                selected: onTapped[index],
+                onSelected: (_) => _onServiceSelected(index),
+              );
+            }),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 20),
@@ -427,7 +394,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                           )
-                        : _showEventBottomSheet();
+                        : Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) => BookingScreen()));
                   },
                 ),
               ],
@@ -624,13 +592,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 name: isBooked
                                     ? "${event.name} ${event.family} ${event.tribe}"
                                     : "لا يوجد معلومات",
-                                title: '${event.type} ',
-                                location:
-                                    publicEvent ? 'جده - حي البساتين' : "",
-                                avatarUrl: 'assets/images/person.png',
+                                title:
+                                    isBooked ? '${event.type} ' : "مناسبة خاصة",
+                                location: isBooked
+                                    ? 'جده - حي البساتين'
+                                    : "لا توجد معلومات",
+                                avatarUrl: 'assets/images/logo.png',
                                 clock: event.time,
                                 dateTime: event.date,
                                 uniquID: event.uniquID,
+                                color: isBooked ? colors[0] : colors[1],
+                                date: date,
                               ),
                             );
                           },
@@ -646,71 +618,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Widget _buildFilterOptions(StateSetter setState) {
-    return Column(
-      children: [
-        _buildCheckboxOption('زواج', marriage, (value) {
-          setState(() {
-            marriage = value!;
-            filterValue = 'زواج';
-          });
-        }),
-        _buildCheckboxOption('حفل تخرج', graduation, (value) {
-          setState(() {
-            graduation = value!;
-            filterValue = 'حفل تخرج';
-          });
-        }),
-        _buildCheckboxOption('عيد ميلاد', publicEvent, (value) {
-          setState(() {
-            publicEvent = value!;
-            filterValue = 'عيد ميلاد';
-          });
-        }),
-      ],
-    );
-  }
-
-  Widget _buildCheckboxOption(
-      String label, bool isChecked, ValueChanged<bool?> onChanged) {
-    return Row(
-      children: [
-        Checkbox(
-          activeColor: primary,
-          value: isChecked,
-          onChanged: onChanged,
-        ),
-        Text(label),
-        Spacer(),
-        label == 'زواج'
-            ? Icon(
-                Icons.castle_rounded,
-                size: 20,
-                color: primary,
-              )
-            : label == 'عيد ميلاد'
-                ? Icon(
-                    Icons.event,
-                    size: 20,
-                    color: primary,
-                  )
-                : label == 'مناسبة عامة'
-                    ? Icon(
-                        Icons.event_available,
-                        size: 20,
-                        color: primary,
-                      )
-                    : label == 'حفل تخرج'
-                        ? Icon(
-                            Icons.date_range_rounded,
-                            size: 20,
-                            color: primary,
-                          )
-                        : Text("")
-      ],
-    );
-  }
 }
 
 class EventContainer extends StatefulWidget {
@@ -722,6 +629,8 @@ class EventContainer extends StatefulWidget {
   final String clock;
   final String uniquID;
   final DateTime dateTime;
+  final String date;
+  final Color? color;
 
   EventContainer({
     required this.time,
@@ -732,6 +641,8 @@ class EventContainer extends StatefulWidget {
     required this.clock,
     required this.dateTime,
     required this.uniquID,
+    required this.color,
+    required this.date,
   });
 
   @override
@@ -808,6 +719,7 @@ class _EventContainerState extends State<EventContainer> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black12,
@@ -818,12 +730,14 @@ class _EventContainerState extends State<EventContainer> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: ExactAssetImage(widget.avatarUrl),
+                    backgroundColor: widget.color,
+                    child: Image.asset("assets/images/logo.png"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -833,7 +747,7 @@ class _EventContainerState extends State<EventContainer> {
                         Text(
                           widget.title,
                           style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.grey[700],
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -854,16 +768,25 @@ class _EventContainerState extends State<EventContainer> {
                     ),
                   ),
                   Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.green[50],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      widget.clock,
-                      style: TextStyle(color: Colors.green, fontSize: 14),
-                    ),
+                  Column(
+                    children: [
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.green[50],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          widget.clock,
+                          style: TextStyle(color: Colors.green, fontSize: 14),
+                        ),
+                      ),
+                      Text(
+                        widget.date,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -875,13 +798,14 @@ class _EventContainerState extends State<EventContainer> {
                     color: Colors.grey,
                     margin: EdgeInsets.symmetric(horizontal: 16),
                   ),
-                  IconButton(
-                    icon: Icon(
-                        isAddedToFav ? Icons.favorite : Icons.favorite_border),
-                    color: Colors.red,
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       addToFavorites(context);
                     },
+                    child: Icon(
+                      isAddedToFav ? Icons.favorite : Icons.favorite_border,
+                      color: Colors.red,
+                    ),
                   ),
                 ],
               ),

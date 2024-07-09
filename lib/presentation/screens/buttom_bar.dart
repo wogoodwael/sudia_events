@@ -59,7 +59,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
   double _calculatePosition(int index) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double itemWidth = screenWidth / 5.2;
+    double itemWidth = screenWidth / 5;
     return index * itemWidth + itemWidth / 2 - 30; // Adjust the position
   }
 
@@ -75,7 +75,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
           bool isEnglish =
               EasyLocalization.of(context)!.currentLocale!.languageCode == 'en';
           return Container(
-            margin: EdgeInsets.only(bottom: 30, left: 10, right: 10),
             decoration: BoxDecoration(
               color: Color(0xff1F2A37),
               // Dark background color
@@ -86,7 +85,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   offset: Offset(0, -2),
                 ),
               ],
-              borderRadius: BorderRadius.circular(30),
             ),
             child: Stack(
               clipBehavior: Clip.none,

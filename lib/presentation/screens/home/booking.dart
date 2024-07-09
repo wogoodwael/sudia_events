@@ -17,8 +17,9 @@ import 'package:intl/date_symbol_data_local.dart' as data;
 import '../Services/All/services_screen.dart';
 
 class BookingScreen extends StatefulWidget {
-  final String type;
-  const BookingScreen({super.key, required this.type});
+  const BookingScreen({
+    super.key,
+  });
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
@@ -27,10 +28,23 @@ class _BookingScreenState extends State<BookingScreen> {
   TimeOfDay _selectedTime = TimeOfDay.now();
   bool _isSwitched = false;
   bool _isAgreed = false;
+  List<bool> onTapped = [false, false, false, false];
   TextEditingController name = TextEditingController();
   TextEditingController family = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController tribe = TextEditingController();
+  List services = ['زواج', 'حفل تخرج', 'عيد ميلاد', "خطوبة"];
+  String selectedService = 'زواج';
+  void _onServiceSelected(int index) {
+    setState(() {
+      for (int i = 0; i < onTapped.length; i++) {
+        onTapped[i] = i == index;
+      }
+      selectedService = services[index];
+      isFav = false; // Reset favorites when a specific service is selected
+    });
+  }
+
   Future<void> _showPopup(BuildContext context) async {
     return showModalBottomSheet<void>(
       backgroundColor: Colors.white,
@@ -160,7 +174,7 @@ class _BookingScreenState extends State<BookingScreen> {
       'tribe': tribeName,
       'phone': phone.text,
       'date': _selectedDay!.toIso8601String(),
-      'type': widget.type,
+      'type': selectedService,
       'time': _selectedTime.format(context),
       'uniquID': uniqueID
     };
@@ -324,7 +338,7 @@ class _BookingScreenState extends State<BookingScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Handle back button press
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -339,6 +353,22 @@ class _BookingScreenState extends State<BookingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(services.length, (index) {
+                  return ChoiceChip(
+                    checkmarkColor: Colors.white,
+                    selectedColor: primary,
+                    label: Text(
+                      services[index],
+                      style: TextStyle(
+                          color: onTapped[index] ? Colors.white : Colors.black),
+                    ),
+                    selected: onTapped[index],
+                    onSelected: (_) => _onServiceSelected(index),
+                  );
+                }),
+              ),
               CustomCalendar(
                 selectedDay: _selectedDay!,
                 focusedDay: _focusedDay,
