@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sudia_events/core/helper/calender.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -10,6 +11,7 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
+import 'package:sudia_events/presentation/screens/Services/All/invitation.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
@@ -187,10 +189,34 @@ class _BookingScreenState extends State<BookingScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('تم بنجاح'),
-            content: Text('لقد تم حجز مناسبتك ينجاح هل تريد اضافة خدمات؟'),
+            icon: Align(alignment: Alignment.topLeft, child: Icon(Icons.close)),
+            title: Center(
+              child: Text(
+                'تهانينا',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w600, fontSize: 30),
+              ),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset("assets/images/heart.png"),
+                Text(
+                  " حجزك رقم SP 0023905# . ☺️",
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w600, fontSize: 16),
+                ),
+                Text(
+                  "    في يوم  ${DateFormat('yyyy/MM/dd', 'ar').format(_selectedDay!)}         ${_selectedTime.format(context)}",
+                  style: GoogleFonts.inter(
+                      fontSize: 12, fontWeight: FontWeight.w400),
+                )
+              ],
+            ),
             actions: <Widget>[
-              TextButton(
+              MaterialButton(
+                minWidth: .9 * mediawidth(context),
+                color: primary,
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                   Navigator.pushReplacement(
@@ -205,9 +231,16 @@ class _BookingScreenState extends State<BookingScreen> {
                     // This predicate removes all previous routes
                   );
                 },
-                child: Text('نعم'),
+                child: Text(
+                  'اضافة خدمات',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      color: Colors.white),
+                ),
               ),
-              TextButton(
+              MaterialButton(
+                minWidth: .9 * mediawidth(context),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                   Navigator.pushReplacement(
@@ -221,7 +254,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             )),
                   );
                 },
-                child: Text('لا'),
+                child: Text('ليس الان '),
               ),
             ],
           );
@@ -377,39 +410,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
                 getEventsForDay: _getEventsForDay,
               ),
-              Text('تستطيع اختيار الحجز', style: TextStyle(fontSize: 15)),
               SizedBox(height: 15),
-              Text(formattedDate,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('حالة الحجز',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    width: .1 * mediawidth(context),
-                  ),
-                  Text('مكرر', style: TextStyle(fontSize: 15)),
-                ],
-              ),
-              Divider(
-                height: 0,
-                indent: .2 * mediawidth(context),
-                endIndent: .2 * mediawidth(context),
-              ),
-              SizedBox(height: .05 * mediaheight(context)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'الوقت:',
-                    style: TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -472,77 +473,105 @@ class _BookingScreenState extends State<BookingScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
-              Text('ليصلك اخبارك وأصدقائك',
-                  style: TextStyle(color: Colors.grey)),
-              Container(
-                width: .9 * mediawidth(context),
-                height: .35 * mediaheight(context),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey.withOpacity(.5))),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            icon: Image.asset(
-                              "assets/images/locationb.png",
-                              color: Colors.green,
-                              width: 50,
-                            ),
-                            onPressed: () {}),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                          activeColor: primary,
-                          value: _isAgreed,
-                          onChanged: (value) {
-                            setState(() {
-                              _isAgreed = value!;
-                            });
-                          },
-                        ),
-                        Text('أنا أوافق على شروط الخدمة و سياسة الخصوصية'),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    MaterialButton(
-                      onPressed: () {
-                        _showPopup(context);
+              SizedBox(height: 15),
+              Text(formattedDate,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('حالة الحجز',
+                      style: GoogleFonts.inter(
+                          fontSize: 10, fontWeight: FontWeight.w400)),
+                  SizedBox(
+                    width: .1 * mediawidth(context),
+                  ),
+                  Text('مكرر',
+                      style: GoogleFonts.inter(
+                          fontSize: 10, fontWeight: FontWeight.w400)),
+                  SizedBox(
+                    width: .1 * mediawidth(context),
+                  ),
+                  Text(selectedService,
+                      style: GoogleFonts.inter(
+                          fontSize: 10, fontWeight: FontWeight.w400)),
+                ],
+              ),
+              Divider(
+                height: 0,
+                indent: .2 * mediawidth(context),
+                endIndent: .2 * mediawidth(context),
+              ),
+              SizedBox(height: .05 * mediaheight(context)),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.black87,
+                    radius: 10,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => InvitationCardScreen(
+                                    id: Uuid().v4(), date: _selectedDay!)));
                       },
-                      minWidth: .8 * mediawidth(context),
-                      height: 45,
-                      color: _isAgreed ? primary : secondary,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Text('التالي',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
+                      child: Icon(
+                        Icons.add,
+                        size: 13,
+                        color: Colors.white,
+                      ),
                     ),
-                    SizedBox(height: 16),
-                    MaterialButton(
-                      onPressed: () {},
-                      minWidth: .8 * mediawidth(context),
-                      height: 45,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Text('مشاهدة الحجوزات',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: primary,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
-              )
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "بطاقة الدعوة",
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                  ),
+                  Spacer(),
+                  Checkbox(
+                    value: true,
+                    onChanged: (val) {},
+                    activeColor: primary,
+                  ),
+                  Image.asset(
+                    "assets/images/locationb.png",
+                    width: 50,
+                  )
+                ],
+              ),
+              SizedBox(height: 16),
+              MaterialButton(
+                onPressed: () {
+                  _showPopup(context);
+                },
+                minWidth: .8 * mediawidth(context),
+                height: 45,
+                color: _isAgreed ? primary : secondary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text('التالي',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(height: 16),
+              MaterialButton(
+                onPressed: () {},
+                minWidth: .8 * mediawidth(context),
+                height: 45,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text('مشاهدة الحجوزات',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: primary,
+                        fontWeight: FontWeight.bold)),
+              ),
             ],
           ),
         ),

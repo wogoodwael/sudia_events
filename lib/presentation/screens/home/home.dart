@@ -225,20 +225,23 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 100,
               height: 30,
               decoration: BoxDecoration(color: Colors.yellow[100]),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'location'.tr(),
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'location'.tr(),
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Icon(Icons.location_on_rounded),
-                  SizedBox(width: 10),
-                ],
+                    SizedBox(width: 10),
+                    Icon(Icons.location_on_rounded),
+                    SizedBox(width: 10),
+                  ],
+                ),
               ),
             ),
           )
@@ -340,21 +343,27 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(services.length, (index) {
-              return ChoiceChip(
-                checkmarkColor: Colors.white,
-                selectedColor: primary,
-                label: Text(
-                  services[index],
-                  style: TextStyle(
-                      color: onTapped[index] ? Colors.white : Colors.black),
-                ),
-                selected: onTapped[index],
-                onSelected: (_) => _onServiceSelected(index),
-              );
-            }),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(services.length, (index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ChoiceChip(
+                    checkmarkColor: Colors.white,
+                    selectedColor: primary,
+                    label: Text(
+                      services[index],
+                      style: TextStyle(
+                          color: onTapped[index] ? Colors.white : Colors.black),
+                    ),
+                    selected: onTapped[index],
+                    onSelected: (_) => _onServiceSelected(index),
+                  ),
+                );
+              }),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 20),
@@ -394,7 +403,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                           )
-                        : Navigator.pushReplacement(context,
+                        : Navigator.push(context,
                             MaterialPageRoute(builder: (_) => BookingScreen()));
                   },
                 ),
