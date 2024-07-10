@@ -20,7 +20,6 @@ class ServicesBodey extends StatelessWidget {
   final bool inside;
   final String id;
   final String uniquId;
-  TextEditingController controller = TextEditingController();
 
   ServicesBodey(
       {super.key,
@@ -42,55 +41,8 @@ class ServicesBodey extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    "invitation card".tr(),
-                    style: TextStyle(color: primary),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => InvitationCardScreen(
-                                    id: id,
-                                    date: date,
-                                  )));
-                    },
-                    child: Icon(
-                      Icons.add_circle,
-                      size: 20,
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(
                 height: 10,
-              ),
-              Container(
-                width: .9 * mediawidth(context),
-                height: 45,
-                decoration: BoxDecoration(color: Colors.grey[200]),
-                child: TextField(
-                  controller: controller,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'البحث ',
-                      hintStyle: TextStyle(color: Colors.grey[400]),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey[400],
-                      ),
-                      suffixIcon: Icon(
-                        Icons.tune,
-                        color: Colors.grey[400],
-                      )),
-                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -489,22 +441,31 @@ class PreviousReservationsSection extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: [
               ReservationItem(
-                status: 'مكتمل',
+                status: '20%',
                 color: Colors.green,
                 iconColor: Colors.purple,
                 isComplete: true,
+                text: 'باكج الزواج',
+                servicesnum: '35 خدمة',
+                price: 'SAR 45500.00',
               ),
               ReservationItem(
-                status: 'مكتمل',
-                color: Colors.green,
+                status: '10%',
+                color: Colors.yellow,
                 iconColor: Colors.purple,
                 isComplete: true,
+                text: 'باكج الخطوبة',
+                servicesnum: '10 خدمات',
+                price: 'SAR 1354.99',
               ),
               ReservationItem(
-                status: 'ملغي',
+                status: '15%',
                 color: Colors.red,
                 iconColor: Colors.orange,
                 isComplete: false,
+                text: 'باكج الحسابات الخاصة',
+                servicesnum: '3 خدمات',
+                price: 'SAR 489.99',
               ),
             ],
           ),
@@ -519,12 +480,18 @@ class ReservationItem extends StatelessWidget {
   final Color color;
   final Color iconColor;
   final bool isComplete;
+  final String text;
+  final String price;
+  final String servicesnum;
 
   ReservationItem({
     required this.status,
     required this.color,
     required this.iconColor,
     required this.isComplete,
+    required this.text,
+    required this.servicesnum,
+    required this.price,
   });
 
   @override
@@ -532,10 +499,10 @@ class ReservationItem extends StatelessWidget {
     return Stack(children: [
       Container(
         width: 150,
-        height: 250, // You can adjust this height as needed
+        height: 170, // You can adjust this height as needed
         margin: EdgeInsets.only(right: 10),
         child: Card(
-          surfaceTintColor: status == 'مكتمل' ? Colors.green : Colors.red,
+          surfaceTintColor: color,
           shape: RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.only(bottomRight: Radius.circular(20))),
@@ -545,32 +512,38 @@ class ReservationItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: color.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      status,
-                      style: TextStyle(color: color, fontSize: 12),
-                    ),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    status,
+                    style: GoogleFonts.roboto(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
-                Icon(Icons.sports_basketball, color: iconColor, size: 35),
+                CircleAvatar(
+                    backgroundColor: color,
+                    child: Image.asset("assets/images/logo.png")),
                 SizedBox(height: 8),
-                Text('مطعم النكهة',
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                FittedBox(
+                  child: Text(text,
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                ),
                 SizedBox(height: 4),
                 Text(
-                  ' رقم الحجز : SP 0023 ',
-                  style: TextStyle(color: Colors.grey, fontSize: 10),
+                  servicesnum,
+                  style: GoogleFonts.inter(
+                      color: Colors.grey,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400),
                 ),
                 Text(
-                  'منذ أسبوعين',
-                  style: TextStyle(color: Colors.grey),
+                  price,
+                  style: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 8),
                 ),
                 SizedBox(
                   height: 10,
@@ -582,12 +555,12 @@ class ReservationItem extends StatelessWidget {
         ),
       ),
       Positioned(
-        bottom: -5,
+        bottom: 20,
         right: 15,
         child: MaterialButton(
           height: 30,
           minWidth: 140,
-          color: Colors.green,
+          color: primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
           ),
@@ -596,14 +569,14 @@ class ReservationItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'إعادة الطلب',
+                'احجز الان',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(
                 width: 2,
               ),
               Icon(
-                Icons.restore_rounded,
+                Icons.shopping_bag,
                 color: Colors.white,
                 size: 15,
               ),
@@ -650,7 +623,7 @@ class FavoritesSection extends StatelessWidget {
 
             return Container(
               width: mediawidth(context),
-              height: .2 * mediaheight(context),
+              height: .16 * mediaheight(context),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: favorites.length,
@@ -658,7 +631,6 @@ class FavoritesSection extends StatelessWidget {
                   var favorite = favorites[index];
                   return FavoriteItem(
                     img: favorite['img'],
-                    name: favorite['name'] ?? favorite['des'],
                   );
                 },
               ),
@@ -672,9 +644,10 @@ class FavoritesSection extends StatelessWidget {
 
 class FavoriteItem extends StatelessWidget {
   final String img;
-  final String name;
 
-  FavoriteItem({required this.img, required this.name});
+  FavoriteItem({
+    required this.img,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -683,29 +656,38 @@ class FavoriteItem extends StatelessWidget {
         Navigator.push(
             context, MaterialPageRoute(builder: (_) => FavouriteScreen()));
       },
-      child: Container(
-        width: 150,
-        margin: EdgeInsets.only(right: 10),
-        child: Card(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.network(
-                  img,
-                  fit: BoxFit.cover,
-                  height: 100,
-                  width: double.infinity,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(name, style: GoogleFonts.cairo(fontSize: 16)),
-                ),
-              ],
+      child: Stack(children: [
+        Container(
+          width: 150,
+          height: 100,
+          margin: EdgeInsets.only(right: 10),
+          child: Card(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(
+                    img,
+                    fit: BoxFit.cover,
+                    height: 120,
+                    width: double.infinity,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
+        Positioned(
+            bottom: 30,
+            right: 15,
+            child: CircleAvatar(
+                radius: 15,
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.favorite_border,
+                  color: primary,
+                )))
+      ]),
     );
   }
 }

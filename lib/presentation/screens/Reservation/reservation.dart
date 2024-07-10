@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -10,7 +11,7 @@ import 'package:sudia_events/presentation/screens/Services/subServices/check_out
 import 'package:sudia_events/presentation/widgets/search.dart'; // Firestore package
 
 class ReservationScreen extends StatefulWidget {
-  ReservationScreen({Key? key, this.id}) : super(key: key);
+  const ReservationScreen({super.key, this.id});
   final String? id;
 
   @override
@@ -57,7 +58,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_forward_ios,
               color: Colors.white,
             ),
@@ -65,7 +66,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           ),
         ],
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.favorite_border,
             color: Colors.white,
           ),
@@ -82,7 +83,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       hintText: 'search'.tr(),
                       controller: controller,
                       onTap: () {}),
-                  Container(
+                  SizedBox(
                     width: mediawidth(context),
                     height: 45,
                     child: ListView.builder(
@@ -135,7 +136,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   ),
                 ],
               )),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             flex: 5,
             child: ListView.builder(
@@ -157,7 +158,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -174,7 +175,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                     children: [
                                       Text(
                                         date,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14.0,
                                         ),
                                       ),
@@ -187,19 +188,19 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      CircleAvatar(
+                                      const CircleAvatar(
                                         backgroundColor: Colors.green,
                                         child: Icon(Icons.shopping_bag,
                                             color: Colors.white),
                                       ),
-                                      SizedBox(width: 16.0),
+                                      const SizedBox(width: 16.0),
                                       Text(
-                                        'حجز رقم 888',
-                                        style: TextStyle(
+                                        'حجز رقم ${reservation['uniquID'].split('-').last}',
+                                        style: const TextStyle(
                                           fontSize: 15.0,
                                         ),
                                       ),
-                                      SizedBox(width: 16.0),
+                                      const SizedBox(width: 16.0),
                                     ],
                                   ),
                                 ),
@@ -207,7 +208,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'عدد الخدمات',
                                       style: TextStyle(
                                         fontSize: 15.0,
@@ -215,7 +216,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                     ),
                                     Text(
                                       reservation['options'].length.toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20.0, color: Colors.red),
                                     ),
                                     reservation['status'] == "pending"
@@ -243,10 +244,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                         'item_name'],
                                                               )));
                                                 },
-                                                child:
-                                                    Text("اعادة جدولة الحجز"),
+                                                child: const Text(
+                                                    "اعادة جدولة الحجز"),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               MaterialButton(
@@ -268,7 +269,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                         reservation[
                                                                             'uniquID'])));
                                                   },
-                                                  child: Text(
+                                                  child: const Text(
                                                     "حذف",
                                                     style: TextStyle(
                                                         color: Colors.white),
@@ -317,7 +318,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                             'item_name'],
                                                                   )));
                                                     },
-                                                    child: Text(
+                                                    child: const Text(
                                                         "اعادة جدولة الحجز"),
                                                   )
                                                 : MaterialButton(
@@ -330,76 +331,103 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                         20)),
                                                     color: Colors.grey[300],
                                                     onPressed: () {},
-                                                    child: Text("ملغي"),
+                                                    child: const Text("ملغي"),
                                                   )
                                   ],
                                 ),
                               ],
                             )),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         OrderItem(
-                          title: reservation['name'],
+                          title: '${index + 1}   ${reservation['name']}',
                           price: 'SAR${reservation['price']}',
                           options: reservation['options'] as List<dynamic>,
+                          number: reservation['uniquID'].split('-').last,
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
+                        const Row(
+                          children: [
+                            Icon(
+                              Icons.location_on_outlined,
+                              color: Colors.grey,
+                              size: 17,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'التوصيل إلى ->  المنزل',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Text(
+                          'حي السلامة - جدة - المملكة العربية السعودية',
+                          style: TextStyle(fontSize: 14.0),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Divider(),
+                        OrderItem(
+                          title: '${index + 2}   ${reservation['name']}',
+                          price: 'SAR${reservation['price']}',
+                          options: reservation['options'] as List<dynamic>,
+                          number: reservation['uniquID'].split('-').last,
+                        ),
+                        const Row(
+                          children: [
+                            Icon(
+                              Icons.location_on_outlined,
+                              color: Colors.grey,
+                              size: 17,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'الاستلام من ->  مطعم الباشا',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Text(
+                          '512 -حي السلامة - جدة - المملكة العربية السعودية',
+                          style: TextStyle(fontSize: 14.0),
+                        ),
+                        const Divider(),
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'الاجمالي',
                               style: TextStyle(
                                   fontSize: 15.0, fontWeight: FontWeight.bold),
                             ),
-                            Spacer(),
-                            Text(
-                              'SAR${reservation['total'].toString()}',
-                              style:
-                                  TextStyle(fontSize: 18.0, color: Colors.grey),
+                            const Spacer(),
+                            Container(
+                              width: 170,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  color: primary,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: Text(
+                                  '  في انتظار الدفع SAR${reservation['total'].toString()} ',
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.0,
+                                      color: Colors.white),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 16.0),
-                        Text(
-                          'التوصيل إلى',
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                        ),
-                        SizedBox(height: 16.0),
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.location_pin, color: Colors.red),
-                              SizedBox(width: 16.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    reservation['delivery_fee'].toString(),
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
-                                  SizedBox(height: 4.0),
-                                  Text(
-                                    'حي السلامة - جدة - المملكة العربية السعودية',
-                                    style: TextStyle(fontSize: 14.0),
-                                  ),
-                                ],
-                              ),
-                              Spacer(),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Icon(Icons.arrow_forward_ios, size: 20),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16.0),
                       ],
                     ),
                   ),

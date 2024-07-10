@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 
 class OrderSummaryPage extends StatefulWidget {
@@ -16,7 +17,8 @@ class OrderSummaryPage extends StatefulWidget {
       {super.key,
       required this.name,
       required this.number,
-      required this.date, required this.uniquId});
+      required this.date,
+      required this.uniquId});
   @override
   _OrderSummaryPageState createState() => _OrderSummaryPageState();
 }
@@ -461,8 +463,17 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
                                                       CheckoutScreen(
                                                         name: widget.name,
                                                         number: widget.number,
-                                                        date: widget.date, uniquID: widget.uniquId,
+                                                        date: widget.date,
+                                                        uniquID: widget.uniquId,
                                                       )));
+                                          sharedpref.setString(
+                                              'name', widget.name);
+                                          sharedpref.setString(
+                                              'number', widget.number);
+                                          sharedpref.setString(
+                                              'date', widget.date.toIso8601String());
+                                          sharedpref.setString(
+                                              'uniquID', widget.uniquId);
                                         },
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,

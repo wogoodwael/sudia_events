@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -15,8 +16,9 @@ class CheckoutScreen extends StatefulWidget {
   final String number;
   final String uniquID;
   final DateTime date;
-  CheckoutScreen(
-      {required this.name,
+  const CheckoutScreen(
+      {super.key,
+      required this.name,
       required this.number,
       required this.date,
       required this.uniquID});
@@ -30,7 +32,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   double _subtotal = 0.0;
   double _discount = 0.0;
   double _total = 0.0;
-  double _deliveryFee = 20.0;
+  final double _deliveryFee = 20.0;
   bool public = false; // Assuming a fixed delivery fee
 
   @override
@@ -165,19 +167,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           'SP 0023450',
           style: TextStyle(fontSize: 14),
         ),
         centerTitle: true,
       ),
       body: _checkoutItems.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 Expanded(
                   flex: 2,
-                  child: Container(
+                  child: SizedBox(
                     height: .09 * mediaheight(context),
                     width: mediawidth(context),
                     child: ListView.builder(
@@ -201,7 +203,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            padding: EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,123 +212,97 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
+                                      'حجز رقم ${item['uniquID'].split('-').last}',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const Spacer(),
+                                    Text(
                                       intl.DateFormat('yyyy/MM/dd', 'en')
                                           .format(widget.date),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 14.0, color: Colors.grey),
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.green,
-                                      child: Icon(
-                                        Icons.shopping_bag,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(width: 16.0),
-                                    Text(
-                                      item['name'] ??
-                                          'حجز رقم SP 0023900', // Placeholder for title
-                                      style: TextStyle(
-                                          fontSize: 15.0, color: Colors.grey),
-                                    ),
-                                    SizedBox(width: 16.0),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      'عدد الخدمات',
-                                      style: TextStyle(
-                                          fontSize: 15.0, color: Colors.grey),
-                                    ),
-                                    Text(
-                                      item['options']
-                                          .length
-                                          .toString(), // Placeholder for quantity
-                                      style: TextStyle(
-                                          fontSize: 20.0, color: Colors.red),
-                                    ),
-                                  ],
+                                const SizedBox(
+                                  height: 20,
                                 ),
                                 OrderItem(
-                                  title: item[
-                                      'name'], // Assuming 'title' key exists
+                                  title:
+                                      '${index + 1}   ${item['name']}', // Assuming 'title' key exists
                                   price:
                                       'SAR${item['price']}', // Placeholder for price
-                                  options: item['options'] as List<
-                                      dynamic>, // Assuming 'options' is a List<dynamic>
+                                  options: item['options'] as List<dynamic>,
+                                  number: item['uniquID']
+                                      .split('-')
+                                      .last, // Assuming 'options' is a List<dynamic>
                                 ),
-                                SizedBox(height: 10.0),
-                                Row(
+                                const SizedBox(height: 10.0),
+                                const SizedBox(height: 16.0),
+                                const Row(
                                   children: [
-                                    Text(
-                                      'الاجمالي',
-                                      style: TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.bold),
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                      color: Colors.grey,
+                                      size: 17,
                                     ),
-                                    Spacer(),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Text(
-                                      'SAR${all}', // Total price
+                                      'التوصيل إلى ->  المنزل',
                                       style: TextStyle(
-                                          fontSize: 18.0, color: Colors.grey),
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 10.0),
-                                Text(
-                                  'التوصيل إلى',
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey),
+                                const Text(
+                                  'حي السلامة - جدة - المملكة العربية السعودية',
+                                  style: TextStyle(fontSize: 14.0),
                                 ),
-                                SizedBox(height: 10.0),
-                                Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.location_pin,
-                                          color: Colors.red),
-                                      SizedBox(width: 16.0),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'الاستلام من -- مطعم الديرة', // Placeholder for pickup location
-                                            style: TextStyle(fontSize: 16.0),
-                                          ),
-                                          SizedBox(height: 4.0),
-                                          Text(
-                                            'حي السلامة - جدة - المملكة العربية السعودية', // Placeholder for address
-                                            style: TextStyle(fontSize: 14.0),
-                                          ),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                                SizedBox(height: 10.0),
+                                const Divider(),
+                                OrderItem(
+                                  title:
+                                      '${index + 2}   ${item['name']}', // Assuming 'title' key exists
+                                  price:
+                                      'SAR${item['price']}', // Placeholder for price
+                                  options: item['options'] as List<dynamic>,
+                                  number: item['uniquID']
+                                      .split('-')
+                                      .last, // Assuming 'options' is a List<dynamic>
+                                ),
+                                const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                      color: Colors.grey,
+                                      size: 17,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'الاستلام من ->  مطعم الباشا',
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Text(
+                                  '512 -حي السلامة - جدة - المملكة العربية السعودية',
+                                  style: TextStyle(fontSize: 14.0),
+                                ),
+                                const Divider(),
+                                const SizedBox(height: 10.0),
                               ],
                             ),
                           ),
@@ -335,7 +311,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Expanded(
@@ -354,13 +330,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 border: Border.all(
                                     color: Colors.grey.withOpacity(.5)),
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Column(
+                            child: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding: EdgeInsets.only(
                                           left: 8.0, right: 8, top: 5),
                                       child: Icon(
                                         Icons.account_balance_wallet,
@@ -371,8 +347,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   ],
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Text(
                                     "كاش ",
                                     style:
@@ -395,10 +371,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
+                                const Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding: EdgeInsets.only(
                                           left: 8.0, right: 8, top: 5),
                                       child: Icon(
                                         Icons.local_activity,
@@ -422,7 +398,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                           color: Colors.yellow[700],
                                           borderRadius:
                                               BorderRadius.circular(3)),
-                                      child: Center(
+                                      child: const Center(
                                         child: Text(
                                           "خصم",
                                           style: TextStyle(
@@ -431,7 +407,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
@@ -441,7 +417,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                           color: Colors.yellow[700],
                                           borderRadius:
                                               BorderRadius.circular(3)),
-                                      child: Center(
+                                      child: const Center(
                                         child: Text(
                                           "20%",
                                           style: TextStyle(
@@ -450,8 +426,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         ),
                                       ),
                                     ),
-                                    Spacer(),
-                                    Icon(
+                                    const Spacer(),
+                                    const Icon(
                                       Icons.arrow_forward_ios,
                                       color: Colors.grey,
                                       size: 20,
@@ -464,19 +440,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 'المجموع',
                                 style: TextStyle(
                                     fontSize: 16.0, color: Colors.grey),
                               ),
                               Text(
                                 'SAR${_subtotal.toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16.0, color: Colors.black),
                               ),
                             ],
                           ),
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -494,39 +470,39 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 'مبلغ الخصم',
                                 style: TextStyle(
                                     fontSize: 16.0, color: Colors.grey),
                               ),
                               Text(
                                 'SAR${_discount.toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16.0, color: Colors.black),
                               ),
                             ],
                           ),
-                          Divider(),
+                          const Divider(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 'التوصيل',
                                 style: TextStyle(
                                     fontSize: 16.0, color: Colors.grey),
                               ),
                               Text(
                                 'SAR${_deliveryFee.toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16.0, color: Colors.black),
                               ),
                             ],
                           ),
-                          Divider(),
+                          const Divider(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 'الإجمالي',
                                 style: TextStyle(
                                   fontSize: 18.0,
@@ -536,7 +512,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                               Text(
                                 'SAR${_total.toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
@@ -544,12 +520,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 16.0),
+                          const SizedBox(height: 16.0),
                           Card(
                             color: Colors.white,
                             surfaceTintColor: Colors.white,
                             elevation: 5,
-                            child: Container(
+                            child: SizedBox(
                               width: .9 * mediawidth(context),
                               height: 50,
                               child: Row(
@@ -568,8 +544,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text('تاكيد  الدفع'),
-                                            content: Text(
+                                            title: const Text('تاكيد  الدفع'),
+                                            content: const Text(
                                                 'هل انت متاكد من حجز الخدمة ؟ '),
                                             actions: <Widget>[
                                               TextButton(
@@ -578,7 +554,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   _removeFromCheckOut();
                                                   // Close the dialog
                                                 },
-                                                child: Text('نعم'),
+                                                child: const Text('نعم'),
                                               ),
                                               TextButton(
                                                 onPressed: () {
@@ -599,14 +575,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                             )),
                                                   );
                                                 },
-                                                child: Text('لا'),
+                                                child: const Text('لا'),
                                               ),
                                             ],
                                           );
                                         },
                                       );
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       "الدفع",
                                       style: TextStyle(
                                         color: Colors.white,
@@ -616,7 +592,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   ),
                                   Text(
                                     'SAR${_total.toStringAsFixed(2)}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
@@ -640,12 +616,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 class OrderItem extends StatelessWidget {
   final String title;
   final String price;
+  final String number;
   final List<dynamic> options;
 
-  OrderItem({
+  const OrderItem({
+    super.key,
     required this.title,
     required this.price,
     required this.options,
+    required this.number,
   });
 
   @override
@@ -655,37 +634,63 @@ class OrderItem extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 4.0),
-        Text(
-          price,
-          style: TextStyle(fontSize: 14.0, color: Colors.grey),
+        const SizedBox(height: 4.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Row(
+            children: [
+              Text(
+                "4.9",
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                ),
+              ),
+              Icon(
+                Icons.star,
+                color: Colors.yellow[600],
+                size: 15,
+              ),
+              const Spacer(),
+              Text(
+                number,
+                style: GoogleFonts.roboto(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+              )
+            ],
+          ),
         ),
-        SizedBox(height: 4.0),
+        const SizedBox(height: 4.0),
         ...options.map((option) {
           return Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${option['option']}',
-                    style: TextStyle(fontSize: 14.0, color: Colors.grey),
-                  ),
-                  Text(
-                    ' SAR${option['price']}',
-                    style: TextStyle(fontSize: 14.0, color: Colors.grey),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${option['option']}',
+                      style:
+                          const TextStyle(fontSize: 14.0, color: Colors.grey),
+                    ),
+                    Text(
+                      ' SAR${option['price']}',
+                      style:
+                          const TextStyle(fontSize: 14.0, color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
-              Divider(
-                height: 0,
-              ),
+
               // Repeat _OrderItem as needed based on your data structure
             ],
           );
-        }).toList(),
+        }),
       ],
     );
   }

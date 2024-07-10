@@ -108,7 +108,9 @@ class _OffersScreenState extends State<OffersScreen> {
 
                 // Filter offers based on the search query
                 var filteredOffers = _filterOffers(offers, searchQuery);
-
+                if (filteredOffers.isEmpty) {
+                  return Center(child: Text('لا يوجد معلومات '));
+                }
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,

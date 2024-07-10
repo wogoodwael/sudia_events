@@ -4,10 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/All/services_body.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
+import 'package:sudia_events/presentation/screens/home/location.dart';
 import 'package:sudia_events/presentation/screens/home/slider_body.dart';
 
 class AddServices extends StatefulWidget {
@@ -29,6 +33,7 @@ class AddServices extends StatefulWidget {
 class _AddServicesState extends State<AddServices> {
   bool chooseday = false;
   bool addService = false;
+  TextEditingController controller = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -43,10 +48,45 @@ class _AddServicesState extends State<AddServices> {
         elevation: 0,
         backgroundColor: Colors.white,
         actions: [
-          Text('location'.tr()),
-          SizedBox(width: 10),
-          Icon(Icons.location_on_rounded),
-          SizedBox(width: 10),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => LocationScreen(
+                            lat: sharedpref.getDouble('lat')!,
+                            long: sharedpref.getDouble('long')!,
+                            fromHome: true,
+                          )));
+            },
+            child: Container(
+              margin: EdgeInsets.all(5),
+              width: 100,
+              height: 30,
+              decoration: BoxDecoration(color: Colors.yellow[100]),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5.0, right: 5),
+                      child: Text(
+                        'location'.tr(),
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.location_on_rounded),
+                    SizedBox(width: 10),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -63,7 +103,7 @@ class _AddServicesState extends State<AddServices> {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.shopify_sharp,
+                    Icons.shopping_cart_outlined,
                     color: primary,
                     size: 25,
                   ),
@@ -107,6 +147,26 @@ class _AddServicesState extends State<AddServices> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          Container(
+            width: .9 * mediawidth(context),
+            height: 45,
+            decoration: BoxDecoration(color: Colors.grey[200]),
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'البحث ',
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey[400],
+                  ),
+                  suffixIcon: Icon(
+                    Icons.tune,
+                    color: Colors.grey[400],
+                  )),
+            ),
+          ),
           Expanded(
             flex: 3,
             child: SliderBodeyHomePage(),

@@ -171,71 +171,76 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
                   itemBuilder: (context, index) {
                     var favorite = filteredFavorites[index];
                     var data = favorite.data() as Map<String, dynamic>;
-                    return Container(
-                      margin: EdgeInsets.all(10),
-                      child: Card(
-                        color: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                Image.network(data['img'],
-                                    fit: BoxFit.cover,
-                                    height: 100,
-                                    width: double.infinity),
-                                Positioned(
-                                  top: 8,
-                                  right: 8,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      await _removeFromCheckOut(favorite.id);
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: Colors.white,
-                                      child: Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
+                    return GestureDetector(
+
+onTap: () {
+  
+},                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        child: Card(
+                          color: Colors.white,
+                          surfaceTintColor: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
+                                children: [
+                                  Image.network(data['img'],
+                                      fit: BoxFit.cover,
+                                      height: 100,
+                                      width: double.infinity),
+                                  Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        await _removeFromCheckOut(favorite.id);
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Colors.white,
+                                        child: Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 5.0, right: 5),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(data['name'] ?? "",
-                                        style: GoogleFonts.cairo(fontSize: 16)),
-                                    SizedBox(height: 4),
-                                    Row(
-                                      children: [
-                                        Text('4.9',
-                                            style: TextStyle(
-                                                color: Colors.orange)),
-                                        Icon(Icons.star,
-                                            color: Colors.orange, size: 16),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text('SAR ${data['price']}',
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.lineThrough)),
-                                    Text(
-                                        'SAR ${data['discount'] ?? data['price']}',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
+                                ],
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 5.0, right: 5),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(data['name'] ?? "",
+                                          style: GoogleFonts.cairo(fontSize: 16)),
+                                      SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Text('4.9',
+                                              style: TextStyle(
+                                                  color: Colors.orange)),
+                                          Icon(Icons.star,
+                                              color: Colors.orange, size: 16),
+                                        ],
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text('SAR ${data['price']}',
+                                          style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.lineThrough)),
+                                      Text(
+                                          'SAR ${data['discount'] ?? data['price']}',
+                                          style: TextStyle(color: Colors.red)),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );

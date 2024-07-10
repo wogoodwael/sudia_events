@@ -76,7 +76,13 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.itemName),
+        title: Text(
+          widget.itemName,
+          style: GoogleFonts.roboto(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Column(

@@ -5,12 +5,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/add_to_card.dart';
+import 'package:sudia_events/presentation/screens/Services/subServices/review.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
 class MenuItemDetail extends StatefulWidget {
@@ -350,9 +352,15 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
             SizedBox(height: 8),
             Row(
               children: [
-                Text(
-                  "شاهد كل المراجعات",
-                  style: TextStyle(decoration: TextDecoration.underline),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => ReviewPage()));
+                  },
+                  child: Text(
+                    "شاهد كل المراجعات",
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
                 ),
                 Spacer(),
                 Icon(
