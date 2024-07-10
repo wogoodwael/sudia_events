@@ -12,6 +12,7 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/add_to_card.dart';
+import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/review.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
@@ -73,11 +74,11 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('لا يوجد مناسبات '),
-              content: Text('يجب ان تقوم بحجز الخدمة من داخل المناسبة '),
+              title: const Text('لا يوجد مناسبات '),
+              content: const Text('يجب ان تقوم بحجز الخدمة من داخل المناسبة '),
               actions: <Widget>[
                 TextButton(
-                  child: Text('حسنا '),
+                  child: const Text('حسنا '),
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the dialog
                     // Navigate back to the bottom bar screen
@@ -205,7 +206,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset("assets/images/heart.png"),
-                Text(
+                const Text(
                     "You must give location access to the app so you wanna give this app permission of location ? ")
               ],
             ),
@@ -217,7 +218,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                   await _requestLocationPermissionAndFetchLocation();
                   Navigator.pop(context);
                 },
-                child: Text("yes"),
+                child: const Text("yes"),
               )
             ],
           );
@@ -228,11 +229,11 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               flex: widget.type.contains("قاعة")
                   ? 5
@@ -242,7 +243,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
               child: Stack(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
@@ -257,7 +258,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     bottom: 20,
                     right: 20,
                     child: CircleAvatar(
@@ -291,10 +292,10 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                               radius: 10,
                               child: Text(
                                 _quantity.toString(),
-                                style: TextStyle(fontSize: 10),
+                                style: const TextStyle(fontSize: 10),
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.shopify_sharp,
                               color: Colors.white,
                             ),
@@ -305,23 +306,31 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => OrderSummaryPage(
+                                builder: (_) => CheckoutScreen(
                                       name: widget.name,
                                       number:
                                           _selectedOptions.length.toString(),
                                       date: widget.date,
-                                      uniquId: widget.uniquID,
+                                      uniquID: widget.uniquID,
                                     )));
+                        sharedpref.setString('name', widget.name);
+                        sharedpref.setString(
+                          'number',
+                          _selectedOptions.length.toString(),
+                        );
+                        sharedpref.setString(
+                            'date', widget.date.toIso8601String());
+                        sharedpref.setString('uniquID', widget.uniquID);
                       },
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               widget.name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -330,12 +339,12 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
               children: [
                 Text(
                   'SAR ${(double.parse(widget.price) * (1 - double.parse(widget.dis) / 100)).toStringAsFixed(2)}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Text(
@@ -349,7 +358,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
                 GestureDetector(
@@ -357,29 +366,29 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (_) => ReviewPage()));
                   },
-                  child: Text(
+                  child: const Text(
                     "شاهد كل المراجعات",
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
                 ),
-                Spacer(),
-                Icon(
+                const Spacer(),
+                const Icon(
                   Icons.star,
                   color: Colors.yellow,
                 ),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
                   '${widget.rating} (1,205)',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               widget.about,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
@@ -387,14 +396,14 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
               onPressed: () {
                 // Show more description
               },
-              child: Text(
+              child: const Text(
                 'See more',
                 style: TextStyle(color: primary),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             widget.type == 'offers'
-                ? Center(
+                ? const Center(
                     child: Text(
                       'لا توجد اضافات الان ',
                       style: TextStyle(
@@ -403,7 +412,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                       ),
                     ),
                   )
-                : Text(
+                : const Text(
                     ':Additional Options',
                     style: TextStyle(
                       fontSize: 16,
@@ -412,7 +421,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                   ),
             Expanded(
               flex: widget.type == 'offers' ? 1 : 2,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: ListView.builder(
@@ -432,11 +441,11 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Card(
               surfaceTintColor: Colors.white,
               elevation: 5,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.08,
                 child: Row(
@@ -451,7 +460,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                       onPressed: sharedpref.getDouble("lat") != null
                           ? _addToCart
                           : _showDialog,
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
@@ -470,7 +479,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 150,
                       height: 50,
                       child: Row(
@@ -489,12 +498,12 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(color: Colors.grey),
                               ),
-                              child: Icon(Icons.remove),
+                              child: const Icon(Icons.remove),
                             ),
                           ),
                           Text(
                             '$_quantity',
-                            style: TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 16),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -509,7 +518,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(color: Colors.grey),
                               ),
-                              child: Icon(Icons.add),
+                              child: const Icon(Icons.add),
                             ),
                           ),
                         ],
@@ -532,7 +541,8 @@ class OptionItem extends StatelessWidget {
   final bool value;
   final ValueChanged<bool?> onChanged;
 
-  OptionItem({
+  const OptionItem({
+    super.key,
     required this.label,
     required this.price,
     required this.value,
@@ -550,12 +560,12 @@ class OptionItem extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           '+ SAR $price',
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

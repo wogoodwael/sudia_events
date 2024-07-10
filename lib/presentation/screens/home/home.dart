@@ -20,6 +20,7 @@ import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/login.dart';
 
 import 'package:intl/intl.dart' as intl;
+import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/screens/home/booking.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 import 'package:sudia_events/presentation/screens/home/location.dart';
@@ -198,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(
@@ -237,9 +238,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Icon(Icons.location_on_rounded),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.location_on_rounded),
+                    const SizedBox(width: 10),
                   ],
                 ),
               ),
@@ -260,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Stack(
               children: <Widget>[
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopping_cart_outlined,
                     color: primary,
                     size: 25,
@@ -269,27 +270,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => CheckoutScreenOverView(
-                                  id: widget.id,
-                                )));
+                          builder: (_) => CheckoutScreen(
+                            name: sharedpref.getString('name')!,
+                            number: sharedpref.getString('number')!,
+                            date: DateTime.parse(sharedpref.getString(
+                                'date')!), // Convert String to DateTime
+                            uniquID: sharedpref.getString('uniquID')!,
+                          ),
+                        ));
                   },
                 ),
                 Positioned(
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       minWidth: 12,
                       minHeight: 12,
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -340,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           SingleChildScrollView(
@@ -376,18 +382,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontSize: 15,
                       fontWeight: FontWeight.w400),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 IconButton(
                   iconSize: 30,
-                  icon: Icon(Icons.add_circle_rounded),
+                  icon: const Icon(Icons.add_circle_rounded),
                   onPressed: () {
                     widget.id == '123'
                         ? showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text(" يجب تسجيل الدخول"),
-                                content: Text(
+                                title: const Text(" يجب تسجيل الدخول"),
+                                content: const Text(
                                     "لكي تقوم بانشاء مناسبه يجب تسجيل الدخول اولا "),
                                 actions: [
                                   TextButton(
@@ -397,14 +403,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MaterialPageRoute(
                                               builder: (_) => LoginScreen()));
                                     },
-                                    child: Text("حسنا"),
+                                    child: const Text("حسنا"),
                                   )
                                 ],
                               );
                             },
                           )
-                        : Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => BookingScreen()));
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const BookingScreen()));
                   },
                 ),
               ],
@@ -428,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(
+                    return const Center(
                       child: Text("لم تقم بحجز اي مناسبات بعد"),
                     );
                   } else {
@@ -459,8 +467,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 eventDate.month == now.month &&
                                 eventDate.day == now.day + 1;
 
-                            bool isAfterWeek =
-                                eventDate.isAfter(now.add(Duration(days: 5)));
+                            bool isAfterWeek = eventDate
+                                .isAfter(now.add(const Duration(days: 5)));
 
                             // Determine the message to display
                             String message;
@@ -504,14 +512,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Icon(Icons.close),
+                                          child: const Icon(Icons.close),
                                         ),
                                       ),
                                       surfaceTintColor: Colors.white,
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          CircleAvatar(
+                                          const CircleAvatar(
                                             radius: 20,
                                             backgroundColor: Colors.green,
                                             child: Text(
@@ -520,19 +528,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   color: Colors.white),
                                             ),
                                           ),
-                                          SizedBox(height: 10),
-                                          Text(
+                                          const SizedBox(height: 10),
+                                          const Text(
                                             "تفاصيل",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           Text("$dayName  $date"),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           Container(
                                             width: .5 * mediawidth(context),
                                             height: 40,
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               border:
                                                   Border(bottom: BorderSide()),
                                             ),
@@ -541,15 +549,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text("حالة الحجز"),
-                                                Text("مكرر "),
+                                                const Text("حالة الحجز"),
+                                                const Text("مكرر "),
                                                 Text(event.type),
                                               ],
                                             ),
                                           ),
-                                          SizedBox(height: 10),
-                                          Text("المحتفي به "),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
+                                          const Text("المحتفي به "),
+                                          const SizedBox(height: 10),
                                           Container(
                                             width: .5 * mediawidth(context),
                                             height: 40,
@@ -564,8 +572,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   : "لا يوجد معلومات"),
                                             ),
                                           ),
-                                          SizedBox(height: 20),
-                                          Row(
+                                          const SizedBox(height: 20),
+                                          const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
@@ -641,7 +649,8 @@ class EventContainer extends StatefulWidget {
   final String date;
   final Color? color;
 
-  EventContainer({
+  const EventContainer({
+    super.key,
     required this.time,
     required this.title,
     required this.name,
@@ -715,7 +724,7 @@ class _EventContainerState extends State<EventContainer> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             widget.time,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.red,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -723,8 +732,8 @@ class _EventContainerState extends State<EventContainer> {
           ),
         ),
         Container(
-          margin: EdgeInsets.all(5),
-          padding: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
@@ -763,7 +772,7 @@ class _EventContainerState extends State<EventContainer> {
                         ),
                         Text(
                           widget.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -771,29 +780,30 @@ class _EventContainerState extends State<EventContainer> {
                         ),
                         Text(
                           widget.location,
-                          style: TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ],
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     children: [
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.green[50],
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           widget.clock,
-                          style: TextStyle(color: Colors.green, fontSize: 14),
+                          style: const TextStyle(
+                              color: Colors.green, fontSize: 14),
                         ),
                       ),
                       Text(
                         widget.date,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -805,7 +815,7 @@ class _EventContainerState extends State<EventContainer> {
                     width: 190,
                     height: 1,
                     color: Colors.grey,
-                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
                   ),
                   GestureDetector(
                     onTap: () {

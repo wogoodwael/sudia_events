@@ -32,9 +32,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   double _subtotal = 0.0;
   double _discount = 0.0;
   double _total = 0.0;
-  final double _deliveryFee = 20.0;
-  bool public = false; // Assuming a fixed delivery fee
 
+  bool public = false; // Assuming a fixed delivery fee
+  List text = [
+    'إضافة حجزك في مناسبة . 😊😊',
+    'بطاقة بطاقة M24002',
+    ' رابط احتفال المناسبة'
+  ];
+  List<bool> value = [false, false, false];
   @override
   void initState() {
     super.initState();
@@ -74,7 +79,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     });
 
     _discount = _subtotal * 0.20;
-    _total = _subtotal - _discount + _deliveryFee;
+    _total = _subtotal - _discount;
   }
 
   Future<void> _uploadCheckoutData() async {
@@ -96,7 +101,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'timestamp': widget.date,
             'subtotal': _subtotal,
             'discount_amount': _discount,
-            'delivery_fee': _deliveryFee,
+            'delivery_fee': 0,
             'total': _total,
             'status': 'pending',
             'uniquID': sharedpref.getString("uniquId"),
@@ -315,7 +320,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   height: 20,
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                     color: Colors.white,
                     width: .9 * mediawidth(context),
@@ -323,44 +328,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Container(
-                            width: .9 * mediawidth(context),
-                            height: 60,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey.withOpacity(.5)),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 8.0, right: 8, top: 5),
-                                      child: Icon(
-                                        Icons.account_balance_wallet,
-                                        color: primary,
-                                      ),
-                                    ),
-                                    Text("طريقة الدفع")
-                                  ],
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text(
-                                    "كاش ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: .02 * mediaheight(context),
-                          ),
                           Container(
                             width: .9 * mediawidth(context),
                             height: 60,
@@ -437,13 +404,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: .02 * mediaheight(context),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
                                 'المجموع',
                                 style: TextStyle(
-                                    fontSize: 16.0, color: Colors.grey),
+                                  fontSize: 16.0,
+                                ),
                               ),
                               Text(
                                 'SAR${_subtotal.toStringAsFixed(2)}',
@@ -458,7 +429,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               Text(
                                 'مقدار الخصم',
                                 style: TextStyle(
-                                    fontSize: 16.0, color: Colors.grey),
+                                  fontSize: 16.0,
+                                ),
                               ),
                               Text(
                                 '20%',
@@ -473,7 +445,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               const Text(
                                 'مبلغ الخصم',
                                 style: TextStyle(
-                                    fontSize: 16.0, color: Colors.grey),
+                                  fontSize: 16.0,
+                                ),
                               ),
                               Text(
                                 'SAR${_discount.toStringAsFixed(2)}',
@@ -482,21 +455,33 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ],
                           ),
-                          const Divider(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'التوصيل',
-                                style: TextStyle(
-                                    fontSize: 16.0, color: Colors.grey),
-                              ),
-                              Text(
-                                'SAR${_deliveryFee.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                    fontSize: 16.0, color: Colors.black),
-                              ),
-                            ],
+                          const Divider(
+                            thickness: 3,
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(
+                                3,
+                                (index) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical:
+                                              0.0), // Adjust this padding as needed
+                                      child: Row(
+                                        children: [
+                                          Checkbox(
+                                              activeColor: primary,
+                                              value: value[index],
+                                              onChanged: (val) {
+                                                setState(() {
+                                                  value[index] = val!;
+                                                });
+                                              }),
+                                          Text(text[index]),
+                                          const Spacer(),
+                                          const Text('SAR  10.00'),
+                                        ],
+                                      ),
+                                    )),
                           ),
                           const Divider(),
                           Row(
@@ -521,85 +506,108 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ],
                           ),
                           const SizedBox(height: 16.0),
-                          Card(
-                            color: Colors.white,
-                            surfaceTintColor: Colors.white,
-                            elevation: 5,
-                            child: SizedBox(
-                              width: .9 * mediawidth(context),
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                mainAxisSize: MainAxisSize.min,
+                          RadioListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: Row(
                                 children: [
-                                  MaterialButton(
-                                    minWidth: 150,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    color: primary,
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('تاكيد  الدفع'),
-                                            content: const Text(
-                                                'هل انت متاكد من حجز الخدمة ؟ '),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  _uploadCheckoutData();
-                                                  _removeFromCheckOut();
-                                                  // Close the dialog
-                                                },
-                                                child: const Text('نعم'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Close the dialog
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            BottomBarScreen(
-                                                              uniquId: widget
-                                                                  .uniquID,
-                                                              date: widget.date,
-                                                              id: sharedpref
-                                                                  .getString(
-                                                                      'token')!,
-                                                              public: false,
-                                                            )),
-                                                  );
-                                                },
-                                                child: const Text('لا'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const Text(
-                                      "الدفع",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                  const Text('أحصل على هذا الحجز مع '),
+                                  const Spacer(),
+                                  Image.asset(
+                                    "assets/images/tabby.png",
+                                    width: 50,
                                   ),
-                                  Text(
-                                    'SAR${_total.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
+                                  Image.asset(
+                                    "assets/images/tamara.png",
+                                    width: 50,
                                   ),
                                 ],
                               ),
+                              value: true,
+                              groupValue: 1,
+                              onChanged: (val) {}),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(.2),
+                                      blurRadius: 1,
+                                      spreadRadius: 1)
+                                ],
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20))),
+                            width: mediawidth(context),
+                            height: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                MaterialButton(
+                                  minWidth: 120,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  color: primary,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('تاكيد  الدفع'),
+                                          content: const Text(
+                                              'هل انت متاكد من حجز الخدمة ؟ '),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                _uploadCheckoutData();
+                                                _removeFromCheckOut();
+                                                // Close the dialog
+                                              },
+                                              child: const Text('نعم'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          BottomBarScreen(
+                                                            uniquId:
+                                                                widget.uniquID,
+                                                            date: widget.date,
+                                                            id: sharedpref
+                                                                .getString(
+                                                                    'token')!,
+                                                            public: false,
+                                                          )),
+                                                );
+                                              },
+                                              child: const Text('لا'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: const Text(
+                                    "الدفع",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'SAR   ${_total.toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
