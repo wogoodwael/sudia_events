@@ -67,13 +67,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ],
-        title: Text('المفضلة'),
+        title: const Text('المفضلة'),
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('users')
@@ -88,8 +88,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             return Stack(
               children: <Widget>[
                 IconButton(
-                  icon: Icon(
-                    Icons.shopify_sharp,
+                  icon: const Icon(
+                    Icons.favorite,
                     color: primary,
                     size: 25,
                   ),
@@ -101,18 +101,18 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       minWidth: 12,
                       minHeight: 12,
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -132,7 +132,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             controller: controller,
             onTap: () {},
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Expanded(
@@ -145,7 +145,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -153,7 +153,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No favorites found'));
+                  return const Center(child: Text('No favorites found'));
                 }
 
                 var favorites = snapshot.data!.docs;
@@ -161,7 +161,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     _filterFavorites(favorites, searchQuery);
 
                 return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 3 / 4,
                     mainAxisSpacing: 10,
@@ -172,7 +172,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     var favorite = filteredFavorites[index];
                     var data = favorite.data() as Map<String, dynamic>;
                     return Container(
-                      margin: EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
                       child: Card(
                         color: Colors.white,
                         surfaceTintColor: Colors.white,
@@ -192,7 +192,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                     onTap: () async {
                                       await _removeFromFavorites(favorite.id);
                                     },
-                                    child: CircleAvatar(
+                                    child: const CircleAvatar(
                                       radius: 15,
                                       backgroundColor: Colors.white,
                                       child: Icon(
@@ -212,8 +212,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 children: [
                                   Text(data['name'] ?? data['des'],
                                       style: GoogleFonts.cairo(fontSize: 16)),
-                                  SizedBox(height: 4),
-                                  Row(
+                                  const SizedBox(height: 4),
+                                  const Row(
                                     children: [
                                       Text('4.9',
                                           style:
@@ -222,14 +222,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                           color: Colors.orange, size: 16),
                                     ],
                                   ),
-                                  SizedBox(height: 4),
+                                  const SizedBox(height: 4),
                                   Text('SAR ${data['price']}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           decoration:
                                               TextDecoration.lineThrough)),
                                   Text(
                                       'SAR ${data['discount'] ?? data['price']}',
-                                      style: TextStyle(color: Colors.red)),
+                                      style:
+                                          const TextStyle(color: Colors.red)),
                                 ],
                               ),
                             ),

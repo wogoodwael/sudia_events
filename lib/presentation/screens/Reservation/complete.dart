@@ -1,9 +1,34 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sudia_events/core/utils/constants.dart';
+import 'package:sudia_events/core/utils/strings.dart';
 
 class BookingSummaryScreen extends StatelessWidget {
   final String img;
-  const BookingSummaryScreen({super.key, required this.img});
+  final String name;
+  final String price;
+  final String discount;
+  final List options;
+  final String subtotal;
+  final String discountf;
+  final String total;
+  final String number;
+  final String type;
+  const BookingSummaryScreen({
+    super.key,
+    required this.img,
+    required this.name,
+    required this.price,
+    required this.discount,
+    required this.options,
+    required this.subtotal,
+    required this.total,
+    required this.discountf,
+    required this.number,
+    required this.type,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +39,7 @@ class BookingSummaryScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Add back button functionality here
+            Navigator.pop(context);
           },
         ),
       ),
@@ -24,15 +49,30 @@ class BookingSummaryScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const BookingHeader(),
+              BookingHeader(
+                number: number,
+                type: type,
+              ),
               const SizedBox(height: 16),
               BookingDetails(
                 img: img,
+                name: name,
+                price: price,
+                discount: discount,
+                options: options,
               ),
               const SizedBox(height: 16),
-              const BookingTotal(),
-              const SizedBox(height: 16),
-              const DownloadInvoiceButton(),
+              BookingTotal(
+                subtotal: subtotal,
+                discount: discountf,
+                total: total,
+              ),
+              const SizedBox(height: 5),
+              type == 'مكتمل'
+                  ? DownloadInvoiceButton(
+                      number: number,
+                    )
+                  : Container(),
               const SizedBox(height: 16),
               const RebookButton(),
             ],
@@ -44,7 +84,9 @@ class BookingSummaryScreen extends StatelessWidget {
 }
 
 class BookingHeader extends StatelessWidget {
-  const BookingHeader({super.key});
+  final String number;
+  final String type;
+  const BookingHeader({super.key, required this.number, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -55,26 +97,35 @@ class BookingHeader extends StatelessWidget {
           width: 70,
           height: 30,
           decoration: BoxDecoration(
-            color: Colors.green.withOpacity(0.1),
+            color: type == 'مكتمل'
+                ? Colors.green.withOpacity(0.1)
+                : Colors.grey.withOpacity(.2),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
-              "مكتمل",
-              style: TextStyle(color: Colors.green),
+              type,
+              style: TextStyle(
+                  color: type == 'مكتمل' ? Colors.green : Colors.grey),
             ),
           ),
         ),
         const SizedBox(
           height: 20,
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("حجز رقم "),
             Text(
-              'SP 0023901',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              "حجز رقم ",
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              number,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -85,70 +136,201 @@ class BookingHeader extends StatelessWidget {
 
 class BookingDetails extends StatelessWidget {
   final String img;
-  const BookingDetails({super.key, required this.img});
+  final String name;
+  final String price;
+  final String discount;
+  final List options;
+
+  const BookingDetails(
+      {super.key,
+      required this.img,
+      required this.name,
+      required this.price,
+      required this.discount,
+      required this.options});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2.0,
+      surfaceTintColor: Colors.white,
+      elevation: 10.0,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            Column(
               children: [
-                Image.network(
-                  img, // Replace with the actual image URL
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(width: 16),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'ورود الطايف',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'SAR 200.00  SAR 150.00',
-                        style: TextStyle(
-                          color: Colors.red,
-                          decoration: TextDecoration.lineThrough,
+                Row(
+                  children: [
+                    Image.network(
+                      img, // Replace with the actual image URL
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'SAR 150.00',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'SAR 0.50\nSAR 2.00',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      SizedBox(height: 8),
-                      Row(
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text(
+                              'SAR $price',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'SAR $discount',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 4.0),
+                    const Divider(),
+                    ...options.map((option) {
+                      return Column(
                         children: [
-                          Icon(Icons.star, color: Colors.yellow, size: 20),
-                          Text('4.9', style: TextStyle(fontSize: 16)),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${option['option']}',
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  ' SAR${option['price']}',
+                                  style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.red,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Repeat _OrderItem as needed based on your data structure
                         ],
-                      ),
-                    ],
-                  ),
+                      );
+                    }),
+                    const SizedBox(height: 8),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(Icons.star, color: Colors.yellow, size: 20),
+                        Text('4.9', style: TextStyle(fontSize: 16)),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            const Text(
-              'التوصيل إلى: المنزل\n212 حي الخالدية - جدة - المملكة العربية السعودية',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                const Icon(
+                  Icons.location_on_outlined,
+                  size: 20,
+                  color: Colors.grey,
+                ),
+                Text(
+                  'التوصيل إلى: المنزل',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
+            Text(
+              '212 حي الخالدية - جدة - المملكة العربية السعودية',
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                  5,
+                  (index) => Icon(
+                        Icons.star,
+                        color: Colors.yellow[800],
+                      )),
+            ),
+            Container(
+              width: mediawidth(context),
+              height: 90,
+              decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(.2),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(10),
+                        hintText: 'اكتب رايك',
+                        hintStyle: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                        border: InputBorder.none),
+                  ),
+                  const Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            size: 20,
+                            color: Colors.grey,
+                          ),
+                          Icon(
+                            Icons.photo,
+                            size: 20,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -157,54 +339,140 @@ class BookingDetails extends StatelessWidget {
 }
 
 class BookingTotal extends StatelessWidget {
-  const BookingTotal({super.key});
+  final String subtotal;
+  final String discount;
+  final String total;
+  const BookingTotal(
+      {super.key,
+      required this.subtotal,
+      required this.discount,
+      required this.total});
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
-      elevation: 2.0,
+    return Card(
+      surfaceTintColor: Colors.white,
+      elevation: 0,
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('المجموع'),
-                Text('SAR 150.00'),
+                Text(
+                  'المجموع',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  subtotal,
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('مقدار الخصم'),
-                Text('20%'),
+                Text(
+                  'مقدار الخصم',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  '20%',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('مبلغ الخصم'),
-                Text('SAR 115.00'),
+                Text(
+                  'مبلغ الخصم',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  discount,
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
               ],
+            ),
+            const Divider(
+              height: 3,
+              thickness: 1,
+              color: Colors.black,
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment
+                  .start, // Change this to MainAxisAlignment.start
+              children: [
+                Transform.scale(
+                  scale: .7,
+                  child: Checkbox(
+                      activeColor: Colors.grey,
+                      value: true,
+                      onChanged: (va) {}),
+                ),
+                Text(
+                  'إضافة حجزك في مناسبة😊😇',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'SAR 10.00',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            const Divider(
+              height: 3,
+              thickness: 1,
+              color: Colors.black,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('إضافة حجزك في مناسبة 😊😇'),
-                Text('SAR 10.00'),
+                Text('الإجمالي',
+                    style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w400, fontSize: 18)),
+                Text(total,
+                    style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.green)),
               ],
             ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('الإجمالي', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('SAR 125.00',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.green)),
-              ],
-            ),
+            const Divider(
+              height: 5,
+              thickness: 1,
+              color: Colors.black,
+            )
           ],
         ),
       ),
@@ -213,17 +481,23 @@ class BookingTotal extends StatelessWidget {
 }
 
 class DownloadInvoiceButton extends StatelessWidget {
-  const DownloadInvoiceButton({super.key});
+  final String number;
+  const DownloadInvoiceButton({super.key, required this.number});
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: () {
-        // Add download invoice functionality here
-      },
-      icon: const Icon(Icons.download),
-      label: const Text('تحميل فاتورة الحجز'),
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Text(
+          "تحميل فاتورة الحجز",
+          style: GoogleFonts.roboto(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+        Text(
+          number,
+          style: GoogleFonts.roboto(fontWeight: FontWeight.w600, fontSize: 16),
+        )
+      ],
     );
   }
 }
@@ -233,12 +507,44 @@ class RebookButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        // Add rebook functionality here
-      },
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-      child: const Text('إعادة الحجز'),
+    return Container(
+      width: mediawidth(context),
+      height: 100,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 5)
+        ],
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      child: Center(
+        child: MaterialButton(
+          height: 40,
+          color: primary,
+          minWidth: .8 * mediawidth(context),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          onPressed: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "اعادة الحجز ",
+                style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white),
+              ),
+              const Icon(
+                Icons.shopping_bag,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

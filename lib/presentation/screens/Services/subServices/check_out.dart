@@ -8,6 +8,7 @@ import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
+import 'package:sudia_events/presentation/screens/Review/order_rating.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -22,7 +23,8 @@ class CheckoutScreen extends StatefulWidget {
       required this.name,
       required this.number,
       required this.date,
-      required this.uniquID, required this.img});
+      required this.uniquID,
+      required this.img});
 
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -40,11 +42,49 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     'بطاقة بطاقة M24002',
     ' رابط احتفال المناسبة'
   ];
+  List images = [];
+  List texts = [];
   List<bool> value = [false, false, false];
   @override
   void initState() {
     super.initState();
     _fetchCheckoutItems();
+  }
+
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: const Text('تم تنفيذ حجزك بنجاح '),
+              content: Column(mainAxisSize: MainAxisSize.min, children: [
+                Image.asset("assets/images/Wrapper.png"),
+                const Text("نتمى لك يوماً سعيداً"),
+                const Text("ونرجو تقييم خدماتنا")
+              ]),
+              actions: <Widget>[
+                Center(
+                  child: MaterialButton(
+                    color: primary,
+                    minWidth: .8 * mediawidth(context),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => OrderRatingScreen(
+                                    orders: _checkoutItems,
+                                    images: images,
+                                    texts: texts,
+                                  ))); // Close the dialog
+                    },
+                    child: const Text(
+                      "ok",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                )
+              ]);
+        });
   }
 
   Future<void> _fetchCheckoutItems() async {
@@ -118,15 +158,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           Colors.green,
           .75 * mediaheight(context),
         );
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => BottomBarScreen(
-                      id: sharedpref.getString('token')!,
-                      public: true,
-                      uniquId: widget.uniquID,
-                      date: widget.date,
-                    )));
+
         // Optionally, clear the checkout items or navigate to a success screen
       }
     } on Exception catch (e) {
@@ -200,6 +232,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         String all =
                             (double.parse(item['price']) + optionsTotalPrice)
                                 .toString();
+                        images.add(item['img']);
+                        texts.add(item['name']);
+                        print("texts$texts");
                         return Card(
                           color: Colors.white,
                           surfaceTintColor: Colors.white,
@@ -563,6 +598,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               onPressed: () {
                                                 _uploadCheckoutData();
                                                 _removeFromCheckOut();
+                                                _showDialog();
                                                 // Close the dialog
                                               },
                                               child: const Text('نعم'),

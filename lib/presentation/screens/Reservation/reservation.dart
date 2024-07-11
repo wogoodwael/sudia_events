@@ -315,6 +315,26 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                     BookingSummaryScreen(
                                                                       img: reservation[
                                                                           'img'],
+                                                                      name: reservation[
+                                                                          'item_name'],
+                                                                      price: reservation[
+                                                                          'price'],
+                                                                      discount:
+                                                                          reservation[
+                                                                              'discount'],
+                                                                      options:
+                                                                          reservation[
+                                                                              'options'],
+                                                                      subtotal:
+                                                                          '${reservation['subtotal']}',
+                                                                      total:
+                                                                          '${reservation['total']}',
+                                                                      discountf:
+                                                                          '${reservation['discount_amount'].toStringAsFixed(2)}',
+                                                                      number:
+                                                                          '${reservation['uniquID'].split('-').last}',
+                                                                      type:
+                                                                          'مكتمل',
                                                                     )));
                                                       },
                                                       child: Text(
@@ -361,7 +381,34 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                           20)),
                                                           color:
                                                               Colors.grey[300],
-                                                          onPressed: () {},
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (_) =>
+                                                                        BookingSummaryScreen(
+                                                                          img: reservation[
+                                                                              'img'],
+                                                                          name:
+                                                                              reservation['item_name'],
+                                                                          price:
+                                                                              reservation['price'],
+                                                                          discount:
+                                                                              reservation['discount'],
+                                                                          options:
+                                                                              reservation['options'],
+                                                                          subtotal:
+                                                                              '${reservation['subtotal']}',
+                                                                          total:
+                                                                              '${reservation['total']}',
+                                                                          discountf:
+                                                                              '${reservation['discount_amount'].toStringAsFixed(2)}',
+                                                                          number:
+                                                                              '${reservation['uniquID'].split('-').last}',
+                                                                          type:
+                                                                              'ملغي',
+                                                                        )));
+                                                          },
                                                           child: const Text(
                                                               "ملغي"),
                                                         )

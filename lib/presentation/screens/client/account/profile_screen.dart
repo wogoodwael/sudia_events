@@ -12,11 +12,18 @@ import 'package:sudia_events/data/model/user_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/login.dart';
+import 'package:sudia_events/presentation/screens/Review/order_rating.dart';
+import 'package:sudia_events/presentation/screens/client/account/feedback.dart';
+import 'package:sudia_events/presentation/screens/client/account/help_center.dart';
+import 'package:sudia_events/presentation/screens/client/account/invite_freinds.dart';
 import 'package:sudia_events/presentation/screens/client/account/message.dart';
+import 'package:sudia_events/presentation/screens/client/account/trending.dart';
 import 'package:sudia_events/presentation/screens/client/account/user_profile.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -34,11 +41,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset("assets/images/notify.png"),
-              Text(
+              const Text(
                 "Notification",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text(
+              const Text(
                   "please Enable The notification to recieve updates and reminders?"),
             ],
           ),
@@ -50,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: primary,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  child: Text(
+                  child: const Text(
                     "Turn on",
                     style: TextStyle(
                         color: Colors.white,
@@ -80,9 +87,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   minWidth: .9 * mediawidth(context),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: primary),
+                      side: const BorderSide(color: primary),
                       borderRadius: BorderRadius.circular(20)),
-                  child: Text("Skip for now "),
+                  child: const Text("Skip for now "),
                   onPressed: () {
                     Navigator.of(context).pop();
                     setState(() {
@@ -128,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         notification.hashCode,
         notification.title,
         notification.body,
-        NotificationDetails(
+        const NotificationDetails(
           android: AndroidNotificationDetails(
             'high_importance_channel',
             'High Importance Notifications',
@@ -161,24 +168,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               // Add back button functionality
             },
           ),
         ],
-        title: Text('Account'.tr(), style: TextStyle(color: Colors.black)),
+        title:
+            Text('Account'.tr(), style: const TextStyle(color: Colors.black)),
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.more_horiz_outlined),
+          icon: const Icon(Icons.more_horiz_outlined),
           onPressed: () {
             // Add more options functionality
           },
         ),
         elevation: 0,
       ),
-      body: Container(
+      body: SizedBox(
         width: mediawidth(context),
         height: mediaheight(context),
         child: SingleChildScrollView(
@@ -226,7 +234,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CircleAvatar(
                                 backgroundColor: primary,
                                 child: IconButton(
-                                  icon: Icon(Icons.edit, color: Colors.white),
+                                  icon: const Icon(Icons.edit,
+                                      color: Colors.white),
                                   onPressed: () {
                                     Navigator.push(
                                         context,
@@ -244,15 +253,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   children: [
                                     Text(
                                       snapshot.data?[0].name ?? "",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       children: [
                                         Text(snapshot.data?[0].phone ?? ""),
-                                        SizedBox(width: 8),
-                                        Icon(Icons.phone, size: 16),
+                                        const SizedBox(width: 8),
+                                        const Icon(Icons.phone, size: 16),
                                       ],
                                     ),
                                     Row(
@@ -260,8 +269,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Text(
                                           snapshot.data?[0].email ?? "",
                                         ),
-                                        SizedBox(width: 8),
-                                        Icon(Icons.email, size: 16),
+                                        const SizedBox(width: 8),
+                                        const Icon(Icons.email, size: 16),
                                       ],
                                     ),
                                   ],
@@ -291,12 +300,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     title: Center(
                                         child: Text(
                                       'log out'.tr(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     )),
                                     content: Text(
                                       'sure'.tr(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     actions: <Widget>[
@@ -309,7 +318,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             color: primary,
                                             child: Text(
                                               'next'.tr(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white),
                                             ),
                                             onPressed: () async {
@@ -342,14 +351,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Text(
                                   'log out'.tr(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: primary,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.exit_to_app,
                                   size: 15,
                                   color: primary,
@@ -364,85 +373,99 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.location_on),
+                leading: const Icon(Icons.location_on),
                 title: Text('location'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to addresses
                 },
               ),
               ListTile(
-                leading: Icon(Icons.favorite),
+                leading: const Icon(Icons.favorite),
                 title: Text('Favorite'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => FavouriteScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const FavouriteScreen()));
                 },
               ),
               ListTile(
-                leading: Icon(Icons.local_offer),
+                leading: const Icon(Icons.local_offer),
                 title: Text('trending'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Add navigation to promotional offers
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const PromotionScreen()));
                 },
               ),
               ListTile(
-                leading: Icon(Icons.payment),
+                leading: const Icon(Icons.payment),
                 title: Text('payment methods'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Add navigation to payment methods
-                },
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.account_balance_wallet),
+                leading: const Icon(Icons.account_balance_wallet),
                 title: Text('My wallet'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to wallet
                 },
               ),
               ListTile(
-                leading: Icon(Icons.message),
+                leading: const Icon(Icons.edit),
+                title: const Text('ملاحظات المستخدمين'),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => FeedbackScreen()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.message),
                 title: Text('Messages'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => MessageScreen()));
                 },
               ),
               ListTile(
-                leading: Icon(Icons.group_add),
+                leading: const Icon(Icons.group_add),
                 title: Text('join us'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to join us
                 },
               ),
               ListTile(
-                leading: Icon(Icons.person_add),
+                leading: const Icon(Icons.person_add),
                 title: Text('invite freinds'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Add navigation to invite friends
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => InviteFriendsScreen()));
                 },
               ),
               ListTile(
-                leading: Icon(Icons.security),
+                leading: const Icon(Icons.security),
                 title: Text('security'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   // Add navigation to security
                 },
               ),
               ListTile(
-                leading: Icon(Icons.help),
+                leading: const Icon(Icons.help),
                 title: Text('help center'.tr()),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Add navigation to help center
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => HelpCenterScreen()));
                 },
               ),
               Padding(
@@ -476,7 +499,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             'notification'.tr(),
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
                         Transform.scale(
@@ -509,7 +532,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             'Auto Update'.tr(),
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
                         Transform.scale(
@@ -531,7 +554,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             'sounds'.tr(),
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
                         Transform.scale(
@@ -550,35 +573,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: Text(
                         'Auto Update'.tr(),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle automatic updates
                       },
                     ),
                     ListTile(
                       title: Text('conditions'.tr()),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle terms of service
                       },
                     ),
                     ListTile(
                       title: Text('privacy policy'.tr()),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle privacy policy
                       },
                     ),
                     ListTile(
                       title: Text('terms of use'.tr()),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle replacement and refund policy
                       },
                     ),
                     ListTile(
-                      title: Text('About App'),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      title: const Text('About App'),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         // Handle about app
                       },
