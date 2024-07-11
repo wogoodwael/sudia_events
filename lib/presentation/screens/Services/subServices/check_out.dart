@@ -16,12 +16,13 @@ class CheckoutScreen extends StatefulWidget {
   final String number;
   final String uniquID;
   final DateTime date;
+  final String img;
   const CheckoutScreen(
       {super.key,
       required this.name,
       required this.number,
       required this.date,
-      required this.uniquID});
+      required this.uniquID, required this.img});
 
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -105,7 +106,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'total': _total,
             'status': 'pending',
             'uniquID': sharedpref.getString("uniquId"),
-            'type': "public"
+            'type': "public",
+            "img": widget.img
           });
           sharedpref.setString('uniquID', widget.uniquID);
           sharedpref.setString('date', widget.date.timeZoneName);

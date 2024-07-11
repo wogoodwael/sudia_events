@@ -311,12 +311,16 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                                       number:
                                           _selectedOptions.length.toString(),
                                       date: widget.date,
-                                      uniquID: widget.uniquID,
+                                      uniquID: widget.uniquID, img: widget.img,
                                     )));
                         sharedpref.setString('name', widget.name);
                         sharedpref.setString(
                           'number',
                           _selectedOptions.length.toString(),
+                        );
+                        sharedpref.setString(
+                          'img',
+                          widget.img,
                         );
                         sharedpref.setString(
                             'date', widget.date.toIso8601String());

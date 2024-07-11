@@ -276,6 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             date: DateTime.parse(sharedpref.getString(
                                 'date')!), // Convert String to DateTime
                             uniquID: sharedpref.getString('uniquID')!,
+                            img: sharedpref.getString('img')!,
                           ),
                         ));
                   },
