@@ -35,10 +35,10 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
   TextEditingController wife = TextEditingController();
   TextEditingController visitors = TextEditingController();
   String _selectedPrice = '';
-  String _selectedRadio = '';
-  String _selectedCheckbox = '';
+  final String _selectedRadio = '';
+  final String _selectedCheckbox = '';
   String _selectedCheckboxCard = '';
-  String _selectedImage = '';
+  final String _selectedImage = '';
   List<bool> isAddedToFavList = [];
 
   @override
@@ -66,7 +66,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
             return Stack(
               children: <Widget>[
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopify_rounded,
                     color: primary,
                     size: 25,
@@ -84,18 +84,18 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       minWidth: 12,
                       minHeight: 12,
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -107,10 +107,10 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
             );
           },
         ),
-        title: Text('بطاقة الدعوة'),
+        title: const Text('بطاقة الدعوة'),
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: () {},
           ),
         ],
@@ -122,7 +122,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InvitationForm(husband: husband, wife: wife, visitors: visitors,),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Container(
                 color: Colors.white,
                 width: .9 * mediawidth(context),
@@ -159,7 +159,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                                   date: widget.date,
                                 )));
                   },
-                  child: Text(
+                  child: const Text(
                     "التالي ",
                     style: TextStyle(color: Colors.white, fontSize: 17),
                   ),
@@ -219,7 +219,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
         borderRadius: BorderRadius.circular(8.0),
       ),
       elevation: 2.0,
-      child: Container(
+      child: SizedBox(
         width: 150,
         height: .25 * mediaheight(context),
         child: Column(
@@ -229,7 +229,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
               children: [
                 ClipRRect(
                   borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(8.0)),
+                      const BorderRadius.vertical(top: Radius.circular(8.0)),
                   child: Image.asset(
                     'assets/images/invitation.png',
                     height: 100,
@@ -264,7 +264,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Checkbox(
-                        side: BorderSide(color: Colors.grey),
+                        side: const BorderSide(color: Colors.grey),
                         value: _selectedCheckboxCard == title,
                         onChanged: (bool? value) {
                           setState(() {
@@ -274,7 +274,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                       ),
                       Text(
                         cardName,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                     ],
@@ -283,16 +283,16 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                 Center(
                   child: Text(
                     price,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text('4.9'),
+                    const Text('4.9'),
                     Icon(Icons.star, size: 20, color: Colors.yellow[600]),
-                    SizedBox(width: 4.0),
+                    const SizedBox(width: 4.0),
                   ],
                 ),
               ],
@@ -305,7 +305,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
 
   Widget _additionContainer(String label, BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.grey[50],
         borderRadius: BorderRadius.circular(8.0),
@@ -314,7 +314,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
             color: Colors.grey.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -323,7 +323,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
         children: [
           _buildTextField(
             labelText: 'اسم العريس',
-            icon: Icon(
+            icon: const Icon(
               Icons.person,
               color: Colors.grey,
             ),
@@ -335,7 +335,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
           ),
           _buildTextField(
             labelText: 'الإسم الإضافي ..',
-            icon: Icon(
+            icon: const Icon(
               Icons.check_circle,
             ),
             iconColor: Colors.orange,
@@ -348,7 +348,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
               width: .9 * mediawidth(context),
               height: 45,
               color: Colors.white,
-              child: Text(
+              child: const Text(
                 'مثال : اسم العروس\nإبنة - كريمة : محمد بن عبدالعزيز ..',
                 style: TextStyle(color: Colors.grey),
               ),
@@ -376,10 +376,10 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
               controller: controller,
               decoration: InputDecoration(
                 labelText: labelText,
-                labelStyle: TextStyle(color: Colors.grey),
+                labelStyle: const TextStyle(color: Colors.grey),
                 border: InputBorder.none,
                 prefixIcon: icon,
-                contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
               ),
             ),
           ),
@@ -412,10 +412,10 @@ class _InvitationFormState extends State<InvitationForm> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text('اسم العريس', style: TextStyle(fontSize: 15)),
             ),
             Center(
@@ -428,7 +428,7 @@ class _InvitationFormState extends State<InvitationForm> {
                   ),
                   child: TextField(
                     controller: widget.husband,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'محمد احمد ',
                         contentPadding: EdgeInsets.only(top: 10),
@@ -439,41 +439,63 @@ class _InvitationFormState extends State<InvitationForm> {
                         )),
                   )),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text('اختر', style: TextStyle(fontSize: 14)),
-            RadioListTile(
-              title: Align(
-                alignment: Alignment.centerRight,
-                child: Text("علي ابنة"),
-              ),
-              value: 1,
-              groupValue: _selectedRole,
-              onChanged: (val) {
-                setState(() {
-                  _selectedRole = val as int; // Ensure the type cast is to int
-                });
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              contentPadding: EdgeInsets.symmetric(horizontal: 0),
-            ),
-            RadioListTile(
-              title: Align(
-                alignment: Alignment.centerRight,
-                child: Text("علي كريمة"),
-              ),
-              value: 2,
-              groupValue: _selectedRole,
-              onChanged: (val) {
-                setState(() {
-                  _selectedRole = val as int; // Ensure the type cast is to int
-                });
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              contentPadding: EdgeInsets.symmetric(horizontal: 0),
-            ),
-            Center(
+            const Text('اختر', style: TextStyle(fontSize: 14)),
+                        Row(
+  mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+  children: [
+    Radio<int>(
+      value: 1,
+      groupValue: _selectedRole,
+      onChanged: (val) {
+        setState(() {
+          _selectedRole = val!;
+        });
+      },
+    ),
+    const Text("علي ابنة"),
+    
+  ],
+),
+        
+        
+                      Row(
+  mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+  children: [
+    Radio<int>(
+      value: 3,
+      groupValue: _selectedRole,
+      onChanged: (val) {
+        setState(() {
+          _selectedRole = val!;
+        });
+      },
+    ),
+    const Text("علي عروسة"),
+    
+  ],
+),
+        
+        
+            Row(
+  mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+  children: [
+    Radio<int>(
+      value: 2,
+      groupValue: _selectedRole,
+      onChanged: (val) {
+        setState(() {
+          _selectedRole = val!;
+        });
+      },
+    ),
+    const Text("علي كريمة"),
+    
+  ],
+),
+           Center(
               child: Container(
                   width: .8 * mediawidth(context),
                   height: 50,
@@ -483,7 +505,7 @@ class _InvitationFormState extends State<InvitationForm> {
                   ),
                   child: TextField(
                     controller: widget.wife,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'علي احمد الزهراني',
                         contentPadding: EdgeInsets.only(top: 10),
@@ -494,38 +516,37 @@ class _InvitationFormState extends State<InvitationForm> {
                         )),
                   )),
             ),
-            RadioListTile(
-              title: Align(
-                alignment: Alignment.centerRight,
-                child: Text("الداعي"),
-              ),
-              value: 1,
-              groupValue: _selectedBridegroom,
-              onChanged: (val) {
-                setState(() {
-                  _selectedBridegroom =
-                      val as int; // Ensure the type cast is to int
-                });
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              contentPadding: EdgeInsets.symmetric(horizontal: 0),
-            ),
-            RadioListTile(
-              title: Align(
-                alignment: Alignment.centerRight,
-                child: Text("الداعون"),
-              ),
-              value: 2,
-              groupValue: _selectedBridegroom,
-              onChanged: (val) {
-                setState(() {
-                  _selectedBridegroom =
-                      val as int; // Ensure the type cast is to int
-                });
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              contentPadding: EdgeInsets.symmetric(horizontal: 0),
-            ),
+              Row(
+      mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+      children: [
+        Radio<int>(
+          value: 1,
+          groupValue: _selectedBridegroom,
+          onChanged: (val) {
+            setState(() {
+              _selectedBridegroom = val!;
+            });
+          },
+        ),
+        const Text("الداعي"),
+        
+      ],
+    ),  Row(
+      mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+      children: [
+          Radio<int>(
+          value: 2,
+          groupValue: _selectedBridegroom,
+          onChanged: (val) {
+            setState(() {
+              _selectedBridegroom = val!;
+            });
+          },
+        ),
+        const Text("الداعون"),
+      
+      ],
+    ),
             Center(
               child: Container(
                   width: .8 * mediawidth(context),
@@ -536,22 +557,22 @@ class _InvitationFormState extends State<InvitationForm> {
                   ),
                   child: TextField(
                     controller: widget.visitors,
-                    decoration: InputDecoration(
+                    decoration:  InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'الاسم الاول - الاسم الثاني ',
-                        contentPadding: EdgeInsets.only(top: 10),
+                        hintText: _selectedBridegroom==2 ?'الاسم الاول - الاسم الثاني ':'الاسم الاول ',
+                        contentPadding: const EdgeInsets.only(top: 10),
                         hintTextDirection: TextDirection.rtl,
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.person,
                           color: Colors.grey,
                         )),
                   )),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text('العنوان', style: TextStyle(fontSize: 18)),
-            SizedBox(
+            const Text('العنوان', style: TextStyle(fontSize: 18)),
+            const SizedBox(
               height: 10,
             ),
             Center(
@@ -564,7 +585,7 @@ class _InvitationFormState extends State<InvitationForm> {
                   ),
                   child: TextField(
                     controller: _addressController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'قاعة السلام للاحتفالات الكبري ',
                         contentPadding: EdgeInsets.only(top: 10),
@@ -575,8 +596,8 @@ class _InvitationFormState extends State<InvitationForm> {
                         )),
                   )),
             ),
-            SizedBox(height: 16),
-            Text('التلفون', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 16),
+            const Text('التلفون', style: TextStyle(fontSize: 18)),
             Center(
               child: Container(
                 width: .8 * mediawidth(context),
@@ -589,8 +610,8 @@ class _InvitationFormState extends State<InvitationForm> {
                   padding: EdgeInsets.only(top: .01 * mediaheight(context)),
                   child: IntlPhoneField(
                     controller: _phoneController,
-                    dropdownIcon: Icon(Icons.keyboard_arrow_down_rounded),
-                    decoration: InputDecoration(
+                    dropdownIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(top: 5, left: 10),
                       border: InputBorder.none,
                       counterText: "",

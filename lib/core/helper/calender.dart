@@ -109,7 +109,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
           selectedDecoration:
               BoxDecoration(color: primary, shape: BoxShape.circle),
           todayDecoration:
-              BoxDecoration(color: primary, shape: BoxShape.circle)),
+              BoxDecoration(color: secondary, shape: BoxShape.circle)),
       eventLoader: widget.getEventsForDay,
       calendarFormat: CalendarFormat.month,
       startingDayOfWeek: StartingDayOfWeek.monday,

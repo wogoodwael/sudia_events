@@ -5,10 +5,12 @@ import 'package:intl/intl.dart'; // For date formatting
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Reservation/complete.dart';
 import 'package:sudia_events/presentation/screens/Reservation/delete_order.dart';
 import 'package:sudia_events/presentation/screens/Reservation/sechdual.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
+import 'package:sudia_events/presentation/screens/home/location.dart';
 import 'package:sudia_events/presentation/widgets/search.dart'; // Firestore package
 
 class ReservationScreen extends StatefulWidget {
@@ -55,23 +57,120 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('booked'.tr()),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.white,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
             ),
-            onPressed: () {},
-          ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              DateFormat('EEEE', 'ar').format(DateTime.now()),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => LocationScreen(
+                            lat: sharedpref.getDouble('lat')!,
+                            long: sharedpref.getDouble('long')!,
+                            fromHome: true,
+                          )));
+            },
+            child: Container(
+              width: 100,
+              height: 30,
+              decoration: BoxDecoration(color: Colors.yellow[100]),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'location'.tr(),
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.location_on_rounded),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
-        leading: IconButton(
-          icon: const Icon(
-            Icons.favorite_border,
-            color: Colors.white,
-          ),
-          onPressed: () {},
+        leading: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('SubServices')
+              .doc(widget.id)
+              .collection('checkout')
+              .snapshots(),
+          builder: (context, snapshot) {
+            int favoriteCount = 0;
+            if (snapshot.hasData) {
+              favoriteCount = snapshot.data!.docs.length;
+            }
+            return Stack(
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
+                    color: primary,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CheckoutScreen(
+                            name: sharedpref.getString('name')!,
+                            number: sharedpref.getString('number')!,
+                            date: DateTime.parse(sharedpref.getString(
+                                'date')!), // Convert String to DateTime
+                            uniquID: sharedpref.getString('uniquID')!,
+                            img: sharedpref.getString('img')!,
+                          ),
+                        ));
+                  },
+                ),
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: Text(
+                      '$favoriteCount',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
       body: reservations.isEmpty

@@ -16,12 +16,12 @@ import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 // ignore: must_be_immutable
 class VerifyScreen extends StatefulWidget {
   VerifyScreen({
-    Key? key,
+    super.key,
     required this.verificationId,
     required this.phone,
     this.email,
     this.register,  this.name,
-  }) : super(key: key);
+  });
 
   final String verificationId;
   final String phone;
@@ -41,6 +41,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
   bool loading = false;
   late Timer _timer;
   int _start = 15;
+  
+  String enteredOtp='';
 
   @override
   void initState() {
@@ -49,7 +51,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_start == 0) {
         setState(() {
           timer.cancel();
@@ -115,7 +117,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
+              child: SizedBox(
                 width: 400,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -125,11 +127,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     ),
                     Text(
                       "enter verify code".tr(),
-                      style: TextStyle(fontSize: 30),
+                      style: const TextStyle(fontSize: 30),
                     ),
                     Text(
                       "${"massage".tr()}${widget.phone.substring(widget.phone.length - 3)} ****** ${widget.phone.substring(0, 2)}",
-                      style: TextStyle(color: Colors.grey, fontSize: 17),
+                      style: const TextStyle(color: Colors.grey, fontSize: 17),
                     ),
                     OtpPinField(
                       key: _otpPinFieldController,
@@ -140,6 +142,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       onSubmit: (text) {
                         setState(() {
                           isOtpComplete = true;
+                                        enteredOtp = text;
+
                         });
                         print('Entered pin is $text');
                       },
@@ -154,6 +158,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         } else {
                           setState(() {
                             isOtpComplete = false;
+                            
                           });
                         }
                       },
@@ -192,10 +197,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         Center(
                           child: Text(
                             "dont recieve".tr(),
-                            style: TextStyle(fontSize: 17),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
@@ -203,23 +208,23 @@ class _VerifyScreenState extends State<VerifyScreen> {
                           children: [
                             Text(
                               '00:$_start',
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.timer_sharp,
                               size: 17,
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         GestureDetector(
                           onTap: _start == 0 ? _resendCode : null,
                           child: Text(
                             'resend'.tr(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.grey,
                             ),
                           ),
@@ -238,10 +243,9 @@ class _VerifyScreenState extends State<VerifyScreen> {
                           });
                           try {
                             PhoneAuthCredential credential =
-                                await PhoneAuthProvider.credential(
+                                PhoneAuthProvider.credential(
                               verificationId: widget.verificationId,
-                              smsCode: _otpPinFieldController.currentState!.text
-                                  .toString(),
+                              smsCode: enteredOtp
                             );
                             FirebaseAuth.instance
                                 .signInWithCredential(credential)
@@ -273,16 +277,16 @@ class _VerifyScreenState extends State<VerifyScreen> {
                           }
                         },
                         child: loading
-                            ? Container(
+                            ? const SizedBox(
                                 width: 30,
                                 height: 30,
-                                child: const CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   color: Colors.white,
                                 ),
                               )
                             : Text(
                                 "next".tr(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white, fontSize: 20),
                               ),
                       ),

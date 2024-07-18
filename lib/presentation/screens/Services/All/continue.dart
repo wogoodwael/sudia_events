@@ -17,6 +17,7 @@ class ContinueInvitation extends StatefulWidget {
   final String id;
   final String husband, wife, visitors;
   final DateTime date;
+ 
   const ContinueInvitation(
       {super.key,
       required this.id,
@@ -31,6 +32,7 @@ class ContinueInvitation extends StatefulWidget {
 
 class _ContinueInvitationState extends State<ContinueInvitation> {
   final GlobalKey _screenshotKey = GlobalKey();
+   bool view=false;
   String _selectedCheckbox = '';
   List<String> texts = [
     'دعوة زواج',
@@ -74,7 +76,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
     11,
     12,
   ];
-  List<int?> _selected = List<int?>.filled(
+  final List<int?> _selected = List<int?>.filled(
       6, null); // List to store selected values for each container
 
   @override
@@ -95,7 +97,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
             return Stack(
               children: <Widget>[
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopify_rounded,
                     color: primary,
                     size: 25,
@@ -113,18 +115,18 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       minWidth: 12,
                       minHeight: 12,
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -136,10 +138,10 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
             );
           },
         ),
-        title: Text('بطاقة الدعوة'),
+        title: const Text('بطاقة الدعوة'),
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -155,7 +157,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                 children: List.generate(
                     4,
                     (index) => Container(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           width: .9 * mediawidth(context),
                           height: 200,
                           decoration: BoxDecoration(
@@ -169,22 +171,22 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                                     title: Row(
                                       children: [
                                         Text(texts[index * 3 + index2],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 10,
                                                 color: Colors.grey)),
                                         Image.asset(images[index * 3 + index2]),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                       ],
                                     ),
                                     contentPadding:
-                                        EdgeInsets.symmetric(vertical: 0),
+                                        const EdgeInsets.symmetric(vertical: 0),
                                     value: value[index * 3 + index2],
                                     groupValue: _selected[index],
                                     onChanged: (val) {
                                       setState(() {
-                                        _selected[index] = val as int?;
+                                        _selected[index] = val;
                                       });
                                     })),
                           ),
@@ -202,7 +204,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                   color: Colors.white,
                   surfaceTintColor: Colors.white,
                   elevation: 5,
-                  child: Container(
+                  child: SizedBox(
                     width: .9 * mediawidth(context),
                     height: 50,
                     child: Row(
@@ -216,10 +218,46 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                           ),
                           color: primary,
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return RepaintBoundary(
+                            setState(() {
+                              view=!view;
+                            }); 
+                           
+                          },
+                          child: const Row(
+                            children: [
+                              Text(
+                                "معاينة",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.check_circle_outline,
+                                size: 15,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                        const Text(
+                          'SAR 15.00',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            view ? RepaintBoundary(
                                     key: _screenshotKey,
                                     child: AlertDialog(
                                       content: Stack(
@@ -227,7 +265,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                                           Container(
                                             width: mediawidth(context),
                                             height: .8 * mediaheight(context),
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                                 image: DecorationImage(
                                                     image: AssetImage(
                                                         'assets/images/1.png'),
@@ -253,7 +291,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                                                 backgroundColor: Colors.white,
                                                 child: IconButton(
                                                     onPressed: _shareScreenshot,
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.share,
                                                       size: 15,
                                                     )),
@@ -261,43 +299,8 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                                         ],
                                       ),
                                     ),
-                                  );
-                                });
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                "اضافة",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Icon(
-                                Icons.check_circle_outline,
-                                size: 15,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
-                        ),
-                        Text(
-                          'SAR 15.00',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                                  ):Container()
+                               
           ],
         ),
       ),
@@ -371,7 +374,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               texts[value.indexOf(_selected[i]!)],
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -383,18 +386,18 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
         // Add the strings after the second text
         if (i == 1) {
           selectedTexts.addAll([
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text(
               husband,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 17,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
+            const Text(
               "علي ابنة",
               style: TextStyle(
                 fontSize: 14,
@@ -404,20 +407,20 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
             ),
             Text(
               wife,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 17,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Image.asset("assets/images/2.png"),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
-            Text(
+            const Text(
               "ويشرفنا حضوركم الكريم ومشاركتنا فرحتنا وتناول طعام العشاء",
               style: TextStyle(
                 fontSize: 12,
@@ -426,12 +429,12 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text(
               "الموافق يوم ${DateFormat('yyyy/MM/dd').format(widget.date)}",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -444,8 +447,8 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
 
     // Add "المدعون :" after the last index
     selectedTexts.addAll([
-      Padding(
-        padding: const EdgeInsets.all(8.0),
+      const Padding(
+        padding: EdgeInsets.all(8.0),
         child: Text(
           'الداعون',
           style: TextStyle(
@@ -462,12 +465,12 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
             color: Colors.white, borderRadius: BorderRadius.circular(20)),
         child: Center(child: Text(visitors)),
       ),
-      SizedBox(
+      const SizedBox(
         height: 5,
       ),
       Text(
         selected,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12,
           color: Colors.white,
           fontWeight: FontWeight.bold,

@@ -29,7 +29,7 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   TimeOfDay _selectedTime = TimeOfDay.now();
   bool _isSwitched = false;
-  bool _isAgreed = false;
+  final bool _isAgreed = false;
   List<bool> onTapped = [false, false, false, false];
   TextEditingController name = TextEditingController();
   TextEditingController family = TextEditingController();
@@ -59,22 +59,22 @@ class _BookingScreenState extends State<BookingScreen> {
           child: SingleChildScrollView(
             child: Container(
               color: Colors.white,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Center(
+                  const Center(
                     child: Text('تفاصيل',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'الاسم',
                     style: TextStyle(color: Colors.grey, fontSize: 15),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Container(
                     width: double.infinity,
                     height: 40,
@@ -83,7 +83,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         border: Border.all(color: Colors.grey.withOpacity(.5))),
                     child: TextField(
                       controller: name,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 5),
                         prefixIcon: Icon(Icons.person),
                         border: InputBorder.none,
@@ -92,22 +92,22 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        '${DateFormat('yyyy/MM/dd').format(_selectedDay!)}',
-                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                        DateFormat('yyyy/MM/dd').format(_selectedDay!),
+                        style: const TextStyle(color: Colors.grey, fontSize: 15),
                       ),
                       Text(
-                        '${_selectedTime.format(context)}',
-                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                        _selectedTime.format(context),
+                        style: const TextStyle(color: Colors.grey, fontSize: 15),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Center(
                     child: Container(
                       width: .8 * mediawidth(context),
@@ -129,7 +129,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +143,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             width: 50,
                           ),
                         ),
-                        Text("ارسال بطاقة الدعوة"),
+                        const Text("ارسال بطاقة الدعوة"),
                       ],
                     ),
                   )
@@ -166,7 +166,7 @@ class _BookingScreenState extends State<BookingScreen> {
     String firstName = nameParts.isNotEmpty ? nameParts[0] : '';
     String familyName = nameParts.length > 1 ? nameParts[1] : '';
     String tribeName = nameParts.length > 2 ? nameParts[2] : '';
-    String uniqueID = Uuid().v4();
+    String uniqueID = const Uuid().v4();
     sharedpref.setString('uniquId', uniqueID);
     // Create a map representing the event data
     Map<String, dynamic> eventData = {
@@ -189,7 +189,11 @@ class _BookingScreenState extends State<BookingScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            icon: Align(alignment: Alignment.topLeft, child: Icon(Icons.close)),
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.pop(context); 
+              },
+              child: const Align(alignment: Alignment.topLeft, child: Icon(Icons.close))),
             title: Center(
               child: Text(
                 'تهانينا',
@@ -254,7 +258,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             )),
                   );
                 },
-                child: Text('ليس الان '),
+                child: const Text('ليس الان '),
               ),
             ],
           );
@@ -267,14 +271,14 @@ class _BookingScreenState extends State<BookingScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
+            title: const Text('Error'),
             content: Text('Failed to add event: $error'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -369,14 +373,14 @@ class _BookingScreenState extends State<BookingScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: Text(
           'booked'.tr(),
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
@@ -410,7 +414,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
                 getEventsForDay: _getEventsForDay,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -418,7 +422,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     child: Container(
                       width: .8 * mediawidth(context),
                       height: 40,
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8),
@@ -440,11 +444,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               ),
                             ),
                             SizedBox(width: .37 * mediawidth(context)),
-                            Text(
-                              _selectedTime.format(context),
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            GestureDetector(
+                                  GestureDetector(
                                 onTap: () async {
                                   final TimeOfDay? pickedTime =
                                       await showTimePicker(
@@ -458,25 +458,31 @@ class _BookingScreenState extends State<BookingScreen> {
                                     });
                                   }
                                 },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
+                                child: const Padding(
+                                  padding: EdgeInsets.only(right: 10.0),
                                   child: Icon(
                                     Icons.timer_sharp,
                                     size: 20,
                                     color: Colors.green,
                                   ),
                                 ))
-                          ],
+                          ,
+                          const SizedBox(width: 10,),
+                            Text(
+                              _selectedTime.format(context),
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                      ],
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(formattedDate,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 15),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -486,7 +492,8 @@ class _BookingScreenState extends State<BookingScreen> {
                   SizedBox(
                     width: .1 * mediawidth(context),
                   ),
-                  Text('مكرر',
+                  Text(                    _getEventsForDay(_selectedDay ?? DateTime.now()).isNotEmpty ? 'مكرر' : 'جديد',
+
                       style: GoogleFonts.inter(
                           fontSize: 10, fontWeight: FontWeight.w400)),
                   SizedBox(
@@ -503,46 +510,46 @@ class _BookingScreenState extends State<BookingScreen> {
                 endIndent: .2 * mediawidth(context),
               ),
               SizedBox(height: .05 * mediaheight(context)),
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.black87,
-                    radius: 10,
-                    child: GestureDetector(
-                      onTap: () {
+              GestureDetector(
+                onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => InvitationCardScreen(
-                                    id: Uuid().v4(), date: _selectedDay!)));
+                                    id: const Uuid().v4(), date: _selectedDay!)));
                       },
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: Colors.black87,
+                      radius: 10,
                       child: Icon(
                         Icons.add,
                         size: 13,
                         color: Colors.white,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "بطاقة الدعوة",
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
-                  ),
-                  Spacer(),
-                  Checkbox(
-                    value: true,
-                    onChanged: (val) {},
-                    activeColor: primary,
-                  ),
-                  Image.asset(
-                    "assets/images/locationb.png",
-                    width: 50,
-                  )
-                ],
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Text(
+                      "بطاقة الدعوة",
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                    ),
+                    const Spacer(),
+                    Checkbox(
+                      value: true,
+                      onChanged: (val) {},
+                      activeColor: primary,
+                    ),
+                    Image.asset(
+                      "assets/images/locationb.png",
+                      width: 50,
+                    )
+                  ],
+                ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               MaterialButton(
                 onPressed: () {
                   _showPopup(context);
@@ -552,13 +559,13 @@ class _BookingScreenState extends State<BookingScreen> {
                 color: _isAgreed ? primary : secondary,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                child: Text('التالي',
+                child: const Text('التالي',
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               MaterialButton(
                 onPressed: () {},
                 minWidth: .8 * mediawidth(context),
@@ -566,7 +573,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                child: Text('مشاهدة الحجوزات',
+                child: const Text('مشاهدة الحجوزات',
                     style: TextStyle(
                         fontSize: 20,
                         color: primary,
