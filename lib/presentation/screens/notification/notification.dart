@@ -4,11 +4,15 @@ import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/stepper.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
+import 'package:sudia_events/presentation/screens/Review/order_rating.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 // ignore: must_be_immutable
 class NotificationScreen extends StatelessWidget {
   TextEditingController controller = TextEditingController();
+
+  NotificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class NotificationScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_forward_ios,
               color: primary,
             ),
@@ -26,7 +30,7 @@ class NotificationScreen extends StatelessWidget {
           ),
         ],
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.favorite_border,
             color: primary,
           ),
@@ -34,7 +38,7 @@ class NotificationScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         children: [
           SearchContainernew(
             hintText: 'كود',
@@ -53,7 +57,7 @@ class NotificationScreen extends StatelessWidget {
                     builder: (context) => DraggableScrollableSheet(
                       expand: false,
                       builder: (context, scrollController) {
-                        return OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet();
                       },
                     ),
                   )),
@@ -69,7 +73,7 @@ class NotificationScreen extends StatelessWidget {
                     builder: (context) => DraggableScrollableSheet(
                       expand: false,
                       builder: (context, scrollController) {
-                        return OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet();
                       },
                     ),
                   )),
@@ -85,7 +89,7 @@ class NotificationScreen extends StatelessWidget {
                     builder: (context) => DraggableScrollableSheet(
                       expand: false,
                       builder: (context, scrollController) {
-                        return OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet();
                       },
                     ),
                   )),
@@ -96,14 +100,14 @@ class NotificationScreen extends StatelessWidget {
               time: '10/05/2024 12:20  ',
               icon: Icons.local_activity,
               iconColor: Colors.yellow,
-              backgroundColor: Color(0xfffff9e6),
+              backgroundColor: const Color(0xfffff9e6),
               onTap: () => showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
                       expand: false,
                       builder: (context, scrollController) {
-                        return OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet();
                       },
                     ),
                   )),
@@ -114,14 +118,14 @@ class NotificationScreen extends StatelessWidget {
               time: '10/05/2024 12:20  ',
               icon: Icons.close,
               iconColor: Colors.red,
-              backgroundColor: Color(0xffffefed),
+              backgroundColor: const Color(0xffffefed),
               onTap: () => showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
                       expand: false,
                       builder: (context, scrollController) {
-                        return OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet();
                       },
                     ),
                   )),
@@ -132,14 +136,14 @@ class NotificationScreen extends StatelessWidget {
               time: '10/05/2024 12:20  ',
               icon: Icons.person,
               iconColor: Colors.green,
-              backgroundColor: Color(0xffe7f9f5),
+              backgroundColor: const Color(0xffe7f9f5),
               onTap: () => showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
                       expand: false,
                       builder: (context, scrollController) {
-                        return OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet();
                       },
                     ),
                   )),
@@ -150,6 +154,8 @@ class NotificationScreen extends StatelessWidget {
 }
 
 class OrderDetailBottomSheet extends StatefulWidget {
+  const OrderDetailBottomSheet({super.key});
+
   @override
   _OrderDetailBottomSheetState createState() => _OrderDetailBottomSheetState();
 }
@@ -192,19 +198,19 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-                Text(
+                const Text(
                   'حالة الطلب',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Icon(Icons.settings),
+                const Icon(Icons.settings),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: .9 * MediaQuery.of(context).size.width,
               height: 60,
@@ -215,10 +221,10 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                 children: [
                   CircleAvatar(
                     backgroundColor: Colors.grey.shade300,
-                    child: Icon(Icons.restaurant, color: Colors.black),
+                    child: const Icon(Icons.restaurant, color: Colors.black),
                   ),
-                  SizedBox(width: 10),
-                  Column(
+                  const SizedBox(width: 10),
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -235,9 +241,9 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                       ),
                     ],
                   ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Spacer(),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.white,
@@ -246,8 +252,8 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                           color: Colors.grey,
                         )),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.white,
@@ -259,8 +265,8 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+            const SizedBox(height: 20),
             StepperScreen(
               active: active,
               lineColor: primary,
@@ -272,33 +278,34 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: [
                 Icon(currentIcon, color: Colors.green),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(currentText,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    Text('10:10 10/05/2024', style: TextStyle(fontSize: 16)),
+                    const Text('10:10 10/05/2024',
+                        style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             active == 1
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'رمز الإنهاء',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -308,9 +315,33 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                           _buildPinBox('6'),
                         ],
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Center(
+                        child: MaterialButton(
+                          color: Colors.green[200],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => OrderRatingScreen(
+                                          orders: sharedpref
+                                              .getStringList('_checkout')!,
+                                          images: sharedpref
+                                              .getStringList('images')!,
+                                          texts: sharedpref
+                                              .getStringList('texts')!,
+                                        )));
+                          },
+                          child: const Text('قيمنا'),
+                        ),
+                      )
                     ],
                   )
-                : Center(),
+                : const Center(),
           ],
         ),
       ),
@@ -319,14 +350,14 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
 
   Widget _buildPinBox(String digit) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         digit,
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -341,7 +372,8 @@ class NotificationTile extends StatelessWidget {
   final bool isCancelled;
   final VoidCallback onTap;
 
-  NotificationTile({
+  const NotificationTile({
+    super.key,
     required this.date,
     required this.time,
     required this.orderNumber,
@@ -369,7 +401,7 @@ class NotificationTile extends StatelessWidget {
                 children: [
                   Text(
                     date,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ],
               ),
@@ -381,7 +413,7 @@ class NotificationTile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Color(0xffe7f9f5),
+                  backgroundColor: const Color(0xffe7f9f5),
                   child: Center(
                     child: Icon(
                       Icons.shopping_bag,
@@ -393,15 +425,15 @@ class NotificationTile extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: .07 * mediawidth(context)),
-                  child: Text(
+                  child: const Text(
                     'الحجز',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   '# $orderNumber  ',
-                  style: TextStyle(),
+                  style: const TextStyle(),
                 ),
               ],
             ),
@@ -411,24 +443,24 @@ class NotificationTile extends StatelessWidget {
               margin: EdgeInsets.only(
                   right: isEnglish ? 0 : .08 * mediawidth(context)),
               color: statusColor,
-              child: Container(
+              child: SizedBox(
                 width: .77 * mediawidth(context),
                 height: .08 * mediaheight(context),
                 child: ListTile(
                   title: Text(
                     'مطعم الديرة # $orderNumber  ',
-                    style: TextStyle(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
                   ),
                   subtitle: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         status,
-                        style: TextStyle(fontSize: 11),
+                        style: const TextStyle(fontSize: 11),
                       ),
                       Text(
                         time,
-                        style: TextStyle(fontSize: 11),
+                        style: const TextStyle(fontSize: 11),
                       ),
                     ],
                   ),
@@ -452,7 +484,8 @@ class DiscountNotificationTile extends StatelessWidget {
   final Color backgroundColor;
   final VoidCallback onTap;
 
-  DiscountNotificationTile({
+  const DiscountNotificationTile({
+    super.key,
     required this.date,
     required this.message,
     required this.detail,
@@ -479,7 +512,7 @@ class DiscountNotificationTile extends StatelessWidget {
                 children: [
                   Text(
                     date,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ],
               ),
@@ -495,21 +528,21 @@ class DiscountNotificationTile extends StatelessWidget {
             ),
             title: Text(
               message,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   detail,
-                  style: TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 13),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       time,
-                      style: TextStyle(fontSize: 10),
+                      style: const TextStyle(fontSize: 10),
                     ),
                   ],
                 ),

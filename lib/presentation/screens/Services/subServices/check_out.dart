@@ -68,14 +68,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     color: primary,
                     minWidth: .8 * mediawidth(context),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => OrderRatingScreen(
-                                    orders: _checkoutItems,
-                                    images: images,
-                                    texts: texts,
-                                  ))); // Close the dialog
+                              builder: (_) => BottomBarScreen(
+                                  id: sharedpref.getString('token')!)));
                     },
                     child: const Text(
                       "ok",
@@ -225,6 +222,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       itemCount: _checkoutItems.length,
                       itemBuilder: (context, index) {
                         final item = _checkoutItems[index];
+                        List<String> stringifiedItems = _checkoutItems
+                            .map((item) => item.toString())
+                            .toList();
+                        List<String> im =
+                            images.map((item) => item.toString()).toList();
+                        List<String> text =
+                            texts.map((item) => item.toString()).toList();
+                        sharedpref.setStringList('_checkout', stringifiedItems);
+                        sharedpref.setStringList('images', im);
+                        sharedpref.setStringList('texts', text);
                         double optionsTotalPrice =
                             item['options'].fold(0.0, (sum, option) {
                           return sum + double.parse(option['price']);
@@ -559,8 +566,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   ),
                                 ],
                               ),
-                              value: true,
-                              groupValue: 1,
+                              activeColor: Colors.grey,
+                              value: 2,
+                              groupValue: 2,
                               onChanged: (val) {}),
                           Container(
                             decoration: BoxDecoration(

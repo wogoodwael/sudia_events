@@ -47,133 +47,19 @@ class _BookingScreenState extends State<BookingScreen> {
     });
   }
 
-  Future<void> _showPopup(BuildContext context) async {
-    return showModalBottomSheet<void>(
-      backgroundColor: Colors.white,
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: SingleChildScrollView(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Center(
-                    child: Text('تفاصيل',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'الاسم',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.grey.withOpacity(.5))),
-                    child: TextField(
-                      controller: name,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        prefixIcon: Icon(Icons.person),
-                        border: InputBorder.none,
-                        hintText: 'محمد علي الزهراني',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        DateFormat('yyyy/MM/dd').format(_selectedDay!),
-                        style: const TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                      Text(
-                        _selectedTime.format(context),
-                        style: const TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: Container(
-                      width: .8 * mediawidth(context),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border:
-                              Border.all(color: Colors.grey.withOpacity(.5))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              icon: Image.asset(
-                                "assets/images/locationb.png",
-                                color: Colors.green,
-                                width: 50,
-                              ),
-                              onPressed: () {}),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _saveDataToFirestore();
-                          },
-                          child: Image.asset(
-                            "assets/images/send.png",
-                            width: 50,
-                          ),
-                        ),
-                        const Text("ارسال بطاقة الدعوة"),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   Future<void> _saveDataToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     CollectionReference reservation =
         firebaseFirestore.collection('reservation');
 
     // Split the name into parts
-    List<String> nameParts = name.text.split(' ');
-    String firstName = nameParts.isNotEmpty ? nameParts[0] : '';
-    String familyName = nameParts.length > 1 ? nameParts[1] : '';
-    String tribeName = nameParts.length > 2 ? nameParts[2] : '';
+
     String uniqueID = const Uuid().v4();
     sharedpref.setString('uniquId', uniqueID);
     // Create a map representing the event data
     Map<String, dynamic> eventData = {
       'userID': sharedpref.getString('token'),
-      'name': firstName,
-      'family': familyName,
-      'tribe': tribeName,
+      'name': sharedpref.getString('user'),
       'phone': phone.text,
       'date': _selectedDay!.toIso8601String(),
       'type': selectedService,
@@ -190,10 +76,19 @@ class _BookingScreenState extends State<BookingScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             icon: GestureDetector(
-              onTap: () {
-                Navigator.pop(context); 
-              },
-              child: const Align(alignment: Alignment.topLeft, child: Icon(Icons.close))),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => BottomBarScreen(
+                                id: sharedpref.getString('token')!,
+                                public: false,
+                                uniquId: uniqueID,
+                                date: _selectedDay,
+                              )));
+                },
+                child: const Align(
+                    alignment: Alignment.topLeft, child: Icon(Icons.close))),
             title: Center(
               child: Text(
                 'تهانينا',
@@ -242,23 +137,6 @@ class _BookingScreenState extends State<BookingScreen> {
                       fontSize: 18,
                       color: Colors.white),
                 ),
-              ),
-              MaterialButton(
-                minWidth: .9 * mediawidth(context),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => BottomBarScreen(
-                              id: sharedpref.getString('token')!,
-                              public: false,
-                              uniquId: uniqueID,
-                              date: _selectedDay,
-                            )),
-                  );
-                },
-                child: const Text('ليس الان '),
               ),
             ],
           );
@@ -333,9 +211,7 @@ class _BookingScreenState extends State<BookingScreen> {
     String query = searchController.text.toLowerCase();
     setState(() {
       filteredEvents = _getAllEvents().where((event) {
-        return event.name.toLowerCase().contains(query) ||
-            event.family.toLowerCase().contains(query) ||
-            event.tribe.toLowerCase().contains(query);
+        return event.name.toLowerCase().contains(query);
       }).toList();
     });
   }
@@ -422,7 +298,8 @@ class _BookingScreenState extends State<BookingScreen> {
                     child: Container(
                       width: .8 * mediawidth(context),
                       height: 40,
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 5),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8),
@@ -444,7 +321,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               ),
                             ),
                             SizedBox(width: .37 * mediawidth(context)),
-                                  GestureDetector(
+                            GestureDetector(
                                 onTap: () async {
                                   final TimeOfDay? pickedTime =
                                       await showTimePicker(
@@ -465,14 +342,15 @@ class _BookingScreenState extends State<BookingScreen> {
                                     size: 20,
                                     color: Colors.green,
                                   ),
-                                ))
-                          ,
-                          const SizedBox(width: 10,),
+                                )),
+                            const SizedBox(
+                              width: 10,
+                            ),
                             Text(
                               _selectedTime.format(context),
                               style: const TextStyle(fontSize: 15),
                             ),
-                      ],
+                          ],
                         ),
                       ),
                     ),
@@ -481,7 +359,8 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               const SizedBox(height: 15),
               Text(formattedDate,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -492,8 +371,11 @@ class _BookingScreenState extends State<BookingScreen> {
                   SizedBox(
                     width: .1 * mediawidth(context),
                   ),
-                  Text(                    _getEventsForDay(_selectedDay ?? DateTime.now()).isNotEmpty ? 'مكرر' : 'جديد',
-
+                  Text(
+                      _getEventsForDay(_selectedDay ?? DateTime.now())
+                              .isNotEmpty
+                          ? 'مكرر'
+                          : 'جديد',
                       style: GoogleFonts.inter(
                           fontSize: 10, fontWeight: FontWeight.w400)),
                   SizedBox(
@@ -512,12 +394,12 @@ class _BookingScreenState extends State<BookingScreen> {
               SizedBox(height: .05 * mediaheight(context)),
               GestureDetector(
                 onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => InvitationCardScreen(
-                                    id: const Uuid().v4(), date: _selectedDay!)));
-                      },
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => InvitationCardScreen(
+                              id: const Uuid().v4(), date: _selectedDay!)));
+                },
                 child: Row(
                   children: [
                     const CircleAvatar(
@@ -534,7 +416,8 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                     const Text(
                       "بطاقة الدعوة",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                     ),
                     const Spacer(),
                     Checkbox(
@@ -552,7 +435,7 @@ class _BookingScreenState extends State<BookingScreen> {
               const SizedBox(height: 16),
               MaterialButton(
                 onPressed: () {
-                  _showPopup(context);
+                  _saveDataToFirestore();
                 },
                 minWidth: .8 * mediawidth(context),
                 height: 45,

@@ -78,11 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
       events = querySnapshot.docs
           .map((doc) => Event(
-                name: doc.data()['name'],
+                name: doc.data()['name'] ?? "",
                 date: DateTime.parse(doc.data()['date']),
                 phone: doc.data()['phone'] ?? "",
-                family: doc.data()['family'],
-                tribe: doc.data()['tribe'],
+
                 type: doc.data()['type'],
                 time: doc.data()['time'],
                 uniquID: doc.data()[
@@ -98,11 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
       events = querySnapshot.docs
           .map((doc) => Event(
-                name: doc.data()['name'],
+                name: doc.data()['name'] ?? "",
                 date: DateTime.parse(doc.data()['date']),
                 phone: doc.data()['phone'] ?? "",
-                family: doc.data()['family'],
-                tribe: doc.data()['tribe'],
+
                 type: doc.data()['type'],
                 time: doc.data()['time'],
                 uniquID: doc.data()[
@@ -149,9 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String query = searchController.text.toLowerCase();
     setState(() {
       filteredEvents = _getAllEvents().where((event) {
-        return event.name.toLowerCase().contains(query) ||
-            event.family.toLowerCase().contains(query) ||
-            event.tribe.toLowerCase().contains(query);
+        return event.name.toLowerCase().contains(query);
       }).toList();
     });
   }
@@ -569,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             child: Center(
                                               child: Text(isBooked
-                                                  ? "${event.name} ${event.family} ${event.tribe}"
+                                                  ? "${event.name} "
                                                   : "لا يوجد معلومات"),
                                             ),
                                           ),
@@ -608,7 +604,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: EventContainer(
                                 time: message,
                                 name: isBooked
-                                    ? "${event.name} ${event.family} ${event.tribe}"
+                                    ? "${event.name} "
                                     : "لا يوجد معلومات",
                                 title:
                                     isBooked ? '${event.type} ' : "مناسبة خاصة",

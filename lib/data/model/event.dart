@@ -4,16 +4,13 @@ class Event {
 
   final String phone;
   final String type;
-  final String family;
-  final String tribe;
+
   final String time;
   final String uniquID;
 
-  Event( {
-    required this.family,
+  Event({
     required this.uniquID,
     required this.time,
-    required this.tribe,
     required this.date,
     required this.type,
     required this.name,
@@ -25,10 +22,9 @@ class Event {
       date: DateTime.parse(map['date']),
       name: map['name'],
       phone: map['phone'],
-      family: map['family'],
-      tribe: map['tribe'],
       type: map['type'],
-      time: map['time'] ?? "", uniquID: map['uniquID'],
+      time: map['time'] ?? "",
+      uniquID: map['uniquID'],
     );
   }
 }

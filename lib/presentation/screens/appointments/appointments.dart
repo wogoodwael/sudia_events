@@ -38,6 +38,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   bool tappedFamily = false;
   bool tappedTribe = false;
   bool onTappedIcon = false;
+  @override
   void initState() {
     super.initState();
     tappedFamily = false;
@@ -105,7 +106,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   ),
                 ),
               ),
-              PositionedLogo(),
+              const PositionedLogo(),
               Positioned(
                 bottom: -1,
                 left: 20,
@@ -115,7 +116,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     width: .9 * mediawidth(context),
                     height: 100,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20)),
                         color: Colors.white,
@@ -124,17 +125,17 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(top: 10),
                             width: .8 * mediawidth(context),
                             decoration: BoxDecoration(
                                 border: Border.all(color: primary),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(10))),
                             height: 30,
                             child: TextField(
                               textDirection: TextDirection.rtl,
                               controller: searchController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   suffixIcon: Icon(
                                     Icons.search,
@@ -142,7 +143,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   )),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -155,10 +156,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     color: Colors.grey[300],
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(color: primary)),
-                                child: Center(
+                                child: const Center(
                                   child: FittedBox(
                                       child: Padding(
-                                    padding: const EdgeInsets.all(2.0),
+                                    padding: EdgeInsets.all(2.0),
                                     child: Text("نوع المناسبه "),
                                   )),
                                 ),
@@ -170,10 +171,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     color: Colors.grey[300],
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(color: primary)),
-                                child: Center(
+                                child: const Center(
                                   child: FittedBox(
                                       child: Padding(
-                                    padding: const EdgeInsets.all(2.0),
+                                    padding: EdgeInsets.all(2.0),
                                     child: Text("المدينة"),
                                   )),
                                 ),
@@ -250,7 +251,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     // print(
                                     //     "firsssssssst$first, secooond $secondPart");
                                   },
-                                  child: Icon(Icons.filter_list))
+                                  child: const Icon(Icons.filter_list))
                             ],
                           )
                         ],
@@ -261,7 +262,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               )
             ]),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Expanded(
@@ -275,10 +276,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     //     focusedDay: _focusedDay,
                     //     selectedDay: _selectedDay!,
                     //     onDaySelected: _onDaySelected),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Divider(
+                    const Divider(
                       endIndent: 20,
                       indent: 20,
                       color: primary,
@@ -333,8 +334,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   dateColor: isEventSelectedDay(event.date)
                                       ? Colors.white
                                       : Colors.grey,
-                                  event:
-                                      '${snapshot.data![index].name} ${snapshot.data![index].family} ${snapshot.data![index].tribe}',
+                                  event: ''
+                                  // '${snapshot.data![index].name} ${snapshot.data![index].family} ${snapshot.data![index].tribe}',
+                                  ,
                                   eventColor: isEventSelectedDay(event.date)
                                       ? Colors.white
                                       : Colors.grey[600]!,

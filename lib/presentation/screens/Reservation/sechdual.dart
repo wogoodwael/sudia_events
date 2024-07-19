@@ -78,9 +78,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
     String query = searchController.text.toLowerCase();
     setState(() {
       filteredEvents = _getAllEvents().where((event) {
-        return event.name.toLowerCase().contains(query) ||
-            event.family.toLowerCase().contains(query) ||
-            event.tribe.toLowerCase().contains(query);
+        return event.name.toLowerCase().contains(query);
       }).toList();
     });
   }

@@ -4,6 +4,7 @@ import 'package:sudia_events/data/model/res_content_model.dart';
 import 'package:sudia_events/data/model/services_model.dart';
 import 'package:sudia_events/data/model/sub_services_model.dart';
 import 'package:sudia_events/data/model/user_model.dart';
+import 'package:sudia_events/main.dart';
 
 Future<List<ServicesModel>> fetchServicesData() async {
   try {
@@ -37,9 +38,9 @@ Future<List<SubServicesModel>> fetchDetailsServicesData(String id) async {
             .where('id', isEqualTo: id)
             .get();
     print("Query executed. Total documents: ${querySnapshot.docs.length}");
-    querySnapshot.docs.forEach((doc) {
+    for (var doc in querySnapshot.docs) {
       print("Document: $doc");
-    });
+    }
     final List<SubServicesModel> servicesDataDetails =
         querySnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
       print("Document: $doc");
@@ -72,9 +73,9 @@ Future<List<ResturantDetailsModel>> fetchDetailsResturantData(
             .where('name', isEqualTo: name)
             .get();
     print("Query executed. Total documents: ${querySnapshot.docs.length}");
-    querySnapshot.docs.forEach((doc) {
+    for (var doc in querySnapshot.docs) {
       print("Document: $doc");
-    });
+    }
     final List<ResturantDetailsModel> resturantDataDetails =
         querySnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
       print("Document: $doc");
@@ -122,7 +123,8 @@ Future<List<BookedServicesModel>> fetchBookedData() async {
           timestamp: doc['timestamp'],
           total: doc['total'],
           uniqueID: doc['uniquID'],
-          userId: doc['user_id'], status: doc['status']);
+          userId: doc['user_id'],
+          status: doc['status']);
     }).toList();
     print("booked data details: $booked");
     return booked;
@@ -150,6 +152,7 @@ Stream<List<UserModel>> fetchUserData({required String id}) async* {
         img: doc['profileImageUrl'] ?? "",
       );
     }).toList();
+    sharedpref.setString('userName', userData[0].name);
 
     yield userData;
   } catch (e) {

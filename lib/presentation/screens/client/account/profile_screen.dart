@@ -225,6 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       );
                     }
+                    sharedpref.setString("user", snapshot.data![0].name);
                     return Column(
                       children: [
                         SingleChildScrollView(

@@ -11,28 +11,27 @@ class Api {
 
   Future<void> verifyPhoneNumber(
     BuildContext context,
-    TextEditingController _phoneNumberController,
+    TextEditingController phoneNumberController,
     String email,
-   
     bool loading,
     Function(bool) setLoading,
-     String name,
+    String name,
   ) async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseAuth auth = FirebaseAuth.instance;
 
     try {
       setLoading(true);
-      await _auth.verifyPhoneNumber(
-        phoneNumber: "+${_phoneNumberController.text.trim()}",
+      await auth.verifyPhoneNumber(
+        phoneNumber: "+${phoneNumberController.text.trim()}",
         verificationCompleted: (PhoneAuthCredential credential) async {
           UserCredential userCredential =
-              await _auth.signInWithCredential(credential);
+              await auth.signInWithCredential(credential);
 
           print('User signed up: ${userCredential.user!.uid}');
         },
         verificationFailed: (FirebaseAuthException e) {
           print('Failed to verify phone number: ${e.message}');
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content:
                 Text('Failed to verify phone number. Please try again later.'),
           ));
@@ -46,9 +45,10 @@ class Api {
             MaterialPageRoute(
                 builder: (_) => VerifyScreen(
                       verificationId: verificationId,
-                      phone: _phoneNumberController.text,
+                      phone: phoneNumberController.text,
                       email: email,
-                      register: true, name: name,
+                      register: true,
+                      name: name,
                     )),
           );
         },
@@ -56,7 +56,7 @@ class Api {
       );
     } catch (e) {
       print('Failed to verify phone number: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Failed to verify phone number. Please try again later.'),
       ));
     }
@@ -68,21 +68,21 @@ class Api {
     bool loading,
     Function(bool) setLoading,
   ) async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseAuth auth = FirebaseAuth.instance;
 
     try {
       setLoading(true); // Set loading to true before starting the login process
-      await _auth.verifyPhoneNumber(
+      await auth.verifyPhoneNumber(
         phoneNumber: phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
           UserCredential userCredential =
-              await _auth.signInWithCredential(credential);
+              await auth.signInWithCredential(credential);
 
           print('User login : ${userCredential.user!.uid}');
         },
         verificationFailed: (FirebaseAuthException e) {
           print('Failed to verify phone number: ${e.message}');
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content:
                 Text('Failed to verify phone number. Please try again later.'),
           ));
@@ -105,7 +105,7 @@ class Api {
       );
     } catch (e) {
       print('Failed to verify phone number: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Failed to verify phone number. Please try again later.'),
       ));
       setLoading(false); // Set loading to false if an exception occurs
@@ -129,16 +129,12 @@ class Api {
   }
 
   Future<void> saveUserDataToFirestore(
-      String uid, String email, String phone, String name ) async {
+      String uid, String email, String phone, String name) async {
     try {
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
 
-      await users.doc(uid).set({
-        'email': email,
-        'phone': phone,
-        'name':name
-      });
+      await users.doc(uid).set({'email': email, 'phone': phone, 'name': name});
 
       print('User data saved to Firestore');
     } catch (e) {
@@ -158,39 +154,46 @@ class Api {
 
       for (final doc in snapshot.docs) {
         final eventData = doc.data();
-        final eventDateString = eventData['date'] as String;
-        final eventDateTime = DateTime.parse(eventDateString);
-        final eventName = eventData['name'] as String;
 
-        final phone = eventData['phone'] as String;
-        final type = eventData['type'] as String;
-        final family = eventData['family'] as String;
-        final tribe = eventData['tribe'] as String;
-        final uniquId = eventData['uniquID'] as String;
+        // Check for null values before casting
+        final eventDateString = eventData['date'] as String?;
+        final eventName = eventData['name'] as String?;
+        final phone = eventData['phone'] as String?;
+        final type = eventData['type'] as String?;
+        final uniquId = eventData['uniquID'] as String?;
+
+        if (eventDateString == null ||
+            eventName == null ||
+            phone == null ||
+            type == null ||
+            uniquId == null) {
+          // Skip this document if any required field is null
+          continue;
+        }
+
+        final eventDateTime = DateTime.parse(eventDateString);
 
         if (events.containsKey(eventDateTime)) {
           events[eventDateTime]!.add(
             Event(
-                date: eventDateTime,
-                name: eventName,
-                phone: phone,
-                family: family,
-                tribe: tribe,
-                type: type,
-                time: doc['time'],
-                uniquID: uniquId),
+              date: eventDateTime,
+              name: eventName,
+              phone: phone,
+              type: type,
+              time: doc['time'], // Assuming doc['time'] is not null
+              uniquID: uniquId,
+            ),
           );
         } else {
           events[eventDateTime] = [
             Event(
-                date: eventDateTime,
-                name: eventName,
-                phone: phone,
-                family: family,
-                tribe: tribe,
-                type: type,
-                time: doc['time'],
-                uniquID: uniquId),
+              date: eventDateTime,
+              name: eventName,
+              phone: phone,
+              type: type,
+              time: doc['time'], // Assuming doc['time'] is not null
+              uniquID: uniquId,
+            ),
           ];
         }
       }
@@ -212,11 +215,9 @@ class Api {
 
       final List<Event> reservationData = querySnapshot.docs
           .map((DocumentSnapshot<Map<String, dynamic>> doc) => Event(
-                name: doc['name'],
+                name: doc['name'] ?? "",
                 date: DateTime.parse(doc['date']),
                 phone: doc['phone'],
-                family: doc['family'],
-                tribe: doc['tribe'],
                 type: doc['type'],
                 time: doc['time'],
                 uniquID: doc['uniquID'],
