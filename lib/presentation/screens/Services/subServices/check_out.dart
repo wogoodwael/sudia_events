@@ -42,9 +42,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     'بطاقة بطاقة M24002',
     ' رابط احتفال المناسبة'
   ];
+  List price=[35.5, sharedpref.getDouble('invitation_price'), 15.2];
   List images = [];
   List texts = [];
-  List<bool> value = [false, false, false];
+  List<bool> value = [false, true, false];
   @override
   void initState() {
     super.initState();
@@ -117,7 +118,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     });
 
     _discount = _subtotal * 0.20;
-    _total = _subtotal - _discount;
+    _total = (_subtotal - _discount) + sharedpref.getDouble('invitation_price')!;
   }
 
   Future<void> _uploadCheckoutData() async {
@@ -514,7 +515,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         children: [
                                           Checkbox(
                                               activeColor: primary,
-                                              value: value[index],
+                                              value:index==1? true: value[index],
                                               onChanged: (val) {
                                                 setState(() {
                                                   value[index] = val!;
@@ -522,7 +523,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               }),
                                           Text(text[index]),
                                           const Spacer(),
-                                          const Text('SAR  10.00'),
+                                           Text(price[index].toString()),
                                         ],
                                       ),
                                     )),

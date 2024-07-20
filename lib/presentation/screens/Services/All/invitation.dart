@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -21,7 +22,7 @@ import 'package:sudia_events/presentation/screens/home/check.dart';
 class InvitationCardScreen extends StatefulWidget {
   final String id;
   final DateTime date;
-  final List<String> price = ['مجانية', '15.00SR', '35.00SR'];
+  final List<String> price = ['0.0', '15.00', '35.00'];
   final List<String> name = ['M458w', 'M8ws', 'Mqqk'];
 
   InvitationCardScreen({super.key, required this.id, required this.date});
@@ -34,17 +35,22 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
   TextEditingController husband = TextEditingController();
   TextEditingController wife = TextEditingController();
   TextEditingController visitors = TextEditingController();
-  String _selectedPrice = '';
   final String _selectedRadio = '';
   final String _selectedCheckbox = '';
   String _selectedCheckboxCard = '';
   final String _selectedImage = '';
   List<bool> isAddedToFavList = [];
 
+
+
+  String _selectedPrice = '';
+  List<File?> _uploadedImages = [];
+
   @override
   void initState() {
     super.initState();
-    isAddedToFavList = List<bool>.filled(widget.price.length, false);
+    isAddedToFavList = List<bool>.filled(widget.name.length, false);
+    _uploadedImages = List<File?>.filled(widget.name.length, null);
   }
 
   @override
@@ -136,6 +142,8 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                         setState(() {
                           _selectedPrice = widget.price[index];
                         });
+                            print("selected price ${widget.price[index]}");
+                            
                       },
                       child: _buildCardItem(context, widget.price[index],
                           widget.name[index], widget.name[index], index),
@@ -156,8 +164,9 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                                   husband: husband.text,
                                   wife: wife.text,
                                   visitors: visitors.text,
-                                  date: widget.date,
+                                  date: widget.date, price: _selectedPrice,
                                 )));
+                            
                   },
                   child: const Text(
                     "التالي ",
@@ -171,9 +180,17 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
       ),
     );
   }
+ Future<void> _pickImage(int index) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _uploadedImages[index] = File(pickedImage.path);
+      });
+    }
+  }
 
-  Widget _buildCardItem(BuildContext context, String price, String title,
-      String cardName, int index) {
+  Widget _buildCardItem(BuildContext context, String price, String title, String cardName, int index) {
     Future<void> addToFavorites(BuildContext context) async {
       try {
         // Get current user
@@ -190,8 +207,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
             .doc(user.uid)
             .collection('favorites')
             .add({
-          'img':
-              'https://firebasestorage.googleapis.com/v0/b/saudievents-99e16.appspot.com/o/invitation_images%2Finvitation.png?alt=media&token=5763a96c-55eb-4995-8625-257d1258f562',
+          'img': 'https://firebasestorage.googleapis.com/v0/b/saudievents-99e16.appspot.com/o/invitation_images%2Finvitation.png?alt=media&token=5763a96c-55eb-4995-8625-257d1258f562',
           'name': cardName,
           'discount': "",
           'price': price,
@@ -201,11 +217,12 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
           isAddedToFavList[index] = !isAddedToFavList[index];
         });
         // Show a snackbar or toast to indicate success
-        CustomSnackBar(
-          context,
-          'add to fav'.tr(),
-          Colors.green,
-          .75 * mediaheight(context),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Added to favorites'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
         );
       } catch (e) {
         // Handle errors
@@ -221,20 +238,29 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
       elevation: 2.0,
       child: SizedBox(
         width: 150,
-        height: .25 * mediaheight(context),
+        height: .25 * MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(8.0)),
-                  child: Image.asset(
-                    'assets/images/invitation.png',
-                    height: 100,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                GestureDetector(
+                
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
+                    child: _uploadedImages[index] != null
+                        ? Image.file(
+                            _uploadedImages[index]!,
+                            height: 100,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/invitation.png',
+                            height: 100,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
                 Positioned(
@@ -247,9 +273,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
                       child: Icon(
-                          isAddedToFavList[index]
-                              ? Icons.favorite
-                              : Icons.favorite_border,
+                          isAddedToFavList[index] ? Icons.favorite : Icons.favorite_border,
                           color: Colors.red),
                     ),
                   ),
@@ -270,21 +294,31 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                           setState(() {
                             _selectedCheckboxCard = value! ? title : '';
                           });
+sharedpref.setDouble('invitation_price', double.parse(widget.price[index]));
                         },
                       ),
                       Text(
                         cardName,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.grey),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                     ],
                   ),
                 ),
-                Center(
-                  child: Text(
-                    price,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        price,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    const SizedBox(width: 10,),
+                    const Text("تحميل") , 
+                    GestureDetector(
+                        onTap: () => _pickImage(index),
+                      child: const Icon(Icons.keyboard_arrow_down_rounded))
+                  ],
                 ),
                 const SizedBox(height: 10.0),
                 Row(

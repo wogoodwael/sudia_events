@@ -11,12 +11,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 
 class ContinueInvitation extends StatefulWidget {
   final String id;
   final String husband, wife, visitors;
   final DateTime date;
+  final String price;
  
   const ContinueInvitation(
       {super.key,
@@ -24,7 +26,7 @@ class ContinueInvitation extends StatefulWidget {
       required this.husband,
       required this.wife,
       required this.visitors,
-      required this.date});
+      required this.date, required this.price});
 
   @override
   State<ContinueInvitation> createState() => _ContinueInvitationState();
@@ -243,9 +245,9 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                             ],
                           ),
                         ),
-                        const Text(
-                          'SAR 15.00',
-                          style: TextStyle(
+                         Text(
+                          'SAR${sharedpref.getDouble('invitation_price')!.toStringAsFixed(2)}',
+                          style: const TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,

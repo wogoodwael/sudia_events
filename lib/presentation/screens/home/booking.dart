@@ -439,7 +439,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
                 minWidth: .8 * mediawidth(context),
                 height: 45,
-                color: _isAgreed ? primary : secondary,
+                color: primary,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: const Text('التالي',

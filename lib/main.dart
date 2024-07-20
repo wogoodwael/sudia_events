@@ -41,7 +41,7 @@ void showNotification({required String title, required String body}) {
             child: Text("Ok"))
       ],
     ),
-  );
+  ); 
 }
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
