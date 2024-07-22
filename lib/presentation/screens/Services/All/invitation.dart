@@ -410,7 +410,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                     ],
                   ),
                 ),
-                Row(
+          price[index]=='0.0'?      Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
@@ -427,7 +427,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                         onTap: () => _pickImage(index),
                         child: const Icon(Icons.keyboard_arrow_down_rounded))
                   ],
-                ),
+                ):Container(),
                 const SizedBox(height: 10.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
