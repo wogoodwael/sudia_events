@@ -1,40 +1,141 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/stepper.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Review/order_rating.dart';
+import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
+import 'package:sudia_events/presentation/screens/home/location.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 // ignore: must_be_immutable
 class NotificationScreen extends StatelessWidget {
   TextEditingController controller = TextEditingController();
-
-  NotificationScreen({super.key});
+  final String id;
+  NotificationScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('notification'.tr()),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_forward_ios,
-              color: primary,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
             ),
-            onPressed: () {},
-          ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              DateFormat('EEEE', 'ar').format(DateTime.now()),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => LocationScreen(
+                            lat: sharedpref.getDouble('lat')!,
+                            long: sharedpref.getDouble('long')!,
+                            fromHome: true,
+                          )));
+            },
+            child: Container(
+              width: 100,
+              height: 30,
+              decoration: BoxDecoration(color: Colors.yellow[100]),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'location'.tr(),
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.location_on_rounded),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
-        leading: IconButton(
-          icon: const Icon(
-            Icons.favorite_border,
-            color: primary,
-          ),
-          onPressed: () {},
+        leading: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('SubServices')
+              .doc(id)
+              .collection('checkout')
+              .snapshots(),
+          builder: (context, snapshot) {
+            int favoriteCount = 0;
+            if (snapshot.hasData) {
+              favoriteCount = snapshot.data!.docs.length;
+            }
+            return Stack(
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
+                    color: primary,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CheckoutScreen(
+                            name: sharedpref.getString('name')!,
+                            number: sharedpref.getString('number')!,
+                            date: DateTime.parse(sharedpref.getString(
+                                'date')!), // Convert String to DateTime
+                            uniquID: sharedpref.getString('uniquID')!,
+                            img: sharedpref.getString('img')!,
+                          ),
+                        ));
+                  },
+                ),
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: Text(
+                      '$favoriteCount',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
       body: ListView(
@@ -55,9 +156,14 @@ class NotificationScreen extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
+                      initialChildSize: 0.7,
+                      maxChildSize: 0.9,
+                      minChildSize: 0.3,
                       expand: false,
                       builder: (context, scrollController) {
-                        return const OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet(
+                          status: 'في التنفيذ',
+                        );
                       },
                     ),
                   )),
@@ -71,9 +177,14 @@ class NotificationScreen extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
+                      initialChildSize: 0.7,
+                      maxChildSize: 0.9,
+                      minChildSize: 0.3,
                       expand: false,
                       builder: (context, scrollController) {
-                        return const OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet(
+                          status: 'في الانتظار',
+                        );
                       },
                     ),
                   )),
@@ -87,9 +198,14 @@ class NotificationScreen extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
+                      initialChildSize: 0.7,
+                      maxChildSize: 0.9,
+                      minChildSize: 0.3,
                       expand: false,
                       builder: (context, scrollController) {
-                        return const OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet(
+                          status: 'في التسليم',
+                        );
                       },
                     ),
                   )),
@@ -105,9 +221,14 @@ class NotificationScreen extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
+                      initialChildSize: 0.7,
+                      maxChildSize: 0.9,
+                      minChildSize: 0.3,
                       expand: false,
                       builder: (context, scrollController) {
-                        return const OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet(
+                          status: '',
+                        );
                       },
                     ),
                   )),
@@ -123,9 +244,14 @@ class NotificationScreen extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
+                      initialChildSize: 0.7,
+                      maxChildSize: 0.9,
+                      minChildSize: 0.3,
                       expand: false,
                       builder: (context, scrollController) {
-                        return const OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet(
+                          status: 'تم الالغاء',
+                        );
                       },
                     ),
                   )),
@@ -141,9 +267,14 @@ class NotificationScreen extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => DraggableScrollableSheet(
+                      initialChildSize: 0.7,
+                      maxChildSize: 0.9,
+                      minChildSize: 0.3,
                       expand: false,
                       builder: (context, scrollController) {
-                        return const OrderDetailBottomSheet();
+                        return const OrderDetailBottomSheet(
+                          status: '',
+                        );
                       },
                     ),
                   )),
@@ -154,7 +285,8 @@ class NotificationScreen extends StatelessWidget {
 }
 
 class OrderDetailBottomSheet extends StatefulWidget {
-  const OrderDetailBottomSheet({super.key});
+  final String status;
+  const OrderDetailBottomSheet({super.key, required this.status});
 
   @override
   _OrderDetailBottomSheetState createState() => _OrderDetailBottomSheetState();
@@ -162,6 +294,28 @@ class OrderDetailBottomSheet extends StatefulWidget {
 
 class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
   int active = 0; // Initial value for the stepper
+
+  @override
+  void initState() {
+    super.initState();
+    setActiveStep();
+  }
+
+  void setActiveStep() {
+    switch (widget.status) {
+      case 'في التسليم':
+        active = 1; // Assuming step index for 'في التسليم' is 1
+        break;
+      case 'في التنفيذ':
+        active = 2; // Assuming step index for 'في التنفيذ' is 0
+        break;
+      case 'في الانتظار':
+        active = 3; // Assuming step index for 'في الانتظار' is 2
+        break;
+      default:
+        active = 0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

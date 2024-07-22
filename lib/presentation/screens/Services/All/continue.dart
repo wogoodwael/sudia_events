@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,6 +13,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
+import 'package:sudia_events/presentation/screens/home/booking.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 
 class ContinueInvitation extends StatefulWidget {
@@ -19,14 +21,15 @@ class ContinueInvitation extends StatefulWidget {
   final String husband, wife, visitors;
   final DateTime date;
   final String price;
- 
+
   const ContinueInvitation(
       {super.key,
       required this.id,
       required this.husband,
       required this.wife,
       required this.visitors,
-      required this.date, required this.price});
+      required this.date,
+      required this.price});
 
   @override
   State<ContinueInvitation> createState() => _ContinueInvitationState();
@@ -34,7 +37,7 @@ class ContinueInvitation extends StatefulWidget {
 
 class _ContinueInvitationState extends State<ContinueInvitation> {
   final GlobalKey _screenshotKey = GlobalKey();
-   bool view=false;
+  bool view = false;
   String _selectedCheckbox = '';
   List<String> texts = [
     'دعوة زواج',
@@ -221,9 +224,8 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                           color: primary,
                           onPressed: () {
                             setState(() {
-                              view=!view;
-                            }); 
-                           
+                              view = !view;
+                            });
                           },
                           child: const Row(
                             children: [
@@ -245,8 +247,8 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                             ],
                           ),
                         ),
-                         Text(
-                          'SAR${sharedpref.getDouble('invitation_price')!.toStringAsFixed(2)}',
+                        Text(
+                          'SAR${sharedpref.getDouble('invitation_price')?.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -259,50 +261,69 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                 ),
               ],
             ),
-            view ? RepaintBoundary(
-                                    key: _screenshotKey,
-                                    child: AlertDialog(
-                                      content: Stack(
-                                        children: [
-                                          Container(
-                                            width: mediawidth(context),
-                                            height: .8 * mediaheight(context),
-                                            decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/images/1.png'),
-                                                    fit: BoxFit.fitHeight)),
-                                          ),
-                                          Positioned(
-                                            top: .2 * mediaheight(context),
-                                            left: 20,
-                                            right: 20,
-                                            child: Column(
-                                              children: _buildSelectedTexts(
-                                                  widget.husband,
-                                                  widget.wife,
-                                                  widget.visitors,
-                                                  _selectedCheckbox),
-                                            ),
-                                          ),
-                                          Positioned(
-                                              top: 30,
-                                              right: 30,
-                                              child: CircleAvatar(
-                                                radius: 20,
-                                                backgroundColor: Colors.white,
-                                                child: IconButton(
-                                                    onPressed: _shareScreenshot,
-                                                    icon: const Icon(
-                                                      Icons.share,
-                                                      size: 15,
-                                                    )),
-                                              ))
-                                        ],
-                                      ),
-                                    ),
-                                  ):Container()
-                               
+            view
+                ? Column(
+                    children: [
+                      RepaintBoundary(
+                        key: _screenshotKey,
+                        child: AlertDialog(
+                          content: Stack(
+                            children: [
+                              Container(
+                                width: mediawidth(context),
+                                height: .8 * mediaheight(context),
+                                decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            AssetImage('assets/images/1.png'),
+                                        fit: BoxFit.fitHeight)),
+                              ),
+                              Positioned(
+                                top: .2 * mediaheight(context),
+                                left: 20,
+                                right: 20,
+                                child: Column(
+                                  children: _buildSelectedTexts(
+                                      widget.husband,
+                                      widget.wife,
+                                      widget.visitors,
+                                      _selectedCheckbox),
+                                ),
+                              ),
+                              Positioned(
+                                  top: 30,
+                                  right: 30,
+                                  child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: Colors.white,
+                                    child: IconButton(
+                                        onPressed: _shareScreenshot,
+                                        icon: const Icon(
+                                          Icons.share,
+                                          size: 15,
+                                        )),
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                      MaterialButton(
+                        minWidth: .9 * mediawidth(context),
+                        color: primary,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const BookingScreen()));
+                        },
+                        child: const Text(
+                          'حفظ',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  )
+                : Container()
           ],
         ),
       ),

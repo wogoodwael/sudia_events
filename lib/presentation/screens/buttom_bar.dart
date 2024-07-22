@@ -11,8 +11,7 @@ import 'package:sudia_events/presentation/screens/notification/notification.dart
 
 class BottomBarScreen extends StatefulWidget {
   BottomBarScreen(
-      {Key? key, required this.id, this.public, this.uniquId, this.date})
-      : super(key: key);
+      {super.key, required this.id, this.public, this.uniquId, this.date});
   final String id;
   bool? public;
   String? uniquId;
@@ -45,8 +44,12 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
         id: widget.id,
       ),
       // AppointmentScreen(),
-      NotificationScreen(),
-      ProfileScreen(),
+      NotificationScreen(
+        id: widget.id,
+      ),
+      ProfileScreen(
+        id: widget.id,
+      ),
       // UserFormScreen(),
     ];
   }
@@ -75,7 +78,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
           bool isEnglish =
               EasyLocalization.of(context)!.currentLocale!.languageCode == 'en';
           return Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xff1F2A37),
               // Dark background color
               boxShadow: [
@@ -92,29 +95,33 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                 BottomNavigationBar(
                   items: [
                     BottomNavigationBarItem(
-                      icon: _selectedIndex == 0 ? Text("") : Icon(Icons.home),
+                      icon: _selectedIndex == 0
+                          ? const Text("")
+                          : const Icon(Icons.home),
                       label: _selectedIndex == 0 ? 'home'.tr() : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 1
-                          ? Text("")
-                          : Icon(Icons.assignment),
+                          ? const Text("")
+                          : const Icon(Icons.assignment),
                       label: _selectedIndex == 1 ? 'services'.tr() : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 2
-                          ? Text("")
-                          : Icon(Icons.shopping_bag),
+                          ? const Text("")
+                          : const Icon(Icons.shopping_bag),
                       label: _selectedIndex == 2 ? 'reservation'.tr() : "",
                     ),
                     BottomNavigationBarItem(
                       icon: _selectedIndex == 3
-                          ? Text("")
-                          : Icon(Icons.notifications),
+                          ? const Text("")
+                          : const Icon(Icons.notifications),
                       label: _selectedIndex == 3 ? 'Notification'.tr() : "",
                     ),
                     BottomNavigationBarItem(
-                      icon: _selectedIndex == 4 ? Text("") : Icon(Icons.person),
+                      icon: _selectedIndex == 4
+                          ? const Text("")
+                          : const Icon(Icons.person),
                       label: _selectedIndex == 4 ? 'Account'.tr() : "",
                     ),
                   ],

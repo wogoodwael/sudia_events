@@ -42,7 +42,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     'بطاقة بطاقة M24002',
     ' رابط احتفال المناسبة'
   ];
-  List price=[35.5, sharedpref.getDouble('invitation_price'), 15.2];
+  List price = [35.5, sharedpref.getDouble('invitation_price'), 15.2];
   List images = [];
   List texts = [];
   List<bool> value = [false, true, false];
@@ -118,7 +118,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     });
 
     _discount = _subtotal * 0.20;
-    _total = (_subtotal - _discount) + sharedpref.getDouble('invitation_price')!;
+    _total =
+        (_subtotal - _discount) + sharedpref.getDouble('invitation_price')!;
   }
 
   Future<void> _uploadCheckoutData() async {
@@ -515,7 +516,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         children: [
                                           Checkbox(
                                               activeColor: primary,
-                                              value:index==1? true: value[index],
+                                              value: index == 1
+                                                  ? true
+                                                  : value[index],
                                               onChanged: (val) {
                                                 setState(() {
                                                   value[index] = val!;
@@ -523,7 +526,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               }),
                                           Text(text[index]),
                                           const Spacer(),
-                                           Text(price[index].toString()),
+                                          Text(price[index].toString()),
                                         ],
                                       ),
                                     )),
@@ -551,26 +554,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ],
                           ),
                           const SizedBox(height: 16.0),
-                          RadioListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Row(
-                                children: [
-                                  const Text('أحصل على هذا الحجز مع '),
-                                  const Spacer(),
-                                  Image.asset(
-                                    "assets/images/tabby.png",
-                                    width: 50,
-                                  ),
-                                  Image.asset(
-                                    "assets/images/tamara.png",
-                                    width: 50,
-                                  ),
-                                ],
+                          Row(
+                            children: [
+                              const Text('أحصل على هذا الحجز مع '),
+                              const Spacer(),
+                              Image.asset(
+                                "assets/images/tabby.png",
+                                width: 50,
                               ),
-                              activeColor: Colors.grey,
-                              value: 2,
-                              groupValue: 2,
-                              onChanged: (val) {}),
+                              Image.asset(
+                                "assets/images/tamara.png",
+                                width: 50,
+                              ),
+                            ],
+                          ),
                           Container(
                             decoration: BoxDecoration(
                                 color: Colors.white,

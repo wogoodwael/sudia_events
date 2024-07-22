@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:sudia_events/core/utils/constants.dart';
@@ -12,7 +14,7 @@ import 'package:sudia_events/data/model/user_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/login.dart';
-import 'package:sudia_events/presentation/screens/Review/order_rating.dart';
+import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/screens/client/account/feedback.dart';
 import 'package:sudia_events/presentation/screens/client/account/help_center.dart';
 import 'package:sudia_events/presentation/screens/client/account/invite_freinds.dart';
@@ -20,9 +22,11 @@ import 'package:sudia_events/presentation/screens/client/account/message.dart';
 import 'package:sudia_events/presentation/screens/client/account/trending.dart';
 import 'package:sudia_events/presentation/screens/client/account/user_profile.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
+import 'package:sudia_events/presentation/screens/home/location.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String id;
+  const ProfileScreen({super.key, required this.id});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -166,25 +170,121 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_forward),
-            onPressed: () {
-              // Add back button functionality
-            },
-          ),
-        ],
-        title:
-            Text('Account'.tr(), style: const TextStyle(color: Colors.black)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              DateFormat('EEEE', 'ar').format(DateTime.now()),
+            ),
+          ],
+        ),
         centerTitle: true,
+        elevation: 0,
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.more_horiz_outlined),
-          onPressed: () {
-            // Add more options functionality
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => LocationScreen(
+                            lat: sharedpref.getDouble('lat')!,
+                            long: sharedpref.getDouble('long')!,
+                            fromHome: true,
+                          )));
+            },
+            child: Container(
+              width: 100,
+              height: 30,
+              decoration: BoxDecoration(color: Colors.yellow[100]),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'location'.tr(),
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.location_on_rounded),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+        leading: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('SubServices')
+              .doc(widget.id)
+              .collection('checkout')
+              .snapshots(),
+          builder: (context, snapshot) {
+            int favoriteCount = 0;
+            if (snapshot.hasData) {
+              favoriteCount = snapshot.data!.docs.length;
+            }
+            return Stack(
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
+                    color: primary,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CheckoutScreen(
+                            name: sharedpref.getString('name')!,
+                            number: sharedpref.getString('number')!,
+                            date: DateTime.parse(sharedpref.getString(
+                                'date')!), // Convert String to DateTime
+                            uniquID: sharedpref.getString('uniquID')!,
+                            img: sharedpref.getString('img')!,
+                          ),
+                        ));
+                  },
+                ),
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: Text(
+                      '$favoriteCount',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            );
           },
         ),
-        elevation: 0,
       ),
       body: SizedBox(
         width: mediawidth(context),
@@ -378,7 +478,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: Text('location'.tr()),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Add navigation to addresses
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => LocationScreen(
+                                lat: sharedpref.getDouble('lat')!,
+                                long: sharedpref.getDouble('long')!,
+                                fromHome: true,
+                              )));
                 },
               ),
               ListTile(
@@ -583,21 +690,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: Text('conditions'.tr()),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
-                        // Handle terms of service
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const TermOfServiceScreen()));
                       },
                     ),
                     ListTile(
                       title: Text('privacy policy'.tr()),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
-                        // Handle privacy policy
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const PrivacyPolicyScreen()));
                       },
                     ),
                     ListTile(
                       title: Text('terms of use'.tr()),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
-                        // Handle replacement and refund policy
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    const ReturnAndRefundPolicyScreen()));
                       },
                     ),
                     ListTile(
@@ -612,6 +729,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TermOfServiceScreen extends StatelessWidget {
+  const TermOfServiceScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const PolicyScreen(
+      title: 'شروط الخدمة',
+      content: 'شروط الخدمة المحتوى ...',
+    );
+  }
+}
+
+class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const PolicyScreen(
+      title: 'سياسة الخصوصية',
+      content: 'سياسة الخصوصية المحتوى ...',
+    );
+  }
+}
+
+class ReturnAndRefundPolicyScreen extends StatelessWidget {
+  const ReturnAndRefundPolicyScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const PolicyScreen(
+      title: 'سياسة الاستبدال والاسترجاع',
+      content: 'سياسة الاستبدال والاسترجاع المحتوى ...',
+    );
+  }
+}
+
+class PolicyScreen extends StatelessWidget {
+  final String title;
+  final String content;
+
+  const PolicyScreen({super.key, required this.title, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text(title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Text(content, textAlign: TextAlign.justify),
         ),
       ),
     );

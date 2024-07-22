@@ -38,11 +38,12 @@ void showNotification({required String title, required String body}) {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text("Ok"))
+            child: const Text("Ok"))
       ],
     ),
-  ); 
+  );
 }
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 void main() async {
@@ -55,7 +56,7 @@ void main() async {
 
   sharedpref = await SharedPreferences.getInstance();
 
- const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
     // description

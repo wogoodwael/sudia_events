@@ -1,22 +1,24 @@
+// ignore_for_file: unused_field
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/All/continue.dart';
+import 'package:sudia_events/presentation/screens/home/booking.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 
 class InvitationCardScreen extends StatefulWidget {
@@ -40,8 +42,99 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
   String _selectedCheckboxCard = '';
   final String _selectedImage = '';
   List<bool> isAddedToFavList = [];
+  final GlobalKey _screenshotKey = GlobalKey();
+  void _showDialog(BuildContext context, File img) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return RepaintBoundary(
+          key: _screenshotKey,
+          child: AlertDialog(
+            surfaceTintColor: Colors.white,
+            contentPadding: const EdgeInsets.all(10),
+            content: Stack(children: [
+              Container(
+                width: .7 * mediawidth(context),
+                height: .3 * mediaheight(context),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: FileImage(img), fit: BoxFit.contain)),
+              ),
+              Positioned(
+                  top: 70,
+                  right: 10,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: primary,
+                    child: IconButton(
+                        onPressed: _shareScreenshot,
+                        icon: const Icon(
+                          Icons.share,
+                          color: Colors.white,
+                          size: 15,
+                        )),
+                  ))
+            ]),
+            actions: [
+              MaterialButton(
+                minWidth: .7 * mediawidth(context),
+                color: primary,
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => const BookingScreen()));
+                },
+                child: const Text(
+                  'حفظ',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
 
+  Future<String?> shareWidgets({required GlobalKey globalKey}) async {
+    try {
+      if (globalKey.currentContext == null) {
+        throw Exception("GlobalKey's currentContext is null");
+      }
 
+      RenderRepaintBoundary? boundary = globalKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary?;
+      if (boundary == null) {
+        throw Exception("RenderRepaintBoundary is null");
+      }
+
+      var image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      if (byteData == null) {
+        throw Exception("ByteData is null");
+      }
+
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/screenshot.png').create();
+      await imagePath.writeAsBytes(pngBytes);
+
+      return imagePath.path;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  void _shareScreenshot() async {
+    final imagePath = await shareWidgets(globalKey: _screenshotKey);
+    if (imagePath != null) {
+      Share.shareXFiles(
+        [XFile(imagePath, mimeType: "image/png")],
+        text: 'Screenshot from Sudia Events app',
+        subject: 'Screenshot',
+      );
+    }
+  }
 
   String _selectedPrice = '';
   List<File?> _uploadedImages = [];
@@ -127,7 +220,11 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InvitationForm(husband: husband, wife: wife, visitors: visitors,),
+              InvitationForm(
+                husband: husband,
+                wife: wife,
+                visitors: visitors,
+              ),
               const SizedBox(height: 16),
               Container(
                 color: Colors.white,
@@ -142,8 +239,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                         setState(() {
                           _selectedPrice = widget.price[index];
                         });
-                            print("selected price ${widget.price[index]}");
-                            
+                        print("selected price ${widget.price[index]}");
                       },
                       child: _buildCardItem(context, widget.price[index],
                           widget.name[index], widget.name[index], index),
@@ -156,17 +252,19 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                   minWidth: .9 * mediawidth(context),
                   color: primary,
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ContinueInvitation(
-                                  id: widget.id,
-                                  husband: husband.text,
-                                  wife: wife.text,
-                                  visitors: visitors.text,
-                                  date: widget.date, price: _selectedPrice,
-                                )));
-                            
+                    _uploadedImages[0] != null
+                        ? _showDialog(context, _uploadedImages[0]!)
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => ContinueInvitation(
+                                      id: widget.id,
+                                      husband: husband.text,
+                                      wife: wife.text,
+                                      visitors: visitors.text,
+                                      date: widget.date,
+                                      price: _selectedPrice,
+                                    )));
                   },
                   child: const Text(
                     "التالي ",
@@ -180,9 +278,11 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
       ),
     );
   }
- Future<void> _pickImage(int index) async {
+
+  Future<void> _pickImage(int index) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage =
+        await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
         _uploadedImages[index] = File(pickedImage.path);
@@ -190,7 +290,8 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
     }
   }
 
-  Widget _buildCardItem(BuildContext context, String price, String title, String cardName, int index) {
+  Widget _buildCardItem(BuildContext context, String price, String title,
+      String cardName, int index) {
     Future<void> addToFavorites(BuildContext context) async {
       try {
         // Get current user
@@ -207,7 +308,8 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
             .doc(user.uid)
             .collection('favorites')
             .add({
-          'img': 'https://firebasestorage.googleapis.com/v0/b/saudievents-99e16.appspot.com/o/invitation_images%2Finvitation.png?alt=media&token=5763a96c-55eb-4995-8625-257d1258f562',
+          'img':
+              'https://firebasestorage.googleapis.com/v0/b/saudievents-99e16.appspot.com/o/invitation_images%2Finvitation.png?alt=media&token=5763a96c-55eb-4995-8625-257d1258f562',
           'name': cardName,
           'discount': "",
           'price': price,
@@ -245,9 +347,9 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
             Stack(
               children: [
                 GestureDetector(
-                
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(8.0)),
                     child: _uploadedImages[index] != null
                         ? Image.file(
                             _uploadedImages[index]!,
@@ -273,7 +375,9 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
                       child: Icon(
-                          isAddedToFavList[index] ? Icons.favorite : Icons.favorite_border,
+                          isAddedToFavList[index]
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           color: Colors.red),
                     ),
                   ),
@@ -294,12 +398,14 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                           setState(() {
                             _selectedCheckboxCard = value! ? title : '';
                           });
-sharedpref.setDouble('invitation_price', double.parse(widget.price[index]));
+                          sharedpref.setDouble('invitation_price',
+                              double.parse(widget.price[index]));
                         },
                       ),
                       Text(
                         cardName,
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -313,11 +419,13 @@ sharedpref.setDouble('invitation_price', double.parse(widget.price[index]));
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ),
-                    const SizedBox(width: 10,),
-                    const Text("تحميل") , 
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Text("تحميل"),
                     GestureDetector(
                         onTap: () => _pickImage(index),
-                      child: const Icon(Icons.keyboard_arrow_down_rounded))
+                        child: const Icon(Icons.keyboard_arrow_down_rounded))
                   ],
                 ),
                 const SizedBox(height: 10.0),
@@ -421,13 +529,16 @@ sharedpref.setDouble('invitation_price', double.parse(widget.price[index]));
       ],
     );
   }
-
 }
 
 class InvitationForm extends StatefulWidget {
   final TextEditingController husband, wife, visitors;
 
-  const InvitationForm({super.key, required this.husband, required this.wife, required this.visitors});
+  const InvitationForm(
+      {super.key,
+      required this.husband,
+      required this.wife,
+      required this.visitors});
   @override
   _InvitationFormState createState() => _InvitationFormState();
 }
@@ -477,59 +588,52 @@ class _InvitationFormState extends State<InvitationForm> {
               height: 10,
             ),
             const Text('اختر', style: TextStyle(fontSize: 14)),
-                        Row(
-  mainAxisAlignment: MainAxisAlignment.start, // Align to the right
-  children: [
-    Radio<int>(
-      value: 1,
-      groupValue: _selectedRole,
-      onChanged: (val) {
-        setState(() {
-          _selectedRole = val!;
-        });
-      },
-    ),
-    const Text("علي ابنة"),
-    
-  ],
-),
-        
-        
-                      Row(
-  mainAxisAlignment: MainAxisAlignment.start, // Align to the right
-  children: [
-    Radio<int>(
-      value: 3,
-      groupValue: _selectedRole,
-      onChanged: (val) {
-        setState(() {
-          _selectedRole = val!;
-        });
-      },
-    ),
-    const Text("علي عروسة"),
-    
-  ],
-),
-        
-        
             Row(
-  mainAxisAlignment: MainAxisAlignment.start, // Align to the right
-  children: [
-    Radio<int>(
-      value: 2,
-      groupValue: _selectedRole,
-      onChanged: (val) {
-        setState(() {
-          _selectedRole = val!;
-        });
-      },
-    ),
-    const Text("علي كريمة"),
-    
-  ],
-),
-           Center(
+              mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+              children: [
+                Radio<int>(
+                  value: 1,
+                  groupValue: _selectedRole,
+                  onChanged: (val) {
+                    setState(() {
+                      _selectedRole = val!;
+                    });
+                  },
+                ),
+                const Text("علي ابنة"),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+              children: [
+                Radio<int>(
+                  value: 3,
+                  groupValue: _selectedRole,
+                  onChanged: (val) {
+                    setState(() {
+                      _selectedRole = val!;
+                    });
+                  },
+                ),
+                const Text("علي عروسة"),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+              children: [
+                Radio<int>(
+                  value: 2,
+                  groupValue: _selectedRole,
+                  onChanged: (val) {
+                    setState(() {
+                      _selectedRole = val!;
+                    });
+                  },
+                ),
+                const Text("علي كريمة"),
+              ],
+            ),
+            Center(
               child: Container(
                   width: .8 * mediawidth(context),
                   height: 50,
@@ -550,37 +654,36 @@ class _InvitationFormState extends State<InvitationForm> {
                         )),
                   )),
             ),
-              Row(
-      mainAxisAlignment: MainAxisAlignment.start, // Align to the right
-      children: [
-        Radio<int>(
-          value: 1,
-          groupValue: _selectedBridegroom,
-          onChanged: (val) {
-            setState(() {
-              _selectedBridegroom = val!;
-            });
-          },
-        ),
-        const Text("الداعي"),
-        
-      ],
-    ),  Row(
-      mainAxisAlignment: MainAxisAlignment.start, // Align to the right
-      children: [
-          Radio<int>(
-          value: 2,
-          groupValue: _selectedBridegroom,
-          onChanged: (val) {
-            setState(() {
-              _selectedBridegroom = val!;
-            });
-          },
-        ),
-        const Text("الداعون"),
-      
-      ],
-    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+              children: [
+                Radio<int>(
+                  value: 1,
+                  groupValue: _selectedBridegroom,
+                  onChanged: (val) {
+                    setState(() {
+                      _selectedBridegroom = val!;
+                    });
+                  },
+                ),
+                const Text("الداعي"),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start, // Align to the right
+              children: [
+                Radio<int>(
+                  value: 2,
+                  groupValue: _selectedBridegroom,
+                  onChanged: (val) {
+                    setState(() {
+                      _selectedBridegroom = val!;
+                    });
+                  },
+                ),
+                const Text("الداعون"),
+              ],
+            ),
             Center(
               child: Container(
                   width: .8 * mediawidth(context),
@@ -591,9 +694,11 @@ class _InvitationFormState extends State<InvitationForm> {
                   ),
                   child: TextField(
                     controller: widget.visitors,
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: _selectedBridegroom==2 ?'الاسم الاول - الاسم الثاني ':'الاسم الاول ',
+                        hintText: _selectedBridegroom == 2
+                            ? 'الاسم الاول - الاسم الثاني '
+                            : 'الاسم الاول ',
                         contentPadding: const EdgeInsets.only(top: 10),
                         hintTextDirection: TextDirection.rtl,
                         suffixIcon: const Icon(

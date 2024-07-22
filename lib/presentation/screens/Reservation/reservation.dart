@@ -24,18 +24,28 @@ class ReservationScreen extends StatefulWidget {
 class _ReservationScreenState extends State<ReservationScreen> {
   final TextEditingController controller = TextEditingController();
   final List<String> services = [
-    'All'.tr(),
-    'active'.tr(),
-    'complete'.tr(),
-    'cancel'.tr()
+    'All',
+    'active',
+    'complete',
+    'cancel',
+    'pending'
+  ];
+  final List<String> arabicservices = [
+    'الكل',
+    'نشط',
+    'مكتمل',
+    'ملغي',
+    'في انتظار الدفع'
   ];
   final List<bool> onTapped = [false, false, false, false];
-  String selectedService = 'الكل';
+  String selectedService = 'All';
   List<dynamic> reservations = [];
+  List<dynamic> filteredReservations = [];
 
   @override
   void initState() {
     super.initState();
+    selectedService == 'All';
     _fetchReservations();
   }
 
@@ -47,9 +57,21 @@ class _ReservationScreenState extends State<ReservationScreen> {
     setState(() {
       reservations = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
         return data;
       }).toList();
+      _filterReservations();
+    });
+  }
+
+  void _filterReservations() {
+    setState(() {
+      if (selectedService == 'All') {
+        filteredReservations = reservations;
+      } else {
+        filteredReservations = reservations
+            .where((reservation) => reservation['status'] == selectedService)
+            .toList();
+      }
     });
   }
 
@@ -184,74 +206,63 @@ class _ReservationScreenState extends State<ReservationScreen> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Column(
-                      children: [
-                        SearchContainernew(
-                            hintText: 'search'.tr(),
-                            controller: controller,
-                            onTap: () {}),
-                        SizedBox(
-                          width: mediawidth(context),
-                          height: 45,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            itemCount: services.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    onTapped[index] = !onTapped[index];
-                                    selectedService = services[index];
-                                  });
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.all(5),
-                                  width: 80,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: onTapped[index]
-                                        ? primary
-                                        : Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Center(
-                                        child: Text(
-                                          services[index],
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: onTapped[index]
-                                                  ? Colors.white
-                                                  : Colors.black),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.check,
-                                        size: 15,
-                                        color: onTapped[index]
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SearchContainernew(
+                              hintText: 'search'.tr(),
+                              controller: controller,
+                              onTap: () {}),
+                          const SizedBox(
+                            height: 10,
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            width: mediawidth(context),
+                            height: 45,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemCount: services.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: ChoiceChip(
+                                    label: Text(
+                                      arabicservices[index],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color:
+                                            selectedService == services[index]
+                                                ? Colors.white
+                                                : Colors.black,
+                                      ),
+                                    ),
+                                    selected:
+                                        selectedService == services[index],
+                                    selectedColor: primary,
+                                    onSelected: (bool selected) {
+                                      setState(() {
+                                        selectedService = services[index];
+                                        _filterReservations();
+                                      });
+                                      print("seeeeeeeee$selectedService");
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     )),
                 const SizedBox(height: 10),
                 Expanded(
                   flex: 5,
                   child: ListView.builder(
-                    itemCount: reservations.length,
+                    itemCount: filteredReservations.length,
                     itemBuilder: (context, index) {
-                      final reservation = reservations[index];
+                      final reservation = filteredReservations[index];
                       final timestamp = reservation['timestamp'] as Timestamp;
                       final date = DateFormat('dd/MM/yyyy HH:mm')
                           .format(timestamp.toDate());
@@ -444,7 +455,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                       ),
                                                     )
                                                   : reservation['status'] ==
-                                                          'Active'
+                                                          'active'
                                                       ? MaterialButton(
                                                           elevation: 0,
                                                           shape: RoundedRectangleBorder(
