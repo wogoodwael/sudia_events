@@ -252,19 +252,26 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                   minWidth: .9 * mediawidth(context),
                   color: primary,
                   onPressed: () {
-                    _uploadedImages[0] != null
-                        ? _showDialog(context, _uploadedImages[0]!)
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => ContinueInvitation(
-                                      id: widget.id,
-                                      husband: husband.text,
-                                      wife: wife.text,
-                                      visitors: visitors.text,
-                                      date: widget.date,
-                                      price: _selectedPrice,
-                                    )));
+                    // Loop through the _uploadedImages to check for any non-null images
+                    int index =
+                        _uploadedImages.indexWhere((image) => image != null);
+                    if (index != -1) {
+                      _showDialog(context, _uploadedImages[index]!);
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ContinueInvitation(
+                            id: widget.id,
+                            husband: husband.text,
+                            wife: wife.text,
+                            visitors: visitors.text,
+                            date: widget.date,
+                            price: _selectedPrice,
+                          ),
+                        ),
+                      );
+                    }
                   },
                   child: const Text(
                     "التالي ",
@@ -410,7 +417,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                     ],
                   ),
                 ),
-          price[index]=='0.0'?      Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
@@ -422,12 +429,15 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text("تحميل"),
-                    GestureDetector(
-                        onTap: () => _pickImage(index),
-                        child: const Icon(Icons.keyboard_arrow_down_rounded))
+                    Text(price == '0.0' ? "" : "تحميل"),
+                    price == '0.0'
+                        ? Container()
+                        : GestureDetector(
+                            onTap: () => _pickImage(index),
+                            child:
+                                const Icon(Icons.keyboard_arrow_down_rounded))
                   ],
-                ):Container(),
+                ),
                 const SizedBox(height: 10.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
