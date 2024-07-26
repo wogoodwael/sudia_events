@@ -22,12 +22,13 @@ import 'package:sudia_events/presentation/screens/home/booking.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
 
 class InvitationCardScreen extends StatefulWidget {
+  final String eventId;
   final String id;
   final DateTime date;
   final List<String> price = ['0.0', '15.00', '35.00'];
   final List<String> name = ['M458w', 'M8ws', 'Mqqk'];
 
-  InvitationCardScreen({super.key, required this.id, required this.date});
+  InvitationCardScreen({super.key, required this.id, required this.date, required this.eventId});
 
   @override
   _InvitationCardScreenState createState() => _InvitationCardScreenState();
@@ -267,7 +268,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                             wife: wife.text,
                             visitors: visitors.text,
                             date: widget.date,
-                            price: _selectedPrice,
+                            price: _selectedPrice, eventId: widget.eventId,
                           ),
                         ),
                       );

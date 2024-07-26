@@ -161,6 +161,7 @@ class Api {
         final phone = eventData['phone'] as String?;
         final type = eventData['type'] as String?;
         final uniquId = eventData['uniquID'] as String?;
+        final cardid = eventData['cardId'] as String?;
 
         if (eventDateString == null ||
             eventName == null ||
@@ -181,7 +182,7 @@ class Api {
               phone: phone,
               type: type,
               time: doc['time'], // Assuming doc['time'] is not null
-              uniquID: uniquId,
+              uniquID: uniquId, cardId: cardid??"",
             ),
           );
         } else {
@@ -192,7 +193,7 @@ class Api {
               phone: phone,
               type: type,
               time: doc['time'], // Assuming doc['time'] is not null
-              uniquID: uniquId,
+              uniquID: uniquId, cardId: cardid??"",
             ),
           ];
         }
@@ -220,7 +221,7 @@ class Api {
                 phone: doc['phone'],
                 type: doc['type'],
                 time: doc['time'],
-                uniquID: doc['uniquID'],
+                uniquID: doc['uniquID'], cardId: doc['cardId']??"",
               ))
           .toList();
 

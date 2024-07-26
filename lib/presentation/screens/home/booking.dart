@@ -39,6 +39,7 @@ class _BookingScreenState extends State<BookingScreen> {
   TextEditingController tribe = TextEditingController();
   List services = ['زواج', 'حفل تخرج', 'عيد ميلاد', "خطوبة"];
   String selectedService = 'زواج';
+   String uniqueID = const Uuid().v4();
   void _onServiceSelected(int index) {
     setState(() {
       for (int i = 0; i < onTapped.length; i++) {
@@ -56,7 +57,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
     // Split the name into parts
 
-    String uniqueID = const Uuid().v4();
+   
     sharedpref.setString('uniquId', uniqueID);
     // Create a map representing the event data
     Map<String, dynamic> eventData = {
@@ -66,7 +67,8 @@ class _BookingScreenState extends State<BookingScreen> {
       'date': _selectedDay!.toIso8601String(),
       'type': selectedService,
       'time': _selectedTime.format(context),
-      'uniquID': uniqueID
+      'uniquID': uniqueID, 
+      'cardId':sharedpref.getString('cardId')??""
     };
 
     // Add the event data to Firestore
@@ -400,7 +402,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (_) => InvitationCardScreen(
-                              id: const Uuid().v4(), date: _selectedDay!)));
+                              id: const Uuid().v4(), date: _selectedDay!, eventId: uniqueID,)));
                 },
                 child: Row(
                   children: [

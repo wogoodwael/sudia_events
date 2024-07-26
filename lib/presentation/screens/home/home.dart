@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -18,7 +22,7 @@ import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
 
 import 'package:sudia_events/presentation/screens/Auth/login.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/screens/home/booking.dart';
@@ -63,6 +67,44 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
   List<Event> filteredEvents = [];
   bool isFav = false;
+
+Future<String> _getImageUrl(String docId) async {
+  QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+      .collection('invitationCards')
+      .where('cardId', isEqualTo: docId)
+      .get();
+
+  if (querySnapshot.docs.isNotEmpty) {
+    // Assuming there's only one document with the given cardId
+    Map<String, dynamic> data = querySnapshot.docs.first.data();
+    return data['imageUrl'] as String;
+  } else {
+    throw Exception("Document not found");
+  }
+}
+
+  Future<File> _downloadImage(String url) async {
+    final response = await http.get(Uri.parse(url));
+    final documentDirectory = await getApplicationDocumentsDirectory();
+    final file = File('${documentDirectory.path}/image.png');
+    file.writeAsBytesSync(response.bodyBytes);
+    return file;
+  }
+
+  void _shareImage(File file) {
+    Share.shareFiles([file.path], text: 'Check out this invitation card!');
+  }
+
+  void _handleShare(String id ) async {
+    try {
+      String imageUrl = await _getImageUrl(id);
+      File imageFile = await _downloadImage(imageUrl);
+      _shareImage(imageFile);
+    } catch (e) {
+      print('Error sharing image: $e');
+    }
+  }
+
   Future<List<Event>> _fetchEvents() async {
     List<Event> events;
 
@@ -85,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 type: doc.data()['type'],
                 time: doc.data()['time'],
                 uniquID: doc.data()[
-                    'uniquID'], // Assuming uniquID is present in the doc
+                    'uniquID'], cardId: doc.data()['cardId']??"", // Assuming uniquID is present in the doc
               ))
           .toList();
     } else {
@@ -104,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 type: doc.data()['type'],
                 time: doc.data()['time'],
                 uniquID: doc.data()[
-                    'uniquID'], // Assuming uniquID is present in the doc
+                    'uniquID'], cardId: doc.data()['cardId']??"", // Assuming uniquID is present in the doc
               ))
           .toList();
     }
@@ -596,17 +638,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                           const SizedBox(height: 20),
-                                          const Row(
+                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Icon(
-                                                Icons.share,
-                                                color: Colors.grey,
-                                                size: 20,
-                                              ),
-                                              SizedBox(width: 20),
-                                              Text(
+                                            isBooked?  GestureDetector(
+                                                onTap: () => _handleShare(event.cardId),
+                                                child: const Icon(
+                                                  Icons.share,
+                                                  color: Colors.grey,
+                                                  size: 20,
+                                                ),
+                                              ):Container(),
+                                              const SizedBox(width: 20),
+                                              const Text(
                                                 "بطاقة الدعوة ",
                                                 style: TextStyle(
                                                     color: Colors.grey),

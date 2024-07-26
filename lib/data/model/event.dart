@@ -6,6 +6,7 @@ class Event {
   final String type;
 
   final String time;
+  final String cardId;
   final String uniquID;
 
   Event({
@@ -14,6 +15,7 @@ class Event {
     required this.date,
     required this.type,
     required this.name,
+    required this.cardId,
     required this.phone,
   });
 
@@ -24,7 +26,7 @@ class Event {
       phone: map['phone'],
       type: map['type'],
       time: map['time'] ?? "",
-      uniquID: map['uniquID'],
+      uniquID: map['uniquID'], cardId: map['cardId'],
     );
   }
 }
