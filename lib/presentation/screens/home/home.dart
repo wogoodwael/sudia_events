@@ -263,18 +263,44 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 25,
                   ),
                   onPressed: () {
+                    // Retrieve the date string from shared preferences
+                    String dateString = sharedpref.getString('date') ?? "";
+
+                    // Print the date string for debugging
+                    print('Retrieved date string: $dateString');
+
+                    DateTime parsedDate;
+                    if (dateString.isEmpty) {
+                      // Handle the empty string case, e.g., set a default date or show an error
+                      print('Date string is empty.');
+                      // Set a default date or handle this case appropriately
+                      parsedDate = DateTime
+                          .now(); // Example: set to current date and time
+                    } else {
+                      try {
+                        parsedDate = DateTime.parse(dateString);
+                        print('Parsed date: $parsedDate');
+                      } catch (e) {
+                        // Handle the parsing error, e.g., show an error message
+                        print('Error parsing date string: $e');
+                        // Set a default date or handle this case appropriately
+                        parsedDate = DateTime
+                            .now(); // Example: set to current date and time
+                      }
+                    }
+
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => CheckoutScreen(
-                            name: sharedpref.getString('name')!,
-                            number: sharedpref.getString('number')!,
-                            date: DateTime.parse(sharedpref.getString(
-                                'date')!), // Convert String to DateTime
-                            uniquID: sharedpref.getString('uniquID')!,
-                            img: sharedpref.getString('img')!,
-                          ),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CheckoutScreen(
+                          name: sharedpref.getString('name') ?? "",
+                          number: sharedpref.getString('number') ?? "",
+                          date: parsedDate, // Use the parsed DateTime
+                          uniquID: sharedpref.getString('uniquID') ?? "",
+                          img: sharedpref.getString('img') ?? "",
+                        ),
+                      ),
+                    );
                   },
                 ),
                 Positioned(

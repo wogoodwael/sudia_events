@@ -8,7 +8,6 @@ import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
-import 'package:sudia_events/presentation/screens/Review/order_rating.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -212,7 +211,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         centerTitle: true,
       ),
       body: _checkoutItems.isEmpty
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: Text("لا يوجد اضافات بعد"))
           : Column(
               children: [
                 Expanded(

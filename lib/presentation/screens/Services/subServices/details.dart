@@ -137,6 +137,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
           Colors.green,
           .9 * mediaheight(context),
         );
+        Navigator.pop(context);
       }
     } catch (e) {
       // Handle errors
@@ -311,7 +312,8 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                                       number:
                                           _selectedOptions.length.toString(),
                                       date: widget.date,
-                                      uniquID: widget.uniquID, img: widget.img,
+                                      uniquID: widget.uniquID,
+                                      img: widget.img,
                                     )));
                         sharedpref.setString('name', widget.name);
                         sharedpref.setString(
