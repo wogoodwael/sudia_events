@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
-
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
@@ -134,6 +131,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       style: const TextStyle(color: Colors.grey, fontSize: 17),
                     ),
                     OtpPinField(
+                      
                       key: _otpPinFieldController,
                       autoFillEnable: false,
                       fieldWidth: 50,
@@ -145,9 +143,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                         enteredOtp = text;
 
                         });
+                        // ignore: avoid_print
                         print('Entered pin is $text');
                       },
                       onChange: (text) {
+                        // ignore: avoid_print
                         print('Enter on change pin is $text');
                       },
                       onCodeChanged: (code) {
@@ -233,7 +233,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     ),
                     Container(
                       child: MaterialButton(
-                        color: isOtpComplete ? primary : secondary,
+                        color: isOtpComplete ? primary : primary,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         minWidth: 0.7 * MediaQuery.of(context).size.width,
@@ -242,16 +242,28 @@ class _VerifyScreenState extends State<VerifyScreen> {
                             loading = true;
                           });
                           try {
+                            
+                            if(enteredOtp.replaceAll('+', '').contains(widget.verificationId)){
+                              print("DONE");
+                            }else{
+                              print("NOT DONE");
+                              print("dddd===+"+enteredOtp);
+                              print("verrrr=="+widget.verificationId);
+                            }
+
+
+
                             PhoneAuthCredential credential =
                                 PhoneAuthProvider.credential(
                               verificationId: widget.verificationId,
                               smsCode: enteredOtp
                             );
+
+
                             FirebaseAuth.instance
                                 .signInWithCredential(credential)
                                 .then((value) async {
                               String uid = value.user!.uid;
-
                               widget.register!
                                   ? await api.saveUserDataToFirestore(
                                       uid, widget.email ?? '', widget.phone, widget.name??"")

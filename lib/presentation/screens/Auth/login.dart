@@ -16,7 +16,7 @@ import 'package:sudia_events/presentation/screens/Auth/register.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -45,39 +45,39 @@ class _LoginScreenState extends State<LoginScreen> {
           title: Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 25),
+                padding: const EdgeInsets.only(top: 25),
                 child: GestureDetector(
                   onTap: () {
                     showMenu(
                       context: context,
-                      position: RelativeRect.fromLTRB(100, 100, 10, 100),
+                      position: const RelativeRect.fromLTRB(100, 100, 10, 100),
                       items: [
                         PopupMenuItem(
                           onTap: () {
                             Provider.of<LanguageProvider>(context,
                                     listen: false)
-                                .setLocale(Locale('ar'));
+                                .setLocale(const Locale('ar'));
                             easy.EasyLocalization.of(context)
-                                ?.setLocale(Locale('ar'));
+                                ?.setLocale(const Locale('ar'));
                           },
                           value: 1,
-                          child: Text("عربي"),
+                          child: const Text("عربي"),
                         ),
                         PopupMenuItem(
                           onTap: () {
                             Provider.of<LanguageProvider>(context,
                                     listen: false)
-                                .setLocale(Locale('en'));
+                                .setLocale(const Locale('en'));
                             easy.EasyLocalization.of(context)
-                                ?.setLocale(Locale('en'));
+                                ?.setLocale(const Locale('en'));
                           },
                           value: 1,
-                          child: Text("English"),
+                          child: const Text("English"),
                         ),
                       ],
                     );
                   },
-                  child: ImageIcon(
+                  child: const ImageIcon(
                     AssetImage(
                       "assets/images/lang.png",
                     ),
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Expanded(
                 flex: 6,
-                child: Container(
+                child: SizedBox(
                   width: .9 * mediawidth(context),
                   child: SingleChildScrollView(
                     child: Column(
@@ -131,8 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   });
                                 },
                                 dropdownIcon:
-                                    Icon(Icons.keyboard_arrow_down_rounded),
-                                decoration: InputDecoration(
+                                    const Icon(Icons.keyboard_arrow_down_rounded),
+                                decoration: const InputDecoration(
                                   contentPadding:
                                       EdgeInsets.only(top: 5, left: 10),
                                   border: InputBorder.none,
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Text(
                               'remember'.tr(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: GoogleFonts.roboto(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
                               Text(
@@ -206,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 2,
                               ),
                               Text(
@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: GoogleFonts.roboto(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 2,
                               ),
                               Text(
@@ -231,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               color:
-                                  phoneE.text.isNotEmpty ? primary : secondary,
+                                  phoneE.text.isNotEmpty ? primary : primary,
                               minWidth: 300,
                               onPressed: phoneE.text.isNotEmpty
                                   ? () async {
@@ -246,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                   : () {},
                               child: loading
-                                  ? Container(
+                                  ? const SizedBox(
                                       height: 30,
                                       width: 30,
                                       child: CircularProgressIndicator(
@@ -254,14 +254,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ))
                                   : Text(
                                       'login'.tr(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
                                     ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -274,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w300),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               GestureDetector(
@@ -282,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (_) => RegisterScreen()));
+                                          builder: (_) => const RegisterScreen()));
                                 },
                                 child: Text(
                                   register ? "login".tr() : "signup".tr(),

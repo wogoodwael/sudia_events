@@ -22,6 +22,7 @@ late SharedPreferences sharedpref;
 final navigatorKey = GlobalKey<NavigatorState>();
 Future _firebaseBackgroundMessage(RemoteMessage message) async {
   if (message.notification != null) {
+    // ignore: avoid_print
     print("Some notification Received in background...");
   }
 }

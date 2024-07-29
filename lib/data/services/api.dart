@@ -75,6 +75,8 @@ class Api {
       await auth.verifyPhoneNumber(
         phoneNumber: phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
+
+          print("CREDDDDD====${credential.smsCode}");
           UserCredential userCredential =
               await auth.signInWithCredential(credential);
 
@@ -90,6 +92,8 @@ class Api {
         },
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
+
+          print("resend======="+resendToken.toString());
 
           Navigator.pushReplacement(
             context,

@@ -3,7 +3,7 @@ import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/presentation/screens/Review/rating_review.dart';
+import 'package:sudia_events/presentation/screens/Review/services_review.dart';
 
 class OrderRatingScreen extends StatefulWidget {
    final List orders;
@@ -130,8 +130,11 @@ class _OrderRatingScreenState extends State<OrderRatingScreen> {
                 height: 40,
                 color: primary,
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => RatingReviewScreen(orders:widget. orders,images:widget. images,texts: widget.texts,)));
+                     Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ServiceRatingScreen()));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (_) =>
+                  //      RatingReviewScreen(orders:widget. orders,images:widget. images,texts: widget.texts,)));
                 },
                 child: Text(
                   'التالي',

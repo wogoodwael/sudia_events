@@ -61,20 +61,20 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                     image: DecorationImage(
                         image: FileImage(img), fit: BoxFit.contain)),
               ),
-              Positioned(
-                  top: 70,
-                  right: 10,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: primary,
-                    child: IconButton(
-                        onPressed: _shareScreenshot,
-                        icon: const Icon(
-                          Icons.share,
-                          color: Colors.white,
-                          size: 15,
-                        )),
-                  ))
+              // Positioned(
+              //     top: 70,
+              //     right: 10,
+              //     child: CircleAvatar(
+              //       radius: 20,
+              //       backgroundColor: primary,
+              //       child: IconButton(
+              //           onPressed: _shareScreenshot,
+              //           icon: const Icon(
+              //             Icons.share,
+              //             color: Colors.white,
+              //             size: 15,
+              //           )),
+              //     ))
             ]),
             actions: [
               MaterialButton(

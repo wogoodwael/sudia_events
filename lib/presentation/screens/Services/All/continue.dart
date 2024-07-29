@@ -293,19 +293,19 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                                       _selectedCheckbox),
                                 ),
                               ),
-                              Positioned(
-                                  top: 30,
-                                  right: 30,
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.white,
-                                    child: IconButton(
-                                        onPressed: _shareScreenshot,
-                                        icon: const Icon(
-                                          Icons.share,
-                                          size: 15,
-                                        )),
-                                  ))
+                              // Positioned(
+                              //     top: 30,
+                              //     right: 30,
+                              //     child: CircleAvatar(
+                              //       radius: 20,
+                              //       backgroundColor: Colors.white,
+                              //       child: IconButton(
+                              //           onPressed: _shareScreenshot,
+                              //           icon: const Icon(
+                              //             Icons.share,
+                              //             size: 15,
+                              //           )),
+                              //     ))
                             ],
                           ),
                         ),
