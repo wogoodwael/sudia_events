@@ -6,6 +6,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -20,6 +21,7 @@ import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/All/continue.dart';
 import 'package:sudia_events/presentation/screens/home/booking.dart';
 import 'package:sudia_events/presentation/screens/home/check.dart';
+import 'package:uuid/uuid.dart';
 
 class InvitationCardScreen extends StatefulWidget {
   final String eventId;
@@ -44,6 +46,73 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
   final String _selectedImage = '';
   List<bool> isAddedToFavList = [];
   final GlobalKey _screenshotKey = GlobalKey();
+   Future<String?> _captureScreenshot() async {
+    try {
+      if (_screenshotKey.currentContext == null) {
+        throw Exception("GlobalKey's currentContext is null");
+      }
+
+      RenderRepaintBoundary? boundary = _screenshotKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary?;
+      if (boundary == null) {
+        throw Exception("RenderRepaintBoundary is null");
+      }
+
+      var image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      if (byteData == null) {
+        throw Exception("ByteData is null");
+      }
+
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/screenshot.png').create();
+      await imagePath.writeAsBytes(pngBytes);
+
+      return imagePath.path;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> _uploadToFirebase(String imagePath) async {
+    try {
+      File imageFile = File(imagePath);
+      String fileName = const Uuid().v1();
+      Reference ref = FirebaseStorage.instance.ref().child('invitationCards/$fileName.png');
+      UploadTask uploadTask = ref.putFile(imageFile);
+
+      final TaskSnapshot downloadUrl = (await uploadTask);
+      final String url = (await downloadUrl.ref.getDownloadURL());
+
+      await FirebaseFirestore.instance.collection('invitationCards').add({
+        'cardId': widget.eventId,
+        'imageUrl': url,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+sharedpref.setString('cardId', widget.eventId);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invitation card saved successfully!')),
+      );
+    } catch (e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to save invitation card.')),
+      );
+    }
+  }
+  Future<void> _saveScreenshot() async {
+    final imagePath = await _captureScreenshot();
+    if (imagePath != null) {
+      await _uploadToFirebase(imagePath);
+        Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const BookingScreen()));
+    }
+  }
+
   void _showDialog(BuildContext context, File img) {
     showDialog(
       context: context,
@@ -81,8 +150,7 @@ class _InvitationCardScreenState extends State<InvitationCardScreen> {
                 minWidth: .7 * mediawidth(context),
                 color: primary,
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const BookingScreen()));
+                     _saveScreenshot();
                 },
                 child: const Text(
                   'حفظ',
@@ -782,4 +850,6 @@ class _InvitationFormState extends State<InvitationForm> {
       ),
     );
   }
+
+
 }

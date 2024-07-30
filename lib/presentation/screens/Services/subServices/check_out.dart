@@ -117,8 +117,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     });
 
     _discount = _subtotal * 0.20;
-    _total =
-        (_subtotal - _discount) + sharedpref.getDouble('invitation_price')!;
+    _total = (_subtotal - _discount) +
+        (sharedpref.getDouble('invitation_price') ?? 0);
   }
 
   Future<void> _uploadCheckoutData() async {
