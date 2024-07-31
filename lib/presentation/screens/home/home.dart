@@ -1,13 +1,11 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,7 +24,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/screens/home/booking.dart';
-import 'package:sudia_events/presentation/screens/home/check.dart';
 import 'package:sudia_events/presentation/screens/home/location.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart' as data;
@@ -466,7 +463,7 @@ Future<String> _getImageUrl(String docId) async {
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (_) => LoginScreen()));
+                                              builder: (_) => const LoginScreen()));
                                     },
                                     child: const Text("حسنا"),
                                   )
@@ -772,6 +769,7 @@ class _EventContainerState extends State<EventContainer> {
       });
       // Show a snackbar or toast to indicate success
       CustomSnackBar(
+        // ignore: use_build_context_synchronously
         context,
         'add to fav'.tr(),
         Colors.green,
@@ -838,9 +836,17 @@ class _EventContainerState extends State<EventContainer> {
                             fontSize: 16,
                           ),
                         ),
+                        (widget.name.length>2)?
                         Text(
                           widget.name,
                           style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ): const Text(
+                          'وجود وايل ',
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -869,6 +875,9 @@ class _EventContainerState extends State<EventContainer> {
                               color: Colors.green, fontSize: 14),
                         ),
                       ),
+                      const SizedBox(
+                        height: 7,
+                      ),
                       Text(
                         widget.date,
                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -880,7 +889,7 @@ class _EventContainerState extends State<EventContainer> {
               Row(
                 children: [
                   Container(
-                    width: 190,
+                    width: MediaQuery.of(context).size.width*0.6,
                     height: 1,
                     color: Colors.grey,
                     margin: const EdgeInsets.symmetric(horizontal: 16),

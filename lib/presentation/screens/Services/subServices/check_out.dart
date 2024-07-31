@@ -683,22 +683,46 @@ class OrderItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+        Row(
+         mainAxisAlignment:MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+            //const SizedBox(width:14),
+            const Text('في انتطار الدفع',
+            style: TextStyle(color: primary,fontSize: 14),),
+
+            //SizedBox(width: 32,),
+          
+            // ...options.map((option) {
+            //   return Text(
+            //     // ignore: prefer_interpolation_to_compose_strings
+            //     '${option['price']}'+" "+"SAR",
+            //     style: const TextStyle(fontSize: 13.0,
+            //     color: primary,
+            //      fontWeight: FontWeight.bold),
+            //   );
+            // })
+            
+            //
+          ],
         ),
         const SizedBox(height: 4.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: EdgeInsets.all(12),
+         // padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             children: [
               Text(
                 "4.9",
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
                 ),
               ),
+             const SizedBox(width: 7,),
               Icon(
                 Icons.star,
                 color: Colors.yellow[600],

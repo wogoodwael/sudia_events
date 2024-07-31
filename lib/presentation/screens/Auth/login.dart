@@ -244,7 +244,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                       });
                                     }
-                                  : () {},
+                                  : () {
+
+                                     Api().login(
+                                          context,
+                                          sharedpref.getString("phone")!,
+                                          loading, (bool value) {
+                                        setState(() {
+                                          loading = value;
+                                        });
+                                      });
+                                    
+                                  },
                               child: loading
                                   ? const SizedBox(
                                       height: 30,

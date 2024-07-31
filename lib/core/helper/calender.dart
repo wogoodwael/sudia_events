@@ -25,7 +25,7 @@ class _CalenderState extends State<Calender> {
     return TableCalendar(
       rowHeight: 40,
       headerVisible: true,
-      headerStyle: HeaderStyle(
+      headerStyle: const HeaderStyle(
           headerPadding: EdgeInsets.symmetric(vertical: 5),
           formatButtonVisible: false,
           titleCentered: true),
@@ -38,15 +38,15 @@ class _CalenderState extends State<Calender> {
         return isSameDay(widget.selectedDay, day);
       },
       onDaySelected: widget.onDaySelected,
-      calendarStyle: const CalendarStyle(
+      calendarStyle: CalendarStyle(
           outsideDaysVisible: true,
           markersMaxCount: 5,
           markerDecoration:
-              BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+              const BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
           selectedDecoration:
               BoxDecoration(color: secondary, shape: BoxShape.circle),
           todayDecoration:
-              BoxDecoration(color: primary, shape: BoxShape.circle)),
+              const BoxDecoration(color: primary, shape: BoxShape.circle)),
       startingDayOfWeek: StartingDayOfWeek.saturday,
       onPageChanged: (focusedDay) {
         focusedDay = focusedDay;
@@ -93,7 +93,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
       focusedDay: _focusedDay,
       selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
       enabledDayPredicate: (day) =>
-          day.isAfter(DateTime.now().subtract(Duration(days: 1))),
+          day.isAfter(DateTime.now().subtract(const Duration(days: 1))),
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
           _selectedDay = selectedDay;
@@ -101,19 +101,19 @@ class _CustomCalendarState extends State<CustomCalendar> {
         });
         widget.onDaySelected(selectedDay, focusedDay);
       },
-      calendarStyle: const CalendarStyle(
+      calendarStyle:  CalendarStyle(
           outsideDaysVisible: true,
           markersMaxCount: 5,
           markerDecoration:
-              BoxDecoration(color: Colors.green, shape: BoxShape.circle),
+              const BoxDecoration(color: Colors.green, shape: BoxShape.circle),
           selectedDecoration:
-              BoxDecoration(color: primary, shape: BoxShape.circle),
+              const BoxDecoration(color: primary, shape: BoxShape.circle),
           todayDecoration:
               BoxDecoration(color: secondary, shape: BoxShape.circle)),
       eventLoader: widget.getEventsForDay,
       calendarFormat: CalendarFormat.month,
       startingDayOfWeek: StartingDayOfWeek.monday,
-      headerStyle: HeaderStyle(
+      headerStyle: const HeaderStyle(
           headerPadding: EdgeInsets.symmetric(vertical: 5),
           formatButtonVisible: false,
           titleCentered: true),
