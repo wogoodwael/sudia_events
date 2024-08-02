@@ -510,20 +510,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           builder: (_) => const PromotionScreen()));
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.payment),
-                title: Text('payment methods'.tr()),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.account_balance_wallet),
-                title: Text('My wallet'.tr()),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Add navigation to wallet
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.payment),
+              //   title: Text('payment methods'.tr()),
+              //   trailing: const Icon(Icons.arrow_forward_ios),
+              //   onTap: () {},
+              // ),
+              // ListTile(
+              //   leading: const Icon(Icons.account_balance_wallet),
+              //   title: Text('My wallet'.tr()),
+              //   trailing: const Icon(Icons.arrow_forward_ios),
+              //   onTap: () {
+              //     // Add navigation to wallet
+              //   },
+              // ),
               ListTile(
                 leading: const Icon(Icons.edit),
                 title: const Text('ملاحظات المستخدمين'),
@@ -542,14 +542,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       MaterialPageRoute(builder: (_) => MessageScreen()));
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.group_add),
-                title: Text('join us'.tr()),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Add navigation to join us
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.group_add),
+              //   title: Text('join us'.tr()),
+              //   trailing: const Icon(Icons.arrow_forward_ios),
+              //   onTap: () {
+              //     // Add navigation to join us
+              //   },
+              // ),
               ListTile(
                 leading: const Icon(Icons.person_add),
                 title: Text('invite freinds'.tr()),
@@ -559,14 +559,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       MaterialPageRoute(builder: (_) => InviteFriendsScreen()));
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.security),
-                title: Text('security'.tr()),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Add navigation to security
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.security),
+              //   title: Text('security'.tr()),
+              //   trailing: const Icon(Icons.arrow_forward_ios),
+              //   onTap: () {
+              //     // Add navigation to security
+              //   },
+              // ),
               ListTile(
                 leading: const Icon(Icons.help),
                 title: Text('help center'.tr()),
@@ -581,25 +581,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('language'.tr()),
-                        DropdownButton<String>(
-                          value: 'العربية',
-                          items: <String>['العربية', 'English']
-                              .map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (_) {
-                            // Handle language change
-                          },
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text('language'.tr()),
+                    //     DropdownButton<String>(
+                    //       value: 'العربية',
+                    //       items: <String>['العربية', 'English']
+                    //           .map((String value) {
+                    //         return DropdownMenuItem<String>(
+                    //           value: value,
+                    //           child: Text(value),
+                    //         );
+                    //       }).toList(),
+                    //       onChanged: (_) {
+                    //         // Handle language change
+                    //       },
+                    //     ),
+                    //   ],
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -633,59 +633,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'Auto Update'.tr(),
-                            style: const TextStyle(fontSize: 15),
-                          ),
-                        ),
-                        Transform.scale(
-                          scale: .7,
-                          child: Switch(
-                            activeColor: primary,
-                            value: true,
-                            onChanged: (bool value) {
-                              // Handle notification toggle
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'sounds'.tr(),
-                            style: const TextStyle(fontSize: 15),
-                          ),
-                        ),
-                        Transform.scale(
-                          scale: .7,
-                          child: Switch(
-                            activeColor: primary,
-                            value: false,
-                            onChanged: (bool value) {
-                              // Handle notification toggle
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Auto Update'.tr(),
-                      ),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () {
-                        // Handle automatic updates
-                      },
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Padding(
+                    //       padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    //       child: Text(
+                    //         'Auto Update'.tr(),
+                    //         style: const TextStyle(fontSize: 15),
+                    //       ),
+                    //     ),
+                    //     Transform.scale(
+                    //       scale: .7,
+                    //       child: Switch(
+                    //         activeColor: primary,
+                    //         value: true,
+                    //         onChanged: (bool value) {
+                    //           // Handle notification toggle
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Padding(
+                    //       padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    //       child: Text(
+                    //         'sounds'.tr(),
+                    //         style: const TextStyle(fontSize: 15),
+                    //       ),
+                    //     ),
+                    //     Transform.scale(
+                    //       scale: .7,
+                    //       child: Switch(
+                    //         activeColor: primary,
+                    //         value: false,
+                    //         onChanged: (bool value) {
+                    //           // Handle notification toggle
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // ListTile(
+                    //   title: Text(
+                    //     'Auto Update'.tr(),
+                    //   ),
+                    //   trailing: const Icon(Icons.arrow_forward_ios),
+                    //   onTap: () {
+                    //     // Handle automatic updates
+                    //   },
+                    // ),
                     ListTile(
                       title: Text('conditions'.tr()),
                       trailing: const Icon(Icons.arrow_forward_ios),
@@ -717,13 +717,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     const ReturnAndRefundPolicyScreen()));
                       },
                     ),
-                    ListTile(
-                      title: const Text('About App'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () {
-                        // Handle about app
-                      },
-                    ),
+                    // ListTile(
+                    //   title: const Text('About App'),
+                    //   trailing: const Icon(Icons.arrow_forward_ios),
+                    //   onTap: () {
+                    //     // Handle about app
+                    //   },
+                    // ),
                   ],
                 ),
               ),
