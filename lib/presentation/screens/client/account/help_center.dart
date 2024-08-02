@@ -29,10 +29,10 @@ class HelpCenterScreen extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: const [
-                CategoryTab(label: 'General', isSelected: true),
-                CategoryTab(label: 'Account'),
-                CategoryTab(label: 'Ordering'),
-                CategoryTab(label: 'Payment'),
+                CategoryTab(label: 'عام', isSelected: true),
+                CategoryTab(label: 'الحساب'),
+                CategoryTab(label: 'الطلبات'),
+                CategoryTab(label: 'طرق الدفع '),
                 // Add more tabs as needed
               ],
             ),
@@ -52,26 +52,26 @@ class HelpCenterScreen extends StatelessWidget {
                   },
                 ),
                 const HelpListItem(
-                    question: 'I forgot my password. How do I reset it?'),
+                    question: 'لقد نسيت كلمة مروري كيف يمكنني اعادتها ؟'),
                 const HelpListItem(
                     question:
-                        'I\'m having trouble logging into my account. How can I resolve this?'),
-                const HelpListItem(question: 'How do I place a new order?'),
+                        'لدي مشكله في تسجيل الدخول الي حسابي كيف يمكنني حلها  ؟'),
+                const HelpListItem(question: 'كيف يمكنني اعاده طلب اوردر جديد؟'),
                 const HelpListItem(
                     question:
-                        'I\'m experiencing issues with payment. How can I resolve them?'),
+                        'لدي مشكله في طرق الدفع كيف يمكنني حلها ؟'),
                 const HelpListItem(
                     question:
-                        'I want to cancel an order I\'ve placed. How can I do this?'),
+                        'اريد ان الغي اوردر تم تاكيده كيف يمكنني ذالك ؟'),
                 const HelpListItem(
                     question:
-                        'Where can I find detailed information about a specific product?'),
+                        'اين يمكنني ان اجد التفاصيل الخاصه بكل منتج ؟'),
                 const HelpListItem(
                     question:
-                        'I\'m encountering an issue with a product or service. How can I report this?'),
+                        'لدي مشكله في حساب كميه الاوردرات كيف يمكنني الابلاغ عن ذالك ؟'),
                 const HelpListItem(
                     question:
-                        'How do I use a specific feature within your app?'),
+                        'كيف استخدم ميزه معينه من مميزات التطبيق ؟'),
               ],
             ),
           ),

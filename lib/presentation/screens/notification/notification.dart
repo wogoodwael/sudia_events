@@ -480,15 +480,13 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                           onPressed: () {
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (_) => OrderRatingScreen(
-                                          orders: sharedpref
-                                              .getStringList('_checkout')!,
-                                          images: sharedpref
-                                              .getStringList('images')!,
-                                          texts: sharedpref
-                                              .getStringList('texts')!,
-                                        )));
+                             MaterialPageRoute(
+  builder: (_) => OrderRatingScreen(
+    orders: sharedpref.getStringList('_checkout') ?? [],
+    images: sharedpref.getStringList('images') ?? [],
+    texts: sharedpref.getStringList('texts') ?? [],
+  ),
+));
                           },
                           child: const Text('قيمنا'),
                         ),

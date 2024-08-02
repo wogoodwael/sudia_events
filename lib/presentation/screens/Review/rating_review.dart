@@ -6,15 +6,16 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Review/services_review.dart';
 
 class RatingReviewScreen extends StatefulWidget {
-  final List orders;
-  final List images;
-  final List texts;
+  final List<String> orders;
+  final List<String?> images;
+  final List<String?> texts;
 
-  const RatingReviewScreen(
-      {super.key,
-      required this.orders,
-      required this.images,
-      required this.texts});
+  const RatingReviewScreen({
+    super.key,
+    required this.orders,
+    required this.images,
+    required this.texts,
+  });
 
   @override
   State<RatingReviewScreen> createState() => _RatingReviewScreenState();
@@ -30,7 +31,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
         title: const Text('قيم الطلبات'),
       ),
       body: ListView.builder(
-        itemCount: widget.orders.length??0, 
+        itemCount: widget.orders.length,
         itemBuilder: (context, index) {
           return Column(
             children: [
@@ -38,7 +39,9 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                 leading: SizedBox(
                   width: 90,
                   height: 200,
-                  child: Image.network(widget.images[index] ?? ""),
+                  child: widget.images[index] != null
+                      ? Image.network(widget.images[index]!)
+                      : const Placeholder(),
                 ),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,11 +50,9 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                     RatingStars(
                       value: ratingValue,
                       onValueChanged: (v) {
-                        print(v);
                         setState(() {
                           ratingValue = v;
                         });
-                        print(ratingValue);
                       },
                       starBuilder: (index, color) => Icon(
                         Icons.star,
@@ -81,7 +82,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
               ),
               Center(
                 child: Container(
-                  width: .9 * mediawidth(context),
+                  width: .9 * MediaQuery.of(context).size.width,
                   height: 90,
                   decoration: BoxDecoration(
                       color: Colors.grey.withOpacity(.2),
@@ -134,7 +135,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
           color: primary,
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (_) => ServiceRatingScreen()));
+                MaterialPageRoute(builder: (_) => const ServiceRatingScreen()));
           },
           child: const Text(
             'التالي',

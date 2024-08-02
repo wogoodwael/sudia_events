@@ -533,15 +533,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       MaterialPageRoute(builder: (_) => FeedbackScreen()));
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.message),
-                title: Text('Messages'.tr()),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => MessageScreen()));
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.message),
+              //   title: Text('Messages'.tr()),
+              //   trailing: const Icon(Icons.arrow_forward_ios),
+              //   onTap: () {
+              //     Navigator.push(context,
+              //         MaterialPageRoute(builder: (_) => MessageScreen()));
+              //   },
+              // ),
               // ListTile(
               //   leading: const Icon(Icons.group_add),
               //   title: Text('join us'.tr()),
