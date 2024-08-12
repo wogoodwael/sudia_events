@@ -692,7 +692,7 @@ class OrderItem extends StatelessWidget {
             ),
             //const SizedBox(width:14),
             const Text('في انتطار الدفع',
-            style: TextStyle(color: primary,fontSize: 14),),
+            style: TextStyle(color: primary,fontSize: 14,fontWeight: FontWeight.bold),),
 
             //SizedBox(width: 32,),
           
@@ -711,7 +711,7 @@ class OrderItem extends StatelessWidget {
         ),
         const SizedBox(height: 4.0),
         Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
          // padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             children: [

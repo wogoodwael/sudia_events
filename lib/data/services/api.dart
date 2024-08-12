@@ -70,10 +70,14 @@ class Api {
   ) async {
     FirebaseAuth auth = FirebaseAuth.instance;
 
+
+    print("PHONE====$phone");
+
     try {
       setLoading(true); // Set loading to true before starting the login process
       await auth.verifyPhoneNumber(
-        phoneNumber: phone,
+        phoneNumber: '+201098489028',
+        //phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
 
           print("CREDDDDD====${credential.smsCode}");

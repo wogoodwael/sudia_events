@@ -13,6 +13,7 @@ import 'package:sudia_events/presentation/screens/home/location.dart';
 import 'package:sudia_events/presentation/widgets/search.dart'; // Firestore package
 
 class ReservationScreen extends StatefulWidget {
+
   const ReservationScreen({super.key, this.id});
   final String? id;
 
@@ -232,6 +233,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                       arabicservices[index],
                                       style: TextStyle(
                                         fontSize: 14,
+                                        fontWeight: FontWeight.w600,
                                         color:
                                             selectedService == services[index]
                                                 ? Colors.white
@@ -263,6 +265,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     itemCount: filteredReservations.length,
                     itemBuilder: (context, index) {
 
+                     
                    
                      List<Color>containerColor=[];
 
@@ -291,375 +294,556 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           DateFormat('dd/MM/yyyy').format(timestamp.toDate());
                       final prevoiusTime =
                           DateFormat('jm').format(timestamp.toDate());
-                      return Card(
-                        surfaceTintColor: Colors.white,
-                        elevation: 5,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  width: mediawidth(context),
-                                  color:containerColor[index],
-                               //    secondary,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, left: 10, right: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              date,
-                                              style: const TextStyle(
-                                                fontSize: 14.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            const CircleAvatar(
-                                              backgroundColor: Colors.green,
-                                              child: Icon(Icons.shopping_bag,
-                                                  color: Colors.white),
-                                            ),
-                                            const SizedBox(width: 16.0),
-                                            Text(
-                                              'حجز رقم ${reservation['uniquID'].split('-').last}',
-                                              style: const TextStyle(
-                                                fontSize: 15.0,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 16.0),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          const Text(
-                                            'عدد الخدمات',
-                                            style: TextStyle(
-                                              fontSize: 15.0,
-                                            ),
-                                          ),
-                                          Text(
-                                            (reservation['options']
-                                                .length+1)
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 20.0,
-                                                color: Colors.red),
-                                          ),
-                                          reservation['status'] == "pending"
-                                              ? Row(
-                                                  children: [
-                                                    MaterialButton(
-                                                      elevation: 0,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                      color: Colors.yellow[100],
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (_) =>
-                                                                    SechdualScreen(
-                                                                      date:
-                                                                          prevoiusTime,
-                                                                      day:
-                                                                          prevoiusDate,
-                                                                      itemName:
-                                                                          reservation[
-                                                                              'item_name'],
-                                                                    )));
-                                                      },
-                                                      child: const Text(
-                                                          "اعادة جدولة الحجز"),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    MaterialButton(
-                                                        elevation: 0,
-                                                        minWidth: 40,
-                                                        height: 30,
-                                                        color: Colors.red,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20)),
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (_) =>
-                                                                      CancelOrderScreen(
-                                                                          uniquID:
-                                                                              reservation['uniquID'])));
-                                                        },
-                                                        child: const Text(
-                                                          "حذف",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        )),
-                                                  ],
-                                                )
-                                              : reservation['status'] ==
-                                                      'complete'
-                                                  ? MaterialButton(
-                                                      minWidth: 40,
-                                                      height: 30,
-                                                      elevation: 0,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                      color: Colors.green[100],
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (_) =>
-                                                                    BookingSummaryScreen(
-                                                                      img: reservation[
-                                                                          'img'],
-                                                                      name: reservation[
-                                                                          'item_name'],
-                                                                      price: reservation[
-                                                                          'price'],
-                                                                      discount:
-                                                                          reservation[
-                                                                              'discount'],
-                                                                      options:
-                                                                          reservation[
-                                                                              'options'],
-                                                                      subtotal:
-                                                                          '${reservation['subtotal']}',
-                                                                      total:
-                                                                          '${reservation['total']}',
-                                                                      discountf:
-                                                                          '${reservation['discount_amount'].toStringAsFixed(2)}',
-                                                                      number:
-                                                                          '${reservation['uniquID'].split('-').last}',
-                                                                      type:
-                                                                          'مكتمل',
-                                                                    )));
-                                                      },
-                                                      child: Text(
-                                                        "مكتمل",
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .green[700]),
-                                                      ),
-                                                    )
-                                                  : reservation['status'] ==
-                                                          'active'
-                                                      ? MaterialButton(
-                                                          elevation: 0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                          color: Colors
-                                                              .yellow[100],
-                                                          onPressed: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (_) =>
-                                                                        SechdualScreen(
-                                                                          date:
-                                                                              prevoiusTime,
-                                                                          day:
-                                                                              prevoiusDate,
-                                                                          itemName:
-                                                                              reservation['item_name'],
-                                                                        )));
-                                                          },
-                                                          child: const Text(
-                                                              "اعادة جدولة الحجز"),
-                                                        )
-                                                      : MaterialButton(
-                                                          elevation: 0,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                          color:
-                                                              Colors.grey[300],
-                                                          onPressed: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (_) =>
-                                                                        BookingSummaryScreen(
-                                                                          img: reservation[
-                                                                              'img'],
-                                                                          name:
-                                                                              reservation['item_name'],
-                                                                          price:
-                                                                              reservation['price'],
-                                                                          discount:
-                                                                              reservation['discount'],
-                                                                          options:
-                                                                              reservation['options'],
-                                                                          subtotal:
-                                                                              '${reservation['subtotal']}',
-                                                                          total:
-                                                                              '${reservation['total']}',
-                                                                          discountf:
-                                                                              '${reservation['discount_amount'].toStringAsFixed(2)}',
-                                                                          number:
-                                                                              '${reservation['uniquID'].split('-').last}',
-                                                                          type:
-                                                                              'ملغي',
-                                                                        )));
-                                                          },
-                                                          child: const Text(
-                                                              "ملغي"),
-                                                        )
-                                        ],
-                                      ),
-                                    ],
-                                  )),
-                              const SizedBox(height: 10),
-                              // OrderItem(
-                              //   title: '${index + 1}   ${reservation['name']}',
-                              //   price: 'SAR${reservation['price']}',
-                              //   options:
-                              //       reservation['options'] as List<dynamic>,
-                              //   number: reservation['uniquID'].split('-').last,
-                              // ),
-                              // const SizedBox(height: 16.0),
-                              // const Row(
-                              //   children: [
-                              //     Icon(
-                              //       Icons.location_on_outlined,
-                              //       color: Colors.grey,
-                              //       size: 17,
-                              //     ),
-                              //     SizedBox(
-                              //       width: 10,
-                              //     ),
-                              //     Text(
-                              //       'التوصيل إلى ->  المنزل',
-                              //       style: TextStyle(
-                              //         fontSize: 15.0,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                              // const Text(
-                              //   'حي السلامة - جدة - المملكة العربية السعودية',
-                              //   style: TextStyle(fontSize: 14.0),
-                              // ),
-                              // const SizedBox(
-                              //   height: 10,
-                              // ),
-                              const Divider(),
-                              OrderItem(
-                                title: '${index + 2}   ${reservation['name']}'
+
+
+
+                          // return Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: Container(
+                          //     decoration:BoxDecoration(
+                          //       borderRadius:BorderRadius.circular(13),
+                          //       color: Colors.orange.withOpacity(0.2),
                                 
-                                ,
-                                price: "${reservation['price']}   SAR",
-                                //'SAR${reservation['price']}',
-                                options:
-                                    reservation['options'] as List<dynamic>,
-                                number: reservation['uniquID'].split('-').last,
-                              ),
-                              const Row(
-                                children: [
-                                 
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'الاستلام من ->  مطعم الباشا',
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black
+                          //     ),
+                          //     child:Column(
+                          //       children: [
+                          //                 Row(
+                          //                   mainAxisAlignment:MainAxisAlignment.center,
+                          //                   children: [
+                          //                      const CircleAvatar(
+                          //                       backgroundColor: Colors.green,
+                          //                       child: Icon(Icons.shopping_bag,
+                          //                           color: Colors.white),
+                          //                     ),
+                          //                   const Text('رقم الحجز ',style:  TextStyle(
+                          //                     color:Colors.grey,fontSize: 15.0
+                          //                   )),
+                          //                 const SizedBox(width: 6,),
+                          //                     Text(
+                          //                           ' ${reservation['uniquID'].split('-').last}',
+                          //                           style: const TextStyle(
+                          //                             fontSize: 15.0,
+                          //                           ),
+                          //                         ),
+                          //                   ],
+                          //                 ),
+                          //                const SizedBox(height: 16,),
+                          //                Row(
+                          //                 //mainAxisAlignment:MainAxisAlignment.spaceAround,
+                          //                 children: [
+                          //                 const  SizedBox(width: 11,),
+                            
+                          
+                            
+                          //                 Image.network(reservation['img'],height: 50,width: 50,fit:BoxFit.cover),
+                            
+                          //                 Column(children: [
+                            
+                          //                   Text(reservation['item_name'],style: const TextStyle(
+                          //                     color:Colors.black,fontSize: 18.0
+                          //                   )),
+                          //                   const SizedBox(height: 6,),
+                          //                   Row(
+                          //                     children: [
+                          //                       const SizedBox(width: 6,),
+                          //                       const Text('رقم الحجز ',style:  TextStyle(
+                          //                         color:Colors.grey,fontSize: 15.0
+                          //                       )),
+                          //                       const SizedBox(width: 6,),
+                          //                     Text(
+                          //                           ' ${reservation['uniquID'].split('-').last}',
+                          //                           style: const TextStyle(
+                          //                             fontSize: 15.0,color:Colors.grey
+                          //                           ),
+                          //                         ),
+                          //                     ],
+                          //                   ),
+
+                          //                    Row(children: [
+
+                          //                  const   Text("حالة الحجز ",style: TextStyle(
+                          //                       color:Colors.black,fontSize: 15.0,fontWeight: FontWeight.bold
+                          //                     )),
+
+                          //                   const  SizedBox(width: 11,),
+
+                          //                   (reservation['status'] =='pending')?
+
+                          //                     const Text('قيد الانتظار',
+                          //                     style:TextStyle(color: primary,fontSize: 15.0),
+                          //                     ):const SizedBox(),
+
+                          //                      (reservation['status'] =='complete')?
+
+                          //                     const Text('مكتمل',
+                          //                     style:TextStyle(color: primary,fontSize: 15.0),
+                          //                     ):const SizedBox(),
+
+                          //                      (reservation['status'] =='complete')?
+
+                          //                     const Text('مكتمل',
+                          //                     style:TextStyle(color: primary,fontSize: 15.0),
+                          //                     ):const SizedBox(),
+
+                          //                     (reservation['status'] !='complete' || reservation['status'] !='pending')?
+                          //                       Text(reservation['status'],
+                          //                     style:const TextStyle(color: primary,fontSize: 15.0),
+                          //                     ):const SizedBox()
+                                              
+
+
+                          //                   ],),
+                          //                    Text(reservation['name'],style: const TextStyle(
+                          //                     color:Colors.black,fontSize: 18.0
+                          //                   )),
+
+
+
+                                          
+                            
+                            
+                            
+                            
+                          //                 ],),
+                            
+                            
+                          //                ],)
+                            
+                            
+                            
+                            
+                            
+                          //       ],
+                          //     ),
+                          //   ),
+                          // );
+
+                          Color color=Colors.orange.withOpacity(0.2);
+
+                          if(reservation['status'] == 'complete'){
+
+                            color=Colors.green.withOpacity(0.2);
+                            
+                          }
+                           if(reservation['status'] == 'pending'){
+
+                            color=Colors.orange.withOpacity(0.2);
+
+                           }
+                      
+
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                         
+                          decoration:BoxDecoration(
+                             color:Colors.white,
+                             border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              surfaceTintColor:color,
+                              //Colors.orange.withOpacity(0.2),
+                              elevation: 5,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                 // color:Colors.white,
+                               //   border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                        width: mediawidth(context),
+                                      //  color:containerColor[index],
+                                     //    secondary,
+                                        child: Column(
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 10, left: 10, right: 10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  // Text(
+                                                  //   date,
+                                                  //   style: const TextStyle(
+                                                  //     fontSize: 14.0,
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 10.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  const CircleAvatar(
+                                                    backgroundColor: Colors.green,
+                                                    child: Icon(Icons.shopping_bag,
+                                                        color: Colors.white),
+                                                  ),
+                                                  const SizedBox(width: 11,),
+                                                  const Text(" حجز رقم ",style:TextStyle(
+                                                    color:Colors.grey,fontSize: 14.0,
+                                                    fontWeight:FontWeight.bold
+                                                  ),),
+                                                  const SizedBox(width: 20.0),
+                                                  Text(
+                                                    '${reservation['uniquID'].split('-').last}',
+                                                    style: const TextStyle(
+                                                      fontSize: 15.0,
+                                                       fontWeight:FontWeight.bold,
+                                                       color:Colors.black
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 16.0),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+
+                                                const Text(
+
+                                                  'عدد الخدمات',
+                                                  style: TextStyle(
+                                                    fontSize: 15.0,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  (reservation['options']
+                                                      .length+1)
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 20.0,
+                                                      color: Colors.red),
+                                                ),
+                                                reservation['status'] == "pending"
+                                                    ? Row(
+                                                        children: [
+
+                                                        
+                                                          MaterialButton(
+                                                            elevation: 0,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                20)),
+                                                            color: Colors.yellow[100],
+                                                            onPressed: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (_) =>
+                                                                          SechdualScreen(
+                                                                            date:
+                                                                                prevoiusTime,
+                                                                            day:
+                                                                                prevoiusDate,
+                                                                            itemName:
+                                                                                reservation[
+                                                                                    'item_name'],
+                                                                          )));
+                                                            },
+                                                            child: const Text(
+                                                                "اعادة جدولة الحجز"),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          MaterialButton(
+                                                              elevation: 0,
+                                                              minWidth: 40,
+                                                              height: 30,
+                                                              color: Colors.red,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (_) =>
+                                                                            CancelOrderScreen(
+                                                                                uniquID:
+                                                                                    reservation['uniquID'])));
+                                                              },
+                                                              child: const Text(
+                                                                "حذف",
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        Colors.white),
+                                                              )),
+                                                        ],
+                                                      )
+                                                    : reservation['status'] ==
+                                                            'complete'
+                                                        ? MaterialButton(
+                                                            minWidth: 40,
+                                                            height: 30,
+                                                            elevation: 0,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                20)),
+                                                            color: Colors.green[100],
+                                                            onPressed: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (_) =>
+                                                                          BookingSummaryScreen(
+                                                                            img: reservation[
+                                                                                'img'],
+                                                                            name: reservation[
+                                                                                'item_name'],
+                                                                            price: reservation[
+                                                                                'price'],
+                                                                            discount:
+                                                                                reservation[
+                                                                                    'discount'],
+                                                                            options:
+                                                                                reservation[
+                                                                                    'options'],
+                                                                            subtotal:
+                                                                                '${reservation['subtotal']}',
+                                                                            total:
+                                                                                '${reservation['total']}',
+                                                                            discountf:
+                                                                                '${reservation['discount_amount'].toStringAsFixed(2)}',
+                                                                            number:
+                                                                                '${reservation['uniquID'].split('-').last}',
+                                                                            type:
+                                                                                'مكتمل',
+                                                                          )));
+                                                            },
+                                                            child: Text(
+                                                              "مكتمل",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .green[700]),
+                                                            ),
+                                                          )
+                                                        : reservation['status'] ==
+                                                                'active'
+                                                            ? MaterialButton(
+                                                                elevation: 0,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                20)),
+                                                                color: Colors
+                                                                    .yellow[100],
+                                                                onPressed: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (_) =>
+                                                                              SechdualScreen(
+                                                                                date:
+                                                                                    prevoiusTime,
+                                                                                day:
+                                                                                    prevoiusDate,
+                                                                                itemName:
+                                                                                    reservation['item_name'],
+                                                                              )));
+                                                                },
+                                                                child: const Text(
+                                                                    "اعادة جدولة الحجز"),
+                                                              )
+                                                            : MaterialButton(
+                                                                elevation: 0,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                20)),
+                                                                color:
+                                                                    Colors.grey[300],
+                                                                onPressed: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (_) =>
+                                                                              BookingSummaryScreen(
+                                                                                img: reservation[
+                                                                                    'img'],
+                                                                                name:
+                                                                                    reservation['item_name'],
+                                                                                price:
+                                                                                    reservation['price'],
+                                                                                discount:
+                                                                                    reservation['discount'],
+                                                                                options:
+                                                                                    reservation['options'],
+                                                                                subtotal:
+                                                                                    '${reservation['subtotal']}',
+                                                                                total:
+                                                                                    '${reservation['total']}',
+                                                                                discountf:
+                                                                                    '${reservation['discount_amount'].toStringAsFixed(2)}',
+                                                                                number:
+                                                                                    '${reservation['uniquID'].split('-').last}',
+                                                                                type:
+                                                                                    'ملغي',
+                                                                              )));
+                                                                },
+                                                                child: const Text(
+                                                                    "ملغي"),
+                                                              )
+                                              ],
+                                            ),
+                                          ],
+                                        )),
+                                    const SizedBox(height: 10),
+                                    // OrderItem(
+                                    //   title: '${index + 1}   ${reservation['name']}',
+                                    //   price: 'SAR${reservation['price']}',
+                                    //   options:
+                                    //       reservation['options'] as List<dynamic>,
+                                    //   number: reservation['uniquID'].split('-').last,
+                                    // ),
+                                    // const SizedBox(height: 16.0),
+                                    // const Row(
+                                    //   children: [
+                                    //     Icon(
+                                    //       Icons.location_on_outlined,
+                                    //       color: Colors.grey,
+                                    //       size: 17,
+                                    //     ),
+                                    //     SizedBox(
+                                    //       width: 10,
+                                    //     ),
+                                    //     Text(
+                                    //       'التوصيل إلى ->  المنزل',
+                                    //       style: TextStyle(
+                                    //         fontSize: 15.0,
+                                    //         fontWeight: FontWeight.bold,
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    // const Text(
+                                    //   'حي السلامة - جدة - المملكة العربية السعودية',
+                                    //   style: TextStyle(fontSize: 14.0),
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    const Divider(),
+
+
+                                                  Row(
+                                                    children: [
+
+                                                      CircleAvatar(
+                                                        radius: 30,
+                                                        backgroundImage: NetworkImage(reservation['img']??"",
+                                                        
+                                                        ),
+
+                                                      ),
+                                                     
+                                                    ],
+                                                  ),
+
+                                    OrderItem(
+                                      title: '${index + 2}   ${reservation['name']}'
+                                      
+                                      ,
+                                      price: "${reservation['price']}   SAR",
+                                      //'SAR${reservation['price']}',
+                                      options:
+                                          reservation['options'] as List<dynamic>,
+                                      number: reservation['uniquID'].split('-').last,
                                     ),
-                                  ),
-                                   SizedBox(
-                                    width: 10,
-                                  ),
-                                   Icon(
-                                    Icons.location_on_outlined,
-                                    color: Colors.grey,
-                                    size: 17,
-                                  ),
-                                ],
-                              ),
-                              const Text(
-                                '512 -حي السلامة - جدة - المملكة العربية السعودية',
-                                style: TextStyle(fontSize: 14.0,
-                                color: Colors.grey
+                                    const Row(
+                                      children: [
+                                       
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'الاستلام من ->  مطعم الباشا',
+                                          style: TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black
+                                          ),
+                                        ),
+                                         SizedBox(
+                                          width: 10,
+                                        ),
+                                         Icon(
+                                          Icons.location_on_outlined,
+                                          color: Colors.grey,
+                                          size: 17,
+                                        ),
+                                      ],
+                                    ),
+                                    const Text(
+                                      '512 -حي السلامة - جدة - المملكة العربية السعودية',
+                                      style: TextStyle(fontSize: 14.0,
+                                      color: Colors.grey
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    Row(
+                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const SizedBox(width: 33),
+                                        const Text(
+                                          'الاجمالي',
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              color:Colors.grey,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const Spacer(),
+                                        Container(
+                                          width: 170,
+                                          height: 55,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey[100],
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                '  SAR ${reservation['total'].toString()} ''',
+                                                style: GoogleFonts.roboto(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 15.0,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const Divider(),
-                              Row(
-                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(width: 33),
-                                  const Text(
-                                    'الاجمالي',
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        color:Colors.grey,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    width: 170,
-                                    height: 55,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[100],
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '  SAR ${reservation['total'].toString()} '+'',
-                                          style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 15.0,
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       );

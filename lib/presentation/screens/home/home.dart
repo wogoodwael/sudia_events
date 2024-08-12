@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, avoid_print
 
 import 'dart:io';
 
@@ -18,7 +18,6 @@ import 'package:sudia_events/data/model/booked_services.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
-
 import 'package:sudia_events/presentation/screens/Auth/login.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart' as intl;
@@ -37,6 +36,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   List<BookedServicesModel>? bookedServicesModel;
   String filterValue = '';
   DateTime _focusedDay = DateTime.now();
@@ -79,7 +79,6 @@ Future<String> _getImageUrl(String docId) async {
     throw Exception("Document not found");
   }
 }
-
   Future<File> _downloadImage(String url) async {
     final response = await http.get(Uri.parse(url));
     final documentDirectory = await getApplicationDocumentsDirectory();
@@ -89,6 +88,7 @@ Future<String> _getImageUrl(String docId) async {
   }
 
   void _shareImage(File file) {
+    // ignore: deprecated_member_use
     Share.shareFiles([file.path], text: 'Check out this invitation card!');
   }
 

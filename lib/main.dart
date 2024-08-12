@@ -1,11 +1,10 @@
+
 import 'package:easy_localization/easy_localization.dart' as ea;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
@@ -20,6 +19,8 @@ import 'package:sudia_events/presentation/screens/onBoarding/splash_screen.dart'
 
 late SharedPreferences sharedpref;
 final navigatorKey = GlobalKey<NavigatorState>();
+
+
 Future _firebaseBackgroundMessage(RemoteMessage message) async {
   if (message.notification != null) {
     // ignore: avoid_print
