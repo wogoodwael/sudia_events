@@ -139,8 +139,8 @@ class _SechdualScreenState extends State<SechdualScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset("assets/images/heart.png"),
-                    Text("نقدر وقتك "),
-                    Text(
+                    const Text("نقدر وقتك "),
+                    const Text(
                         "لقد تم ارسال الطلب الي مقدم الخدمة وسنعلمك بحالة الطلب ")
                   ]),
               actions: [
@@ -154,7 +154,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                             builder: (_) => BottomBarScreen(
                                 id: sharedpref.getString("token")!)));
                   },
-                  child: Text("حسنا", style: TextStyle(color: Colors.white)),
+                  child: const Text("حسنا", style: TextStyle(color: Colors.white)),
                 )
               ],
             );
@@ -170,7 +170,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('جدولة الحجز'),
+        title: const Text('جدولة الحجز'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -185,7 +185,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                 },
                 getEventsForDay: _getEventsForDay,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -199,7 +199,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                       children: [
                         Text(
                           _selectedTime2.format(context),
-                          style: TextStyle(fontSize: 15),
+                          style: const TextStyle(fontSize: 15),
                         ),
                         GestureDetector(
                           onTap: () async {
@@ -214,7 +214,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                               });
                             }
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.timer,
                             size: 15,
                             color: Colors.green,
@@ -223,7 +223,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                       ],
                     ),
                   ),
-                  Text(
+                  const Text(
                     "الي ",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   ),
@@ -237,7 +237,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                       children: [
                         Text(
                           _selectedTime.format(context),
-                          style: TextStyle(fontSize: 15),
+                          style: const TextStyle(fontSize: 15),
                         ),
                         GestureDetector(
                           onTap: () async {
@@ -252,7 +252,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                               });
                             }
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.timer,
                             size: 15,
                             color: Colors.green,
@@ -261,50 +261,50 @@ class _SechdualScreenState extends State<SechdualScreen> {
                       ],
                     ),
                   ),
-                  Text(
+                  const Text(
                     "من ",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.green[100],
                 ),
                 child: ListTile(
-                  trailing: Text("الحجز الجديد"),
-                  leading: Icon(Icons.check_circle, color: Colors.green),
+                  trailing: const Text("الحجز الجديد"),
+                  leading: const Icon(Icons.check_circle, color: Colors.green),
                   title: Text(_selectedTime.format(context)),
                   subtitle: Text(
-                      '${DateFormat('yyyy/MM/dd').format(_selectedDay!)}- مطعم السلام'),
+                      DateFormat('yyyy/MM/dd').format(_selectedDay!)),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.red[100],
                 ),
                 child: ListTile(
-                  trailing: Text("الحجز القديم"),
-                  leading: Icon(Icons.cancel, color: Colors.red),
+                  trailing: const Text("الحجز القديم"),
+                  leading: const Icon(Icons.cancel, color: Colors.red),
                   title: Text(widget.date),
-                  subtitle: Text('${widget.day} - مطعم السلام'),
+                  subtitle: Text('${widget.day}  '),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               MaterialButton(
                 minWidth: .7 * mediawidth(context),
                 onPressed: _updateReservation,
-                child: Text(
+                color: primary,
+                child: const Text(
                   'التالي',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: primary,
               ),
             ],
           ),

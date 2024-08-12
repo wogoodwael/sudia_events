@@ -76,8 +76,8 @@ class Api {
     try {
       setLoading(true); // Set loading to true before starting the login process
       await auth.verifyPhoneNumber(
-        phoneNumber: '+201098489028',
-        //phone,
+        phoneNumber: 
+        phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
 
           print("CREDDDDD====${credential.smsCode}");
@@ -97,7 +97,7 @@ class Api {
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
 
-          print("resend======="+resendToken.toString());
+          print("resend=======$resendToken");
 
           Navigator.pushReplacement(
             context,
