@@ -9,7 +9,7 @@ import 'package:sudia_events/presentation/screens/client/account/account_list.da
 import 'package:sudia_events/presentation/screens/client/notification/notification.dart';
 
 class MyAccountScreen extends StatefulWidget {
-  const MyAccountScreen({Key? key}) : super(key: key);
+  const MyAccountScreen({super.key});
 
   @override
   State<MyAccountScreen> createState() => _MyAccountScreenState();
@@ -240,7 +240,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
                   label,
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: 'JF',
                     fontWeight: FontWeight.bold,
                     fontSize: fontSize,
                     color: selected ? Colors.black : Colors.grey,
@@ -296,11 +296,11 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
               );
             },
           ),
-          Container(
+          SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.6,
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               itemCount: accounts.length,
               itemBuilder: (context, index) {

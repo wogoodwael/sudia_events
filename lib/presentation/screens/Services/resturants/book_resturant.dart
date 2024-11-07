@@ -1,14 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/res_content_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
-import 'package:sudia_events/presentation/screens/Services/offers_screen.dart';
 
 class BookResturant extends StatefulWidget {
   const BookResturant({super.key, required this.name});
@@ -26,7 +21,7 @@ class _BookResturantState extends State<BookResturant> {
       false; // Flag to indicate whether to close the bottom sheet
 
 // Inside your build method or wherever appropriate
-  SolidController _controller = SolidController(); // Define your controller
+  final SolidController _controller = SolidController(); // Define your controller
 
   List<String> number = ["1", "0", "0", "1"];
   @override
@@ -38,14 +33,14 @@ class _BookResturantState extends State<BookResturant> {
         builder: (BuildContext context,
             AsyncSnapshot<List<ResturantDetailsModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
                 child: CircularProgressIndicator(
               color: primary,
             )); // Show loading indicator while fetching data
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           }
           return Column(
             children: [
@@ -63,12 +58,12 @@ class _BookResturantState extends State<BookResturant> {
                       Transform.scale(
                           scale: 1.5,
                           child: Padding(
-                            padding: EdgeInsets.only(right: 10.0),
+                            padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.arrow_forward,
                                 color: primary,
                               ),
@@ -84,6 +79,8 @@ class _BookResturantState extends State<BookResturant> {
                     padding: EdgeInsets.zero,
                     itemCount: 1,
                     itemBuilder: (BuildContext context, int index) {
+                      return null;
+                    
                       // return OffersBody(
                       //   ontapped: ontapped,
                       //   resName: widget.name,
@@ -102,7 +99,7 @@ class _BookResturantState extends State<BookResturant> {
                   padding: EdgeInsets.zero,
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
+                    return SizedBox(
                       width: mediawidth(context),
                       height: mediaheight(context),
                       child: ListView.builder(
@@ -125,8 +122,8 @@ class _BookResturantState extends State<BookResturant> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
+                                              const Padding(
+                                                padding: EdgeInsets.only(
                                                     right: 10.0),
                                                 child: Icon(
                                                   Icons.add_circle,
@@ -144,7 +141,7 @@ class _BookResturantState extends State<BookResturant> {
                                             ],
                                           ),
                                         ),
-                                        Row(
+                                        const Row(
                                           children: [
                                             Icon(
                                               Icons.star,
@@ -182,7 +179,7 @@ class _BookResturantState extends State<BookResturant> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             width: 65,
                                             height: 20,
                                             child: FittedBox(
@@ -190,7 +187,7 @@ class _BookResturantState extends State<BookResturant> {
                                               child: Text(
                                                 snapshot.data![index]
                                                     .dishes[index2],
-                                                style: TextStyle(
+                                                style: const TextStyle(fontFamily: 'JF',
                                                     color: primary,
                                                     fontWeight:
                                                         FontWeight.w500),
@@ -200,16 +197,16 @@ class _BookResturantState extends State<BookResturant> {
                                           Text(
                                             snapshot
                                                 .data![index].dishes[index2],
-                                            style: TextStyle(fontSize: 10),
+                                            style: const TextStyle(fontFamily: 'JF',fontSize: 10),
                                           ),
-                                          Container(
+                                          SizedBox(
                                               width: 70,
                                               height: 20,
                                               child: Text(
                                                 snapshot.data![index]
                                                     .overview[index2],
                                                 textAlign: TextAlign.right,
-                                                style: TextStyle(
+                                                style: const TextStyle(fontFamily: 'JF',
                                                     fontSize: 7,
                                                     color: Colors.black),
                                               )),
@@ -262,7 +259,7 @@ class _BookResturantState extends State<BookResturant> {
                                               child: Container(
                                                 width: 70,
                                                 height: 40,
-                                                decoration: BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                     color: primary,
                                                     borderRadius:
                                                         BorderRadius.only(
@@ -277,14 +274,14 @@ class _BookResturantState extends State<BookResturant> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Padding(
+                                                        const Padding(
                                                           padding:
-                                                              const EdgeInsets
+                                                              EdgeInsets
                                                                   .only(
                                                                   bottom: 5.0),
                                                           child: Text(
                                                             'SR',
-                                                            style: TextStyle(
+                                                            style: TextStyle(fontFamily: 'JF',
                                                                 fontSize: 10,
                                                                 color: Colors
                                                                     .white),
@@ -293,7 +290,7 @@ class _BookResturantState extends State<BookResturant> {
                                                         Text(
                                                           snapshot.data![index]
                                                               .price[index2],
-                                                          style: TextStyle(
+                                                          style: const TextStyle(fontFamily: 'JF',
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 20,
@@ -312,7 +309,7 @@ class _BookResturantState extends State<BookResturant> {
                                   ],
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 endIndent: 15,
                                 indent: 15,
                               ),
@@ -331,7 +328,7 @@ class _BookResturantState extends State<BookResturant> {
       bottomSheet: Container(
         height: 140,
         width: mediawidth(context),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: primary)),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -340,7 +337,7 @@ class _BookResturantState extends State<BookResturant> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Center(
@@ -360,7 +357,7 @@ class _BookResturantState extends State<BookResturant> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -386,7 +383,7 @@ class _BookResturantState extends State<BookResturant> {
                           child: Text(
                         'توصيل',
                         style:
-                            TextStyle(color: delivery ? primary : Colors.grey),
+                            TextStyle(fontFamily: 'JF',color: delivery ? primary : Colors.grey),
                       )),
                     ),
                   ),
@@ -411,13 +408,13 @@ class _BookResturantState extends State<BookResturant> {
                               child: Text(
                         'الاستلام من المحل',
                         style:
-                            TextStyle(color: fromShop ? primary : Colors.grey),
+                            TextStyle(fontFamily: 'JF',color: fromShop ? primary : Colors.grey),
                       ))),
                     ),
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               MaterialButton(
@@ -426,9 +423,9 @@ class _BookResturantState extends State<BookResturant> {
                     borderRadius: BorderRadius.circular(10)),
                 color: primary,
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "احجز الان ",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: 'JF',
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),

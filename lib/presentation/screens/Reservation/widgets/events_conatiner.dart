@@ -3,7 +3,7 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class EventsContainer extends StatefulWidget {
-  EventsContainer(
+  const EventsContainer(
       {super.key,
       required this.name,
       required this.phone,
@@ -25,7 +25,7 @@ class _EventsContainerState extends State<EventsContainer> {
   bool value = false;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: mediawidth(context),
       height: .9 * mediaheight(context),
       child: SingleChildScrollView(
@@ -36,7 +36,7 @@ class _EventsContainerState extends State<EventsContainer> {
               padding: const EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
               child: Text(
                 "ادخل بياناتك ",
-                style: TextStyle(
+                style: TextStyle(fontFamily: 'JF',
                     fontWeight: FontWeight.bold, color: Colors.grey[800]),
               ),
             ),
@@ -51,7 +51,7 @@ class _EventsContainerState extends State<EventsContainer> {
                     child: TextField(
                       controller: widget.name,
                       textDirection: TextDirection.rtl,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'الاسم  ',
                           hintTextDirection: TextDirection.rtl),
@@ -60,7 +60,7 @@ class _EventsContainerState extends State<EventsContainer> {
             ),
             Center(
               child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
                   width: .8 * mediawidth(context),
                   height: 40,
                   decoration: BoxDecoration(
@@ -70,7 +70,7 @@ class _EventsContainerState extends State<EventsContainer> {
                     child: TextField(
                       controller: widget.family,
                       textDirection: TextDirection.rtl,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'اسم العائلة ',
                           hintTextDirection: TextDirection.rtl),
@@ -88,21 +88,21 @@ class _EventsContainerState extends State<EventsContainer> {
                     child: TextField(
                       controller: widget.tribe,
                       textDirection: TextDirection.rtl,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'اسم القبيله',
                           hintTextDirection: TextDirection.rtl),
                     ),
                   )),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
               child: Text(
                 "رقم الجوال ",
-                style: TextStyle(
+                style: TextStyle(fontFamily: 'JF',
                     fontWeight: FontWeight.bold, color: Colors.grey[800]),
               ),
             ),
@@ -119,23 +119,23 @@ class _EventsContainerState extends State<EventsContainer> {
                   child: TextField(
                     controller: widget.phone,
                     textDirection: TextDirection.rtl,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: '021548585',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                        hintStyle: TextStyle(fontFamily: 'JF',color: Colors.grey, fontSize: 12),
                         hintTextDirection: TextDirection.rtl),
                   ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             widget.widgetRow,
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Center(
@@ -149,7 +149,7 @@ class _EventsContainerState extends State<EventsContainer> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("اظهار المناسبة في المواعيد"),
+                  const Text("اظهار المناسبة في المواعيد", style: TextStyle(fontFamily: 'JF')),
                   Transform.scale(
                     scale: .6,
                     child: Checkbox(
@@ -174,9 +174,9 @@ class _EventsContainerState extends State<EventsContainer> {
                     borderRadius: BorderRadius.circular(10)),
                 minWidth: .8 * mediawidth(context),
                 onPressed: widget.onPressed,
-                child: Text(
+                child: const Text(
                   "استمرار",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: 'JF',
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),

@@ -30,7 +30,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
         ),
         Text(
           widget.text,
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontFamily: 'JF',fontSize: 13, fontWeight: FontWeight.bold),
         ),
       ],
     );

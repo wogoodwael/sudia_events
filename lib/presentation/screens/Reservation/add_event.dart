@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
@@ -44,11 +43,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
     // TODO: implement initState
     super.initState();
     widget.selectedEvents =
-        ValueNotifier(_getEventsForDay(widget.selectedDay!));
+        ValueNotifier(_getEventsForDay(widget.selectedDay));
     api.fetchEventsFromFirestore().then((fetchedEvents) {
       setState(() {
         widget.events = fetchedEvents;
-        widget.selectedEvents.value = _getEventsForDay(widget.selectedDay!);
+        widget.selectedEvents.value = _getEventsForDay(widget.selectedDay);
       });
     });
   }
@@ -72,7 +71,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     ),
                   ),
                 ),
-                PositionedLogo(),
+                const PositionedLogo(),
               ])),
           Expanded(
             flex: 12,
@@ -153,7 +152,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         const EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
                     child: Text(
                       "نوع المناسبة",
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                           fontWeight: FontWeight.bold, color: Colors.grey[800]),
                     ),
                   ),
@@ -187,12 +186,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(Icons.keyboard_arrow_down,
+                              const Icon(Icons.keyboard_arrow_down,
                                   color: Colors.grey),
                               Text(
                                 type ?? 'نوع المناسبة',
                                 style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                    const TextStyle(fontFamily: 'JF',color: Colors.grey, fontSize: 12),
                               ),
                             ],
                           ),
@@ -205,7 +204,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         const EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
                     child: Text(
                       "الجنس",
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                           fontWeight: FontWeight.bold, color: Colors.grey[800]),
                     ),
                   ),
@@ -239,12 +238,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(Icons.keyboard_arrow_down,
+                              const Icon(Icons.keyboard_arrow_down,
                                   color: Colors.grey),
                               Text(
                                 gender ?? "انثي /ذكر",
                                 style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                    const TextStyle(fontFamily: 'JF',color: Colors.grey, fontSize: 12),
                               ),
                             ],
                           ),

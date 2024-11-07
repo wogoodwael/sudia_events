@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -19,8 +15,8 @@ class SubServicesScreen extends StatefulWidget {
   final String uniquID;
   final DateTime date;
   final bool inside;
-  SubServicesScreen(
-      {required this.itemName,
+  const SubServicesScreen(
+      {super.key, required this.itemName,
       required this.date,
       required this.inside,
       required this.uniquID});
@@ -92,7 +88,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 50,
                     child: SearchContainernew(
                       hintText: 'البحث',
@@ -104,7 +100,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Expanded(
@@ -113,15 +109,15 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
               stream: fetchMenuItems(widget.itemName),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No data available'));
+                  return const Center(child: Text('No data available'));
                 } else {
                   var menuItems = _filterMenuItems(snapshot.data!, searchQuery);
                   return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.9,
                     ),
@@ -163,7 +159,7 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
@@ -172,15 +168,15 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
               stream: fetchPrivateItems(widget.itemName),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No data available'));
+                  return const Center(child: Text('No data available'));
                 } else {
                   var privateItems =
                       _filterPrivateItems(snapshot.data!, searchQuery);
-                  return Container(
+                  return SizedBox(
                     width: .95 * mediawidth(context),
                     height: 50,
                     child: ListView.builder(
@@ -257,7 +253,7 @@ class SmallOfferItem extends StatefulWidget {
   final String des;
   final String rating;
   final String price;
-  SmallOfferItem(this.img, this.price, this.des, this.rating);
+  const SmallOfferItem(this.img, this.price, this.des, this.rating, {super.key});
 
   @override
   State<SmallOfferItem> createState() => _SmallOfferItemState();
@@ -301,7 +297,7 @@ class _SmallOfferItemState extends State<SmallOfferItem> {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
       width: 150,
-      margin: EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 10),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         color: Colors.white,
@@ -344,17 +340,17 @@ class _SmallOfferItemState extends State<SmallOfferItem> {
                     FittedBox(
                         child: Text(widget.des,
                             style: GoogleFonts.cairo(fontSize: 16))),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
                         Text(widget.rating,
-                            style: TextStyle(color: Colors.orange)),
-                        Icon(Icons.star, color: Colors.orange, size: 16),
+                            style: const TextStyle(fontFamily: 'JF',color: Colors.orange)),
+                        const Icon(Icons.star, color: Colors.orange, size: 16),
                       ],
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text('SAR ${widget.price}',
-                        style: TextStyle(color: Colors.red)),
+                        style: const TextStyle(fontFamily: 'JF',color: Colors.red)),
                   ],
                 ),
               ),
@@ -372,7 +368,7 @@ class PrivateOfferItem extends StatelessWidget {
   final String name;
   final String rating;
   final String price;
-  PrivateOfferItem(this.img, this.price, this.des, this.rating, this.name);
+  const PrivateOfferItem(this.img, this.price, this.des, this.rating, this.name, {super.key});
   Future<void> addToFavorites(BuildContext context) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -434,24 +430,24 @@ class PrivateOfferItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(name, style: GoogleFonts.cairo(fontSize: 16)),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             FittedBox(
                               child: Text(des,
                                   style: GoogleFonts.cairo(
                                       fontSize: 14, color: Colors.grey)),
                             ),
                             Text('SAR $price',
-                                style: TextStyle(color: Colors.red)),
+                                style: const TextStyle(fontFamily: 'JF',color: Colors.red)),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(rating,
-                                    style: TextStyle(color: Colors.orange)),
-                                Icon(Icons.star,
+                                    style: const TextStyle(fontFamily: 'JF',color: Colors.orange)),
+                                const Icon(Icons.star,
                                     color: Colors.orange, size: 16),
                               ],
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                           ],
                         ),
                       ),

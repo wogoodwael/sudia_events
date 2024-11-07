@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
-import 'package:intl/intl.dart' as intl;
 
 class CheckoutScreen extends StatefulWidget {
   final String name;
@@ -59,8 +57,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               title: const Text('تم تنفيذ حجزك بنجاح '),
               content: Column(mainAxisSize: MainAxisSize.min, children: [
                 Image.asset("assets/images/Wrapper.png"),
-                const Text("نتمى لك يوماً سعيداً"),
-                const Text("ونرجو تقييم خدماتنا")
+                const Text("نتمى لك يوماً سعيداً", style: TextStyle(fontFamily: 'JF')),
+                const Text("ونرجو تقييم خدماتنا", style: TextStyle(fontFamily: 'JF'))
               ]),
               actions: <Widget>[
                 Center(
@@ -76,7 +74,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     },
                     child: const Text(
                       "ok",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(fontFamily: 'JF',color: Colors.white),
                     ),
                   ),
                 )
@@ -206,12 +204,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         backgroundColor: Colors.white,
         title: const Text(
           'SP 0023450',
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(fontFamily: 'JF',fontSize: 14),
         ),
         centerTitle: true,
       ),
       body: _checkoutItems.isEmpty
-          ? const Center(child: Text("لا يوجد اضافات بعد"))
+          ? const Center(child: Text("لا يوجد اضافات بعد", style: TextStyle(fontFamily: 'JF')))
           : Column(
               children: [
                 Expanded(
@@ -271,7 +269,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     Text(
                                       intl.DateFormat('yyyy/MM/dd', 'en')
                                           .format(widget.date),
-                                      style: const TextStyle(
+                                      style: const TextStyle(fontFamily: 'JF',
                                           fontSize: 14.0, color: Colors.grey),
                                     ),
                                   ],
@@ -303,7 +301,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     ),
                                     Text(
                                       'التوصيل إلى ->  المنزل',
-                                      style: TextStyle(
+                                      style: TextStyle(fontFamily: 'JF',
                                         fontSize: 15.0,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -312,7 +310,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                                 const Text(
                                   'حي السلامة - جدة - المملكة العربية السعودية',
-                                  style: TextStyle(fontSize: 14.0),
+                                  style: TextStyle(fontFamily: 'JF',fontSize: 14.0),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -340,7 +338,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     ),
                                     Text(
                                       'الاستلام من ->  مطعم الباشا',
-                                      style: TextStyle(
+                                      style: TextStyle(fontFamily: 'JF',
                                         fontSize: 15.0,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -349,7 +347,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                                 const Text(
                                   '512 -حي السلامة - جدة - المملكة العربية السعودية',
-                                  style: TextStyle(fontSize: 14.0),
+                                  style: TextStyle(fontFamily: 'JF',fontSize: 14.0),
                                 ),
                                 const Divider(),
                                 const SizedBox(height: 10.0),
@@ -394,7 +392,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         color: primary,
                                       ),
                                     ),
-                                    Text(" خصومات")
+                                    Text(" خصومات", style: TextStyle(fontFamily: 'JF'))
                                   ],
                                 ),
                                 Row(
@@ -413,7 +411,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       child: const Center(
                                         child: Text(
                                           "خصم",
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               color: Colors.white,
                                               fontSize: 13),
                                         ),
@@ -432,7 +430,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       child: const Center(
                                         child: Text(
                                           "20%",
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               color: Colors.white,
                                               fontSize: 13),
                                         ),
@@ -457,13 +455,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             children: [
                               const Text(
                                 'المجموع',
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                   fontSize: 16.0,
                                 ),
                               ),
                               Text(
                                 'SAR${_subtotal.toStringAsFixed(2)}',
-                                style: const TextStyle(
+                                style: const TextStyle(fontFamily: 'JF',
                                     fontSize: 16.0, color: Colors.black),
                               ),
                             ],
@@ -473,13 +471,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             children: [
                               Text(
                                 'مقدار الخصم',
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                   fontSize: 16.0,
                                 ),
                               ),
                               Text(
                                 '20%',
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                     fontSize: 16.0, color: Colors.black),
                               ),
                             ],
@@ -489,13 +487,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             children: [
                               const Text(
                                 'مبلغ الخصم',
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                   fontSize: 16.0,
                                 ),
                               ),
                               Text(
                                 'SAR${_discount.toStringAsFixed(2)}',
-                                style: const TextStyle(
+                                style: const TextStyle(fontFamily: 'JF',
                                     fontSize: 16.0, color: Colors.black),
                               ),
                             ],
@@ -536,7 +534,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             children: [
                               const Text(
                                 'الإجمالي',
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
@@ -544,7 +542,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                               Text(
                                 'SAR${_total.toStringAsFixed(2)}',
-                                style: const TextStyle(
+                                style: const TextStyle(fontFamily: 'JF',
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
@@ -636,7 +634,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   },
                                   child: const Text(
                                     "الدفع",
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -644,7 +642,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                                 Text(
                                   'SAR   ${_total.toStringAsFixed(2)}',
-                                  style: const TextStyle(
+                                  style: const TextStyle(fontFamily: 'JF',
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -688,11 +686,11 @@ class OrderItem extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontFamily: 'JF',fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
             //const SizedBox(width:14),
             const Text('في انتطار الدفع',
-            style: TextStyle(color: primary,fontSize: 14,fontWeight: FontWeight.bold),),
+            style: TextStyle(fontFamily: 'JF',color: primary,fontSize: 14,fontWeight: FontWeight.bold),),
 
             //SizedBox(width: 32,),
           
@@ -700,7 +698,7 @@ class OrderItem extends StatelessWidget {
             //   return Text(
             //     // ignore: prefer_interpolation_to_compose_strings
             //     '${option['price']}'+" "+"SAR",
-            //     style: const TextStyle(fontSize: 13.0,
+            //     style: const TextStyle(fontFamily: 'JF',fontSize: 13.0,
             //     color: primary,
             //      fontWeight: FontWeight.bold),
             //   );
@@ -751,12 +749,12 @@ class OrderItem extends StatelessWidget {
                     Text(
                       '${option['option']}',
                       style:
-                          const TextStyle(fontSize: 14.0, color: Colors.grey),
+                          const TextStyle(fontFamily: 'JF',fontSize: 14.0, color: Colors.grey),
                     ),
                     Text(
                       ' SAR${option['price']}',
                       style:
-                          const TextStyle(fontSize: 14.0, color: Colors.grey),
+                          const TextStyle(fontFamily: 'JF',fontSize: 14.0, color: Colors.grey),
                     ),
                   ],
                 ),

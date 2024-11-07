@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -21,7 +20,7 @@ class DataBody extends StatelessWidget {
     return Stack(
       children: [
         Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             width: .9 * mediawidth(context),
             height: 60,
             decoration: BoxDecoration(
@@ -39,14 +38,14 @@ class DataBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "${dayText}",
-                      style: TextStyle(
+                      dayText,
+                      style: TextStyle(fontFamily: 'JF',
                           color:dayColor,
                           fontSize: 15),
                     ),
                     Text(
-                      "${dateText}",
-                      style: TextStyle(
+                      dateText,
+                      style: TextStyle(fontFamily: 'JF',
                         color: dateColor,
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -61,9 +60,9 @@ class DataBody extends StatelessWidget {
                   children: [
                     FittedBox(
                       child: Text(
-                        "${event}",
+                        event,
                         textDirection: TextDirection.rtl,
-                        style: TextStyle(
+                        style: TextStyle(fontFamily: 'JF',
                             color: eventColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 13),
@@ -76,7 +75,7 @@ class DataBody extends StatelessWidget {
                           Text(
                             " جدة قاعة الشروق ",
                             textDirection: TextDirection.rtl,
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: 'JF',
                                 fontSize: 10,
                                 color: locationColor,
                                 fontWeight: FontWeight.bold),

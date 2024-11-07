@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
-
-import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
-import 'package:sudia_events/presentation/screens/Services/All/services_screen.dart';
 import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
-
-import 'package:sudia_events/presentation/screens/client/settings/widgets/header_services.dart';
 import 'package:sudia_events/presentation/screens/client/settings/services/prevoius_body.dart';
+import 'package:sudia_events/presentation/screens/client/settings/widgets/header_services.dart';
 
 class MyServices extends StatefulWidget {
-  const MyServices({Key? key}) : super(key: key);
+  const MyServices({super.key});
 
   @override
   State<MyServices> createState() => _MyServicesState();
@@ -21,28 +17,28 @@ class _MyServicesState extends State<MyServices> {
   List<Widget>? _widgetOptions;
 
   static TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      const TextStyle(fontFamily: 'JF',fontSize: 30, fontWeight: FontWeight.bold);
 
   @override
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      Column(
+      const Column(
         children: [
-          const Header(
+          Header(
             text: 'حجوزاتي',
             paddingButtom: 80.0,
             paddingTop: 60,
           ),
-          const SizedBox(
+          SizedBox(
             height: 20,
           ),
           PrevoiusBody()
         ],
       ),
       // AddServices(),
-      ReservationScreen(),
-      AppointmentScreen()
+      const ReservationScreen(),
+      const AppointmentScreen()
     ];
   }
 

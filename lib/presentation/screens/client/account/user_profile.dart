@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:multi_image_picker_plus/multi_image_picker_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -13,6 +13,8 @@ import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 
 class UserFormScreen extends StatefulWidget {
+  const UserFormScreen({super.key});
+
   @override
   State<UserFormScreen> createState() => _UserFormScreenState();
 }
@@ -20,10 +22,10 @@ class UserFormScreen extends StatefulWidget {
 class _UserFormScreenState extends State<UserFormScreen> {
   DateTime? _selectedDate;
   List<File> _images = [];
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
   String? name;
   String? email;
   String? phone;
@@ -73,7 +75,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
         'profileImageUrl': _profileImageUrl,
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User data updated successfully')),
+        const SnackBar(content: Text('User data updated successfully')),
       );
       Navigator.pushReplacement(
           context,
@@ -93,12 +95,13 @@ class _UserFormScreenState extends State<UserFormScreen> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedDate)
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
         _dateController.text =
             "${picked.toLocal()}".split(' ')[0]; // Formatting date to string
       });
+    }
   }
 
   Future<void> _getImages() async {
@@ -155,10 +158,10 @@ class _UserFormScreenState extends State<UserFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('الملف الشخصي '),
+        title: const Text('الملف الشخصي '),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -182,11 +185,11 @@ class _UserFormScreenState extends State<UserFormScreen> {
                           ),
                         )
                       : _profileImageUrl == null
-                          ? Icon(Icons.edit, color: Colors.orange)
+                          ? const Icon(Icons.edit, color: Colors.orange)
                           : null,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 width: .9 * mediawidth(context),
                 height: .07 * mediaheight(context),
@@ -200,9 +203,9 @@ class _UserFormScreenState extends State<UserFormScreen> {
                     suffixIcon: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Image.asset('assets/images/sudio_flag.png', width: 24),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                       ],
                     ),
                     hintText: phone,
@@ -212,7 +215,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   keyboardType: TextInputType.phone,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 width: .9 * mediawidth(context),
                 height: .07 * mediaheight(context),
@@ -223,7 +226,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 child: TextField(
                   controller: _nameController,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.person),
                     prefixIconColor: Colors.grey[400],
                     hintText: name,
                     hintTextDirection: TextDirection.rtl,
@@ -232,7 +235,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   keyboardType: TextInputType.text,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 width: .9 * mediawidth(context),
                 height: .07 * mediaheight(context),
@@ -262,7 +265,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 width: .9 * mediawidth(context),
                 height: .07 * mediaheight(context),
@@ -273,7 +276,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 child: TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: const Icon(Icons.email),
                     prefixIconColor: Colors.grey[400],
                     hintText: email,
                     hintTextDirection: TextDirection.rtl,
@@ -282,7 +285,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 width: .9 * mediawidth(context),
                 height: .07 * mediaheight(context),
@@ -295,7 +298,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   controller: _dateController,
                   decoration: InputDecoration(
                     prefixIcon: IconButton(
-                      icon: Icon(Icons.calendar_today),
+                      icon: const Icon(Icons.calendar_today),
                       onPressed: () {
                         _selectDate(context);
                       },
@@ -308,7 +311,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   keyboardType: TextInputType.text,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 width: .9 * mediawidth(context),
                 height: .07 * mediaheight(context),
@@ -319,7 +322,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 child: TextField(
                   controller: _locationController,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.location_on_outlined),
+                    prefixIcon: const Icon(Icons.location_on_outlined),
                     prefixIconColor: Colors.grey[400],
                     hintText: 'الخالدية-جدة -المملكة',
                     hintTextDirection: TextDirection.rtl,
@@ -328,16 +331,16 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   keyboardType: TextInputType.text,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
                 minWidth: .7 * mediawidth(context),
                 color: primary,
                 onPressed: _updateUserData,
-                child: Text(
+                child: const Text(
                   'حفظ',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(fontFamily: 'JF',color: Colors.white),
                 ),
               ),
               MaterialButton(
@@ -347,9 +350,9 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text(
+                child: const Text(
                   'إلغاء',
-                  style: TextStyle(color: Colors.grey, fontSize: 17),
+                  style: TextStyle(fontFamily: 'JF',color: Colors.grey, fontSize: 17),
                 ),
               ),
             ],

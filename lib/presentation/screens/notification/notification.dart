@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/stepper.dart';
@@ -21,19 +20,18 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
-            ),
+            Text(DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
+                style: const TextStyle(fontFamily: 'JF')),
             const SizedBox(
               width: 10,
             ),
-            Text(
-              DateFormat('EEEE', 'ar').format(DateTime.now()),
-            ),
+            Text(DateFormat('EEEE', 'ar').format(DateTime.now()),
+                style: const TextStyle(fontFamily: 'JF')),
           ],
         ),
         centerTitle: true,
@@ -126,6 +124,7 @@ class NotificationScreen extends StatelessWidget {
                     child: Text(
                       '$favoriteCount',
                       style: const TextStyle(
+                        fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -342,8 +341,12 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
         currentText = 'تسليم الطلب';
     }
 
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(16.0),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25), topRight: Radius.circular(25))),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,7 +362,10 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                 ),
                 const Text(
                   'حالة الطلب',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontFamily: 'JF',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
                 const Icon(Icons.settings),
               ],
@@ -384,13 +390,17 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                       Text(
                         'مطعم الجزيرة',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                            fontFamily: 'JF',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
                       ),
                       Row(
                         children: [
                           Icon(Icons.star, color: Colors.red, size: 18),
-                          Text('4.9', style: TextStyle(fontSize: 16)),
-                          Text(' ID DWZ125', style: TextStyle(fontSize: 16)),
+                          Text('4.9',
+                              style: TextStyle(fontFamily: 'JF', fontSize: 16)),
+                          Text(' ID DWZ125',
+                              style: TextStyle(fontFamily: 'JF', fontSize: 16)),
                         ],
                       ),
                     ],
@@ -442,9 +452,11 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                   children: [
                     Text(currentText,
                         style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                            fontFamily: 'JF',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold)),
                     const Text('10:10 10/05/2024',
-                        style: TextStyle(fontSize: 16)),
+                        style: TextStyle(fontFamily: 'JF', fontSize: 16)),
                   ],
                 ),
               ],
@@ -457,7 +469,9 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                       const Text(
                         'رمز الإنهاء',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                            fontFamily: 'JF',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -480,13 +494,18 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
                           onPressed: () {
                             Navigator.push(
                                 context,
-                             MaterialPageRoute(
-  builder: (_) => OrderRatingScreen(
-    orders: sharedpref.getStringList('_checkout') ?? [],
-    images: sharedpref.getStringList('images') ?? [],
-    texts: sharedpref.getStringList('texts') ?? [],
-  ),
-));
+                                MaterialPageRoute(
+                                  builder: (_) => OrderRatingScreen(
+                                    orders:
+                                        sharedpref.getStringList('_checkout') ??
+                                            [],
+                                    images:
+                                        sharedpref.getStringList('images') ??
+                                            [],
+                                    texts:
+                                        sharedpref.getStringList('texts') ?? [],
+                                  ),
+                                ));
                           },
                           child: const Text('قيمنا'),
                         ),
@@ -509,7 +528,8 @@ class _OrderDetailBottomSheetState extends State<OrderDetailBottomSheet> {
       ),
       child: Text(
         digit,
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+            fontFamily: 'JF', fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -553,7 +573,7 @@ class NotificationTile extends StatelessWidget {
                 children: [
                   Text(
                     date,
-                    style: const TextStyle(color: Colors.red),
+                    style: const TextStyle(fontFamily: 'JF', color: Colors.red),
                   ),
                 ],
               ),
@@ -579,13 +599,16 @@ class NotificationTile extends StatelessWidget {
                       horizontal: .07 * mediawidth(context)),
                   child: const Text(
                     'الحجز',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontFamily: 'JF', fontWeight: FontWeight.bold),
                   ),
                 ),
                 const Spacer(),
                 Text(
                   '# $orderNumber  ',
-                  style: const TextStyle(),
+                  style: const TextStyle(
+                    fontFamily: 'JF',
+                  ),
                 ),
               ],
             ),
@@ -601,18 +624,18 @@ class NotificationTile extends StatelessWidget {
                 child: ListTile(
                   title: Text(
                     'مطعم الديرة # $orderNumber  ',
-                    style: const TextStyle(fontSize: 15),
+                    style: const TextStyle(fontFamily: 'JF', fontSize: 15),
                   ),
                   subtitle: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         status,
-                        style: const TextStyle(fontSize: 11),
+                        style: const TextStyle(fontFamily: 'JF', fontSize: 11),
                       ),
                       Text(
                         time,
-                        style: const TextStyle(fontSize: 11),
+                        style: const TextStyle(fontFamily: 'JF', fontSize: 11),
                       ),
                     ],
                   ),
@@ -664,7 +687,7 @@ class DiscountNotificationTile extends StatelessWidget {
                 children: [
                   Text(
                     date,
-                    style: const TextStyle(color: Colors.red),
+                    style: const TextStyle(fontFamily: 'JF', color: Colors.red),
                   ),
                 ],
               ),
@@ -680,21 +703,22 @@ class DiscountNotificationTile extends StatelessWidget {
             ),
             title: Text(
               message,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  fontFamily: 'JF', fontWeight: FontWeight.bold),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   detail,
-                  style: const TextStyle(fontSize: 13),
+                  style: const TextStyle(fontFamily: 'JF', fontSize: 13),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       time,
-                      style: const TextStyle(fontSize: 10),
+                      style: const TextStyle(fontFamily: 'JF', fontSize: 10),
                     ),
                   ],
                 ),

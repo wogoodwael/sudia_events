@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Review/services_review.dart';
 
 class RatingReviewScreen extends StatefulWidget {
@@ -46,7 +45,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.texts[index] ?? "قاعة غيم"),
+                    Text(widget.texts[index] ?? "قاعة غيم", style: const TextStyle(fontFamily: 'JF')),
                     RatingStars(
                       value: ratingValue,
                       onValueChanged: (v) {
@@ -62,7 +61,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                       starCount: 5,
                       starSize: 40,
                       valueLabelColor: const Color(0xff9b9b9b),
-                      valueLabelTextStyle: const TextStyle(
+                      valueLabelTextStyle: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
@@ -139,7 +138,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
           },
           child: const Text(
             'التالي',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(fontFamily: 'JF',color: Colors.white),
           ),
         ),
       ),

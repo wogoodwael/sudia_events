@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/user_model.dart';
@@ -18,7 +15,6 @@ import 'package:sudia_events/presentation/screens/Services/subServices/check_out
 import 'package:sudia_events/presentation/screens/client/account/feedback.dart';
 import 'package:sudia_events/presentation/screens/client/account/help_center.dart';
 import 'package:sudia_events/presentation/screens/client/account/invite_freinds.dart';
-import 'package:sudia_events/presentation/screens/client/account/message.dart';
 import 'package:sudia_events/presentation/screens/client/account/trending.dart';
 import 'package:sudia_events/presentation/screens/client/account/user_profile.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
@@ -47,10 +43,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Image.asset("assets/images/notify.png"),
               const Text(
                 "Notification",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontFamily: 'JF',fontWeight: FontWeight.bold),
               ),
               const Text(
-                  "please Enable The notification to recieve updates and reminders?"),
+                  "please Enable The notification to recieve updates and reminders?", style: TextStyle(fontFamily: 'JF')),
             ],
           ),
           actions: <Widget>[
@@ -63,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderRadius: BorderRadius.circular(20)),
                   child: const Text(
                     "Turn on",
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 17),
@@ -93,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   shape: RoundedRectangleBorder(
                       side: const BorderSide(color: primary),
                       borderRadius: BorderRadius.circular(20)),
-                  child: const Text("Skip for now "),
+                  child: const Text("Skip for now ", style: TextStyle(fontFamily: 'JF')),
                   onPressed: () {
                     Navigator.of(context).pop();
                     setState(() {
@@ -175,12 +171,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
+              style: const TextStyle(fontFamily: 'JF'),
             ),
             const SizedBox(
               width: 10,
             ),
             Text(
-              DateFormat('EEEE', 'ar').format(DateTime.now()),
+              DateFormat('EEEE', 'ar').format(DateTime.now()),style: const TextStyle(fontFamily: 'JF'),
             ),
           ],
         ),
@@ -273,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: const TextStyle(
+                      style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -302,21 +299,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       return const Center(
                           child: CircularProgressIndicator(color: primary));
                     } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
+                      return Text('Error: ${snapshot.error}',style: const TextStyle(fontFamily: 'JF'),);
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Row(
                         children: [
-                          const Text('لم تقم بانشاء الحساب بعد '),
+                          const Text('لم تقم بانشاء الحساب بعد ',style: TextStyle(fontFamily: 'JF'),),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => LoginScreen()));
+                                      builder: (_) => const LoginScreen()));
                             },
                             child: const Text(
                               'انشئ حساب ',
-                              style: TextStyle(
+                              style: TextStyle(fontFamily: 'JF',
                                   color: primary,
                                   decoration: TextDecoration.underline,
                                   decorationColor: primary),
@@ -341,7 +338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (_) => UserFormScreen()));
+                                            builder: (_) => const UserFormScreen()));
                                   },
                                 ),
                               ),
@@ -354,13 +351,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   children: [
                                     Text(
                                       snapshot.data?[0].name ?? "",
-                                      style: const TextStyle(
+                                      style: const TextStyle(fontFamily: 'JF',
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       children: [
-                                        Text(snapshot.data?[0].phone ?? ""),
+                                        Text(snapshot.data?[0].phone ?? "",style: const TextStyle(fontFamily: 'JF'),),
                                         const SizedBox(width: 8),
                                         const Icon(Icons.phone, size: 16),
                                       ],
@@ -368,7 +365,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Row(
                                       children: [
                                         Text(
-                                          snapshot.data?[0].email ?? "",
+                                          snapshot.data?[0].email ?? "",style: const TextStyle(fontFamily: 'JF'),
                                         ),
                                         const SizedBox(width: 8),
                                         const Icon(Icons.email, size: 16),
@@ -401,12 +398,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     title: Center(
                                         child: Text(
                                       'log out'.tr(),
-                                      style: const TextStyle(
+                                      style: const TextStyle(fontFamily: 'JF',
                                           fontWeight: FontWeight.bold),
                                     )),
                                     content: Text(
                                       'sure'.tr(),
-                                      style: const TextStyle(
+                                      style: const TextStyle(fontFamily: 'JF',
                                           fontWeight: FontWeight.bold),
                                     ),
                                     actions: <Widget>[
@@ -419,7 +416,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             color: primary,
                                             child: Text(
                                               'next'.tr(),
-                                              style: const TextStyle(
+                                              style: const TextStyle(fontFamily: 'JF',
                                                   color: Colors.white),
                                             ),
                                             onPressed: () async {
@@ -428,14 +425,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (_) =>
-                                                        LoginScreen()),
+                                                        const LoginScreen()),
                                                 (Route<dynamic> route) => false,
                                               );
                                             },
                                           ),
                                           MaterialButton(
                                             minWidth: 100,
-                                            child: Text('not sure'.tr()),
+                                            child: Text('not sure'.tr(),style: const TextStyle(fontFamily: 'JF')),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -452,7 +449,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Text(
                                   'log out'.tr(),
-                                  style: const TextStyle(
+                                  style: const TextStyle(fontFamily: 'JF',
                                       color: primary,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -475,7 +472,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.location_on),
-                title: Text('location'.tr()),
+                title: Text('location'.tr(),style: const TextStyle(fontFamily: 'JF')),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(
@@ -490,7 +487,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.favorite),
-                title: Text('Favorite'.tr()),
+                title: Text('Favorite'.tr() ,style: const TextStyle(fontFamily: 'JF',)),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(
@@ -501,7 +498,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.local_offer),
-                title: Text('trending'.tr()),
+                title: Text('trending'.tr(), style: const TextStyle(fontFamily: 'JF',)),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(
@@ -526,7 +523,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // ),
               ListTile(
                 leading: const Icon(Icons.edit),
-                title: const Text('ملاحظات المستخدمين'),
+                title: const Text('ملاحظات المستخدمين', style: TextStyle(fontFamily: 'JF',)),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(context,
@@ -552,7 +549,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // ),
               ListTile(
                 leading: const Icon(Icons.person_add),
-                title: Text('invite freinds'.tr()),
+                title: Text('invite freinds'.tr(), style: const TextStyle(fontFamily: 'JF',)),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(context,
@@ -569,7 +566,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // ),
               ListTile(
                 leading: const Icon(Icons.help),
-                title: Text('help center'.tr()),
+                title: Text('help center'.tr(), style: const TextStyle(fontFamily: 'JF',)),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.push(context,
@@ -607,7 +604,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             'notification'.tr(),
-                            style: const TextStyle(fontSize: 15),
+                            style: const TextStyle(fontFamily: 'JF',fontSize: 15),
                           ),
                         ),
                         Transform.scale(
@@ -640,7 +637,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     //       child: Text(
                     //         'Auto Update'.tr(),
-                    //         style: const TextStyle(fontSize: 15),
+                    //         style: const TextStyle(fontFamily: 'JF',fontSize: 15),
                     //       ),
                     //     ),
                     //     Transform.scale(
@@ -662,7 +659,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     //       child: Text(
                     //         'sounds'.tr(),
-                    //         style: const TextStyle(fontSize: 15),
+                    //         style: const TextStyle(fontFamily: 'JF',fontSize: 15),
                     //       ),
                     //     ),
                     //     Transform.scale(
@@ -687,7 +684,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //   },
                     // ),
                     ListTile(
-                      title: Text('conditions'.tr()),
+                      title: Text('conditions'.tr(),style: const TextStyle(fontFamily: 'JF')),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         Navigator.push(
@@ -697,7 +694,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     ListTile(
-                      title: Text('privacy policy'.tr()),
+                      title: Text('privacy policy'.tr(),style: const TextStyle(fontFamily: 'JF')),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         Navigator.push(
@@ -707,7 +704,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     ListTile(
-                      title: Text('terms of use'.tr()),
+                      title: Text('terms of use'.tr(),style: const TextStyle(fontFamily: 'JF')),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         Navigator.push(
@@ -787,12 +784,12 @@ class PolicyScreen extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(title),
+        title: Text(title,style: const TextStyle(fontFamily: 'JF'),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Text(content, textAlign: TextAlign.justify),
+          child: Text(content, textAlign: TextAlign.justify,style: const TextStyle(fontFamily: 'JF'),),
         ),
       ),
     );

@@ -1,9 +1,5 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart' as easy;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
@@ -42,60 +38,57 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: GestureDetector(
-                  onTap: () {
-                    showMenu(
-                      context: context,
-                      position: const RelativeRect.fromLTRB(100, 100, 10, 100),
-                      items: [
-                        PopupMenuItem(
-                          onTap: () {
-                            Provider.of<LanguageProvider>(context,
-                                    listen: false)
-                                .setLocale(const Locale('ar'));
-                            easy.EasyLocalization.of(context)
-                                ?.setLocale(const Locale('ar'));
-                          },
-                          value: 1,
-                          child: const Text("عربي"),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            Provider.of<LanguageProvider>(context,
-                                    listen: false)
-                                .setLocale(const Locale('en'));
-                            easy.EasyLocalization.of(context)
-                                ?.setLocale(const Locale('en'));
-                          },
-                          value: 1,
-                          child: const Text("English"),
-                        ),
-                      ],
-                    );
-                  },
-                  child: const ImageIcon(
-                    AssetImage(
-                      "assets/images/lang.png",
+          title: const Text(
+            "تسجيل الدخول",
+            style: TextStyle(
+                fontFamily: 'JF', fontWeight: FontWeight.w700, fontSize: 22),
+          ),
+          centerTitle: true,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                showMenu(
+                  context: context,
+                  position: const RelativeRect.fromLTRB(100, 100, 10, 100),
+                  items: [
+                    PopupMenuItem(
+                      onTap: () {
+                        Provider.of<LanguageProvider>(context, listen: false)
+                            .setLocale(const Locale('ar'));
+                        easy.EasyLocalization.of(context)
+                            ?.setLocale(const Locale('ar'));
+                      },
+                      value: 1,
+                      child: const Text("عربي",
+                          style: TextStyle(fontFamily: 'JF')),
                     ),
-                    size: 90,
-                    color: primary,
-                  ),
+                    PopupMenuItem(
+                      onTap: () {
+                        Provider.of<LanguageProvider>(context, listen: false)
+                            .setLocale(const Locale('en'));
+                        easy.EasyLocalization.of(context)
+                            ?.setLocale(const Locale('en'));
+                      },
+                      value: 1,
+                      child: const Text("English",
+                          style: TextStyle(fontFamily: 'JF')),
+                    ),
+                  ],
+                );
+              },
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.only(left: 20),
+                child: Image.asset(
+                  "assets/images/lang.png",
+                  //   width: 200,
+                  // //  size: 120,
+
+                  color: primary,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                child: Text(
-                  "تسجيل الدخول",
-                  style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w700, fontSize: 15),
-                ),
-              ),
-            ],
-          )),
+            )
+          ]),
       backgroundColor: Colors.white,
       body: Consumer<LanguageProvider>(
         builder: (BuildContext context, LanguageProvider value, Widget? child) {
@@ -107,47 +100,42 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: .9 * mediawidth(context),
                   child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const SizedBox(
                           height: 40,
                         ),
                         Center(
                           child: Container(
-                            width: .8 * mediawidth(context),
-                            height: 50,
                             decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: .01 * mediaheight(context)),
-                              child: IntlPhoneField(
-                                controller: phoneE,
-                                onSubmitted: (p0) {
-                                  setState(() {
-                                    phoneE;
-                                  });
-                                },
-                                dropdownIcon:
-                                    const Icon(Icons.keyboard_arrow_down_rounded),
-                                decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.only(top: 5, left: 10),
-                                  border: InputBorder.none,
-                                  counterText: "",
-                                  errorStyle: TextStyle(
-                                      fontSize: 0,
-                                      height: 0), // This hides the error text
-                                ),
-                                initialCountryCode: 'IN',
-                                onChanged: (phone) {
-                                  print(phone.completeNumber);
-                                  sharedpref.setString(
-                                      'phone', phone.completeNumber);
-                                },
+                            child: IntlPhoneField(
+                              keyboardType:TextInputType.number,
+                              controller: phoneE,
+                              onSubmitted: (p0) {
+                                setState(() {
+                                  phoneE;
+                                });
+                              },
+                              dropdownIcon:
+                                  const Icon(Icons.keyboard_arrow_down_rounded),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.only(top: 12),
+                                border: InputBorder.none,
+                                counterText: "",
+                                errorStyle: TextStyle(
+                                    fontFamily: 'JF',
+                                    fontSize: 0,
+                                    height: 0), // This hides the error text
                               ),
+                              initialCountryCode: 'AE',
+                              onChanged: (phone) {
+                                print(phone.completeNumber);
+                                sharedpref.setString(
+                                    'phone', phone.completeNumber);
+                              },
                             ),
                           ),
                         ),
@@ -173,7 +161,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               'remember'.tr(),
                               style: const TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
+                                  fontFamily: 'JF',
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -191,11 +181,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "اقبل",
-                                style: GoogleFonts.roboto(
-                                    fontSize: 12, fontWeight: FontWeight.w400),
-                              ),
                               const SizedBox(
                                 width: 5,
                               ),
@@ -223,15 +208,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: primary,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400),
-                              )
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "اقبل",
+                                style: GoogleFonts.roboto(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
                             ],
                           ),
                           Center(
                             child: MaterialButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
-                              color:
-                                  phoneE.text.isNotEmpty ? primary : primary,
+                              color: phoneE.text.isNotEmpty ? primary : primary,
                               minWidth: 300,
                               onPressed: phoneE.text.isNotEmpty
                                   ? () async {
@@ -245,8 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       });
                                     }
                                   : () {
-
-                                     Api().login(
+                                      Api().login(
                                           context,
                                           sharedpref.getString("phone")!,
                                           loading, (bool value) {
@@ -254,8 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           loading = value;
                                         });
                                       });
-                                    
-                                  },
+                                    },
                               child: loading
                                   ? const SizedBox(
                                       height: 30,
@@ -266,6 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   : Text(
                                       'login'.tr(),
                                       style: const TextStyle(
+                                          fontFamily: 'JF',
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
@@ -280,7 +271,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Text(
                                 register ? "have".tr() : "donthave".tr(),
-                                style: GoogleFonts.roboto(
+                                style: const TextStyle(
+                                    fontFamily: 'JF',
                                     color: Colors.grey,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w300),
@@ -293,11 +285,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (_) => const RegisterScreen()));
+                                          builder: (_) =>
+                                              const RegisterScreen()));
                                 },
                                 child: Text(
                                   register ? "login".tr() : "signup".tr(),
-                                  style: GoogleFonts.roboto(
+                                  style: const TextStyle(
+                                      fontFamily: 'JF',
                                       decoration: TextDecoration.underline,
                                       decorationColor: primary,
                                       fontWeight: FontWeight.w600,

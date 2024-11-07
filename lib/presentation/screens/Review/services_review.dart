@@ -29,7 +29,7 @@ class _ServiceRatingScreenState extends State<ServiceRatingScreen> {
               const SizedBox(
                 height: 20,
               ),
-              const Text("مقدم الخدمة"),
+              const Text("مقدم الخدمة", style: TextStyle(fontFamily: 'JF')),
               const SizedBox(
                 height: 20,
               ),
@@ -43,7 +43,7 @@ class _ServiceRatingScreenState extends State<ServiceRatingScreen> {
               ),
               const Text(
                 'جمعان الزهراني ',
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontFamily: 'JF',fontSize: 24),
               ),
               const SizedBox(
                 height: 20,
@@ -65,7 +65,7 @@ class _ServiceRatingScreenState extends State<ServiceRatingScreen> {
                 starCount: 5,
                 starSize: 40,
                 valueLabelColor: const Color(0xff9b9b9b),
-                valueLabelTextStyle: const TextStyle(
+                valueLabelTextStyle: const TextStyle(fontFamily: 'JF',
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,

@@ -11,8 +11,7 @@ class LocationScreen extends StatefulWidget {
   final double lat, long;
   final bool fromHome;
   const LocationScreen(
-      {Key? key, required this.lat, required this.long, required this.fromHome})
-      : super(key: key);
+      {super.key, required this.lat, required this.long, required this.fromHome});
 
   @override
   _LocationScreenState createState() => _LocationScreenState();
@@ -76,7 +75,7 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -90,7 +89,7 @@ class _LocationScreenState extends State<LocationScreen> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
                     width: .9 * mediawidth(context),
                     height: .1 * mediaheight(context),
@@ -114,7 +113,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   color: Colors.black,
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 _city,
                                 style: GoogleFonts.inter(
@@ -125,7 +124,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -165,7 +164,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   color: Colors.black,
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 _city,
                                 style: GoogleFonts.inter(
@@ -176,7 +175,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -204,7 +203,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   //       children: [
                   //         Text(
                   //           "اضف عنوان جديد",
-                  //           style: TextStyle(
+                  //     TextStyle(Family: 'JF',
                   //             color: primary,
                   //             fontWeight: FontWeight.bold,
                   //             fontSize: 17,
@@ -235,7 +234,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => SearchLocationScreen(),
+                          builder: (_) => const SearchLocationScreen(),
                         ),
                       );
                     } else {
@@ -261,7 +260,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   },
                   child: Text(
                     widget.fromHome ? "التالي" : "حفظ",
-                    style: TextStyle(
+        style: const TextStyle(fontFamily: 'JF',
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,

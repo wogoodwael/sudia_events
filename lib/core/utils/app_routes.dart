@@ -15,9 +15,9 @@ class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case login:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case register:
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
 
@@ -31,7 +31,7 @@ class AppRouter {
       case pills:
         return MaterialPageRoute(builder: (_) => const PillScreen());
       case pilldetails:
-        return MaterialPageRoute(builder: (_) => PillDetails());
+        return MaterialPageRoute(builder: (_) => const PillDetails());
     }
     return null;
   }

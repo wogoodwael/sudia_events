@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -62,12 +61,12 @@ class CustomCalendar extends StatefulWidget {
   final List<dynamic> Function(DateTime)? getEventsForDay;
 
   const CustomCalendar({
-    Key? key,
+    super.key,
     required this.selectedDay,
     required this.getEventsForDay,
     required this.focusedDay,
     required this.onDaySelected,
-  }) : super(key: key);
+  });
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();

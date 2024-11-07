@@ -10,9 +10,9 @@ import 'package:sudia_events/presentation/screens/payment/payment_screen.dart';
 
 class WeddingsHotels extends StatefulWidget {
   const WeddingsHotels({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
   final String id;
   @override
   State<WeddingsHotels> createState() => _WeddingsHotelsState();
@@ -22,7 +22,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
   bool ontapped = false;
   bool ontappednap = false;
   bool showMore = false;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int _currentPage = 0;
   bool next = false;
   bool prevoius = false;
@@ -43,16 +43,16 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
           builder: (BuildContext context,
               AsyncSnapshot<List<SubServicesModel>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                   child: CircularProgressIndicator(
                 color: primary,
               )); // Show loading indicator while fetching data
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No data available');
+              return const Text('No data available');
             } else if (snapshot.hasData) {
-              return Container(
+              return SizedBox(
                 width: mediawidth(context),
                 height: mediaheight(context),
                 child: ListView.builder(
@@ -64,7 +64,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                         children: [
                           Stack(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,
                                 child: PageView.builder(
@@ -120,7 +120,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               IconButton(
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.arrow_back_ios,
                                                   color: Colors.white,
                                                 ),
@@ -136,7 +136,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                 width: .4 * mediawidth(context),
                                               ),
                                               IconButton(
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.arrow_forward_ios,
                                                   color: Colors.white,
                                                 ),
@@ -151,7 +151,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                               .image.length -
                                                           1) {
                                                     _pageController.nextPage(
-                                                      duration: Duration(
+                                                      duration: const Duration(
                                                           milliseconds: 300),
                                                       curve: Curves.ease,
                                                     );
@@ -193,23 +193,23 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                               CrossAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Text(
+                                                            const Text(
                                                               "السعر",
-                                                              style: TextStyle(
+                                                              style: TextStyle(fontFamily: 'JF',
                                                                   color: Colors
                                                                       .white),
                                                             ),
                                                             Row(
                                                               children: [
-                                                                Padding(
+                                                                const Padding(
                                                                   padding:
-                                                                      const EdgeInsets
+                                                                      EdgeInsets
                                                                           .only(
                                                                           top:
                                                                               5.0),
                                                                   child: Text(
                                                                     'SR',
-                                                                    style: TextStyle(
+                                                                    style: TextStyle(fontFamily: 'JF',
                                                                         fontSize:
                                                                             17,
                                                                         color:
@@ -221,7 +221,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                                       .data![
                                                                           index]
                                                                       .price[count],
-                                                                  style: TextStyle(
+                                                                  style: const TextStyle(fontFamily: 'JF',
                                                                       color:
                                                                           primary,
                                                                       fontSize:
@@ -245,7 +245,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                               snapshot
                                                                   .data![index]
                                                                   .name[count],
-                                                              style: TextStyle(
+                                                              style: const TextStyle(fontFamily: 'JF',
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
@@ -254,14 +254,14 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                                   fontSize: 30),
                                                             ),
                                                           ),
-                                                          Row(
+                                                          const Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: [
                                                               Text(
                                                                 "جدة - حي الشاطئ",
-                                                                style: TextStyle(
+                                                                style: TextStyle(fontFamily: 'JF',
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
@@ -280,7 +280,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                             snapshot
                                                                 .data![index]
                                                                 .des[count],
-                                                            style: TextStyle(
+                                                            style: const TextStyle(fontFamily: 'JF',
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize: 10),
@@ -311,23 +311,23 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                                   builder:
                                                                       (context) =>
                                                                           AlertDialog(
-                                                                    title: Text(
+                                                                    title: const Text(
                                                                         'قم بحجز خدمة مع القاعة '),
-                                                                    content: Text(
+                                                                    content: const Text(
                                                                         ' هل تريد حجز خدمة مع القاعة ؟'),
                                                                     actions: [
                                                                       TextButton(
                                                                         onPressed:
                                                                             () =>
                                                                                 Navigator.of(context).pop(false),
-                                                                        child: Text(
+                                                                        child: const Text(
                                                                             'لا'),
                                                                       ),
                                                                       TextButton(
                                                                         onPressed:
                                                                             () =>
                                                                                 Navigator.of(context).pop(true),
-                                                                        child: Text(
+                                                                        child: const Text(
                                                                             'نعم'),
                                                                       ),
                                                                     ],
@@ -352,19 +352,19 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                             context,
                                                             MaterialPageRoute(
                                                                 builder: (_) =>
-                                                                    PayMentScreen()),
+                                                                    const PayMentScreen()),
                                                           );
                                                         }
                                                       },
-                                                      child: Text(
+                                                      child: const Text(
                                                         "احجز الان",
-                                                        style: TextStyle(
+                                                        style: TextStyle(fontFamily: 'JF',
                                                             color: Colors.white,
                                                             fontSize: 20),
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 10,
                                                   )
                                                 ],
@@ -393,20 +393,20 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                 child: Text(
                                                   snapshot
                                                       .data![index].name[index],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(fontFamily: 'JF',
                                                     color: Colors.white,
                                                     fontSize: 40,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ),
-                                              Row(
+                                              const Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   Text(
                                                     "جدة - حي الشاطئ",
-                                                    style: TextStyle(
+                                                    style: TextStyle(fontFamily: 'JF',
                                                         color: Colors.white),
                                                   ),
                                                   Icon(
@@ -418,14 +418,14 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                               ),
                                               TabBar(
                                                 indicatorPadding:
-                                                    EdgeInsets.only(
+                                                    const EdgeInsets.only(
                                                         bottom: 5, left: 20),
                                                 indicatorSize:
                                                     TabBarIndicatorSize.tab,
                                                 indicatorWeight: 5,
                                                 unselectedLabelColor:
                                                     Colors.white,
-                                                labelStyle: TextStyle(
+                                                labelStyle: const TextStyle(fontFamily: 'JF',
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -444,16 +444,16 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                                     : Colors
                                                                         .white,
                                                                 width: 5))),
-                                                    child: Padding(
+                                                    child: const Padding(
                                                       padding:
-                                                          const EdgeInsets.only(
+                                                          EdgeInsets.only(
                                                               top: 20.0),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .end,
                                                         children: [
-                                                          Text("اراء وتقيميات")
+                                                          Text("اراء وتقيميات", style: TextStyle(fontFamily: 'JF'))
                                                         ],
                                                       ),
                                                     ),
@@ -470,16 +470,16 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                                     : Colors
                                                                         .white,
                                                                 width: 5))),
-                                                    child: Padding(
+                                                    child: const Padding(
                                                       padding:
-                                                          const EdgeInsets.only(
+                                                          EdgeInsets.only(
                                                               top: 20.0),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .end,
                                                         children: [
-                                                          Text("نبذة")
+                                                          Text("نبذة", style: TextStyle(fontFamily: 'JF'))
                                                         ],
                                                       ),
                                                     ),
@@ -501,7 +501,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                               Expanded(
                                                 child: TabBarView(
                                                   children: [
-                                                    OpinionBody(),
+                                                    const OpinionBody(),
                                                     AboutBody(
                                                         des: snapshot
                                                                 .data![index]
@@ -529,15 +529,15 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                                                       showMore = !showMore;
                                                     });
                                                   },
-                                                  child: Text(
+                                                  child: const Text(
                                                     "المزيد",
-                                                    style: TextStyle(
+                                                    style: TextStyle(fontFamily: 'JF',
                                                         color: Colors.white,
                                                         fontSize: 20),
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               )
                                             ],
@@ -555,8 +555,8 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                           SizedBox(
                             height: .5 * mediaheight(context),
                           ),
-                          Center(
-                            child: Text("لا يوجد قاعات اخري "),
+                          const Center(
+                            child: Text("لا يوجد قاعات اخري ", style: TextStyle(fontFamily: 'JF')),
                           ),
                         ],
                       );
@@ -565,8 +565,8 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                 ),
               );
             } else {
-              return Center(
-                child: Text("no more castle"),
+              return const Center(
+                child: Text("no more castle", style: TextStyle(fontFamily: 'JF')),
               );
             }
           },
@@ -594,7 +594,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('اختار الخدمة'),
+              title: const Text('اختار الخدمة'),
               content: SingleChildScrollView(
                 child: Column(
                   children: servicesList.map((service) {
@@ -636,7 +636,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('الغاء'),
+                  child: const Text('الغاء'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -648,7 +648,7 @@ class _WeddingsHotelsState extends State<WeddingsHotels> {
                     //   MaterialPageRoute(builder: (_) => AddServices()),
                     // );
                   },
-                  child: Text('حجز'),
+                  child: const Text('حجز'),
                 ),
               ],
             );

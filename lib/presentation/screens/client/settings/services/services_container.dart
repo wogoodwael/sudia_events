@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -33,7 +32,7 @@ class ServicesContainer extends StatelessWidget {
         width: .95 * mediawidth(context),
         height: 70,
         decoration: BoxDecoration(
-            color: selected ? secondary : Color(0xfff3f3f3),
+            color: selected ? secondary : const Color(0xfff3f3f3),
             border: Border.all(color: primary),
             borderRadius: BorderRadius.circular(5)),
         child: Row(
@@ -45,13 +44,13 @@ class ServicesContainer extends StatelessWidget {
               children: [
                 Text(
                   "الاتنين",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: 'JF',
                       color: selected ? Colors.white : Colors.grey,
                       fontSize: 15),
                 ),
                 Text(
                   reversedDate,
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: 'JF',
                     color: selected ? Colors.white : Colors.grey,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -76,7 +75,7 @@ class ServicesContainer extends StatelessWidget {
                   child: Text(
                     "زواج علي سعيد محمد ",
                     textDirection: TextDirection.rtl,
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                         color: selected ? Colors.white : Colors.grey[600],
                         fontWeight: FontWeight.bold,
                         fontSize: 13),
@@ -89,7 +88,7 @@ class ServicesContainer extends StatelessWidget {
                       Text(
                         " جدة قاعة الشروق ",
                         textDirection: TextDirection.rtl,
-                        style: TextStyle(
+                        style: TextStyle(fontFamily: 'JF',
                             fontSize: 10,
                             color: selected ? Colors.white : Colors.grey[500],
                             fontWeight: FontWeight.bold),

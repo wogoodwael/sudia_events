@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/positioned_logo.dart';
@@ -41,13 +39,13 @@ class _PayMentScreenState extends State<PayMentScreen> {
                       ),
                     ),
                   ),
-                  PositionedLogo(),
+                  const PositionedLogo(),
                   Positioned(
                       right: .02 * mediawidth(context),
                       top: .06 * mediaheight(context),
                       child: Transform.scale(
                         scale: 1.2,
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_forward,
                           color: Colors.white,
                         ),
@@ -59,7 +57,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                     child: Container(
                       width: .9 * mediawidth(context),
                       height: 50,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
@@ -67,15 +65,15 @@ class _PayMentScreenState extends State<PayMentScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
+                          const Text(
                             "3",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: 'JF',
                                 color: primary,
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text("عدد الخدمات ",
-                              style: TextStyle(
+                              style: TextStyle(fontFamily: 'JF',
                                   color: Colors.grey[800], fontSize: 25)),
                         ],
                       ),
@@ -106,7 +104,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                               border: !pay
                                   ? Border.all(color: primary)
                                   : Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 bottomLeft: Radius.circular(10),
                               ),
@@ -114,7 +112,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                             child: Center(
                               child: Text(
                                 "دفع كامل الفاتورة",
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                   color: pay ? Colors.white : primary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17,
@@ -147,7 +145,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                             child: Center(
                               child: Text(
                                 "لاتمام الحجز",
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                   color: compelet ? Colors.white : primary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17,
@@ -158,7 +156,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Padding(
@@ -204,7 +202,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                                     _buildRadioOption('bank_transfer'),
                                   ],
                                 ),
-                                Divider(
+                                const Divider(
                                   endIndent: 20,
                                   indent: 30,
                                   color: primary,
@@ -226,9 +224,9 @@ class _PayMentScreenState extends State<PayMentScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'احفظ طريقة الدفع',
-                                style: TextStyle(color: Colors.grey),
+                                style: TextStyle(fontFamily: 'JF',color: Colors.grey),
                               ),
                               Transform.scale(
                                 scale: .7,
@@ -254,7 +252,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                                 height: .12 * mediaheight(context),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xffb3dfdd)),
+                                    color: const Color(0xffb3dfdd)),
                               ),
                               Positioned(
                                 bottom: .07 * mediaheight(context),
@@ -274,9 +272,9 @@ class _PayMentScreenState extends State<PayMentScreen> {
                               Positioned(
                                 bottom: .09 * mediaheight(context),
                                 right: .09 * mediawidth(context),
-                                child: Text(
+                                child: const Text(
                                   '''عدم اكمال 3000 قبل يوم 17/8/2020 تلغي الحجوزات''',
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -286,11 +284,11 @@ class _PayMentScreenState extends State<PayMentScreen> {
                               Positioned(
                                 right: .07 * mediawidth(context),
                                 top: .03 * mediaheight(context),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 10.0),
+                                child: const Padding(
+                                  padding: EdgeInsets.only(bottom: 10.0),
                                   child: Text(
                                     'تطبق الأحكام والشروط',
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                       fontSize: 10,
                                     ),
                                     textAlign: TextAlign.right,
@@ -305,25 +303,25 @@ class _PayMentScreenState extends State<PayMentScreen> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: primary),
-                                    child: Row(
+                                    child: const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Row(
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(
+                                              padding: EdgeInsets.only(
                                                   top: 5.0),
                                               child: Text(
                                                 'SR',
-                                                style: TextStyle(
+                                                style: TextStyle(fontFamily: 'JF',
                                                     fontSize: 10,
                                                     color: Colors.white),
                                               ),
                                             ),
                                             Text(
                                               "1300",
-                                              style: TextStyle(
+                                              style: TextStyle(fontFamily: 'JF',
                                                   color: Colors.white,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
@@ -335,7 +333,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                                         ),
                                         Text(
                                           "ادفع الان ",
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               color: Colors.white,
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
@@ -345,7 +343,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                                   ))
                             ],
                           )
-                        : Container(
+                        : SizedBox(
                             width: .8 * mediawidth(context),
                             child: MaterialButton(
                               color: primary,
@@ -354,24 +352,24 @@ class _PayMentScreenState extends State<PayMentScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               onPressed: () {},
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
                                     children: [
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(top: 5.0),
+                                            EdgeInsets.only(top: 5.0),
                                         child: Text(
                                           'SR',
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               fontSize: 10,
                                               color: Colors.white),
                                         ),
                                       ),
                                       Text(
                                         "4300",
-                                        style: TextStyle(
+                                        style: TextStyle(fontFamily: 'JF',
                                             color: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
@@ -383,7 +381,7 @@ class _PayMentScreenState extends State<PayMentScreen> {
                                   ),
                                   Text(
                                     "ادفع الان ",
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                         color: Colors.white,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),

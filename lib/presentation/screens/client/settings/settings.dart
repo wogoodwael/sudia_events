@@ -4,7 +4,6 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/acoount_list_tile_model.dart';
 import 'package:sudia_events/data/model/settings_model.dart';
 import 'package:sudia_events/presentation/screens/Reservation/reservation.dart';
-import 'package:sudia_events/presentation/screens/Services/All/services_screen.dart';
 import 'package:sudia_events/presentation/screens/appointments/appointments.dart';
 import 'package:sudia_events/presentation/screens/client/account/my_account.dart';
 import 'package:sudia_events/presentation/screens/client/settings/settings_list.dart';
@@ -31,10 +30,10 @@ class _SettingScreenState extends State<SettingScreen> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      MyAccountScreen(),
+      const MyAccountScreen(),
       // AddServices(),
-      ReservationScreen(),
-      AppointmentScreen()
+      const ReservationScreen(),
+      const AppointmentScreen()
     ];
   }
 
@@ -171,7 +170,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     Positioned(
                         child: Center(
                       child: Container(
-                        margin: EdgeInsets.only(top: 160),
+                        margin: const EdgeInsets.only(top: 160),
                         width: 90,
                         height: 110,
                         decoration: const BoxDecoration(
@@ -197,7 +196,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               padding: EdgeInsets.only(top: 8.0),
                               child: Text(
                                 "الاعدادات",
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                             )

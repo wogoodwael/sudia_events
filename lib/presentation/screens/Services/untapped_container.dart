@@ -23,14 +23,14 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 15, right: 10, left: 10),
+      margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
       width:
           widget.tapped ? .92 * mediawidth(context) : .97 * mediawidth(context),
       height: 110,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: widget.tapped ? primary : Colors.white,
-          border: Border(
+          border: const Border(
               top: BorderSide(color: primary),
               left: BorderSide(color: primary),
               right: BorderSide(color: primary),
@@ -44,7 +44,7 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
               children: [
                 Column(
                   children: [
-                    Row(
+                    const Row(
                       children: [
                         Icon(
                           Icons.star,
@@ -74,7 +74,7 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 15, top: 5),
+                      margin: const EdgeInsets.only(left: 15, top: 5),
                       width: 70,
                       height: 25,
                       decoration: BoxDecoration(
@@ -87,7 +87,7 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                               "SR",
-                              style: TextStyle(
+                              style: TextStyle(fontFamily: 'JF',
                                   fontSize: 10,
                                   color:
                                       widget.tapped ? primary : Colors.white),
@@ -95,7 +95,7 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                           ),
                           Text(
                             widget.indexPrice,
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: 'JF',
                                 color: widget.tapped ? primary : Colors.white),
                           )
                         ],
@@ -103,7 +103,7 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                     )
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: Column(
@@ -111,14 +111,14 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                     children: [
                       Text(
                         widget.indexData,
-                        style: TextStyle(
+                        style: TextStyle(fontFamily: 'JF',
                             color: widget.tapped ? Colors.white : Colors.black),
                       ),
                       Row(
                         children: [
                           Text(
                             "جدة- حي الشاطئ",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: 'JF',
                                 color: widget.tapped ? Colors.white : primary,
                                 fontSize: 9),
                           ),
@@ -157,11 +157,11 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                     color: widget.tapped ? Colors.white : Colors.grey,
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.keyboard_arrow_down_outlined,
                   color: Colors.grey,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 100,
                 ),
                 Expanded(
@@ -169,7 +169,7 @@ class _UnTappedContainerState extends State<UnTappedContainer> {
                     textAlign: TextAlign.end,
 widget.des,
                     softWrap: true,
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                         fontWeight: FontWeight.bold,
                         color: widget.tapped ? Colors.white : primary,
                         fontSize: 8),

@@ -38,13 +38,13 @@ dependencies:
   otp_pin_field: ^1.2.9
   easy_stepper: any
   table_calendar: ^3.0.9
-  camera: ^0.10.5+9
-  firebase_core: ^2.3.1
-  firebase_auth: ^4.19.4
-  cloud_firestore: ^4.17.2
+  camera: ^0.11.0
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.3
   shared_preferences: ^2.2.3
   flutter_bloc: ^8.1.5
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   solid_bottom_sheet: ^0.1.10
   multi_image_picker_plus: ^0.0.4
 
@@ -56,16 +56,15 @@ dependencies:
   google_maps_flutter: ^2.1.3
   flutter_svg: any
   google_fonts: any
-  firebase_storage: ^11.7.7
+  firebase_storage: ^12.3.2
   geolocator: ^7.7.0
   geocoding: ^3.0.0
   search_map_location: ^0.0.6
-  share_screenshot_widget: ^0.0.5
-  share_plus: ^6.3.4
+  share_plus: ^10.0.2
   screenshot: ^2.5.0
   intl_phone_field: ^3.2.0
-  permission_handler: ^10.0.0
-  firebase_messaging: ^14.9.4
+  permission_handler: ^11.3.1
+  firebase_messaging: ^15.1.3
   flutter_local_notifications: ^17.2.1
   flutter_rating_stars: ^1.1.0
   image_picker: ^1.1.2
@@ -125,3 +124,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: JF
+      fonts:
+        - asset: assets/fonts/JF-Flat-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/JF-Flat-bold.ttf
+          weight: 700

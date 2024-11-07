@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -67,13 +66,13 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ],
-        title: Text('السلة'),
+        title: const Text('السلة'),
         leading: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('SubServices')
@@ -88,7 +87,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
             return Stack(
               children: <Widget>[
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopify_sharp,
                     color: primary,
                     size: 25,
@@ -101,18 +100,18 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       minWidth: 12,
                       minHeight: 12,
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: TextStyle(
+                      style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -132,7 +131,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
             controller: controller,
             onTap: () {},
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Expanded(
@@ -145,7 +144,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -153,7 +152,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No items found'));
+                  return const Center(child: Text('No items found'));
                 }
 
                 var favorites = snapshot.data!.docs;
@@ -161,7 +160,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
                     _filterFavorites(favorites, searchQuery);
 
                 return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 3 / 4,
                     mainAxisSpacing: 10,
@@ -176,7 +175,7 @@ class _CheckoutScreenOverViewState extends State<CheckoutScreenOverView> {
 onTap: () {
   
 },                      child: Container(
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         child: Card(
                           color: Colors.white,
                           surfaceTintColor: Colors.white,
@@ -196,7 +195,7 @@ onTap: () {
                                       onTap: () async {
                                         await _removeFromCheckOut(favorite.id);
                                       },
-                                      child: CircleAvatar(
+                                      child: const CircleAvatar(
                                         radius: 15,
                                         backgroundColor: Colors.white,
                                         child: Icon(
@@ -217,24 +216,24 @@ onTap: () {
                                     children: [
                                       Text(data['name'] ?? "",
                                           style: GoogleFonts.cairo(fontSize: 16)),
-                                      SizedBox(height: 4),
-                                      Row(
+                                      const SizedBox(height: 4),
+                                      const Row(
                                         children: [
                                           Text('4.9',
-                                              style: TextStyle(
+                                              style: TextStyle(fontFamily: 'JF',
                                                   color: Colors.orange)),
                                           Icon(Icons.star,
                                               color: Colors.orange, size: 16),
                                         ],
                                       ),
-                                      SizedBox(height: 4),
+                                      const SizedBox(height: 4),
                                       Text('SAR ${data['price']}',
-                                          style: TextStyle(
+                                          style: const TextStyle(fontFamily: 'JF',
                                               decoration:
                                                   TextDecoration.lineThrough)),
                                       Text(
                                           'SAR ${data['discount'] ?? data['price']}',
-                                          style: TextStyle(color: Colors.red)),
+                                          style: const TextStyle(fontFamily: 'JF',color: Colors.red)),
                                     ],
                                   ),
                                 ),

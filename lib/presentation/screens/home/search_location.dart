@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_location/search_map_location.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
@@ -10,6 +9,8 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/home/location.dart';
 
 class SearchLocationScreen extends StatefulWidget {
+  const SearchLocationScreen({super.key});
+
   @override
   State<SearchLocationScreen> createState() => _SearchLocationScreenState();
 }
@@ -21,11 +22,11 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Location'),
+        title: const Text('Search Location'),
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -57,7 +58,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
               ],
             ),
             if (selectedLocation != null)
-              Container(
+              SizedBox(
                 width: mediawidth(context),
                 height: .7 * mediaheight(context),
                 child: GoogleMap(
@@ -67,7 +68,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   ),
                   markers: {
                     Marker(
-                      markerId: MarkerId('selected-location'),
+                      markerId: const MarkerId('selected-location'),
                       position: selectedLocation!,
                       infoWindow: InfoWindow(
                         title: 'Selected Location',
@@ -79,7 +80,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   onMapCreated: (GoogleMapController controller) {},
                 ),
               ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             MaterialButton(
               color: primary,
               minWidth: .9 * mediawidth(context),
@@ -101,12 +102,12 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
-                      title: Text('No Location Selected'),
+                      title: const Text('No Location Selected'),
                       content:
-                          Text('Please select a location before proceeding.'),
+                          const Text('Please select a location before proceeding.'),
                       actions: <Widget>[
                         TextButton(
-                          child: Text('OK'),
+                          child: const Text('OK'),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -116,9 +117,9 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   );
                 }
               },
-              child: Text(
+              child: const Text(
                 "التالي",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(fontFamily: 'JF',color: Colors.white),
               ),
             )
           ],

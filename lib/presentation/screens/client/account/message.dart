@@ -3,20 +3,22 @@ import 'package:sudia_events/presentation/widgets/search.dart';
 
 class MessageScreen extends StatelessWidget {
   TextEditingController controller = TextEditingController();
+
+  MessageScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('الرسائل'),
+        title: const Text('الرسائل'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.more_horiz),
+            icon: const Icon(Icons.more_horiz),
             onPressed: () {},
           ),
         ],
@@ -41,7 +43,7 @@ class MessageScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              children: [
+              children: const [
                 MessageTile(
                   time: '10:25',
                   message: 'Thanks a bunch! Have a great day! 😊',
@@ -87,21 +89,21 @@ class MessageTile extends StatelessWidget {
   final String time;
   final String message;
 
-  MessageTile({required this.time, required this.message});
+  const MessageTile({super.key, required this.time, required this.message});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(
+      leading: const CircleAvatar(
         backgroundImage: AssetImage(
             'assets/images/person.png'), // Replace with your image asset
       ),
-      title: Text('Jamey'),
+      title: const Text('Jamey'),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(message),
-          Text(time, style: TextStyle(fontSize: 12, color: Colors.grey)),
+          Text(time, style: const TextStyle(fontFamily: 'JF',fontSize: 12, color: Colors.grey)),
         ],
       ),
     );

@@ -9,20 +9,20 @@ class DiscountSlider extends StatefulWidget {
 }
 
 class _DiscountSliderState extends State<DiscountSlider> {
-  PageController _pageController = PageController();
-  int _currentPage = 0;
+  final PageController _pageController = PageController();
+  final int _currentPage = 0;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding: EdgeInsets.only(right: 20.0),
               child: Text(
                 "الخصومات",
-                style: TextStyle(fontWeight: FontWeight.w500),
+                style: TextStyle(fontFamily: 'JF',fontWeight: FontWeight.w500),
               ),
             ),
           ],
@@ -32,7 +32,7 @@ class _DiscountSliderState extends State<DiscountSlider> {
           children: [
             const SizedBox(width: 5.0),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: 260,
                 height: 130,
                 child: ListView.builder(
@@ -44,7 +44,7 @@ class _DiscountSliderState extends State<DiscountSlider> {
                         Stack(
                           children: [
                             Container(
-                              margin: EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
                               width: 110,
                               height: 100,
                               decoration: BoxDecoration(
@@ -54,7 +54,7 @@ class _DiscountSliderState extends State<DiscountSlider> {
                                         .withOpacity(0.5), // Shadow color
                                     spreadRadius: 1, // Spread radius
                                     blurRadius: 5, // Blur radius
-                                    offset: Offset(1,
+                                    offset: const Offset(1,
                                         5), // Offset in x and y axes from the box
                                   ),
                                 ],
@@ -75,12 +75,12 @@ class _DiscountSliderState extends State<DiscountSlider> {
                                   child: Container(
                                     width: 110,
                                     height: 30,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         color: primary,
                                         borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(10),
                                             bottomRight: Radius.circular(10))),
-                                    child: Row(
+                                    child: const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
@@ -90,13 +90,13 @@ class _DiscountSliderState extends State<DiscountSlider> {
                                           children: [
                                             Text(
                                               "خصم",
-                                              style: TextStyle(
+                                              style: TextStyle(fontFamily: 'JF',
                                                   fontSize: 7,
                                                   color: Colors.white),
                                             ),
                                             Text(
                                               "20%",
-                                              style: TextStyle(
+                                              style: TextStyle(fontFamily: 'JF',
                                                   fontSize: 14,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold),
@@ -105,7 +105,7 @@ class _DiscountSliderState extends State<DiscountSlider> {
                                         ),
                                         Text(
                                           "فيتامين",
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               color: Colors.white,
                                               fontSize: 12),
                                         ),

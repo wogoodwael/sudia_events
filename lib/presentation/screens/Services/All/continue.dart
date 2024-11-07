@@ -6,9 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -134,7 +132,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: const TextStyle(
+                      style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -179,7 +177,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                                     title: Row(
                                       children: [
                                         Text(texts[index * 3 + index2],
-                                            style: const TextStyle(
+                                            style: const TextStyle(fontFamily: 'JF',
                                                 fontSize: 10,
                                                 color: Colors.grey)),
                                         Image.asset(images[index * 3 + index2]),
@@ -234,7 +232,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                             children: [
                               Text(
                                 "معاينة",
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -252,7 +250,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                         ),
                         Text(
                           'SAR${sharedpref.getDouble('invitation_price')?.toStringAsFixed(2)}',
-                          style: const TextStyle(
+                          style: const TextStyle(fontFamily: 'JF',
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -319,7 +317,7 @@ class _ContinueInvitationState extends State<ContinueInvitation> {
                         },
                         child: const Text(
                           'حفظ',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(fontFamily: 'JF',color: Colors.white),
                         ),
                       )
                     ],
@@ -465,7 +463,7 @@ sharedpref.setString('cardId', widget.eventId);
             padding: const EdgeInsets.all(8.0),
             child: Text(
               texts[value.indexOf(_selected[i]!)],
-              style: const TextStyle(
+              style: const TextStyle(fontFamily: 'JF',
                 fontSize: 14,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -482,7 +480,7 @@ sharedpref.setString('cardId', widget.eventId);
             ),
             Text(
               husband,
-              style: const TextStyle(
+              style: const TextStyle(fontFamily: 'JF',
                 fontSize: 17,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -490,7 +488,7 @@ sharedpref.setString('cardId', widget.eventId);
             ),
             const Text(
               "علي ابنة",
-              style: TextStyle(
+              style: TextStyle(fontFamily: 'JF',
                 fontSize: 14,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -498,7 +496,7 @@ sharedpref.setString('cardId', widget.eventId);
             ),
             Text(
               wife,
-              style: const TextStyle(
+              style: const TextStyle(fontFamily: 'JF',
                 fontSize: 17,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -513,7 +511,7 @@ sharedpref.setString('cardId', widget.eventId);
             ),
             const Text(
               "ويشرفنا حضوركم الكريم ومشاركتنا فرحتنا وتناول طعام العشاء",
-              style: TextStyle(
+              style: TextStyle(fontFamily: 'JF',
                 fontSize: 12,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -525,7 +523,7 @@ sharedpref.setString('cardId', widget.eventId);
             ),
             Text(
               "الموافق يوم ${DateFormat('yyyy/MM/dd').format(widget.date)}",
-              style: const TextStyle(
+              style: const TextStyle(fontFamily: 'JF',
                 fontSize: 12,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -542,7 +540,7 @@ sharedpref.setString('cardId', widget.eventId);
         padding: EdgeInsets.all(8.0),
         child: Text(
           'الداعون',
-          style: TextStyle(
+          style: TextStyle(fontFamily: 'JF',
             fontSize: 14,
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -561,7 +559,7 @@ sharedpref.setString('cardId', widget.eventId);
       ),
       Text(
         selected,
-        style: const TextStyle(
+        style: const TextStyle(fontFamily: 'JF',
           fontSize: 12,
           color: Colors.white,
           fontWeight: FontWeight.bold,

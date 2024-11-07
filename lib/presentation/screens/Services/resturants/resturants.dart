@@ -8,7 +8,7 @@ import 'package:sudia_events/presentation/screens/Services/weddings/about_body.d
 import 'package:sudia_events/presentation/screens/Services/weddings/apoinion_body.dart';
 
 class Resturants extends StatefulWidget {
-  const Resturants({Key? key, required this.id}) : super(key: key);
+  const Resturants({super.key, required this.id});
   final String id;
   @override
   State<Resturants> createState() => _ResturantsState();
@@ -18,7 +18,7 @@ class _ResturantsState extends State<Resturants> {
   bool ontapped = false;
   bool ontappednap = false;
   bool showMore = false;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int _currentPage = 0;
   int count = 0;
   bool next = false;
@@ -38,16 +38,16 @@ class _ResturantsState extends State<Resturants> {
             builder: (BuildContext context,
                 AsyncSnapshot<List<SubServicesModel>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
+                return const Center(
                     child: CircularProgressIndicator(
                   color: primary,
                 )); // Show loading indicator while fetching data
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Text('No data available');
+                return const Text('No data available');
               } else {
-                return Container(
+                return SizedBox(
                   width: mediawidth(context),
                   height: mediaheight(context),
                   child: ListView.builder(
@@ -59,7 +59,7 @@ class _ResturantsState extends State<Resturants> {
                           children: [
                             Stack(
                               children: [
-                                Container(
+                                SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   height: MediaQuery.of(context).size.height,
                                   child: PageView.builder(
@@ -126,20 +126,20 @@ class _ResturantsState extends State<Resturants> {
                                           FittedBox(
                                             child: Text(
                                               snapshot.data![index].name[count],
-                                              style: TextStyle(
+                                              style: const TextStyle(fontFamily: 'JF',
                                                 color: Colors.white,
                                                 fontSize: 40,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ),
-                                          Row(
+                                          const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
                                               Text(
                                                 "جدة - حي الشاطئ",
-                                                style: TextStyle(
+                                                style: TextStyle(fontFamily: 'JF',
                                                     color: Colors.white),
                                               ),
                                               Icon(
@@ -150,13 +150,13 @@ class _ResturantsState extends State<Resturants> {
                                             ],
                                           ),
                                           TabBar(
-                                            indicatorPadding: EdgeInsets.only(
+                                            indicatorPadding: const EdgeInsets.only(
                                                 bottom: 5, left: 20),
                                             indicatorSize:
                                                 TabBarIndicatorSize.tab,
                                             indicatorWeight: 5,
                                             unselectedLabelColor: Colors.white,
-                                            labelStyle: TextStyle(
+                                            labelStyle: const TextStyle(fontFamily: 'JF',
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -173,15 +173,15 @@ class _ResturantsState extends State<Resturants> {
                                                                     .transparent
                                                                 : Colors.white,
                                                             width: 5))),
-                                                child: Padding(
+                                                child: const Padding(
                                                   padding:
-                                                      const EdgeInsets.only(
+                                                      EdgeInsets.only(
                                                           top: 20.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
                                                     children: [
-                                                      Text("اراء وتقيميات")
+                                                      Text("اراء وتقيميات", style: TextStyle(fontFamily: 'JF'))
                                                     ],
                                                   ),
                                                 ),
@@ -197,14 +197,14 @@ class _ResturantsState extends State<Resturants> {
                                                                     .transparent
                                                                 : Colors.white,
                                                             width: 5))),
-                                                child: Padding(
+                                                child: const Padding(
                                                   padding:
-                                                      const EdgeInsets.only(
+                                                      EdgeInsets.only(
                                                           top: 20.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
-                                                    children: [Text("نبذة")],
+                                                    children: [Text("نبذة", style: TextStyle(fontFamily: 'JF'))],
                                                   ),
                                                 ),
                                               ),
@@ -223,7 +223,7 @@ class _ResturantsState extends State<Resturants> {
                                           Expanded(
                                             child: TabBarView(
                                               children: [
-                                                OpinionBody(),
+                                                const OpinionBody(),
                                                 AboutBody(
                                                   des: snapshot
                                                       .data![index].des[count],
@@ -236,7 +236,7 @@ class _ResturantsState extends State<Resturants> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               IconButton(
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.arrow_back_ios,
                                                   color: Colors.white,
                                                 ),
@@ -252,7 +252,7 @@ class _ResturantsState extends State<Resturants> {
                                                 width: .1 * mediawidth(context),
                                               ),
                                               IconButton(
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.arrow_forward_ios,
                                                   color: Colors.white,
                                                 ),
@@ -267,7 +267,7 @@ class _ResturantsState extends State<Resturants> {
                                                               .image.length -
                                                           1) {
                                                     _pageController.nextPage(
-                                                      duration: Duration(
+                                                      duration: const Duration(
                                                           milliseconds: 300),
                                                       curve: Curves.ease,
                                                     );
@@ -301,15 +301,15 @@ class _ResturantsState extends State<Resturants> {
                                                                   .name[count],
                                                             )));
                                               },
-                                              child: Text(
+                                              child: const Text(
                                                 "المزيد",
-                                                style: TextStyle(
+                                                style: TextStyle(fontFamily: 'JF',
                                                     color: Colors.white,
                                                     fontSize: 20),
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           )
                                         ],
@@ -327,8 +327,8 @@ class _ResturantsState extends State<Resturants> {
                             SizedBox(
                               height: .5 * mediaheight(context),
                             ),
-                            Center(
-                              child: Text("لا يوجد مطاعم اخري "),
+                            const Center(
+                              child: Text("لا يوجد مطاعم اخري ", style: TextStyle(fontFamily: 'JF')),
                             ),
                           ],
                         );

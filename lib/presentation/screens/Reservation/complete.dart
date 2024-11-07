@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -105,7 +103,7 @@ class BookingHeader extends StatelessWidget {
           child: Center(
             child: Text(
               type,
-              style: TextStyle(
+              style: TextStyle(fontFamily: 'JF',
                   color: type == 'مكتمل' ? Colors.green : Colors.grey),
             ),
           ),
@@ -125,7 +123,7 @@ class BookingHeader extends StatelessWidget {
             ),
             Text(
               number,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontFamily: 'JF',fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -185,7 +183,7 @@ class BookingDetails extends StatelessWidget {
                           children: [
                             Text(
                               'SAR $price',
-                              style: const TextStyle(
+                              style: const TextStyle(fontFamily: 'JF',
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red),
                             ),
@@ -194,7 +192,7 @@ class BookingDetails extends StatelessWidget {
                             ),
                             Text(
                               'SAR $discount',
-                              style: const TextStyle(
+                              style: const TextStyle(fontFamily: 'JF',
                                 color: Colors.grey,
                                 decoration: TextDecoration.lineThrough,
                               ),
@@ -248,7 +246,7 @@ class BookingDetails extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Icon(Icons.star, color: Colors.yellow, size: 20),
-                        Text('4.9', style: TextStyle(fontSize: 16)),
+                        Text('4.9', style: TextStyle(fontFamily: 'JF',fontSize: 16)),
                       ],
                     ),
                   ],

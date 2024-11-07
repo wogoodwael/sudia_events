@@ -99,7 +99,7 @@
 //         backgroundColor: Colors.white,
 //         title: Text(
 //           'SP 0023450',
-//           style: TextStyle(fontSize: 14),
+//           style: TextStyle(fontFamily: 'JF',fontSize: 14),
 //         ),
 //         centerTitle: true,
 //       ),
@@ -154,7 +154,7 @@
 //                                               children: [
 //                                                 Text(
 //                                                   "Reorder",
-//                                                   style: TextStyle(
+//                                                   style: TextStyle(fontFamily: 'JF',
 //                                                       fontSize: 13,
 //                                                       color: Colors.white),
 //                                                 ),
@@ -172,14 +172,14 @@
 //                                           children: [
 //                                             Text(
 //                                               item['name'],
-//                                               style: TextStyle(
+//                                               style: TextStyle(fontFamily: 'JF',
 //                                                   fontWeight: FontWeight.bold),
 //                                             ),
 //                                             Row(
 //                                               children: [
 //                                                 Text(
 //                                                   'SAR ${(double.parse(item['price']) * (1 - double.parse(item['discount']) / 100)).toStringAsFixed(2)}',
-//                                                   style: TextStyle(
+//                                                   style: TextStyle(fontFamily: 'JF',
 //                                                       color: Colors.red),
 //                                                 ),
 //                                                 SizedBox(
@@ -187,7 +187,7 @@
 //                                                 ),
 //                                                 Text(
 //                                                   'SAR ${item['price']}',
-//                                                   style: TextStyle(
+//                                                   style: TextStyle(fontFamily: 'JF',
 //                                                     decoration: TextDecoration
 //                                                         .lineThrough,
 //                                                     color: Colors.grey,
@@ -219,7 +219,7 @@
 //                                           children: [
 //                                             Text(
 //                                               'SAR ${option['price']}',
-//                                               style: TextStyle(
+//                                               style: TextStyle(fontFamily: 'JF',
 //                                                   color: primary, fontSize: 12),
 //                                             ),
 //                                             Spacer(),
@@ -291,7 +291,7 @@
 //                                           horizontal: 10.0),
 //                                       child: Text(
 //                                         "كاش ",
-//                                         style: TextStyle(
+//                                         style: TextStyle(fontFamily: 'JF',
 //                                             fontWeight: FontWeight.bold),
 //                                       ),
 //                                     )
@@ -342,7 +342,7 @@
 //                                           child: Center(
 //                                             child: Text(
 //                                               "خصم",
-//                                               style: TextStyle(
+//                                               style: TextStyle(fontFamily: 'JF',
 //                                                   color: Colors.white,
 //                                                   fontSize: 13),
 //                                             ),
@@ -361,7 +361,7 @@
 //                                           child: Center(
 //                                             child: Text(
 //                                               "20%",
-//                                               style: TextStyle(
+//                                               style: TextStyle(fontFamily: 'JF',
 //                                                   color: Colors.white,
 //                                                   fontSize: 13),
 //                                             ),
@@ -390,7 +390,7 @@
 //                                         children: [
 //                                           Text(
 //                                             'SAR ${_subtotal.toStringAsFixed(2)}',
-//                                             style: TextStyle(
+//                                             style: TextStyle(fontFamily: 'JF',
 //                                                 fontWeight: FontWeight.bold),
 //                                           ),
 //                                           Spacer(),
@@ -404,7 +404,7 @@
 //                                         children: [
 //                                           Text(
 //                                             'FREE',
-//                                             style: TextStyle(
+//                                             style: TextStyle(fontFamily: 'JF',
 //                                                 fontWeight: FontWeight.bold),
 //                                           ),
 //                                           Spacer(),
@@ -418,7 +418,7 @@
 //                                         children: [
 //                                           Text(
 //                                             '- SAR ${_discount.toStringAsFixed(2)}',
-//                                             style: TextStyle(
+//                                             style: TextStyle(fontFamily: 'JF',
 //                                                 fontWeight: FontWeight.bold),
 //                                           ),
 //                                           Spacer(),
@@ -430,7 +430,7 @@
 //                                         children: [
 //                                           Text(
 //                                             'SAR ${_total.toStringAsFixed(2)}',
-//                                             style: TextStyle(
+//                                             style: TextStyle(fontFamily: 'JF',
 //                                                 fontWeight: FontWeight.bold),
 //                                           ),
 //                                           Spacer(),
@@ -480,7 +480,7 @@
 //                                           children: [
 //                                             Text(
 //                                               "اضافة ",
-//                                               style: TextStyle(
+//                                               style: TextStyle(fontFamily: 'JF',
 //                                                   color: Colors.white,
 //                                                   fontSize: 20,
 //                                                   fontWeight: FontWeight.bold),

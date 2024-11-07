@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/presentation/screens/client/settings/widgets/header_services.dart';
 
 class PillDetails extends StatefulWidget {
-  PillDetails({Key? key}) : super(key: key);
+  const PillDetails({super.key});
 
   @override
   _PillDetailsState createState() => _PillDetailsState();
@@ -27,7 +26,7 @@ class _PillDetailsState extends State<PillDetails> {
       ),
       const Text(
         ' 300',
-        style: TextStyle(color: Colors.grey),
+        style: TextStyle(fontFamily: 'JF',color: Colors.grey),
       ),
       const SizedBox(width: 20),
       const Text(' قاعة غيم  '),
@@ -107,7 +106,7 @@ class _PillDetailsState extends State<PillDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           _buildServiceRow('1000', 'بوفية'),
           _buildServiceRow('1000', 'طبخ'),
           _buildServiceRow('1000', 'عصاير'),
@@ -120,11 +119,11 @@ class _PillDetailsState extends State<PillDetails> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(width: 4),
-        Text(amount, style: TextStyle(color: Colors.grey)),
-        SizedBox(width: 2),
+        const SizedBox(width: 4),
+        Text(amount, style: const TextStyle(fontFamily: 'JF',color: Colors.grey)),
+        const SizedBox(width: 2),
         FittedBox(
-            child: Text(serviceName, style: TextStyle(color: Colors.grey))),
+            child: Text(serviceName, style: const TextStyle(fontFamily: 'JF',color: Colors.grey))),
       ],
     );
   }
@@ -148,7 +147,7 @@ class _PillDetailsState extends State<PillDetails> {
             ),
             const Text(
               ' 1300',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(fontFamily: 'JF',color: Colors.grey),
             ),
             const SizedBox(width: 20),
             const Text('مطاعم الرياض '),
@@ -158,7 +157,7 @@ class _PillDetailsState extends State<PillDetails> {
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(' 645', style: TextStyle(color: Colors.grey)),
+            Text(' 645', style: TextStyle(fontFamily: 'JF',color: Colors.grey)),
             SizedBox(width: 20),
             Text('الضريبة'),
           ],
@@ -166,7 +165,7 @@ class _PillDetailsState extends State<PillDetails> {
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(' 4300', style: TextStyle(color: Colors.grey)),
+            Text(' 4300', style: TextStyle(fontFamily: 'JF',color: Colors.grey)),
             SizedBox(width: 20),
             Text('المجموع'),
           ],

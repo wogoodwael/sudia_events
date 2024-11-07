@@ -112,7 +112,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: const TextStyle(
+                      style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -217,20 +217,20 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                     children: [
                                       Text('4.9',
                                           style:
-                                              TextStyle(color: Colors.orange)),
+                                              TextStyle(fontFamily: 'JF',color: Colors.orange)),
                                       Icon(Icons.star,
                                           color: Colors.orange, size: 16),
                                     ],
                                   ),
                                   const SizedBox(height: 4),
                                   Text('SAR ${data['price']}',
-                                      style: const TextStyle(
+                                      style: const TextStyle(fontFamily: 'JF',
                                           decoration:
                                               TextDecoration.lineThrough)),
                                   Text(
                                       'SAR ${data['discount'] ?? data['price']}',
                                       style:
-                                          const TextStyle(color: Colors.red)),
+                                          const TextStyle(fontFamily: 'JF',color: Colors.red)),
                                 ],
                               ),
                             ),

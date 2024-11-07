@@ -2,11 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart' as data;
 import 'package:sudia_events/core/helper/calender.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -17,7 +15,7 @@ import 'package:sudia_events/presentation/screens/Services/All/invitation.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/date_symbol_data_local.dart' as data;
+
 import '../Services/All/services_screen.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -260,7 +258,7 @@ class _BookingScreenState extends State<BookingScreen> {
         ),
         title: Text(
           'booked'.tr(),
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(fontFamily: 'JF',color: Colors.black),
         ),
         centerTitle: true,
       ),
@@ -278,7 +276,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     selectedColor: primary,
                     label: Text(
                       services[index],
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                           color: onTapped[index] ? Colors.white : Colors.black),
                     ),
                     selected: onTapped[index],
@@ -352,7 +350,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             ),
                             Text(
                               _selectedTime.format(context),
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontFamily: 'JF',fontSize: 15),
                             ),
                           ],
                         ),
@@ -363,7 +361,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               const SizedBox(height: 15),
               Text(formattedDate,
-                  style: const TextStyle(
+                  style: const TextStyle(fontFamily: 'JF',
                       fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               Row(
@@ -421,7 +419,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     const Text(
                       "بطاقة الدعوة",
                       style:
-                          TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                          TextStyle(fontFamily: 'JF',fontWeight: FontWeight.w400, fontSize: 16),
                     ),
                     const Spacer(),
                     Checkbox(
@@ -447,7 +445,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: const Text('التالي',
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
@@ -461,7 +459,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: const Text('مشاهدة الحجوزات',
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                         fontSize: 20,
                         color: primary,
                         fontWeight: FontWeight.bold)),

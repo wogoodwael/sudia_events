@@ -18,7 +18,7 @@ class AccountList extends StatelessWidget {
               accountListModel.title ?? "",
               textDirection: TextDirection.rtl,
             ),
-            subtitleTextStyle: TextStyle(color: Colors.grey),
+            subtitleTextStyle: const TextStyle(fontFamily: 'JF',color: Colors.grey),
             subtitle: Text(
               accountListModel.subTitle ?? "",
               textDirection: TextDirection.rtl,

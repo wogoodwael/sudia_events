@@ -1,11 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/service.dart';
-import 'package:sudia_events/data/model/sub_services_model.dart';
-import 'package:sudia_events/data/services/fetch_data.dart';
 
 class SliderBodeyHomePage extends StatefulWidget {
   const SliderBodeyHomePage({super.key});
@@ -15,9 +11,9 @@ class SliderBodeyHomePage extends StatefulWidget {
 }
 
 class _SliderBodeyHomePageState extends State<SliderBodeyHomePage> {
-  int _current = 0;
+  final int _current = 0;
 
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -29,7 +25,7 @@ class _SliderBodeyHomePageState extends State<SliderBodeyHomePage> {
                   Service.fromFirestore(doc.data() as Map<String, dynamic>))
               .toList();
 
-          return Container(
+          return SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.24,
             child: ListView.builder(
@@ -39,7 +35,7 @@ class _SliderBodeyHomePageState extends State<SliderBodeyHomePage> {
               itemBuilder: (BuildContext context, int index) {
                 final String imageUrl = services[index].imageUrl;
 
-                return Container(
+                return SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.24,
                   child: SingleChildScrollView(
@@ -73,13 +69,13 @@ class _SliderBodeyHomePageState extends State<SliderBodeyHomePage> {
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20.0),
-                                        child: Row(
+                                        child: const Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "35%",
-                                              style: TextStyle(
+                                              style: TextStyle(fontFamily: 'JF',
                                                   color: Colors.white,
                                                   fontSize: 25,
                                                   fontWeight: FontWeight.bold),
@@ -90,7 +86,7 @@ class _SliderBodeyHomePageState extends State<SliderBodeyHomePage> {
                                               children: [
                                                 Text(
                                                   'قاعات الرياض',
-                                                  style: TextStyle(
+                                                  style: TextStyle(fontFamily: 'JF',
                                                     color: Colors.white,
                                                     fontSize: 20.0,
                                                     fontWeight: FontWeight.bold,
@@ -100,7 +96,7 @@ class _SliderBodeyHomePageState extends State<SliderBodeyHomePage> {
                                                   children: [
                                                     Text(
                                                       "جدة - حي الشاطئ",
-                                                      style: TextStyle(
+                                                      style: TextStyle(fontFamily: 'JF',
                                                           color: Colors.white,
                                                           fontSize: 12),
                                                     ),
@@ -139,7 +135,7 @@ class _SliderBodeyHomePageState extends State<SliderBodeyHomePage> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

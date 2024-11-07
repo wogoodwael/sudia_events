@@ -36,7 +36,7 @@ class Header extends StatelessWidget {
       Positioned(
           child: Center(
         child: Container(
-          margin: EdgeInsets.only(top: 160),
+          margin: const EdgeInsets.only(top: 160),
           width: 90,
           height: 110,
           decoration: const BoxDecoration(
@@ -58,11 +58,11 @@ class Header extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: FittedBox(
                   child: Text(
                     text,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(fontFamily: 'JF',fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
               )

@@ -9,6 +9,8 @@ import 'package:sudia_events/presentation/screens/Services/resturants/resturants
 import 'package:sudia_events/presentation/screens/Services/weddings/wedding_hotels.dart';
 
 class CategorySelector extends StatefulWidget {
+  const CategorySelector({super.key});
+
   @override
   State<CategorySelector> createState() => _CategorySelectorState();
 }
@@ -23,7 +25,7 @@ class _CategorySelectorState extends State<CategorySelector> {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<ServicesCubit>(context).getServicesCubitfun();
-    Future.delayed(Duration(seconds: 5)); // data = fetchServicesData();
+    Future.delayed(const Duration(seconds: 5)); // data = fetchServicesData();
   }
 
   List<ServicesModel>? services;
@@ -35,7 +37,7 @@ class _CategorySelectorState extends State<CategorySelector> {
         if (state is ServicesLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ServicesSuccess) {
-          return Container(
+          return SizedBox(
             width: mediawidth(context),
             height: 50,
             child: ListView.builder(
@@ -78,7 +80,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                             Center(
                               child: Text(
                                 services![index].name,
-                                style: TextStyle(
+                                style: TextStyle(fontFamily: 'JF',
                                     color: onTapped[index]
                                         ? Colors.white
                                         : Colors.black),
@@ -101,8 +103,8 @@ class _CategorySelectorState extends State<CategorySelector> {
             ),
           );
         } else {
-          return Center(
-            child: Text("لا يوجد خدمات"),
+          return const Center(
+            child: Text("لا يوجد خدمات", style: TextStyle(fontFamily: 'JF')),
           );
         }
       },

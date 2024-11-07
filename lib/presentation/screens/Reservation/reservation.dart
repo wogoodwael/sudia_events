@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
@@ -79,18 +79,19 @@ class _ReservationScreenState extends State<ReservationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
+              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),style: const TextStyle(fontFamily: 'JF')
             ),
             const SizedBox(
               width: 10,
             ),
             Text(
-              DateFormat('EEEE', 'ar').format(DateTime.now()),
+              DateFormat('EEEE', 'ar').format(DateTime.now()),style: const TextStyle(fontFamily: 'JF')
             ),
           ],
         ),
@@ -183,7 +184,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: const TextStyle(
+                      style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -200,7 +201,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           ? const Center(
               child: Text(
                 '☺ لايوجد طلبات لديك',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontFamily: 'JF',fontSize: 18, color: Colors.grey),
               ),
             )
           : Column(
@@ -208,7 +209,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 Expanded(
                     flex: 1,
                     child: SingleChildScrollView(
+                      
                       child: Column(
+                        
                         children: [
                           SearchContainernew(
                               hintText: 'search'.tr(),
@@ -231,7 +234,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   child: ChoiceChip(
                                     label: Text(
                                       arabicservices[index],
-                                      style: TextStyle(
+                                      style: TextStyle(fontFamily: 'JF',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
                                         color:
@@ -315,13 +318,13 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           //                       child: Icon(Icons.shopping_bag,
                           //                           color: Colors.white),
                           //                     ),
-                          //                   const Text('رقم الحجز ',style:  TextStyle(
+                          //                   const Text('رقم الحجز ',style:  TextStyle(fontFamily: 'JF',
                           //                     color:Colors.grey,fontSize: 15.0
                           //                   )),
                           //                 const SizedBox(width: 6,),
                           //                     Text(
                           //                           ' ${reservation['uniquID'].split('-').last}',
-                          //                           style: const TextStyle(
+                          //                           style: const TextStyle(fontFamily: 'JF',
                           //                             fontSize: 15.0,
                           //                           ),
                           //                         ),
@@ -339,20 +342,20 @@ class _ReservationScreenState extends State<ReservationScreen> {
                             
                           //                 Column(children: [
                             
-                          //                   Text(reservation['item_name'],style: const TextStyle(
+                          //                   Text(reservation['item_name'],style: const TextStyle(fontFamily: 'JF',
                           //                     color:Colors.black,fontSize: 18.0
                           //                   )),
                           //                   const SizedBox(height: 6,),
                           //                   Row(
                           //                     children: [
                           //                       const SizedBox(width: 6,),
-                          //                       const Text('رقم الحجز ',style:  TextStyle(
+                          //                       const Text('رقم الحجز ',style:  TextStyle(fontFamily: 'JF',
                           //                         color:Colors.grey,fontSize: 15.0
                           //                       )),
                           //                       const SizedBox(width: 6,),
                           //                     Text(
                           //                           ' ${reservation['uniquID'].split('-').last}',
-                          //                           style: const TextStyle(
+                          //                           style: const TextStyle(fontFamily: 'JF',
                           //                             fontSize: 15.0,color:Colors.grey
                           //                           ),
                           //                         ),
@@ -361,7 +364,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
                           //                    Row(children: [
 
-                          //                  const   Text("حالة الحجز ",style: TextStyle(
+                          //                  const   Text("حالة الحجز ",style: TextStyle(fontFamily: 'JF',
                           //                       color:Colors.black,fontSize: 15.0,fontWeight: FontWeight.bold
                           //                     )),
 
@@ -370,30 +373,30 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           //                   (reservation['status'] =='pending')?
 
                           //                     const Text('قيد الانتظار',
-                          //                     style:TextStyle(color: primary,fontSize: 15.0),
+                          //                     style:TextStyle(fontFamily: 'JF',color: primary,fontSize: 15.0),
                           //                     ):const SizedBox(),
 
                           //                      (reservation['status'] =='complete')?
 
                           //                     const Text('مكتمل',
-                          //                     style:TextStyle(color: primary,fontSize: 15.0),
+                          //                     style:TextStyle(fontFamily: 'JF',color: primary,fontSize: 15.0),
                           //                     ):const SizedBox(),
 
                           //                      (reservation['status'] =='complete')?
 
                           //                     const Text('مكتمل',
-                          //                     style:TextStyle(color: primary,fontSize: 15.0),
+                          //                     style:TextStyle(fontFamily: 'JF',color: primary,fontSize: 15.0),
                           //                     ):const SizedBox(),
 
                           //                     (reservation['status'] !='complete' || reservation['status'] !='pending')?
                           //                       Text(reservation['status'],
-                          //                     style:const TextStyle(color: primary,fontSize: 15.0),
+                          //                     style:const TextStyle(fontFamily: 'JF',color: primary,fontSize: 15.0),
                           //                     ):const SizedBox()
                                               
 
 
                           //                   ],),
-                          //                    Text(reservation['name'],style: const TextStyle(
+                          //                    Text(reservation['name'],style: const TextStyle(fontFamily: 'JF',
                           //                     color:Colors.black,fontSize: 18.0
                           //                   )),
 
@@ -472,7 +475,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                 children: [
                                                   // Text(
                                                   //   date,
-                                                  //   style: const TextStyle(
+                                                  //   style: const TextStyle(fontFamily: 'JF',
                                                   //     fontSize: 14.0,
                                                   //   ),
                                                   // ),
@@ -492,14 +495,14 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                         color: Colors.white),
                                                   ),
                                                   const SizedBox(width: 11,),
-                                                  const Text(" حجز رقم ",style:TextStyle(
+                                                  const Text(" حجز رقم ",style:TextStyle(fontFamily: 'JF',
                                                     color:Colors.grey,fontSize: 14.0,
                                                     fontWeight:FontWeight.bold
                                                   ),),
                                                   const SizedBox(width: 20.0),
                                                   Text(
                                                     '${reservation['uniquID'].split('-').last}',
-                                                    style: const TextStyle(
+                                                    style: const TextStyle(fontFamily: 'JF',
                                                       fontSize: 15.0,
                                                        fontWeight:FontWeight.bold,
                                                        color:Colors.black
@@ -517,7 +520,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                 const Text(
 
                                                   'عدد الخدمات',
-                                                  style: TextStyle(
+                                                  style: TextStyle(fontFamily: 'JF',
                                                     fontSize: 15.0,
                                                   ),
                                                 ),
@@ -525,7 +528,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                   (reservation['options']
                                                       .length+1)
                                                       .toString(),
-                                                  style: const TextStyle(
+                                                  style: const TextStyle(fontFamily: 'JF',
                                                       fontSize: 20.0,
                                                       color: Colors.red),
                                                 ),
@@ -559,7 +562,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                           )));
                                                             },
                                                             child: const Text(
-                                                                "اعادة جدولة الحجز"),
+                                                                "اعادة جدولة الحجز", style: TextStyle(fontFamily: 'JF')),
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
@@ -585,7 +588,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                               },
                                                               child: const Text(
                                                                 "حذف",
-                                                                style: TextStyle(
+                                                                style: TextStyle(fontFamily: 'JF',
                                                                     color:
                                                                         Colors.white),
                                                               )),
@@ -636,7 +639,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                             },
                                                             child: Text(
                                                               "مكتمل",
-                                                              style: TextStyle(
+                                                              style: TextStyle(fontFamily: 'JF',
                                                                   color: Colors
                                                                       .green[700]),
                                                             ),
@@ -667,7 +670,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                               )));
                                                                 },
                                                                 child: const Text(
-                                                                    "اعادة جدولة الحجز"),
+                                                                    "اعادة جدولة الحجز", style: TextStyle(fontFamily: 'JF')),
                                                               )
                                                             : MaterialButton(
                                                                 elevation: 0,
@@ -707,7 +710,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                                               )));
                                                                 },
                                                                 child: const Text(
-                                                                    "ملغي"),
+                                                                    "ملغي", style: TextStyle(fontFamily: 'JF')),
                                                               )
                                               ],
                                             ),
@@ -734,7 +737,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                     //     ),
                                     //     Text(
                                     //       'التوصيل إلى ->  المنزل',
-                                    //       style: TextStyle(
+                                    //       style: TextStyle(fontFamily: 'JF',
                                     //         fontSize: 15.0,
                                     //         fontWeight: FontWeight.bold,
                                     //       ),
@@ -743,7 +746,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                     // ),
                                     // const Text(
                                     //   'حي السلامة - جدة - المملكة العربية السعودية',
-                                    //   style: TextStyle(fontSize: 14.0),
+                                    //   style: TextStyle(fontFamily: 'JF',fontSize: 14.0),
                                     // ),
                                     // const SizedBox(
                                     //   height: 10,
@@ -783,7 +786,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                         ),
                                         Text(
                                           'الاستلام من ->  مطعم الباشا',
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                             fontSize: 15.0,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black
@@ -801,7 +804,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                     ),
                                     const Text(
                                       '512 -حي السلامة - جدة - المملكة العربية السعودية',
-                                      style: TextStyle(fontSize: 14.0,
+                                      style: TextStyle(fontFamily: 'JF',fontSize: 14.0,
                                       color: Colors.grey
                                       ),
                                     ),
@@ -812,7 +815,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                         const SizedBox(width: 33),
                                         const Text(
                                           'الاجمالي',
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               fontSize: 15.0,
                                               color:Colors.grey,
                                               fontWeight: FontWeight.bold),

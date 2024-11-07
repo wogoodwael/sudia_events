@@ -1,20 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:sudia_events/core/helper/calender.dart';
-
+import 'package:intl/date_symbol_data_local.dart' as data;
+import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
-import 'package:sudia_events/data/services/filter.dart';
 import 'package:sudia_events/presentation/screens/appointments/data_body.dart';
 import 'package:sudia_events/presentation/screens/positioned_logo.dart';
-
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:intl/date_symbol_data_local.dart' as data;
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
@@ -160,7 +153,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   child: FittedBox(
                                       child: Padding(
                                     padding: EdgeInsets.all(2.0),
-                                    child: Text("نوع المناسبه "),
+                                    child: Text("نوع المناسبه ", style: TextStyle(fontFamily: 'JF')),
                                   )),
                                 ),
                               ),
@@ -175,7 +168,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   child: FittedBox(
                                       child: Padding(
                                     padding: EdgeInsets.all(2.0),
-                                    child: Text("المدينة"),
+                                    child: Text("المدينة", style: TextStyle(fontFamily: 'JF')),
                                   )),
                                 ),
                               ),
@@ -202,7 +195,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                       padding: const EdgeInsets.all(2.0),
                                       child: Text(
                                         "العائلة",
-                                        style: TextStyle(
+                                        style: TextStyle(fontFamily: 'JF',
                                             color: tappedFamily || onTappedIcon
                                                 ? Colors.white
                                                 : Colors.black),
@@ -232,7 +225,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                       padding: const EdgeInsets.all(2.0),
                                       child: Text(
                                         "القبيلة",
-                                        style: TextStyle(
+                                        style: TextStyle(fontFamily: 'JF',
                                             color: tappedTribe || onTappedIcon
                                                 ? Colors.white
                                                 : Colors.black),

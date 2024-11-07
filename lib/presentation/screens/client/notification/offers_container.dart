@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
@@ -57,12 +56,12 @@ class OffersContainer extends StatelessWidget {
                               children: [
                                 Text(
                                   "السعر",
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                       color: Colors.grey, fontSize: 13),
                                 ),
                                 Text(
                                   '1300',
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                     color: Colors.black,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -80,20 +79,20 @@ class OffersContainer extends StatelessWidget {
                             thickness:
                                 1, // Optional: specify the thickness of the divider
                           ),
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(bottom: 5.0, right: 10),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
                                   "العدد",
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                       color: Colors.grey, fontSize: 13),
                                 ),
                                 Text(
                                   '200',
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                     color: Colors.black,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -107,11 +106,11 @@ class OffersContainer extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              FittedBox(
+                              const FittedBox(
                                 child: Text(
                                   "عصائر الرمان",
                                   textDirection: TextDirection.rtl,
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 17),
@@ -124,7 +123,7 @@ class OffersContainer extends StatelessWidget {
                                     Text(
                                       "جدة-حي الروابي",
                                       textDirection: TextDirection.rtl,
-                                      style: TextStyle(
+                                      style: TextStyle(fontFamily: 'JF',
                                           fontSize: 10,
                                           color: Colors.grey[500],
                                           fontWeight: FontWeight.bold),
@@ -137,24 +136,24 @@ class OffersContainer extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               FittedBox(
                                 child: Text(
                                   "وصف الخدمة",
                                   textDirection: TextDirection.rtl,
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                       fontSize: 10,
                                       color: Colors.grey[500],
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              FittedBox(
+                              const FittedBox(
                                 child: Text(
                                   " حلويات-عصائر-مشروبات-حلويات-عصائر",
                                   textDirection: TextDirection.rtl,
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                       fontSize: 10,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
@@ -165,7 +164,7 @@ class OffersContainer extends StatelessWidget {
                           CircleAvatar(
                               backgroundColor: Colors.grey[300],
                               radius: 20,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.settings,
                                 color: primary,
                               )),

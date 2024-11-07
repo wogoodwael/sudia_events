@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/services/api.dart';
@@ -38,7 +36,7 @@ class _DoneScreenState extends State<DoneScreen> {
           Expanded(
               flex: 3,
               child: Container(
-                child: Column(
+                child: const Column(
                   children: [
                     Icon(
                       Icons.check_circle,
@@ -48,7 +46,7 @@ class _DoneScreenState extends State<DoneScreen> {
                     Text(
                       "تم انشاء حسابكم ",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontFamily: 'JF',fontWeight: FontWeight.bold, fontSize: 20),
                     )
                   ],
                 ),
@@ -63,7 +61,7 @@ class _DoneScreenState extends State<DoneScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("الموافقة علي الشروط والاحكام"),
+                          const Text("الموافقة علي الشروط والاحكام", style: TextStyle(fontFamily: 'JF')),
                           Transform.scale(
                             scale: .6,
                             child: Checkbox(
@@ -96,9 +94,9 @@ class _DoneScreenState extends State<DoneScreen> {
                                     )));
                         print("ooooooId${widget.id}");
                       },
-                      child: Text(
+                      child: const Text(
                         "بدء الخدمة ",
-                        style: TextStyle(
+                        style: TextStyle(fontFamily: 'JF',
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold),

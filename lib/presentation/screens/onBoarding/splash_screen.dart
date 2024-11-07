@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -12,6 +11,8 @@ import 'package:sudia_events/presentation/screens/onBoarding/on_boarding.dart';
 // Define your primary color
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -23,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 12), () => navigateToNextScreen());
+    Future.delayed(const Duration(seconds: 12), () => navigateToNextScreen());
   }
 
   void navigateToNextScreen() {
@@ -32,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
       MaterialPageRoute(
         builder: (context) => sharedpref.getString('token') != null
             ? BottomBarScreen(id: sharedpref.getString('token')!)
-            : OnboardingScreen(),
+            : const OnboardingScreen(),
       ),
     );
   }
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Container(
           width: mediawidth(context),
           height: mediaheight(context),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/images/splash.gif"),
                   fit: BoxFit.cover)),
@@ -56,7 +57,7 @@ class StepContent extends StatelessWidget {
   final String image;
   final String title;
 
-  StepContent({
+  const StepContent({super.key, 
     required this.image,
     required this.title,
   });
@@ -71,31 +72,33 @@ class StepContent extends StatelessWidget {
           width: 150,
           height: 150,
         ),
-        SizedBox(height: 150),
+        const SizedBox(height: 150),
         Center(
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(fontFamily: 'JF',
               color: Colors.white,
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
       ],
     );
   }
 }
 
 class SecondScreen extends StatelessWidget {
+  const SecondScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second Screen'),
+        title: const Text('Second Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Welcome to the second screen!'),
       ),
     );

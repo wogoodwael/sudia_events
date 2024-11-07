@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
-import 'package:sudia_events/data/services/api.dart';
 
 class SearchContainer extends StatefulWidget {
   const SearchContainer({super.key});
@@ -28,7 +25,7 @@ class _SearchContainerState extends State<SearchContainer> {
         width: .9 * mediawidth(context),
         height: 100,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20)),
             color: Colors.white,
             border: Border.all(color: Colors.grey)),
@@ -36,15 +33,15 @@ class _SearchContainerState extends State<SearchContainer> {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 10),
                 width: .8 * mediawidth(context),
                 decoration: BoxDecoration(
                     border: Border.all(color: primary),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
                 height: 30,
                 child: TextField(
                   controller: controller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       suffixIcon: Icon(
                         Icons.search,
@@ -52,7 +49,7 @@ class _SearchContainerState extends State<SearchContainer> {
                       )),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -65,11 +62,11 @@ class _SearchContainerState extends State<SearchContainer> {
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: primary)),
-                    child: Center(
+                    child: const Center(
                       child: FittedBox(
                           child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text("نوع المناسبه "),
+                        padding: EdgeInsets.all(2.0),
+                        child: Text("نوع المناسبه ", style: TextStyle(fontFamily: 'JF')),
                       )),
                     ),
                   ),
@@ -80,11 +77,11 @@ class _SearchContainerState extends State<SearchContainer> {
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: primary)),
-                    child: Center(
+                    child: const Center(
                       child: FittedBox(
                           child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text("المدينة"),
+                        padding: EdgeInsets.all(2.0),
+                        child: Text("المدينة", style: TextStyle(fontFamily: 'JF')),
                       )),
                     ),
                   ),
@@ -110,7 +107,7 @@ class _SearchContainerState extends State<SearchContainer> {
                           padding: const EdgeInsets.all(2.0),
                           child: Text(
                             "العائلة",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: 'JF',
                                 color:
                                     tappedFamily ? Colors.white : Colors.black),
                           ),
@@ -125,18 +122,18 @@ class _SearchContainerState extends State<SearchContainer> {
                         color: primary,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: primary)),
-                    child: Center(
+                    child: const Center(
                       child: FittedBox(
                           child: Padding(
-                        padding: const EdgeInsets.all(2.0),
+                        padding: EdgeInsets.all(2.0),
                         child: Text(
                           "القبيلة",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(fontFamily: 'JF',color: Colors.white),
                         ),
                       )),
                     ),
                   ),
-                  GestureDetector(child: Icon(Icons.filter_list))
+                  GestureDetector(child: const Icon(Icons.filter_list))
                 ],
               )
             ],

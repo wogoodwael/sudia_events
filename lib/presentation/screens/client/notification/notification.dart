@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
-import 'package:sudia_events/presentation/screens/client/notification/widgets/custom_container.dart';
 import 'package:sudia_events/presentation/screens/client/notification/widgets/build_offer_container.dart';
+import 'package:sudia_events/presentation/screens/client/notification/widgets/custom_container.dart';
 
 class NotificationBody extends StatelessWidget {
   const NotificationBody({super.key});
@@ -11,9 +11,9 @@ class NotificationBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Stack(
+        const Stack(
           children: [
-            const CustomContainer(),
+            CustomContainer(),
             Positioned(
               top: -2,
               left: 40,
@@ -37,7 +37,7 @@ class NotificationBody extends StatelessWidget {
           child: FittedBox(
             child: Text(
               "خدمات معروضة  ",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              style: TextStyle(fontFamily: 'JF',fontWeight: FontWeight.bold, fontSize: 15),
             ),
           ),
         ),

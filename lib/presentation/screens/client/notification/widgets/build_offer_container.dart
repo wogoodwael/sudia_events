@@ -3,9 +3,9 @@ import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/presentation/screens/client/notification/offers_container.dart';
 
 Widget buildOffersContainer() {
-    return Stack(
+    return const Stack(
       children: [
-        const OffersContainer(),
+        OffersContainer(),
         Positioned(
           top: 0,
           left: 70,
@@ -21,7 +21,7 @@ Widget buildOffersContainer() {
           child: FittedBox(
             child: Text(
               "مشاهدة",
-              style: TextStyle(color: Colors.red, fontSize: 13),
+              style: TextStyle(fontFamily: 'JF',color: Colors.red, fontSize: 13),
             ),
           ),
         ),

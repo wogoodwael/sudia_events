@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sudia_events/core/helper/appBar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Review/services_review.dart';
 
 class OrderRatingScreen extends StatefulWidget {
-   final List orders;
- final List images;
- final List texts;
-  const OrderRatingScreen({super.key, required this.orders, required this.images, required this.texts});
+  final List orders;
+  final List images;
+  final List texts;
+  const OrderRatingScreen(
+      {super.key,
+      required this.orders,
+      required this.images,
+      required this.texts});
 
   @override
   State<OrderRatingScreen> createState() => _OrderRatingScreenState();
@@ -20,10 +25,8 @@ class _OrderRatingScreenState extends State<OrderRatingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("قيمنا"),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar("قيمنا", context),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(16.0),
@@ -59,6 +62,7 @@ class _OrderRatingScreenState extends State<OrderRatingScreen> {
                 starSize: 40,
                 valueLabelColor: const Color(0xff9b9b9b),
                 valueLabelTextStyle: const TextStyle(
+                  fontFamily: 'JF',
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,
@@ -130,8 +134,10 @@ class _OrderRatingScreenState extends State<OrderRatingScreen> {
                 height: 40,
                 color: primary,
                 onPressed: () {
-                     Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ServiceRatingScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const ServiceRatingScreen()));
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (_) =>
                   //      RatingReviewScreen(orders:widget. orders,images:widget. images,texts: widget.texts,)));

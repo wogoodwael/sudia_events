@@ -20,7 +20,7 @@ class SettingsList extends StatelessWidget {
               settingsModel.title,
               textDirection: TextDirection.rtl,
             ),
-            subtitleTextStyle: TextStyle(color: Colors.grey),
+            subtitleTextStyle: const TextStyle(fontFamily: 'JF',color: Colors.grey),
             trailing: CircleAvatar(
               radius: 16,
               backgroundColor: Colors.grey[300],

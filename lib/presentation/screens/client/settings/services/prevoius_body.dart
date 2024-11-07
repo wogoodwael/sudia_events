@@ -33,10 +33,10 @@ class PrevoiusBody extends StatelessWidget {
     return Expanded(
         flex: 4,
         child: Container(
-          margin: EdgeInsets.only(top: 10, left: 2, right: 10),
+          margin: const EdgeInsets.only(top: 10, left: 2, right: 10),
           child: SingleChildScrollView(
             child: Column(children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Column(
@@ -65,7 +65,7 @@ class PrevoiusBody extends StatelessWidget {
                           width: .95 * mediawidth(context),
                           height: 70,
                           decoration: BoxDecoration(
-                              color: Color(0xfff3f3f3),
+                              color: const Color(0xfff3f3f3),
                               border: Border.all(color: primary),
                               borderRadius: BorderRadius.circular(5)),
                           child: Row(
@@ -75,14 +75,14 @@ class PrevoiusBody extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "الخميس",
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                         color: Colors.grey, fontSize: 15),
                                   ),
                                   Text(
                                     reversedDate,
-                                    style: TextStyle(
+                                    style: const TextStyle(fontFamily: 'JF',
                                       color: Colors.grey,
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
@@ -91,7 +91,7 @@ class PrevoiusBody extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              VerticalDivider(
+                              const VerticalDivider(
                                 indent: 5,
                                 endIndent: 5,
                                 color: Colors
@@ -107,7 +107,7 @@ class PrevoiusBody extends StatelessWidget {
                                     child: Text(
                                       "مناسبة خاصة",
                                       textDirection: TextDirection.rtl,
-                                      style: TextStyle(
+                                      style: TextStyle(fontFamily: 'JF',
                                           color: Colors.grey[600],
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13),
@@ -120,7 +120,7 @@ class PrevoiusBody extends StatelessWidget {
                                         Text(
                                           " جدة قاعة الشروق ",
                                           textDirection: TextDirection.rtl,
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               fontSize: 10,
                                               color: Colors.grey[500],
                                               fontWeight: FontWeight.bold),
@@ -146,7 +146,7 @@ class PrevoiusBody extends StatelessWidget {
                               ),
                             ],
                           )),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],
@@ -177,14 +177,14 @@ class PrevoiusBody extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "الخميس",
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                         color: Colors.white, fontSize: 15),
                                   ),
                                   Text(
                                     reversedDate,
-                                    style: TextStyle(
+                                    style: const TextStyle(fontFamily: 'JF',
                                       color: Colors.white,
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
@@ -193,7 +193,7 @@ class PrevoiusBody extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              VerticalDivider(
+                              const VerticalDivider(
                                 indent: 5,
                                 endIndent: 5,
                                 color: Colors
@@ -201,7 +201,7 @@ class PrevoiusBody extends StatelessWidget {
                                 thickness:
                                     1, // Optional: specify the thickness of the divider
                               ),
-                              Column(
+                              const Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -209,7 +209,7 @@ class PrevoiusBody extends StatelessWidget {
                                     child: Text(
                                       "مناسبة خاصة",
                                       textDirection: TextDirection.rtl,
-                                      style: TextStyle(
+                                      style: TextStyle(fontFamily: 'JF',
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13),
@@ -222,7 +222,7 @@ class PrevoiusBody extends StatelessWidget {
                                         Text(
                                           " جدة قاعة الشروق ",
                                           textDirection: TextDirection.rtl,
-                                          style: TextStyle(
+                                          style: TextStyle(fontFamily: 'JF',
                                               fontSize: 10,
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
@@ -248,7 +248,7 @@ class PrevoiusBody extends StatelessWidget {
                               ),
                             ],
                           )),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],

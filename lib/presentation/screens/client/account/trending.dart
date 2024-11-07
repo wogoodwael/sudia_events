@@ -11,8 +11,11 @@ class PromotionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('احصل على العروض الترويجية'),
+        title: const Text('احصل على العروض الترويجية',style: TextStyle(fontFamily: 'JF'),),
+              backgroundColor: Colors.white,
+
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -87,7 +90,7 @@ class TrendingListTile extends StatelessWidget {
       child: Center(
         child: ListTile(
           leading: Icon(icon, color: Colors.orange),
-          title: Text(text),
+          title: Text(text,style: const TextStyle(fontFamily: 'JF'),),
           onTap: ontap,
           trailing: const Icon(
             Icons.arrow_forward_ios,

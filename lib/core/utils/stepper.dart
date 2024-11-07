@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class StepperScreen extends StatefulWidget {
   StepperScreen({
-    Key? key,
+    super.key,
     required this.active,
     required this.lineColor,
     required this.stepperColor,
     required this.textColor,
     this.finishColor,
     this.onStepTapped,
-  }) : super(key: key);
+  });
 
   final Color lineColor;
   final Color stepperColor;
@@ -35,7 +35,7 @@ class _StepperScreenState extends State<StepperScreen> {
         finishedLineColor: widget.finishColor,
         lineLength: 80,
       ),
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       activeStep: widget.active,
       activeStepTextColor: Colors.black87,
       finishedStepTextColor: Colors.black87,

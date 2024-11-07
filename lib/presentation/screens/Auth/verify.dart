@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -124,11 +125,11 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     ),
                     Text(
                       "enter verify code".tr(),
-                      style: const TextStyle(fontSize: 30),
+                      style: const TextStyle(fontFamily: 'JF',fontSize: 30),
                     ),
                     Text(
                       "${"massage".tr()}${widget.phone.substring(widget.phone.length - 3)} ****** ${widget.phone.substring(0, 2)}",
-                      style: const TextStyle(color: Colors.grey, fontSize: 17),
+                      style: const TextStyle(fontFamily: 'JF',color: Colors.grey, fontSize: 17),
                     ),
                     OtpPinField(
                       
@@ -163,7 +164,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         }
                       },
                       otpPinFieldStyle: const OtpPinFieldStyle(
-                        textStyle: TextStyle(
+                        textStyle: TextStyle(fontFamily: 'JF',
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -197,7 +198,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                         Center(
                           child: Text(
                             "dont recieve".tr(),
-                            style: const TextStyle(fontSize: 17),
+                            style: const TextStyle(fontFamily: 'JF',fontSize: 17),
                           ),
                         ),
                         const SizedBox(
@@ -208,7 +209,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                           children: [
                             Text(
                               '00:$_start',
-                              style: const TextStyle(fontSize: 20),
+                              style: const TextStyle(fontFamily: 'JF',fontSize: 20),
                             ),
                             const SizedBox(
                               width: 10,
@@ -224,7 +225,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                           onTap: _start == 0 ? _resendCode : null,
                           child: Text(
                             'resend'.tr(),
-                            style: const TextStyle(
+                            style: const TextStyle(fontFamily: 'JF',
                               color: Colors.grey,
                             ),
                           ),
@@ -247,8 +248,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                               print("DONE");
                             }else{
                               print("NOT DONE");
-                              print("dddd===+"+enteredOtp);
-                              print("verrrr=="+widget.verificationId);
+                              print("dddd===+$enteredOtp");
+                              print("verrrr==${widget.verificationId}");
                             }
 
 
@@ -298,7 +299,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                               )
                             : Text(
                                 "next".tr(),
-                                style: const TextStyle(
+                                style: const TextStyle(fontFamily: 'JF',
                                     color: Colors.white, fontSize: 20),
                               ),
                       ),

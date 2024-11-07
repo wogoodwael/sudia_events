@@ -8,8 +8,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart' as data;
+import 'package:intl/intl.dart' as intl;
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:sudia_events/business_logic/cubit/booked_data/booked_data_cubit.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -19,13 +21,10 @@ import 'package:sudia_events/data/model/event.dart';
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Auth/login.dart';
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart' as intl;
 import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/screens/home/booking.dart';
 import 'package:sudia_events/presentation/screens/home/location.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/date_symbol_data_local.dart' as data;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.id, required this.public});
@@ -89,7 +88,7 @@ Future<String> _getImageUrl(String docId) async {
 
   void _shareImage(File file) {
     // ignore: deprecated_member_use
-    Share.shareFiles([file.path], text: 'Check out this invitation card!');
+  //  Share.shareFiles([file.path], text: 'Check out this invitation card!');
   }
 
   void _handleShare(String id ) async {
@@ -232,13 +231,13 @@ Future<String> _getImageUrl(String docId) async {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),
+              DateFormat('yyyy/MM/dd', 'ar').format(DateTime.now()),style: const TextStyle(fontFamily: 'JF'),
             ),
             const SizedBox(
               width: 10,
             ),
             Text(
-              DateFormat('EEEE', 'ar').format(DateTime.now()),
+              DateFormat('EEEE', 'ar').format(DateTime.now()),style: const TextStyle(fontFamily: 'JF')
             ),
           ],
         ),
@@ -251,9 +250,9 @@ Future<String> _getImageUrl(String docId) async {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => LocationScreen(
-                            lat: sharedpref.getDouble('lat')!,
-                            long: sharedpref.getDouble('long')!,
+                      builder: (_) => const LocationScreen(
+                            lat: 0.0,
+                            long: 0.0,
                             fromHome: true,
                           )));
             },
@@ -357,7 +356,7 @@ Future<String> _getImageUrl(String docId) async {
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: const TextStyle(
+                      style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -396,7 +395,7 @@ Future<String> _getImageUrl(String docId) async {
                               color: Colors.red,
                             )),
                         hintText: 'search'.tr(),
-                        hintStyle: TextStyle(color: Colors.grey[400]),
+                        hintStyle: TextStyle(fontFamily: 'JF',color: Colors.grey[400]),
                         prefixIcon: Icon(
                           Icons.search,
                           color: Colors.grey[400],
@@ -423,7 +422,7 @@ Future<String> _getImageUrl(String docId) async {
                     selectedColor: primary,
                     label: Text(
                       services[index],
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                           color: onTapped[index] ? Colors.white : Colors.black),
                     ),
                     selected: onTapped[index],
@@ -454,9 +453,9 @@ Future<String> _getImageUrl(String docId) async {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: const Text(" يجب تسجيل الدخول"),
+                                title: const Text(" يجب تسجيل الدخول", style: TextStyle(fontFamily: 'JF')),
                                 content: const Text(
-                                    "لكي تقوم بانشاء مناسبه يجب تسجيل الدخول اولا "),
+                                    "لكي تقوم بانشاء مناسبه يجب تسجيل الدخول اولا ", style: TextStyle(fontFamily: 'JF')),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
@@ -465,7 +464,7 @@ Future<String> _getImageUrl(String docId) async {
                                           MaterialPageRoute(
                                               builder: (_) => const LoginScreen()));
                                     },
-                                    child: const Text("حسنا"),
+                                    child: const Text("حسنا", style: TextStyle(fontFamily: 'JF')),
                                   )
                                 ],
                               );
@@ -496,10 +495,10 @@ Future<String> _getImageUrl(String docId) async {
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                    return Text('Error: ${snapshot.error}',style: TextStyle(fontFamily: 'JF'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(
-                      child: Text("لم تقم بحجز اي مناسبات بعد"),
+                      child: Text("لم تقم بحجز اي مناسبات بعد", style: TextStyle(fontFamily: 'JF')),
                     );
                   } else {
                     List<Event> eventsToShow = searchController.text.isEmpty
@@ -586,18 +585,18 @@ Future<String> _getImageUrl(String docId) async {
                                             backgroundColor: Colors.green,
                                             child: Text(
                                               "M",
-                                              style: TextStyle(
+                                              style: TextStyle(fontFamily: 'JF',
                                                   color: Colors.white),
                                             ),
                                           ),
                                           const SizedBox(height: 10),
                                           const Text(
                                             "تفاصيل",
-                                            style: TextStyle(
+                                            style: TextStyle(fontFamily: 'JF',
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           const SizedBox(height: 10),
-                                          Text("$dayName  $date"),
+                                          Text("$dayName  $date", style: const TextStyle(fontFamily: 'JF')),
                                           const SizedBox(height: 10),
                                           Container(
                                             width: .5 * mediawidth(context),
@@ -611,14 +610,14 @@ Future<String> _getImageUrl(String docId) async {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                const Text("حالة الحجز"),
-                                                const Text("مكرر "),
+                                                const Text("حالة الحجز", style: TextStyle(fontFamily: 'JF')),
+                                                const Text("مكرر ", style: TextStyle(fontFamily: 'JF')),
                                                 Text(event.type),
                                               ],
                                             ),
                                           ),
                                           const SizedBox(height: 10),
-                                          const Text("المحتفي به "),
+                                          const Text("المحتفي به ", style: TextStyle(fontFamily: 'JF')),
                                           const SizedBox(height: 10),
                                           Container(
                                             width: .5 * mediawidth(context),
@@ -631,7 +630,7 @@ Future<String> _getImageUrl(String docId) async {
                                             child: Center(
                                               child: Text(isBooked
                                                   ? "${event.name} "
-                                                  : "لا يوجد معلومات"),
+                                                  : "لا يوجد معلومات", style: const TextStyle(fontFamily: 'JF')),
                                             ),
                                           ),
                                           const SizedBox(height: 20),
@@ -650,7 +649,7 @@ Future<String> _getImageUrl(String docId) async {
                                               const SizedBox(width: 20),
                                               const Text(
                                                 "بطاقة الدعوة ",
-                                                style: TextStyle(
+                                                style: TextStyle(fontFamily: 'JF',
                                                     color: Colors.grey),
                                               ),
                                             ],
@@ -790,7 +789,7 @@ class _EventContainerState extends State<EventContainer> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             widget.time,
-            style: const TextStyle(
+            style: const TextStyle(fontFamily: 'JF',
               color: Colors.red,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -830,7 +829,7 @@ class _EventContainerState extends State<EventContainer> {
                       children: [
                         Text(
                           widget.title,
-                          style: TextStyle(
+                          style: TextStyle(fontFamily: 'JF',
                             color: Colors.grey[700],
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -839,14 +838,14 @@ class _EventContainerState extends State<EventContainer> {
                         (widget.name.length>2)?
                         Text(
                           widget.name,
-                          style: const TextStyle(
+                          style: const TextStyle(fontFamily: 'JF',
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ): const Text(
                           'وجود وايل ',
-                          style: TextStyle(
+                          style: TextStyle(fontFamily: 'JF',
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -854,7 +853,7 @@ class _EventContainerState extends State<EventContainer> {
                         ),
                         Text(
                           widget.location,
-                          style: const TextStyle(color: Colors.grey),
+                          style: const TextStyle(fontFamily: 'JF',color: Colors.grey),
                         ),
                       ],
                     ),
@@ -871,7 +870,7 @@ class _EventContainerState extends State<EventContainer> {
                         ),
                         child: Text(
                           widget.clock,
-                          style: const TextStyle(
+                          style: const TextStyle(fontFamily: 'JF',
                               color: Colors.green, fontSize: 14),
                         ),
                       ),
@@ -880,7 +879,7 @@ class _EventContainerState extends State<EventContainer> {
                       ),
                       Text(
                         widget.date,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontFamily: 'JF',fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

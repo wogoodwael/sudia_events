@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/core/helper/appBar.dart';
 import 'package:sudia_events/presentation/screens/Services/All/services_body.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
@@ -49,42 +48,33 @@ class _OffersScreenState extends State<OffersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("العروض الاسبوعية "),
-        centerTitle: true,
-        actions: [Icon(Icons.arrow_forward)],
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar("العروض الاسبوعية ", context),
       body: Column(
         children: [
-          SizedBox(
-            height: .02 * mediaheight(context),
-          ),
-          Expanded(
-            flex: 2,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: 50,
-                    child: SearchContainernew(
-                      hintText: 'البحث',
-                      controller: controller,
-                      onTap: () {},
-                    ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                  child: SearchContainernew(
+                    hintText: 'البحث',
+                    controller: controller,
+                    onTap: () {},
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+          const SizedBox(height: 40,),
           Expanded(
-            flex: 13,
+            //flex: 4,
             child: StreamBuilder<QuerySnapshot>(
               stream:
                   FirebaseFirestore.instance.collection('offers').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -92,7 +82,7 @@ class _OffersScreenState extends State<OffersScreen> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No offers found'));
+                  return const Center(child: Text('No offers found'));
                 }
 
                 var offers = snapshot.data!.docs.map((doc) {
@@ -109,24 +99,28 @@ class _OffersScreenState extends State<OffersScreen> {
                 // Filter offers based on the search query
                 var filteredOffers = _filterOffers(offers, searchQuery);
                 if (filteredOffers.isEmpty) {
-                  return Center(child: Text('لا يوجد معلومات '));
+                  return const Center(child: Text('لا يوجد معلومات '));
                 }
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.8,
+                return Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.85,
+                      mainAxisSpacing: 10
+                    ),
+                    itemCount: filteredOffers.length,
+                    itemBuilder: (context, index) {
+                      var offer = filteredOffers[index];
+                      return WeeklyOfferItem(
+                          offer['img'],
+                          offer['name'],
+                          offer['discount'],
+                          offer['price'],
+                          widget.inside,
+                          widget.uniquId);
+                    },
                   ),
-                  itemCount: filteredOffers.length,
-                  itemBuilder: (context, index) {
-                    var offer = filteredOffers[index];
-                    return WeeklyOfferItem(
-                        offer['img'],
-                        offer['name'],
-                        offer['discount'],
-                        offer['price'],
-                        widget.inside,
-                        widget.uniquId);
-                  },
                 );
               },
             ),

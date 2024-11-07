@@ -30,7 +30,7 @@
                                 child: Center(
                                   child: Text(
                                     'signup'.tr(),
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                       color: register ? Colors.white : primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 17,
@@ -63,7 +63,7 @@
                                 child: Center(
                                   child: Text(
                                     "تسجيل الدخول ",
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                       color: login ? Colors.white : primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 17,

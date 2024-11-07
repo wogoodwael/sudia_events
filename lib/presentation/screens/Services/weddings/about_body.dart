@@ -14,11 +14,11 @@ class _AboutBodyState extends State<AboutBody> {
     return Row(
       children: [
         Expanded(
-          child: Container(
+          child: SizedBox(
             width: 50,
             child: Text(
                 textAlign: TextAlign.right,
-                style: TextStyle(
+                style: const TextStyle(fontFamily: 'JF',
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.bold),

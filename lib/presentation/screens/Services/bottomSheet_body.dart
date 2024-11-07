@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
@@ -14,7 +12,7 @@ class ButtomSheetBody extends StatelessWidget {
     return Container(
       height: 150,
       width: mediawidth(context),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xfff9f9f9),
       ),
       child: SingleChildScrollView(
@@ -23,7 +21,7 @@ class ButtomSheetBody extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("355478599"),
+                const Text("355478599", style: TextStyle(fontFamily: 'JF')),
                 GestureDetector(
                   onTap: onTap,
                   child: Container(
@@ -37,11 +35,11 @@ class ButtomSheetBody extends StatelessWidget {
                 ),
                 Text(
                   "ملخص الطلب",
-                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  style: TextStyle(fontFamily: 'JF',color: Colors.grey[600], fontSize: 13),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -52,32 +50,32 @@ class ButtomSheetBody extends StatelessWidget {
                     Container(
                       width: 90,
                       height: 20,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           border: Border(bottom: BorderSide(color: primary))),
-                      child: Center(
+                      child: const Center(
                         child: FittedBox(
                           child: Text(
                             "الاجمالي شامل الضريبة",
-                            style: TextStyle(),
+                            style: TextStyle(fontFamily: 'JF',),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
+                          padding: EdgeInsets.only(top: 5.0),
                           child: Text(
                             'SR',
-                            style: TextStyle(fontSize: 10, color: primary),
+                            style: TextStyle(fontFamily: 'JF',fontSize: 10, color: primary),
                           ),
                         ),
                         Text(
                           "4300",
-                          style: TextStyle(
+                          style: TextStyle(fontFamily: 'JF',
                               color: primary,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
@@ -91,23 +89,23 @@ class ButtomSheetBody extends StatelessWidget {
                     Container(
                       width: 60,
                       height: 20,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           border: Border(bottom: BorderSide(color: primary))),
-                      child: Center(
+                      child: const Center(
                         child: FittedBox(
                           child: Text(
                             "عدد الخدمات",
-                            style: TextStyle(),
+                            style: TextStyle(fontFamily: 'JF',),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       "3",
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                           fontSize: 20,
                           color: primary,
                           fontWeight: FontWeight.bold),
@@ -116,7 +114,7 @@ class ButtomSheetBody extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(
+            const Divider(
               height: 0,
               endIndent: 10,
               indent: 10,
@@ -138,17 +136,17 @@ class ButtomSheetBody extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 5.0),
                                 child: Text(
                                   'SR',
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: 'JF',
                                       fontSize: 7, color: Colors.grey),
                                 ),
                               ),
                               Text(
                                 price[index],
-                                style: TextStyle(
+                                style: const TextStyle(fontFamily: 'JF',
                                     color: Colors.grey,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold),
@@ -157,12 +155,12 @@ class ButtomSheetBody extends StatelessWidget {
                           ),
                           Text(
                             title[index],
-                            style: TextStyle(fontSize: 10),
+                            style: const TextStyle(fontFamily: 'JF',fontSize: 10),
                           ),
                         ],
                       ),
                     ),
-                    Divider(
+                    const Divider(
                       height: 0,
                       endIndent: 10,
                       indent: 10,
@@ -172,7 +170,7 @@ class ButtomSheetBody extends StatelessWidget {
                 );
               }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             MaterialButton(
@@ -181,9 +179,9 @@ class ButtomSheetBody extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)),
               color: primary,
               onPressed: () {},
-              child: Text(
+              child: const Text(
                 "تاكيد",
-                style: TextStyle(
+                style: TextStyle(fontFamily: 'JF',
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),

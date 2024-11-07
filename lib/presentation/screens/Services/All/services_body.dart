@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/presentation/screens/Services/All/all_services.dart';
-import 'package:sudia_events/presentation/screens/Services/All/invitation.dart';
 import 'package:sudia_events/presentation/screens/Services/offers_screen.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/details.dart';
 import 'package:sudia_events/presentation/screens/favorite/fav.dart';
@@ -21,7 +18,7 @@ class ServicesBodey extends StatelessWidget {
   final String id;
   final String uniquId;
 
-  ServicesBodey(
+  const ServicesBodey(
       {super.key,
       required this.date,
       required this.inside,
@@ -38,39 +35,39 @@ class ServicesBodey extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "what".tr(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: primary,
                     fontWeight: FontWeight.bold,
                   ),
                   textDirection: TextDirection.ltr,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               CategorySection(
                 date: date,
                 inside: inside,
                 uniquID: uniquId,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               WeeklyOffersSection(
                 inside: inside,
                 uniquId: uniquId,
               ),
-              SizedBox(height: 16),
-              PreviousReservationsSection(),
-              SizedBox(height: 16),
-              FavoritesSection(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
+              const PreviousReservationsSection(),
+              const SizedBox(height: 16),
+              const FavoritesSection(),
+              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -93,7 +90,7 @@ class CategorySection extends StatelessWidget {
     return GridView.count(
       crossAxisCount: 3,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: [
         CategoryItem(
           title: 'kitchens'.tr(),
@@ -141,7 +138,7 @@ class CategorySection extends StatelessWidget {
                           uniquID: '',
                         )));
           },
-          child: Icon(
+          child: const Icon(
             Icons.more_horiz_outlined,
             color: primary,
             size: 35,
@@ -158,8 +155,8 @@ class CategoryItem extends StatelessWidget {
   final IconData icon;
   final DateTime date;
   final bool inside;
-  CategoryItem(
-      {required this.title,
+  const CategoryItem(
+      {super.key, required this.title,
       required this.icon,
       required this.date,
       required this.inside,
@@ -186,7 +183,7 @@ class CategoryItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 40, color: primary),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(title, style: GoogleFonts.cairo(fontSize: 14)),
           ],
         ),
@@ -227,15 +224,15 @@ class WeeklyOffersSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 10),
-        Container(
+        const SizedBox(height: 10),
+        SizedBox(
             height: 220,
             child: StreamBuilder<QuerySnapshot>(
               stream:
                   FirebaseFirestore.instance.collection('offers').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -243,7 +240,7 @@ class WeeklyOffersSection extends StatelessWidget {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Text('No offers found');
+                  return const Text('No offers found');
                 }
 
                 // Your data handling code here, for example:
@@ -280,8 +277,8 @@ class WeeklyOfferItem extends StatefulWidget {
   final String price;
   final bool inside;
   final String uniquID;
-  WeeklyOfferItem(this.img, this.name, this.discount, this.price, this.inside,
-      this.uniquID);
+  const WeeklyOfferItem(this.img, this.name, this.discount, this.price, this.inside,
+      this.uniquID, {super.key});
 
   @override
   State<WeeklyOfferItem> createState() => _WeeklyOfferItemState();
@@ -339,8 +336,8 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
                       img: widget.img,
                       name: widget.name,
                       price: widget.price,
-                      options: [],
-                      optionsprice: [],
+                      options: const [],
+                      optionsprice: const [],
                       dis: widget.discount,
                       rating: '4.5',
                       about: 'من افضل واشهي الاطباق',
@@ -352,13 +349,13 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
       },
       child: Container(
         width: 170,
-        margin: EdgeInsets.only(right: 10),
+        margin: const EdgeInsets.only(right: 10),
         child: Card(
           color: Colors.white,
           surfaceTintColor: Colors.white,
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            //  crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   children: [
@@ -393,22 +390,22 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                   // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(widget.name, style: GoogleFonts.cairo(fontSize: 16)),
-                      SizedBox(height: 4),
-                      Row(
+                      const SizedBox(height: 4),
+                      const Row(
                         children: [
                           Text('4.9', style: TextStyle(color: Colors.orange)),
                           Icon(Icons.star, color: Colors.orange, size: 16),
                         ],
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text('SAR ${widget.price}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               decoration: TextDecoration.lineThrough)),
                       Text('SAR ${widget.discount}',
-                          style: TextStyle(color: Colors.red)),
+                          style: const TextStyle(color: Colors.red)),
                     ],
                   ),
                 ),
@@ -422,6 +419,8 @@ class _WeeklyOfferItemState extends State<WeeklyOfferItem> {
 }
 
 class PreviousReservationsSection extends StatelessWidget {
+  const PreviousReservationsSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -431,15 +430,15 @@ class PreviousReservationsSection extends StatelessWidget {
           "prevoius booked".tr(),
           style: GoogleFonts.cairo(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Container(
           height: 215,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               borderRadius:
                   BorderRadius.only(bottomRight: Radius.circular(20))),
           child: ListView(
             scrollDirection: Axis.horizontal,
-            children: [
+            children: const [
               ReservationItem(
                 status: '20%',
                 color: Colors.green,
@@ -484,7 +483,7 @@ class ReservationItem extends StatelessWidget {
   final String price;
   final String servicesnum;
 
-  ReservationItem({
+  const ReservationItem({super.key, 
     required this.status,
     required this.color,
     required this.iconColor,
@@ -500,10 +499,10 @@ class ReservationItem extends StatelessWidget {
       Container(
         width: 150,
         height: 170, // You can adjust this height as needed
-        margin: EdgeInsets.only(right: 10),
+        margin: const EdgeInsets.only(right: 10),
         child: Card(
           surfaceTintColor: color,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.only(bottomRight: Radius.circular(20))),
           child: Padding(
@@ -524,13 +523,13 @@ class ReservationItem extends StatelessWidget {
                 CircleAvatar(
                     backgroundColor: color,
                     child: Image.asset("assets/images/logo.png")),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 FittedBox(
                   child: Text(text,
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                          const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   servicesnum,
                   style: GoogleFonts.inter(
@@ -545,7 +544,7 @@ class ReservationItem extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       fontSize: 8),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 // This will push the button to the bottom
@@ -561,11 +560,11 @@ class ReservationItem extends StatelessWidget {
           height: 30,
           minWidth: 140,
           color: primary,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
           ),
           onPressed: () {},
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -589,6 +588,8 @@ class ReservationItem extends StatelessWidget {
 }
 
 class FavoritesSection extends StatelessWidget {
+  const FavoritesSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -597,16 +598,16 @@ class FavoritesSection extends StatelessWidget {
         Text('Favorite'.tr(),
             style:
                 GoogleFonts.cairo(fontSize: 18, fontWeight: FontWeight.bold)),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(FirebaseAuth.instance.currentUser?.uid)
               .collection('favorites')
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (snapshot.hasError) {
@@ -614,14 +615,14 @@ class FavoritesSection extends StatelessWidget {
             }
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(child: Text('No favorites found'));
+              return const Center(child: Text('No favorites found'));
             }
 
             var favorites = snapshot.data!.docs
                 .map((doc) => doc.data() as Map<String, dynamic>)
                 .toList();
 
-            return Container(
+            return SizedBox(
               width: mediawidth(context),
               height: .16 * mediaheight(context),
               child: ListView.builder(
@@ -645,7 +646,7 @@ class FavoritesSection extends StatelessWidget {
 class FavoriteItem extends StatelessWidget {
   final String img;
 
-  FavoriteItem({
+  const FavoriteItem({super.key, 
     required this.img,
   });
 
@@ -654,13 +655,13 @@ class FavoriteItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => FavouriteScreen()));
+            context, MaterialPageRoute(builder: (_) => const FavouriteScreen()));
       },
       child: Stack(children: [
         Container(
           width: 150,
           height: 100,
-          margin: EdgeInsets.only(right: 10),
+          margin: const EdgeInsets.only(right: 10),
           child: Card(
             child: SingleChildScrollView(
               child: Column(
@@ -677,7 +678,7 @@ class FavoriteItem extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
+        const Positioned(
             bottom: 30,
             right: 15,
             child: CircleAvatar(

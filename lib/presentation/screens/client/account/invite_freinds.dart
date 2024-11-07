@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sudia_events/core/helper/appBar.dart';
 
 class InviteFriendsScreen extends StatelessWidget {
   InviteFriendsScreen({super.key});
-  
+
   final List<String> images = [
     'assets/images/Twitter.png',
     'assets/images/Facebook.png',
@@ -18,10 +19,8 @@ class InviteFriendsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("دعوة اصدقائك"),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar("دعوة اصدقائك", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,7 +34,8 @@ class InviteFriendsScreen extends StatelessWidget {
                 return Center(
                   child: GestureDetector(
                     onTap: () {
-                      Share.share('Check out this app!', subject: 'Invite Friends');
+                      Share.share('Check out this app!',
+                          subject: 'Invite Friends');
                     },
                     child: Image.asset(
                       images[combinedIndex],

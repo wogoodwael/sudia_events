@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart' as ea;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,14 +11,12 @@ import 'package:sudia_events/business_logic/cubit/family/family_filter_cubit.dar
 import 'package:sudia_events/business_logic/cubit/get_services/services_cubit.dart';
 import 'package:sudia_events/core/helper/language_provider.dart';
 import 'package:sudia_events/core/utils/app_routes.dart';
-
 import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/firebase_options.dart';
 import 'package:sudia_events/presentation/screens/onBoarding/splash_screen.dart';
 
 late SharedPreferences sharedpref;
 final navigatorKey = GlobalKey<NavigatorState>();
-
 
 Future _firebaseBackgroundMessage(RemoteMessage message) async {
   if (message.notification != null) {
@@ -116,7 +113,9 @@ class MyApp extends StatelessWidget {
               : TextDirection.ltr;
 
           return MaterialApp(
+            color: Colors.white,
             builder: (context, child) {
+             
               return Directionality(
                 textDirection: textDirection,
                 child: child!,
@@ -138,7 +137,7 @@ class MyApp extends StatelessWidget {
             },
             debugShowCheckedModeBanner: false,
             navigatorKey: navigatorKey,
-            routes: {'/': (context) => SplashScreen()},
+            routes: {'/': (context) => const SplashScreen()},
             onGenerateRoute: appRouter.generateRoute,
             initialRoute: '/',
           );

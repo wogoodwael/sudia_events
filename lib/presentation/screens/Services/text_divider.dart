@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sudia_events/core/helper/custom_date.dart';
 import 'package:sudia_events/core/utils/strings.dart';
@@ -10,10 +9,10 @@ class TextDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: mediawidth(context),
           height: 20,
-          child: Divider(
+          child: const Divider(
             endIndent: 70,
           ),
         ),
@@ -23,28 +22,28 @@ class TextDivider extends StatelessWidget {
               width: 170,
               height: 20,
               decoration: BoxDecoration(
-                  color: Color(0xff544c84),
+                  color: const Color(0xff544c84),
                   borderRadius: BorderRadius.circular(10)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
                     reversedDate,
-                    style: TextStyle(
+                    style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.w400),
                   ),
-                  Text(
+                  const Text(
                     "الجمعة",
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
                    title,
-                    style: TextStyle(
+                    style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.bold),

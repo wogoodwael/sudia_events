@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart' as data;
+import 'package:sudia_events/core/helper/appBar.dart';
+import 'package:sudia_events/core/helper/calender.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
+import 'package:sudia_events/data/model/event.dart';
+import 'package:sudia_events/data/services/api.dart';
 import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:sudia_events/core/helper/calender.dart';
-import 'package:sudia_events/data/model/event.dart';
-import 'package:sudia_events/data/services/api.dart';
-import 'package:intl/date_symbol_data_local.dart' as data;
 
 class SechdualScreen extends StatefulWidget {
   final String date;
@@ -139,9 +139,11 @@ class _SechdualScreenState extends State<SechdualScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset("assets/images/heart.png"),
-                    const Text("نقدر وقتك "),
+                    const Text("نقدر وقتك ",
+                        style: TextStyle(fontFamily: 'JF')),
                     const Text(
-                        "لقد تم ارسال الطلب الي مقدم الخدمة وسنعلمك بحالة الطلب ")
+                        "لقد تم ارسال الطلب الي مقدم الخدمة وسنعلمك بحالة الطلب ",
+                        style: TextStyle(fontFamily: 'JF'))
                   ]),
               actions: [
                 MaterialButton(
@@ -154,7 +156,8 @@ class _SechdualScreenState extends State<SechdualScreen> {
                             builder: (_) => BottomBarScreen(
                                 id: sharedpref.getString("token")!)));
                   },
-                  child: const Text("حسنا", style: TextStyle(color: Colors.white)),
+                  child: const Text("حسنا",
+                      style: TextStyle(fontFamily: 'JF', color: Colors.white)),
                 )
               ],
             );
@@ -169,9 +172,8 @@ class _SechdualScreenState extends State<SechdualScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('جدولة الحجز'),
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar('جدولة الحجز', context),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -199,7 +201,8 @@ class _SechdualScreenState extends State<SechdualScreen> {
                       children: [
                         Text(
                           _selectedTime2.format(context),
-                          style: const TextStyle(fontSize: 15),
+                          style:
+                              const TextStyle(fontFamily: 'JF', fontSize: 15),
                         ),
                         GestureDetector(
                           onTap: () async {
@@ -225,7 +228,10 @@ class _SechdualScreenState extends State<SechdualScreen> {
                   ),
                   const Text(
                     "الي ",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    style: TextStyle(
+                        fontFamily: 'JF',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
                   ),
                   Container(
                     width: 100,
@@ -237,7 +243,8 @@ class _SechdualScreenState extends State<SechdualScreen> {
                       children: [
                         Text(
                           _selectedTime.format(context),
-                          style: const TextStyle(fontSize: 15),
+                          style:
+                              const TextStyle(fontFamily: 'JF', fontSize: 15),
                         ),
                         GestureDetector(
                           onTap: () async {
@@ -263,7 +270,10 @@ class _SechdualScreenState extends State<SechdualScreen> {
                   ),
                   const Text(
                     "من ",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    style: TextStyle(
+                        fontFamily: 'JF',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
                   ),
                 ],
               ),
@@ -274,11 +284,12 @@ class _SechdualScreenState extends State<SechdualScreen> {
                   color: Colors.green[100],
                 ),
                 child: ListTile(
-                  trailing: const Text("الحجز الجديد"),
+                  trailing: const Text("الحجز الجديد",
+                      style: TextStyle(fontFamily: 'JF')),
                   leading: const Icon(Icons.check_circle, color: Colors.green),
                   title: Text(_selectedTime.format(context)),
-                  subtitle: Text(
-                      DateFormat('yyyy/MM/dd').format(_selectedDay!)),
+                  subtitle:
+                      Text(DateFormat('yyyy/MM/dd').format(_selectedDay!)),
                 ),
               ),
               const SizedBox(height: 10),
@@ -288,7 +299,8 @@ class _SechdualScreenState extends State<SechdualScreen> {
                   color: Colors.red[100],
                 ),
                 child: ListTile(
-                  trailing: const Text("الحجز القديم"),
+                  trailing: const Text("الحجز القديم",
+                      style: TextStyle(fontFamily: 'JF')),
                   leading: const Icon(Icons.cancel, color: Colors.red),
                   title: Text(widget.date),
                   subtitle: Text('${widget.day}  '),
@@ -303,7 +315,7 @@ class _SechdualScreenState extends State<SechdualScreen> {
                 color: primary,
                 child: const Text(
                   'التالي',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(fontFamily: 'JF', color: Colors.white),
                 ),
               ),
             ],

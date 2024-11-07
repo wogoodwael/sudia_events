@@ -15,13 +15,13 @@ class _OpinionBodyState extends State<OpinionBody> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
+          SizedBox(
               width: mediawidth(context),
               height: 100,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
+                  const Row(
                     children: [
                       Icon(
                         Icons.star,
@@ -52,30 +52,37 @@ class _OpinionBodyState extends State<OpinionBody> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: .01 * mediaheight(context)),
-                    child: Column(
+                    child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
                           "محمد احمد الشمري",
                           style: TextStyle(
+                              fontFamily: 'JF',
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
                               color: Colors.white),
                         ),
                         Text(
                           "محامي",
-                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                          style: TextStyle(
+                              fontFamily: 'JF',
+                              fontSize: 10,
+                              color: Colors.grey),
                         ),
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             width: 120,
                             child: Text(
                                 textAlign: TextAlign.right,
-                                style:
-                                    TextStyle(fontSize: 7, color: Colors.white),
+                                style: TextStyle(
+                                    fontFamily: 'JF',
+                                    fontSize: 7,
+                                    color: Colors.white),
                                 """قاعة غيم هي إحدى القا    ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ممتاز جدا  ا  ممتاز جدا 
-                                                                              """),
+                                                                              """,
+                               ),
                           ),
                         ),
                       ],
@@ -94,7 +101,7 @@ class _OpinionBodyState extends State<OpinionBody> {
                   ),
                 ],
               )),
-          Divider(
+          const Divider(
             endIndent: 10,
             indent: 10,
           )

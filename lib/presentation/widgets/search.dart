@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 
 class SearchContainernew extends StatelessWidget {
-  SearchContainernew(
+  const SearchContainernew(
       {super.key, required this.hintText, required this.controller, required this.onTap});
   final TextEditingController controller;
   final String hintText;
@@ -18,7 +18,7 @@ class SearchContainernew extends StatelessWidget {
         decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey[400]),
+            hintStyle: TextStyle(fontFamily: 'JF',color: Colors.grey[400]),
             prefixIcon: Icon(
               Icons.search,
               color: Colors.grey[400],

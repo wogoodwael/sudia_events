@@ -3,15 +3,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sudia_events/core/helper/custom_snack_bar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
-import 'package:sudia_events/presentation/screens/Services/subServices/add_to_card.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/check_out.dart';
 import 'package:sudia_events/presentation/screens/Services/subServices/review.dart';
 import 'package:sudia_events/presentation/screens/buttom_bar.dart';
@@ -219,7 +216,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                   await _requestLocationPermissionAndFetchLocation();
                   Navigator.pop(context);
                 },
-                child: const Text("yes"),
+                child: const Text("yes", style: TextStyle(fontFamily: 'JF')),
               )
             ],
           );
@@ -229,6 +226,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -293,7 +291,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                               radius: 10,
                               child: Text(
                                 _quantity.toString(),
-                                style: const TextStyle(fontSize: 10),
+                                style: const TextStyle(fontFamily: 'JF',fontSize: 10),
                               ),
                             ),
                             const Icon(
@@ -336,7 +334,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
             const SizedBox(height: 16),
             Text(
               widget.name,
-              style: const TextStyle(
+              style: const TextStyle(fontFamily: 'JF',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -345,7 +343,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
               children: [
                 Text(
                   'SAR ${(double.parse(widget.price) * (1 - double.parse(widget.dis) / 100)).toStringAsFixed(2)}',
-                  style: const TextStyle(
+                  style: const TextStyle(fontFamily: 'JF',
                     fontSize: 20,
                     color: Colors.red,
                   ),
@@ -355,7 +353,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Text(
                     'SAR ${widget.price}',
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                       fontSize: 14,
                       decoration: TextDecoration.lineThrough,
                       color: Colors.grey[800],
@@ -370,11 +368,11 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => ReviewPage()));
+                        MaterialPageRoute(builder: (_) => const ReviewPage()));
                   },
                   child: const Text(
                     "شاهد كل المراجعات",
-                    style: TextStyle(decoration: TextDecoration.underline),
+                    style: TextStyle(fontFamily: 'JF',decoration: TextDecoration.underline),
                   ),
                 ),
                 const Spacer(),
@@ -385,7 +383,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                 const SizedBox(width: 4),
                 Text(
                   '${widget.rating} (1,205)',
-                  style: const TextStyle(
+                  style: const TextStyle(fontFamily: 'JF',
                     fontSize: 14,
                   ),
                 ),
@@ -394,7 +392,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
             const SizedBox(height: 16),
             Text(
               widget.about,
-              style: const TextStyle(
+              style: const TextStyle(fontFamily: 'JF',
                 fontSize: 16,
               ),
             ),
@@ -404,7 +402,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
               },
               child: const Text(
                 'See more',
-                style: TextStyle(color: primary),
+                style: TextStyle(fontFamily: 'JF',color: primary),
               ),
             ),
             const SizedBox(height: 16),
@@ -412,7 +410,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                 ? const Center(
                     child: Text(
                       'لا توجد اضافات الان ',
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -420,7 +418,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                   )
                 : const Text(
                     ':Additional Options',
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -471,7 +469,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                         children: [
                           Text(
                             "اضافه",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: 'JF',
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -509,7 +507,7 @@ class _MenuItemDetailState extends State<MenuItemDetail> {
                           ),
                           Text(
                             '$_quantity',
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(fontFamily: 'JF',fontSize: 16),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -566,12 +564,12 @@ class OptionItem extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontFamily: 'JF',fontSize: 16),
         ),
         const Spacer(),
         Text(
           '+ SAR $price',
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontFamily: 'JF',fontSize: 16),
         ),
       ],
     );

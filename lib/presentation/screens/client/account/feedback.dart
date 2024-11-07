@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sudia_events/core/helper/appBar.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
 class FeedbackScreen extends StatelessWidget {
@@ -8,9 +9,10 @@ class FeedbackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("ملاحظات المستخدمين"),
-        centerTitle: true,
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar(
+      "ملاحظات المستخدمين"
+      ,context
       ),
       body: Column(
         children: [
@@ -27,12 +29,12 @@ class FeedbackScreen extends StatelessWidget {
                     child: const Icon(Icons.home_filled)),
                 title: const Text(
                   "مطعم الديرة ",
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(fontFamily: 'JF',color: Colors.grey),
                 ),
-                subtitle: const Text("عميل مميز أنصح بقول حجوزاته"),
+                subtitle: const Text("عميل مميز أنصح بقول حجوزاته", style: TextStyle(fontFamily: 'JF')),
                 trailing: Text(
                   emojies[index],
-                  style: const TextStyle(fontSize: 20),
+                  style: const TextStyle(fontFamily: 'JF',fontSize: 20),
                 ),
               ),
             ),

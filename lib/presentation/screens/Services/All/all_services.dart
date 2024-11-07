@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/service.dart';
@@ -13,7 +13,11 @@ class ServicesScreen extends StatefulWidget {
   final bool inside;
   final String uniquID;
 
-  const ServicesScreen({super.key, required this.date, required this.inside, required this.uniquID});
+  const ServicesScreen(
+      {super.key,
+      required this.date,
+      required this.inside,
+      required this.uniquID});
   @override
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
@@ -55,6 +59,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         leading: GestureDetector(
@@ -62,10 +67,14 @@ class _ServicesScreenState extends State<ServicesScreen> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (_) =>
-                        BottomBarScreen(id: sharedpref.getString('token')!, public: false, uniquId: widget.uniquID, date: widget.date,)));
+                    builder: (_) => BottomBarScreen(
+                          id: sharedpref.getString('token')!,
+                          public: false,
+                          uniquId: widget.uniquID,
+                          date: widget.date,
+                        )));
           },
-          child: Icon(
+          child: const Icon(
             Icons.home,
             color: primary,
           ),
@@ -75,13 +84,13 @@ class _ServicesScreenState extends State<ServicesScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_forward,
               color: primary,
             ),
           ),
         ],
-        title: Text('قائمة الخدمات'),
+        title: const Text('قائمة الخدمات'),
       ),
       body: Column(
         children: [
@@ -98,10 +107,10 @@ class _ServicesScreenState extends State<ServicesScreen> {
                     controller: controller,
                     onTap: () {},
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Container(
+                  SizedBox(
                     width: mediawidth(context),
                     height: 45,
                     child: ListView.builder(
@@ -120,7 +129,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                           },
                           child: Container(
                             margin: const EdgeInsets.all(5),
-                            width: 80,
+                            width: 100,
                             height: 40,
                             decoration: BoxDecoration(
                               color:
@@ -128,12 +137,13 @@ class _ServicesScreenState extends State<ServicesScreen> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Center(
                                   child: Text(
                                     services[index],
                                     style: TextStyle(
+                                      fontFamily: 'JF',
                                       fontSize: 14,
                                       color: onTapped[index]
                                           ? Colors.white
@@ -141,13 +151,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                     ),
                                   ),
                                 ),
-                                Icon(
-                                  Icons.check,
-                                  size: 15,
-                                  color: onTapped[index]
-                                      ? Colors.white
-                                      : Colors.transparent,
-                                ),
+                                
                               ],
                             ),
                           ),
@@ -179,7 +183,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                       .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 var services = snapshot.data!.docs
                     .map((doc) => Service.fromFirestore(
@@ -192,6 +196,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   itemCount: filteredServices.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
+                      
                       onTap: () {
                         Navigator.push(
                           context,
@@ -199,7 +204,8 @@ class _ServicesScreenState extends State<ServicesScreen> {
                             builder: (_) => SubServicesScreen(
                               itemName: filteredServices[index].name,
                               date: widget.date,
-                              inside: widget.inside, uniquID: widget.uniquID,
+                              inside: widget.inside,
+                              uniquID: widget.uniquID,
                             ),
                           ),
                         );
@@ -220,21 +226,22 @@ class _ServicesScreenState extends State<ServicesScreen> {
 class ServiceTile extends StatelessWidget {
   final Service service;
 
-  ServiceTile({required this.service});
+  const ServiceTile({super.key, required this.service});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 115, // Adjust the height as needed
+      
       child: Card(
         surfaceTintColor: Colors.white,
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
         elevation: 2,
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Row(
             children: [
               ClipRRect(
@@ -246,7 +253,7 @@ class ServiceTile extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,14 +261,16 @@ class ServiceTile extends StatelessWidget {
                   children: [
                     Text(
                       service.name,
-                      style: TextStyle(
+                      style: const TextStyle(
+                        fontFamily: 'JF',
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       service.description,
-                      style: TextStyle(
+                      style: const TextStyle(
+                        fontFamily: 'JF',
                         fontSize: 16.0,
                         color: Colors.black54,
                       ),
@@ -271,10 +280,11 @@ class ServiceTile extends StatelessWidget {
                         width: 80,
                         height: 20,
                         color: Colors.yellow[100],
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'يوجد توصيل',
                             style: TextStyle(
+                              fontFamily: 'JF',
                               fontSize: 12.0,
                               color: Colors.black54,
                             ),
@@ -284,7 +294,7 @@ class ServiceTile extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -301,14 +311,18 @@ class ServiceTile extends StatelessWidget {
                     child: Center(
                       child: Text(
                         service.status,
-                        style: TextStyle(fontSize: 14.0, color: Colors.white),
+                        style: const TextStyle(
+                            fontFamily: 'JF',
+                            fontSize: 14.0,
+                            color: Colors.white),
                       ),
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   Text(
                     '${service.distance} كلم',
-                    style: TextStyle(
+                    style: const TextStyle(
+                      fontFamily: 'JF',
                       color: Colors.black54,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.0,
@@ -318,14 +332,15 @@ class ServiceTile extends StatelessWidget {
                     children: [
                       Text(
                         service.rating.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
+                          fontFamily: 'JF',
                           color: Colors.black54,
                           fontWeight: FontWeight.bold,
                           fontSize: 12.0,
                         ),
                       ),
-                      SizedBox(width: 4.0),
-                      Icon(Icons.star, color: Colors.amber, size: 15),
+                      const SizedBox(width: 4.0),
+                      const Icon(Icons.star, color: Colors.amber, size: 15),
                     ],
                   ),
                 ],

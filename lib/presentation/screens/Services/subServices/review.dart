@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 
 class ReviewPage extends StatefulWidget {
+  const ReviewPage({super.key});
+
   @override
   State<ReviewPage> createState() => _ReviewPageState();
 }
@@ -26,7 +27,7 @@ class _ReviewPageState extends State<ReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("التعليقات"),
+        title: const Text("التعليقات", style: TextStyle(fontFamily: 'JF')),
         centerTitle: true,
       ),
       body: Padding(
@@ -34,26 +35,26 @@ class _ReviewPageState extends State<ReviewPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "التعليقات",
-              style: TextStyle(
+              style: TextStyle(fontFamily: 'JF',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
+            const Text(
               "ورد صناعي",
-              style: TextStyle(
+              style: TextStyle(fontFamily: 'JF',
                 fontSize: 16,
                 color: Colors.grey,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 200,
                     height: 170,
                     child: Column(
@@ -65,13 +66,13 @@ class _ReviewPageState extends State<ReviewPage> {
                       }),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "4.9",
-                        style: TextStyle(
+                        style: TextStyle(fontFamily: 'JF',
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
                         ),
@@ -79,20 +80,20 @@ class _ReviewPageState extends State<ReviewPage> {
                       Row(
                         children: List.generate(
                           5,
-                          (index) => Icon(
+                          (index) => const Icon(
                             Icons.star,
                             color: Colors.amber,
                             size: 24,
                           ),
                         ),
                       ),
-                      Text("(1,205)"),
+                      const Text("(1,205)", style: TextStyle(fontFamily: 'JF')),
                     ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -105,7 +106,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       selectedColor: primary,
                       label: Text(
                         reviews[index],
-                        style: TextStyle(
+                        style: TextStyle(fontFamily: 'JF',
                             color:
                                 onTapped[index] ? Colors.white : Colors.black),
                       ),
@@ -116,11 +117,11 @@ class _ReviewPageState extends State<ReviewPage> {
                 }),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView(
                 children: List.generate(4, (index) {
-                  return ReviewTile();
+                  return const ReviewTile();
                 }),
               ),
             ),
@@ -132,6 +133,8 @@ class _ReviewPageState extends State<ReviewPage> {
 }
 
 class ReviewTile extends StatelessWidget {
+  const ReviewTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -139,40 +142,40 @@ class ReviewTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             backgroundImage: ExactAssetImage("assets/images/p.png"),
             radius: 24,
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   children: [
                     Text(
                       "John Doe",
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Spacer(),
                     Text(
                       "29/03/2024",
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: 'JF',
                         color: Colors.grey,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   "Delicious chicken برقر! Loved the crispy chicken and the bun was perfectly toasted. Definitely a new favorite!",
                 ),
                 Row(
                   children: List.generate(
                     5,
-                    (index) => Icon(
+                    (index) => const Icon(
                       Icons.star,
                       color: Colors.amber,
                       size: 16,
@@ -211,8 +214,7 @@ class RatingBar extends StatelessWidget {
   final int rating;
   final double value;
 
-  const RatingBar({Key? key, required this.rating, required this.value})
-      : super(key: key);
+  const RatingBar({super.key, required this.rating, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -222,9 +224,9 @@ class RatingBar extends StatelessWidget {
         children: [
           Text(
             '$rating',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontFamily: 'JF',fontSize: 16),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Expanded(
             child: Stack(
               children: [

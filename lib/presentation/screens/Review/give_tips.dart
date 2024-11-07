@@ -30,7 +30,7 @@ class _GivingTipsScreenState extends State<GivingTipsScreen> {
               const SizedBox(
                 height: 20,
               ),
-              const Text("مقدم الخدمة"),
+              const Text("مقدم الخدمة", style: TextStyle(fontFamily: 'JF')),
               const SizedBox(
                 height: 20,
               ),
@@ -44,7 +44,7 @@ class _GivingTipsScreenState extends State<GivingTipsScreen> {
               ),
               const Text(
                 'جمعان الزهراني ',
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontFamily: 'JF',fontSize: 24),
               ),
               const SizedBox(
                 height: 20,
@@ -75,7 +75,7 @@ class _GivingTipsScreenState extends State<GivingTipsScreen> {
                                 child: const Center(
                                   child: Text(
                                     "SAR 10",
-                                    style: TextStyle(color: primary),
+                                    style: TextStyle(fontFamily: 'JF',color: primary),
                                   ),
                                 ),
                               ),
@@ -99,17 +99,17 @@ class _GivingTipsScreenState extends State<GivingTipsScreen> {
                             Image.asset("assets/images/heart.png"),
                             const Text(
                               "شكراً لك ..",
-                              style: TextStyle(
+                              style: TextStyle(fontFamily: 'JF',
                                   fontWeight: FontWeight.w600, fontSize: 16),
                             ),
                             const Text(
                               " نقدر وقتك ونسعد بخدمتك مرة أخرى قريبًا!",
-                              style: TextStyle(
+                              style: TextStyle(fontFamily: 'JF',
                                   fontWeight: FontWeight.w400, fontSize: 16),
                             ),
                             const Text(
                               "حصلت علي  ١٠٠ نقطة في محفظتك",
-                              style: TextStyle(
+                              style: TextStyle(fontFamily: 'JF',
                                   fontWeight: FontWeight.w400, fontSize: 12),
                             )
                           ],
@@ -129,7 +129,7 @@ class _GivingTipsScreenState extends State<GivingTipsScreen> {
                               },
                               child: const Text(
                                 "ok",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(fontFamily: 'JF',color: Colors.white),
                               ),
                             ),
                           )

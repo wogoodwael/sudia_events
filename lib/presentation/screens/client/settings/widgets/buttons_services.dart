@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
       child: Center(
         child: Text(
           "تعديل حجوزاتي",
-          style: TextStyle(
+          style: TextStyle(fontFamily: 'JF',
             color: edit ? Colors.white : primary,
             fontWeight: FontWeight.bold,
             fontSize: 17,

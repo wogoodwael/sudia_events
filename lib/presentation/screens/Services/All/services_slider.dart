@@ -1,9 +1,5 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sudia_events/business_logic/cubit/get_services/services_cubit.dart';
 import 'package:sudia_events/core/utils/constants.dart';
@@ -11,7 +7,6 @@ import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/data/model/services_model.dart';
 import 'package:sudia_events/data/model/sub_services_model.dart';
 import 'package:sudia_events/data/services/fetch_data.dart';
-import 'package:sudia_events/main.dart';
 import 'package:sudia_events/presentation/screens/Services/resturants/resturants.dart';
 import 'package:sudia_events/presentation/screens/Services/weddings/wedding_hotels.dart';
 
@@ -23,8 +18,8 @@ class ServiceSlider extends StatefulWidget {
 }
 
 class _ServiceSliderState extends State<ServiceSlider> {
-  PageController _pageController = PageController();
-  int _currentPage = 0;
+  final PageController _pageController = PageController();
+  final int _currentPage = 0;
   List<bool> onTapped = [false, false, false, false, false];
   late Future<List<ServicesModel>> data;
   late Future<List<SubServicesModel>> servicesDetails;
@@ -34,23 +29,23 @@ class _ServiceSliderState extends State<ServiceSlider> {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<ServicesCubit>(context).getServicesCubitfun();
-    Future.delayed(Duration(seconds: 5)); // data = fetchServicesData();
+    Future.delayed(const Duration(seconds: 5)); // data = fetchServicesData();
   }
 
   int _current = 0;
 
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
   List<ServicesModel>? services;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 30.0),
-          child: const Text(
+        const Padding(
+          padding: EdgeInsets.only(left: 30.0),
+          child: Text(
             "عرض الكل ",
-            style: TextStyle(height: 0, color: Colors.grey, fontSize: 12),
+            style: TextStyle(fontFamily: 'JF',height: 0, color: Colors.grey, fontSize: 12),
             textAlign: TextAlign.left,
           ),
         ),
@@ -74,7 +69,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                 if (state is ServicesLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is ServicesSuccess) {
-                  return Container(
+                  return SizedBox(
                     width: 250,
                     height: 50,
                     child: ListView.builder(
@@ -119,7 +114,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                                 child: Center(
                                   child: Text(
                                     services![index].name,
-                                    style: TextStyle(
+                                    style: TextStyle(fontFamily: 'JF',
                                         color: onTapped[index]
                                             ? Colors.white
                                             : Colors.grey),
@@ -133,8 +128,8 @@ class _ServiceSliderState extends State<ServiceSlider> {
                     ),
                   );
                 } else {
-                  return Center(
-                    child: Text("لا يوجد خدمات"),
+                  return const Center(
+                    child: Text("لا يوجد خدمات", style: TextStyle(fontFamily: 'JF')),
                   );
                 }
               },
@@ -154,7 +149,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
           builder: (BuildContext context,
               AsyncSnapshot<List<SubServicesModel>> snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
-              return Container(
+              return SizedBox(
                 width: mediawidth(context),
                 height: .24 * mediaheight(context),
                 child: ListView.builder(
@@ -165,7 +160,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                   itemBuilder: (BuildContext context, int index) {
                     final List imgList = snapshot.data![index].image;
 
-                    return Container(
+                    return SizedBox(
                       width: mediawidth(context),
                       height: .24 * mediaheight(context),
                       child: Column(
@@ -207,14 +202,14 @@ class _ServiceSliderState extends State<ServiceSlider> {
                                                       .symmetric(
                                                       vertical: 10.0,
                                                       horizontal: 20.0),
-                                                  child: Row(
+                                                  child: const Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
                                                       Text(
                                                         "35%",
-                                                        style: TextStyle(
+                                                        style: TextStyle(fontFamily: 'JF',
                                                             color: Colors.white,
                                                             fontSize: 25,
                                                             fontWeight:
@@ -228,7 +223,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                                                         children: [
                                                           Text(
                                                             'قاعات الرياض',
-                                                            style: TextStyle(
+                                                            style: TextStyle(fontFamily: 'JF',
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 20.0,
@@ -241,7 +236,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                                                             children: [
                                                               Text(
                                                                 "جدة - حي الشاطئ",
-                                                                style: TextStyle(
+                                                                style: TextStyle(fontFamily: 'JF',
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
@@ -311,7 +306,7 @@ class _ServiceSliderState extends State<ServiceSlider> {
                 ),
               );
             } else {
-              return CircularProgressIndicator(); // Show loading indicator while data is being fetched
+              return const CircularProgressIndicator(); // Show loading indicator while data is being fetched
             }
           },
         )

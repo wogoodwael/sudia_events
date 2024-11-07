@@ -11,7 +11,7 @@ class CustomContainer extends StatelessWidget {
     return Container(
         width: .95 * mediawidth(context),
         height: 65,
-        margin: EdgeInsets.only(right: 10),
+        margin: const EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
@@ -23,16 +23,16 @@ class CustomContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   "الاحد",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: 'JF',
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
                   reversedDate,
-                  style: TextStyle(
+                  style: const TextStyle(fontFamily: 'JF',
                     color: Colors.grey,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -45,11 +45,11 @@ class CustomContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FittedBox(
+                const FittedBox(
                   child: Text(
                     "زواج محمد احمد الشمري ",
                     textDirection: TextDirection.rtl,
-                    style: TextStyle(
+                    style: TextStyle(fontFamily: 'JF',
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 15),
@@ -62,12 +62,12 @@ class CustomContainer extends StatelessWidget {
                       Text(
                         " جدة قاعة الشروق ",
                         textDirection: TextDirection.rtl,
-                        style: TextStyle(
+                        style: TextStyle(fontFamily: 'JF',
                             fontSize: 10,
                             color: Colors.grey[500],
                             fontWeight: FontWeight.bold),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.location_on,
                         color: Colors.grey,
                         size: 10,

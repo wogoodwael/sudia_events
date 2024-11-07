@@ -9,12 +9,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/core/utils/strings.dart';
 import 'package:sudia_events/main.dart';
@@ -154,7 +152,7 @@ sharedpref.setString('cardId', widget.eventId);
                 },
                 child: const Text(
                   'حفظ',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(fontFamily: 'JF',color: Colors.white),
                 ),
               )
             ],
@@ -263,7 +261,7 @@ sharedpref.setString('cardId', widget.eventId);
                     ),
                     child: Text(
                       '$favoriteCount',
-                      style: const TextStyle(
+                      style: const TextStyle(fontFamily: 'JF',
                         color: Colors.white,
                         fontSize: 8,
                       ),
@@ -344,7 +342,7 @@ sharedpref.setString('cardId', widget.eventId);
                   },
                   child: const Text(
                     "التالي ",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
+                    style: TextStyle(fontFamily: 'JF',color: Colors.white, fontSize: 17),
                   ),
                 ),
               )
@@ -480,7 +478,7 @@ sharedpref.setString('cardId', widget.eventId);
                       ),
                       Text(
                         cardName,
-                        style: const TextStyle(
+                        style: const TextStyle(fontFamily: 'JF',
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                     ],
@@ -492,7 +490,7 @@ sharedpref.setString('cardId', widget.eventId);
                     Center(
                       child: Text(
                         price,
-                        style: const TextStyle(color: Colors.grey),
+                        style: const TextStyle(fontFamily: 'JF',color: Colors.grey),
                       ),
                     ),
                     const SizedBox(
@@ -571,7 +569,7 @@ sharedpref.setString('cardId', widget.eventId);
               color: Colors.white,
               child: const Text(
                 'مثال : اسم العروس\nإبنة - كريمة : محمد بن عبدالعزيز ..',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(fontFamily: 'JF',color: Colors.grey),
               ),
             ),
           ),
@@ -597,7 +595,7 @@ sharedpref.setString('cardId', widget.eventId);
               controller: controller,
               decoration: InputDecoration(
                 labelText: labelText,
-                labelStyle: const TextStyle(color: Colors.grey),
+                labelStyle: const TextStyle(fontFamily: 'JF',color: Colors.grey),
                 border: InputBorder.none,
                 prefixIcon: icon,
                 contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -640,7 +638,7 @@ class _InvitationFormState extends State<InvitationForm> {
           children: [
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('اسم العريس', style: TextStyle(fontSize: 15)),
+              child: Text('اسم العريس', style: TextStyle(fontFamily: 'JF',fontSize: 15)),
             ),
             Center(
               child: Container(
@@ -666,7 +664,7 @@ class _InvitationFormState extends State<InvitationForm> {
             const SizedBox(
               height: 10,
             ),
-            const Text('اختر', style: TextStyle(fontSize: 14)),
+            const Text('اختر', style: TextStyle(fontFamily: 'JF',fontSize: 14)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start, // Align to the right
               children: [
@@ -679,7 +677,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     });
                   },
                 ),
-                const Text("علي ابنة"),
+                const Text("علي ابنة", style: TextStyle(fontFamily: 'JF')),
               ],
             ),
             Row(
@@ -694,7 +692,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     });
                   },
                 ),
-                const Text("علي عروسة"),
+                const Text("علي عروسة", style: TextStyle(fontFamily: 'JF')),
               ],
             ),
             Row(
@@ -709,7 +707,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     });
                   },
                 ),
-                const Text("علي كريمة"),
+                const Text("علي كريمة", style: TextStyle(fontFamily: 'JF')),
               ],
             ),
             Center(
@@ -745,7 +743,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     });
                   },
                 ),
-                const Text("الداعي"),
+                const Text("الداعي", style: TextStyle(fontFamily: 'JF')),
               ],
             ),
             Row(
@@ -760,7 +758,7 @@ class _InvitationFormState extends State<InvitationForm> {
                     });
                   },
                 ),
-                const Text("الداعون"),
+                const Text("الداعون", style: TextStyle(fontFamily: 'JF')),
               ],
             ),
             Center(
@@ -789,7 +787,7 @@ class _InvitationFormState extends State<InvitationForm> {
             const SizedBox(
               height: 10,
             ),
-            const Text('العنوان', style: TextStyle(fontSize: 18)),
+            const Text('العنوان', style: TextStyle(fontFamily: 'JF',fontSize: 18)),
             const SizedBox(
               height: 10,
             ),
@@ -815,7 +813,7 @@ class _InvitationFormState extends State<InvitationForm> {
                   )),
             ),
             const SizedBox(height: 16),
-            const Text('التلفون', style: TextStyle(fontSize: 18)),
+            const Text('التلفون', style: TextStyle(fontFamily: 'JF',fontSize: 18)),
             Center(
               child: Container(
                 width: .8 * mediawidth(context),
@@ -833,7 +831,7 @@ class _InvitationFormState extends State<InvitationForm> {
                       contentPadding: EdgeInsets.only(top: 5, left: 10),
                       border: InputBorder.none,
                       counterText: "",
-                      errorStyle: TextStyle(
+                      errorStyle: TextStyle(fontFamily: 'JF',
                           fontSize: 0, height: 0), // This hides the error text
                     ),
                     initialCountryCode: 'IN',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sudia_events/core/helper/appBar.dart';
 import 'package:sudia_events/core/utils/constants.dart';
 import 'package:sudia_events/presentation/widgets/search.dart';
 
@@ -8,15 +9,8 @@ class HelpCenterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('مركز المساعدة'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle back button press
-          },
-        ),
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar('مركز المساعدة', context),
       body: Column(
         children: [
           SearchContainernew(
@@ -56,22 +50,19 @@ class HelpCenterScreen extends StatelessWidget {
                 const HelpListItem(
                     question:
                         'لدي مشكله في تسجيل الدخول الي حسابي كيف يمكنني حلها  ؟'),
-                const HelpListItem(question: 'كيف يمكنني اعاده طلب اوردر جديد؟'),
                 const HelpListItem(
-                    question:
-                        'لدي مشكله في طرق الدفع كيف يمكنني حلها ؟'),
+                    question: 'كيف يمكنني اعاده طلب اوردر جديد؟'),
                 const HelpListItem(
-                    question:
-                        'اريد ان الغي اوردر تم تاكيده كيف يمكنني ذالك ؟'),
+                    question: 'لدي مشكله في طرق الدفع كيف يمكنني حلها ؟'),
                 const HelpListItem(
-                    question:
-                        'اين يمكنني ان اجد التفاصيل الخاصه بكل منتج ؟'),
+                    question: 'اريد ان الغي اوردر تم تاكيده كيف يمكنني ذالك ؟'),
+                const HelpListItem(
+                    question: 'اين يمكنني ان اجد التفاصيل الخاصه بكل منتج ؟'),
                 const HelpListItem(
                     question:
                         'لدي مشكله في حساب كميه الاوردرات كيف يمكنني الابلاغ عن ذالك ؟'),
                 const HelpListItem(
-                    question:
-                        'كيف استخدم ميزه معينه من مميزات التطبيق ؟'),
+                    question: 'كيف استخدم ميزه معينه من مميزات التطبيق ؟'),
               ],
             ),
           ),
@@ -129,6 +120,7 @@ class CategoryTab extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
+            fontFamily: 'JF',
             color: isSelected ? Colors.white : Colors.black,
           ),
         ),
@@ -175,7 +167,8 @@ class HelpDetailScreen extends StatelessWidget {
           children: [
             Text(
               'كيف أقوم بإنشاء حساب جديد؟',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontFamily: 'JF', fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
             Text(
@@ -188,7 +181,7 @@ class HelpDetailScreen extends StatelessWidget {
               '6. بعد التحقق من حسابك، سيتم إنشاء حسابك بنجاح.\n\n'
               'لقد انتهيت الآن من إنشاء حسابك.\n\n'
               'إذا واجهت أي مشاكل أثناء عملية الاشتراك، فلا تتردد في التواصل مع فريق الدعم لدينا للحصول على المساعدة.',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontFamily: 'JF', fontSize: 16),
             ),
           ],
         ),
