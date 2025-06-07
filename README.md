@@ -2,9 +2,19 @@
 
 A Flutter application for managing and discovering events in Saudi Arabia.
 
+
 ## Screenshots
 
-![App Screens](screenshots/app_screens.png)
+Here are some screenshots of the application:
+
+| Screenshot 1 | Screenshot 2 |
+|-------------|-------------|
+| ![Screenshot 1](screenshots/one.jpg) | ![Screenshot 2](screenshots/two.jpg) |
+| Screenshot 3 | Screenshot 4 |
+| ![Screenshot 3](screenshots/three.jpg) | ![Screenshot 4](screenshots/four.jpg) |
+| Screenshot 5 | Screenshot 6 |
+| ![Screenshot 5](screenshots/five.jpg) |
+
 
 
 ## Features
